@@ -32,6 +32,7 @@ module.exports = (app) => {
   //Users
   app.get('/api/getUserDetails',userController.getUserDetails);
   app.get('/api/getAllUsers',userController.getAllUsers);
+  app.post('/api/loginData',userController.loginData);
 
   //Task
   app.get('/api/getAllTasks',taskController.getAllTasks);
