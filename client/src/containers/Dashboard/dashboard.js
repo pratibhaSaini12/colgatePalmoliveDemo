@@ -4,16 +4,13 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import { Chart } from "react-google-charts";
 import ImageContainer from "../../components/imageContainer"
-<<<<<<< Updated upstream
 import { Link } from "react-router-dom"
-=======
 import { PieChart } from 'react-chartkick'
 import Highcharts from "highcharts"
 // import Highcharts from "react-highcharts"
 // import Highcharts from "react-jsx-highcharts": "^3.0.1"
 // import Highcharts from "highcharts"
 import 'chart.js'
->>>>>>> Stashed changes
 
 class Dashboard extends Component {
 
