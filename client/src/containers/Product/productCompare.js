@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import ImageContainer from "../../components/imageContainer"
-import Aside from '../Sidebar/index';
+import Aside from '../SideBar/index';
 class ProductCompare extends Component {
 
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
-import Aside from '../Sidebar/index';
+import Aside from '../SideBar/index';
 class NewProduct extends Component {
 
     constructor(props) {

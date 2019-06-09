@@ -18,6 +18,9 @@ module.exports = (app) => {
   app.post('/api/deleteProductByID',productController.deleteProductByID);
   app.get('/api/compareProducts',productController.compareProducts);
   app.get('/api/getSimilarProducts',productController.getSimilarProducts);
+  app.post('/api/deleteProducts',productController.deleteProducts);
+  app.post('/api/createProduct',productController.createProduct);
+  app.post('/api/bulkProductDelete',productController.bulkProductDelete);
 
   //Assets
   app.get('/api/getAllImages',assetController.getAllImages);
@@ -35,6 +38,7 @@ module.exports = (app) => {
   app.get('/api/getTaskByUserID',taskController.getTaskByUserID);
   app.post('/api/createNewTask',taskController.createNewTask);
 
+  
 
 
 };

@@ -1,9 +1,10 @@
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
-import Aside from '../Sidebar/index';
+import Aside from '../SideBar/index';
 import { Chart } from "react-google-charts";
 import ImageContainer from "../../components/imageContainer"
+import { Link } from "react-router-dom"
 
 class Dashboard extends Component {
 
