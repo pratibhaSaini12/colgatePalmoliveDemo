@@ -3236,7 +3236,8 @@ text-transform:uppercase;
   justify-content: center;
   width: 100%;
   min-height: 100%;
-  padding: 20px; height: 100vh;
+	padding: 20px; height: 100vh;
+	background: #efefef;
 }
 
 #formContent {
