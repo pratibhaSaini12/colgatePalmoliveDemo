@@ -83,6 +83,7 @@ li{ list-style: none; }
 	-webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
 	box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08)
 }
+
 .fix-sidebar .left-sidebar {
 	position: fixed
 }
@@ -2114,10 +2115,10 @@ button .icon {
 	margin-right: 7px;
 }
 button .icon.plus {
-	background: url(../img/icons/plus-white.png);
+	background: url(../images/plus-white.png);
 }
 button.primary-button:hover .icon.plus {
-	background: url(../img/icons/plus-white.png);
+	background: url(../images/plus-white.png);
 }
 .sorting{    background: url(../img/icons/data.png);
     background-repeat: no-repeat;
