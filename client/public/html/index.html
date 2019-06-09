@@ -1,27 +1,81 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Colgate Palmolive</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
-  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
-  <link rel="stylesheet" href="/css/style.css" type="text/css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/allstyle.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
+  <link rel="stylesheet" href="../css/icons/themify-icons/themify-icons.css" type="text/css" />
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> -->
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/popper.min.js"></script>
+  <script src="../js/perfect-scrollbar.jquery.min.js"></script>
+  <script src="../js/waves.js"></script>
+  <script src="../js/sidebarmenu.js"></script>
+  <script src="../js/custom.min.js"></script>
+
 </head>
+
 <body>
   <noscript>
-  You need to enable JavaScript to run this app.
+    You need to enable JavaScript to run this app.
   </noscript>
   <div id="root"></div>
+
+  
   <script src="../../../build/index.js"></script>
   <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.js"></script>
+
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="../js/chart.js"></script>
+
+   <script type="text/javascript">
+    google.charts.load("current", { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Density", { role: "style" }],
+        ["Amazon", 60, "#5269ae"],
+        ["Walmart", 100, "#f7c381"],
+        ["Ebay", 40, "#8addd8"],
+        ["Website", 80., "#dd8a8a"],
+        ["Wayfair", 60, "color: #639a68"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+        {
+          calc: "stringify",
+          sourceColumn: 1,
+          type: "string",
+          role: "annotation"
+        },
+        2]);
+
+      var options = {
+        width: 700,
+        height: 530,
+        bar: { groupWidth: "50%" },
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+      chart.draw(view, options);
+    }
+  </script>
 
 </body>
 <script>
 
 </script>
+
 </html>

@@ -5,7 +5,7 @@ const Image = (props) => (
 	<img
 		width={props.width}
 		height={props.height}
-		src={require(`../../public/images/${props.src}`)}
+		src={require(`../../public/img/${props.src}`)}
 		className={props.className && props.className}
 		alt={props.alt}
 	/>
