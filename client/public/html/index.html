@@ -28,7 +28,7 @@
   </noscript>
   <div id="root"></div>
 
-  
+
   <script src="../../../build/index.js"></script>
   <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.js"></script>
@@ -39,7 +39,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="../js/chart.js"></script>
 
-   <script type="text/javascript">
+  <script type="text/javascript">
     google.charts.load("current", { packages: ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -72,10 +72,204 @@
       chart.draw(view, options);
     }
   </script>
-
+  <script type="text/javascript">
+    $(document).ready(function(){
+    var add = (function () {
+      var counter = 0;
+      return function () {return counter += 1;}
+    })();
+    
+    $('#filter').click(function(){
+    $('.filtercustome').slideToggle('fast') 
+    });
+    
+    $('.select_box').click(function(){
+        $(this).closest('.card-hover').fadeOut('fast');
+        $(this).parents('.card').find('.activebtn').css('display','inline');
+        $('#Counting').html(parseInt($('#Counting').html()) + 1);
+    });
+    $('.activebtn').click(function(){
+        $(this).css('display','none');
+        $(this).parents('.card').find('.card-hover').fadeIn('fast');
+        $('#Counting').html(parseInt($('#Counting').html()) - 1);
+    });
+    
+    $('#example tbody input[type="checkbox"]').click(function(){
+        if($(this).prop("checked") == true){
+            $('#Counting').html(parseInt($('#Counting').html()) + 1);
+        }
+        else if($(this).prop("checked") == false){
+            $('#Counting').html(parseInt($('#Counting').html()) - 1);
+        }
+    });
+    
+    $('#example thead input[type="checkbox"]').click(function(){
+        if($(this).prop("checked") == true){
+    
+          var totalProducts = $('#example tbody tr').length;
+          $('#Counting').html(totalProducts);
+        }
+        else if($(this).prop("checked") == false){
+            $('#Counting').html(0);
+        }
+    });
+    
+    $('.select_box').click(function(){
+      $('.counting-action-section').fadeIn('fast')
+    });
+    
+    $('.list-view').click(function(){
+    $('.tabtable').fadeIn('slow');
+    $('.card-block').fadeOut('slow');
+    $('.list-view').addClass('list-viewactive');
+    
+    });
+    
+    $('.list-view').click(function(){
+    $('.noactive').removeClass('card-view');
+    
+    });
+    $('.list-view').click(function(){
+    $('.noactive').addClass('card-viewactive');
+    
+    });
+    
+    $('.noactive').click(function(){
+    $('.list-view').removeClass('list-viewactive')
+    $('.noactive').removeClass('card-viewactive')
+    $('.noactive').addClass('card-view')
+    })
+    
+    $('.card-view').click(function(){
+     $('.tabtable').fadeOut('slow');
+    $('.card-block').fadeIn('slow');
+    
+    
+    })
+    
+    $('.clear-all').click(function() {
+        location.reload();
+    });
+    
+    $("#imageUpload").change(function() {
+        readURL(this);
+    });
+    $('.paginationshow').click(function(){
+     $('.pagebottompart').css('display','flex'); 
+    });
+    $('.noactive').click(function(){
+     $('.pagebottompart').hide();   
+    })
+    
+    });
+    
+    
+    
+    </script> 
+    <script>
+    
+    
+    // var remove = (function () {
+    //   var counter = parseInt(document.getElementById("Counting").innerHTML);
+    //   return function () {return counter -= 1;}
+      
+    // })();
+    
+    function myFunction(){
+      document.getElementById("Counting").innerHTML = add();
+    
+    }
+    function selectAll(){
+        document.getElementById("Counting").innerHTML = $('.card-block').length;
+         $('.check-icon.activebtn').css('display','block');
+    }
+    function clearAll(){
+        document.getElementById("Counting").innerHTML = 0;
+        $('.check-icon.activebtn').css('display','none');
+        $('.card-hover').fadeIn('fast');
+    }
+    
+    
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    </script> 
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> 
+    <script src="js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+    
+        $(document).ready(function() {
+    
+          $('#example_filter > input').addClass("test123");
+        $('#example').DataTable(
+           {
+            
+            "language": { 
+                search: "",
+                searchPlaceholder: 'filter records',
+                "lengthMenu": "_MENU_",
+            },
+    
+            "aLengthMenu": [[5, 10, 25, -1], [5 +"" + " per page", 10 +"" + " per page", 25 +"" + " per page", "All"]],
+            "iDisplayLength": 5
+           } 
+            );
+        $('.dsfasdfa').keyup(function(){
+            var input, filter, cards, cardContainer, h5, title, i;
+            input = $('input[type=search]').val();
+            //cardContainer = document.getElementById("myItems");
+            cards = document.getElementsByClassName("card-block");
+                for (i = 0; i < cards.length; i++) {
+                title = cards[i].querySelector(".card-body h4.card-title");
+                //console.log(title);
+                if (title.innerText.toUpperCase().indexOf(input) > -1) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+    
+        });
+        $('.dsfasdfa').click(function(){
+            var input, filter, cards, cardContainer, h5, title, i;
+            input = '';
+            //cardContainer = document.getElementById("myItems");
+            cards = document.getElementsByClassName("card-block");
+                for (i = 0; i < cards.length; i++) {
+                title = '';
+                cards[i].style.display = "block";
+            }
+    
+        });
+    
+        var table = $('#example').DataTable();
+      
+    
+        $( table.table().container() )
+            .addClass( 'selectable' );
+    } );
+    
+    
+    function checkAll(bx) {
+      var cbs = document.getElementsByTagName('input');
+      for(var i=0; i < cbs.length; i++) {
+        if(cbs[i].type == 'checkbox') {
+          cbs[i].checked = bx.checked;
+        }
+      }
+    }
+    
+    
+    </script>
 </body>
-<script>
-
-</script>
 
 </html>

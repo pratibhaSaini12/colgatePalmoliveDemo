@@ -1796,7 +1796,7 @@ Preloader
 	color: #fff;
 }
 .activetab {
-	background: url(../img/icons/list-blue.png) no-repeat 10px !important;
+	background: url(../images/list-blue.png) no-repeat 10px !important;
 	border-color: #3485d6 !important;
 }
 .activetab1 {
@@ -2214,31 +2214,31 @@ button.primary-button:hover .icon.plus {
 	border-color: #3485d6;
 }
 .list-view {
-	background: url("../img/icons/list.png") no-repeat 10px #fff;
+	background: url(../images/list.png) no-repeat 10px #fff;
 }
 .list-viewactive {
-	background: url(../img/icons/list-blue.png) no-repeat 10px #fff;
+	background: url(../images/list-blue.png) no-repeat 10px #fff;
 	border-color: #3485d6 !important;
 }
 .list-view:hover {
-	background: url("../img/icons/list-blue.png") no-repeat 10px;
+	background: url(../images/list-blue.png) no-repeat 10px;
 }
 .card-view {
 	/*background: url("../img/icons/card.png") no-repeat 10px;*/
-	background: url(../img/icons/card-blue.png) no-repeat 10px #fff;
+	background: url(../images/card-blue.png) no-repeat 10px #fff;
 	border-color: #3485d6 !important;
 }
 .card-viewactive {
-	background: url("../img/icons/card.png") no-repeat 10px #fff;
+	background: url(../images/card.png) no-repeat 10px #fff;
 }
 .card-view:hover {
-	background: url("../img/icons/card-blue.png") no-repeat 10px;
+	background: url(../images/card-blue.png) no-repeat 10px;
 }
 .filter-btn.filter {
-	background: url("../img/icons/filter.png") no-repeat 10px #fff;
+	background: url(../images/filter.png) no-repeat 10px #fff;
 }
 .filter-btn.filter:hover {
-	background: url("../img/icons/filter-blue.png") no-repeat 10px;
+	background: url(../images/filter-blue.png) no-repeat 10px;
 }
 /*form elements*/
 input.content-search {

@@ -24,10 +24,10 @@ class ProductList extends Component {
         console.log(list);
         return (
             <div>
-                <div class="preloader">
-                    <div class="loader">
-                        <div class="loader__figure"></div>
-                        <p class="loader__label">Please Wait..</p>
+                <div className="preloader">
+                    <div className="loader">
+                        <div className="loader__figure"></div>
+                        <p className="loader__label">Please Wait..</p>
                     </div>
                 </div>
                 <div id="main-wrapper">
@@ -140,11 +140,11 @@ class ProductList extends Component {
                                                                 <div className="counting-action-section">
                                                                     <div className="selections">
                                                                         <div className="group-selection">
-                                                                            <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                                                            <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                                            <div className="option-box select-all"><a onClick="selectAll()" href="javscript:void(0)">Select All</a></div>
+                                                                            <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
                                                                         </div>
                                                                         <div className="group-action">
-                                                                            <div className="option-box delete"><a href>Delete</a></div>
+                                                                            <div className="option-box delete"><a href="#">Delete</a></div>
                                                                             <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
                                                                             <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
                                                                             <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
@@ -168,7 +168,7 @@ class ProductList extends Component {
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onclick="checkAll(this)" /></th>
+                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Product ID</th>
                                                     <th scope="col">Product Name</th>
@@ -182,8 +182,9 @@ class ProductList extends Component {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html"> <img src="img/1.png" /> </a></div></td>
+                                                    <td><input type="checkbox" name="" /></td>
+                                                    <td><div className="image-thumb"><a href="detailpage.html">
+                                                    <ImageContainer src="1.png"/> </a></div></td>
                                                     <td>102918</td>
                                                     <td className="product-name"><a href="detailpage.html">PALMOLIVE NATURALS CAMELLIA OIL &amp; ALMOND</a></td>
                                                     <td>22453331</td>
@@ -192,14 +193,14 @@ class ProductList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
                                                 <tr>
                                                     <td><input type="checkbox" name /></td>
                                                     <td><div className="image-thumb"><a href="detailpage.html"> 
-                                                    <ImageContainer src="img/2.png"/>
+                                                    <ImageContainer src="2.png"/>
                                                      </a></div></td>
                                                     <td>102929</td>
                                                     <td className="product-name"><a href="detailpage.html">PALMOLIVE AROMA MOMENTS</a></td>
@@ -209,13 +210,17 @@ class ProductList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
+                                                        <ImageContainer src="icons/edit.png"/> </a>  
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
+                                                        <ImageContainer src="icons/delete.png"/>
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
                                                 <tr>
                                                     <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html"> <img src="img/3.png" /> </a></div></td>
+                                                    <td><div className="image-thumb"><a href="detailpage.html">
+                                                    <ImageContainer src="3.png"/> </a></div></td>
                                                     <td>106545</td>
                                                     <td className="product-name"><a href="detailpage.html">PALMOLIVE GOURMET CHOCOLATE PASSION</a></td>
                                                     <td>22453331</td>
@@ -224,13 +229,17 @@ class ProductList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
+                                                          </a> 
+                                                         <ImageContainer src="icons/edit.png"/>
+                                                          <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
+                                                          <ImageContainer src="icons/delete.png"/>
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
                                                 <tr>
                                                     <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html"> <img src="img/4.png" /> </a></div></td>
+                                                    <td><div className="image-thumb"><a href="detailpage.html"> <ImageContainer src="4.png"/>  </a></div></td>
                                                     <td>102918</td>
                                                     <td className="product-name"><a href="detailpage.html">PALMOLIVE NATURALS CAMELLIA OIL &amp; ALMOND</a></td>
                                                     <td>2562311</td>
@@ -239,7 +248,7 @@ class ProductList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
@@ -254,7 +263,7 @@ class ProductList extends Component {
                                                     <td>Colgate</td>
                                                     <td>Colgate</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
@@ -278,206 +287,220 @@ class ProductList extends Component {
                             <div className="row">
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/5.png" alt="card image" /></p>
+                                        <div className="card-body text-center">
+                                         <a className="icon check-icon activebtn" href="javscript:void(0)">
+                                         <ImageContainer src="icons/check.png"/>
+                                          </a>
+
+                                            <p className="img"> <ImageContainer src="5.png" alt="" /></p>
                                             <h4 className="card-title">107814</h4>
                                             <p className="card-text">PALMOLIVE NATURALS<br /> CAMELLIA OIL &amp; ALMOND</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> 
+                                            <a className="icon view-icon" href="detailpage.html"> 
+                                            <ImageContainer src="icons/view.png"/></a> <a className="icon edit-icon" href="editProduct.html">
+                                            <ImageContainer src="icons/edit.png"/>
+                                             </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> 
+                                            <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/2.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="2.png" alt="" /></p>
                                             <h4 className="card-title">102929</h4>
                                             <p className="card-text">PALMOLIVE AROMA<br />
                                                 MOMENTS</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
+                                            <ImageContainer src="icons/delete.png"/> 
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/3.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="3.png" alt="" /></p>
                                             <h4 className="card-title">106545</h4>
                                             <p className="card-text">PALMOLIVE GOURMET<br />
                                                 CHOCOLATE PASSION</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/4.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"><ImageContainer src="4.png"/></p>
                                             <h4 className="card-title">107256</h4>
                                             <p className="card-text">COLGATE 2IN1<br />
                                                 ICY BLAST</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 {/* row second ---------------------------------------------------------------------*/}
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/5.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img">
+                                            
+                                            <ImageContainer src="5.png" alt="" />
+                                            
+                                            </p>
                                             <h4 className="card-title">107814</h4>
                                             <p className="card-text">PALMOLIVE GOURMET <br />
                                                 STRAWBERRY TOUCH</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/6.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="6.png" alt="" /></p>
                                             <h4 className="card-title">102912</h4>
                                             <p className="card-text">colgate-essentials</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/7.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="7.png" alt="" /></p>
                                             <h4 className="card-title">102831</h4>
                                             <p className="card-text">PALMOLIVE AROMA MOMENTS <br />
                                                 FEEL THE MASSAGE</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/8.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="8.png" alt="" /></p>
                                             <h4 className="card-title">102833</h4>
                                             <p className="card-text">PALMOLIVE AROMA MOMENTS <br />
                                                 SO RELAXED</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 {/* row second ---------------------------------------------------------------------*/}
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/9.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="9.png" alt="" /></p>
                                             <h4 className="card-title">102834</h4>
                                             <p className="card-text">COLGATE TOTAL</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/10.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="10.png" alt="" /></p>
                                             <h4 className="card-title">102411</h4>
                                             <p className="card-text">PALMOLIVE NATURALS<br />
                                                 SHOWER &amp; BATH FOR KIDS</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/11.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="11.png" alt="" /></p>
                                             <h4 className="card-title">102845</h4>
                                             <p className="card-text">COLGATE OPTIC WHITE</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/12.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="12.png" alt="" /></p>
                                             <h4 className="card-title">101121</h4>
                                             <p className="card-text">COLGATE WISP</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/13.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="13.png" alt="" /></p>
                                             <h4 className="card-title">10211</h4>
                                             <p className="card-text">COLGATE SENSITIVE</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/14.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="14.png" alt="" /></p>
                                             <h4 className="card-title">091211</h4>
                                             <p className="card-text">COLGATE OPTIC WHITE</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                     <div className="card">
-                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
-                                            <p className="img"><img className="img-fluid" src="img/15.png" alt="card image" /></p>
+                                        <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a>
+                                            <p className="img"> <ImageContainer src="15.png" alt="" /></p>
                                             <h4 className="card-title">09171</h4>
                                             <p className="card-text">PALMOLIVE GOURMET<br />
                                                 COCONUT JOY</p>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <img src="img/icons/view.png" /> </a> <a className="icon edit-icon" href="editProduct.html"> <img src="img/icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a> </div>
+                                            <div className="card-link-options"> <a className="icon view-icon" href="detailpage.html"> <ImageContainer src="icons/view.png"/> </a> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png"/></a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png"/>
+                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png"/></a> </div>
                                         </div>
                                     </div>
                                 </div>
