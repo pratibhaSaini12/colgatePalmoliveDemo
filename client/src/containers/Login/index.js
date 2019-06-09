@@ -9,7 +9,7 @@ import { getAPIData } from "./actions"
 import { selectApiData } from "./selectors"
 
 // import logo from './images/logo.svg';
-import LoginPage from "./loginPage"
+import ImageContainer from "../../components/imageContainer"
 
 const getMyIp = (apiData) => (
 	(apiData && apiData.origin) && apiData.origin.split(", ")[1]
@@ -64,7 +64,26 @@ class Login extends Component {
 		var forgot = this.props.location.forgot==undefined?false:true
 		return (
 			<div>
-				<LoginPage onSubmit={this.getLoginData.bind(this)} userPwd={this.state.userPwd} active={this.state.active} loginProps={this.props} update={update} forgot={forgot}/>
+			{/* <LoginPage onSubmit={this.getLoginData.bind(this)} userPwd={this.state.userPwd} active={this.state.active} loginProps={this.props} update={update} forgot={forgot}/> */}
+			<div className="wrapper fadeInDown">
+        <div id="formContent">
+          {/* Tabs Titles */}
+          {/* Icon */}
+          <div className="fadeIn first">
+			  <ImageContainer src="logo2.png" id="login_logo" alt="User Icon"/>
+          </div>
+          <div className="welcom_section">
+            <h1> Welcome!</h1>
+            <p>Please login to your account</p>
+          </div>
+          {/* Login Form */}
+          <form className="login_page">
+            <input type="text" id="login" className="fadeIn second" name="login" placeholder="Email" />
+            <input type="text" id="password" className="fadeIn third" name="login" placeholder="Password" />
+            <input type="submit" className="fadeIn fourth" defaultValue="Log In" />
+          </form>
+        </div>
+      </div>
 			</div>
 		)
 	}
