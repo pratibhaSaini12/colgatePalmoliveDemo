@@ -15,6 +15,7 @@ import DigitalVideos from "./src/containers/DigitalAssets/digitalVideos"
 import DigitalDocuments from "./src/containers/DigitalAssets/digitalDocuments"
 import NewDigitalAsset from "./src/containers/DigitalAssets/newDigitalAsset"
 import ProductCompare from "./src/containers/Product/productCompare"
+import ProductDetails from "./src/containers/Product/productDetails"
 
 const history = createHistory()
 
@@ -34,6 +35,7 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/digitalDocuments' component={DigitalDocuments} />
 					<Route exact path='/newDigitalAsset' component={NewDigitalAsset} />		
 					<Route exact path='/compareProducts' component={ProductCompare} />				
+					<Route exact path='/productDetailPage' component={ProductDetails} />				
 				</Switch>
 			</Router>
 		)

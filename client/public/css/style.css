@@ -2959,7 +2959,8 @@ border: 1px solid #e3e7eb;
     height: 1em;
     border-radius: .3rem;
     overflow: hidden;
-background:#e454545;}
+	background: #454545;
+}
 .accordion .btn-link{color:#554b6c;}
 
 /*farhan 6/6/2019*/
@@ -3236,8 +3237,7 @@ text-transform:uppercase;
   justify-content: center;
   width: 100%;
   min-height: 100%;
-	padding: 20px; height: 100vh;
-	background: #efefef;
+  padding: 20px; height: 100vh;
 }
 
 #formContent {
