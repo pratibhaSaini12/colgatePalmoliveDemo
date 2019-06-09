@@ -84,7 +84,7 @@ class ProductDetail extends Component {
                                         <div className="row">
                                             <div className="col-md-2">
                                                 <div className="thumb">
-                                                    <ImageContainer src="1.jpg"/>
+                                                    <ImageContainer src="1.jpg" />
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
@@ -96,8 +96,8 @@ class ProductDetail extends Component {
                                             </div>
                                             <div className="col-md-1">
                                                 <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <ImageContainer src="icons/option-all.png"/>
-                                                {/* <img src="img/icons/option-all.png" /> */}
+                                                    <ImageContainer src="icons/option-all.png" />
+                                                    {/* <img src="img/icons/option-all.png" /> */}
                                                 </a>
                                                     <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                                 </div>
@@ -243,36 +243,36 @@ class ProductDetail extends Component {
                                                             <tbody><tr>
                                                                 <td width="20%">Main Image</td>
                                                                 <td width="30%">
-                                                                <ImageContainer src="1.jpg"/>
-                                                                {/* <img src="img/1.jpg" alt /> */}
+                                                                    <ImageContainer src="1.jpg" />
+                                                                    {/* <img src="img/1.jpg" alt /> */}
                                                                 </td>
                                                             </tr>
                                                                 <tr>
                                                                     <td>Lifestyle Images</td>
-                                                                    <td><span><ImageContainer src="11.png"/>
-                                                                    {/* <img src="img/11.png" alt /> */}
+                                                                    <td><span><ImageContainer src="11.png" />
+                                                                        {/* <img src="img/11.png" alt /> */}
                                                                     </span> <span>
-                                                                    <ImageContainer src="12.png"/>
-                                                                    {/* <img src="img/12.png" alt /> */}
-                                                                    </span> <span>
-                                                                    <ImageContainer src="4.png"/>
-                                                                    {/* <img src="img/4.png" alt /> */}
-                                                                    </span></td>
+                                                                            <ImageContainer src="12.png" />
+                                                                            {/* <img src="img/12.png" alt /> */}
+                                                                        </span> <span>
+                                                                            <ImageContainer src="4.png" />
+                                                                            {/* <img src="img/4.png" alt /> */}
+                                                                        </span></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Main Style Image</td>
                                                                     <td>
-                                                                    <ImageContainer src="1.png"/>
+                                                                        <ImageContainer src="1.png" />
                                                                         {/* <img src="img/1.jpg" alt /> */}
-                                                                        </td>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Product Videos</td>
                                                                     <td>
-                                                                    <ImageContainer src="14.png"/>
+                                                                        <ImageContainer src="14.png" />
 
                                                                         {/* <img src="img/14.png" alt /> */}
-                                                                        </td>
+                                                                    </td>
                                                                 </tr>
                                                             </tbody></table>
                                                     </div>

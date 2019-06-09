@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
+import ImageContainer from "../../components/imageContainer"
 import Aside from '../Sidebar/index';
-class NewProduct extends Component {
+class EditProduct extends Component {
 
     constructor(props) {
         super(props)
@@ -34,7 +35,7 @@ class NewProduct extends Component {
                         <div className="container-fluid r-aside">
                             <div className="row">
                                 <div className="col-md-12 top_part20">
-                                    <h2 className="page-title float-left">Create New Product</h2>
+                                    <h2 className="page-title float-left">Edit Product</h2>
                                     <div className="float-right allmodalcolgate">
                                         <button type="button" className="btn btn-primary">SAVE</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
@@ -452,4 +453,4 @@ class NewProduct extends Component {
 }
 
 
-export default NewProduct;
+export default EditProduct;
