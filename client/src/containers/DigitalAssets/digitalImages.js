@@ -130,8 +130,8 @@ class DigitalImages extends Component {
                                                                 <div className="counting-action-section">
                                                                     <div className="selections">
                                                                         <div className="group-selection">
-                                                                            <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                                                            <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                                            <div className="option-box select-all"><a onClick="selectAll()" href="javscript:void(0)">Select All</a></div>
+                                                                            <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
                                                                         </div>
                                                                         <div className="group-action">
                                                                             <div className="option-box delete"><a href>Delete</a></div>
@@ -152,7 +152,7 @@ class DigitalImages extends Component {
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onclick="checkAll(this)" /></th>
+                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
@@ -163,7 +163,7 @@ class DigitalImages extends Component {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">Palmolive-Camellia....jpg</td>
                                                     <td>image</td>
@@ -175,7 +175,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -187,7 +187,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox"  /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">widelogos_dubius.png</td>
                                                     <td>image</td>
@@ -199,7 +199,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox"  /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -211,7 +211,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox"  /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">widelogos_dubius.png</td>
                                                     <td>image</td>
@@ -223,7 +223,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox"  /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -235,7 +235,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox"  /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -247,7 +247,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox" name /></td>
+                                                    <td><input type="checkbox"  /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>

@@ -47,15 +47,15 @@ class Header extends React.Component {
                     <a className="nav-link hidden-sm-down waves-effect waves-dark search_top" href="javascript:void(0)"><i className="ti-search" /></a>
                   </form>
                 </li>
-                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
+                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
                   <div className="notify" />
                 </a> </li>
-                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span className="adminsection">Jessica Jones <br />
+                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span className="adminsection">Jessica Jones <br />
                   <b>admin</b></span>
                   <ImageContainer src="profile.png" alt="user" className="profile-pic"/>
                   <i className="fas fa-caret-down all_iconsize caretdrop" /></a>
                 </li>
-                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href> <i className="ti-help-alt all_iconsize" /> </a> </li>
+                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#"> <i className="ti-help-alt all_iconsize" /> </a> </li>
               </ul>
             </div>
           </nav>

@@ -140,7 +140,6 @@ class ProductList extends Component {
                                                                 <div className="counting-action-section">
                                                                     <div className="selections">
                                                                         <div className="group-selection">
-                                                                            <div className="option-box select-all"><a onClick="selectAll()" href="javscript:void(0)">Select All</a></div>
                                                                             <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
                                                                         </div>
                                                                         <div className="group-action">

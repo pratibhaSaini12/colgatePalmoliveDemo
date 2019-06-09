@@ -4,7 +4,16 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import { Chart } from "react-google-charts";
 import ImageContainer from "../../components/imageContainer"
+<<<<<<< Updated upstream
 import { Link } from "react-router-dom"
+=======
+import { PieChart } from 'react-chartkick'
+import Highcharts from "highcharts"
+// import Highcharts from "react-highcharts"
+// import Highcharts from "react-jsx-highcharts": "^3.0.1"
+// import Highcharts from "highcharts"
+import 'chart.js'
+>>>>>>> Stashed changes
 
 class Dashboard extends Component {
 
@@ -16,6 +25,41 @@ class Dashboard extends Component {
 
 
     componentDidMount() {
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+         
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                   
+                }
+            },
+            series: [{
+                name: 'Product',
+                colorByPoint: true,
+                data: [{
+                    name: 'Complete',
+                    y: 70.41,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: 'Incomplete',
+                    y: 29.59
+                },]
+            }]
+        });
     }
 
 
@@ -25,12 +69,12 @@ class Dashboard extends Component {
         console.log(list);
         return (
             <div>
-                <div className="preloader">
+                {/* <div className="preloader">
                     <div className="loader">
                         <div className="loader__figure" />
                         <p className="loader__label">Please Wait..</p>
                     </div>
-                </div>
+                </div> */}
                 <div id="main-wrapper">
 
 
@@ -135,7 +179,9 @@ class Dashboard extends Component {
                                                 <h5>Product Content Updates</h5>
                                                 <p>As of 03/20/2019</p>
                                             </div>
-                                            <div id="donutchart" style={{ width: '530px', height: '400px', margin: '0 auto' }} />
+                                            <div id="donutchart" style={{ width: '530px', height: '400px', margin: '0 auto' }} >
+                                            <PieChart donut={true} data={[["Blueberry", 44], ["Strawberry", 23]]} colors={["#b00", "#666"]}/>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-md-4">
