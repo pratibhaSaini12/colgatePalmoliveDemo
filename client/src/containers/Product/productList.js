@@ -198,7 +198,9 @@ class ProductList extends Component {
                                                 </tr>
                                                 <tr>
                                                     <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html"> <img src="img/2.png" /> </a></div></td>
+                                                    <td><div className="image-thumb"><a href="detailpage.html"> 
+                                                    <ImageContainer src="img/2.png"/>
+                                                     </a></div></td>
                                                     <td>102929</td>
                                                     <td className="product-name"><a href="detailpage.html">PALMOLIVE AROMA MOMENTS</a></td>
                                                     <td>22453232</td>
