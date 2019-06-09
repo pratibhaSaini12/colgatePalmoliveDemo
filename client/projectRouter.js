@@ -7,7 +7,7 @@ import createHistory from "history/createBrowserHistory"
 import Login from "./src/containers/Login"
 import LeadList from "./src/containers/LeadList"
 import Lead from "./src/containers/Lead"
-import Dashboard from "./src/containers/Dashboard"
+import Dashboard from "./src/containers/Dashboard/dashboard"
 
 
 const history = createHistory()
