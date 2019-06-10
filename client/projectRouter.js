@@ -5,8 +5,7 @@ import createHistory from "history/createBrowserHistory"
 // import PageNotFound from './client/js/pageNotFound/pageNotFound'
 
 import Login from "./src/containers/Login"
-import LeadList from "./src/containers/LeadList"
-import Lead from "./src/containers/Lead"
+
 import Dashboard from "./src/containers/Dashboard/dashboard"
 import ProductList from "./src/containers/Product/productList"
 import NewProduct from "./src/containers/Product/newProduct"
@@ -25,8 +24,6 @@ export default class ProjectRouter extends React.Component {
 			<Router history={history}>
 				<Switch>
 					<Route exact path='/' component={Login} />
-					<Route exact path='/leadlist' component={LeadList} />
-					<Route exact path='/lead' component={Lead} />
 					<Route exact path='/dashboard' component={Dashboard} />
 					<Route exact path='/productList' component={ProductList} />
 					<Route exact path='/newProduct' component={NewProduct} />
