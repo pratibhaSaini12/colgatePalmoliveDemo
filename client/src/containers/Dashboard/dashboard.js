@@ -177,7 +177,7 @@ class Dashboard extends Component {
                                                 <p>As of 03/20/2019</p>
                                             </div>
                                             <div id="donutchart" style={{ width: '530px', height: '400px', margin: '0 auto' }} >
-                                            <PieChart donut={true} data={[["Blueberry", 44], ["Strawberry", 23]]} colors={["#b00", "#666"]}/>
+                                            <PieChart donut={true} data={[["Cherry",50],["Blueberry", 20], ["Strawberry", 30]]} colors={["#3366cc","#dc3912", "#ff9900"]}/>
                                             </div>
                                         </div>
                                     </div>

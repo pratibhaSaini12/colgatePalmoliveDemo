@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import ImageContainer from "../../components/imageContainer"
 import Aside from '../SideBar/index';
+import { Link } from "react-router-dom"
 class ProductCompare extends Component {
 
     constructor(props) {
@@ -22,12 +23,12 @@ class ProductCompare extends Component {
         console.log(list);
         return (
             <div>
-                <div className="preloader">
+                {/* <div className="preloader">
                     <div className="loader">
                         <div className="loader__figure" />
                         <p className="loader__label">Please Wait..</p>
                     </div>
-                </div>
+                </div> */}
                 <div id="main-wrapper">
                     <Header />
                     <Aside />

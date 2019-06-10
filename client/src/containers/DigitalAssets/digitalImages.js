@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
+import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 class DigitalImages extends Component {
 
@@ -22,12 +23,12 @@ class DigitalImages extends Component {
         console.log(list);
         return (
             <div>
-                <div className="preloader">
+                {/* <div className="preloader">
                     <div className="loader">
                         <div className="loader__figure" />
                         <p className="loader__label">Please Wait..</p>
                     </div>
-                </div>
+                </div> */}
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
@@ -74,10 +75,6 @@ class DigitalImages extends Component {
                                                                             <option value="Small">Small</option>
                                                                             <option value="Medium">Medium</option>
                                                                             <option value="Large">Large</option>
-                                                                            {/*                              <option value="4">6</option>
-                              <option value="7">7</option>
-                              <option value="8">8</option>
-                              <option value="9">9</option>*/}
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -89,9 +86,6 @@ class DigitalImages extends Component {
                                                                             <option value="In Approval">In Approval</option>
                                                                             <option value="Approved">Approved</option>
                                                                             <option value="Rejected">Rejected</option>
-                                                                            {/*                              <option value="7">7</option>
-                              <option value="8">8</option>
-                              <option value="9">9</option>*/}
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -187,7 +181,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox"  /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">widelogos_dubius.png</td>
                                                     <td>image</td>
@@ -199,7 +193,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox"  /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -211,7 +205,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox"  /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">widelogos_dubius.png</td>
                                                     <td>image</td>
@@ -223,7 +217,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox"  /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -235,7 +229,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox"  /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -247,7 +241,7 @@ class DigitalImages extends Component {
                                                     </div></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="checkbox"  /></td>
+                                                    <td><input type="checkbox" /></td>
                                                     <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
                                                     <td className="productlist_name">palmolive-aroma.png</td>
                                                     <td>image</td>
@@ -291,8 +285,11 @@ class DigitalImages extends Component {
                                             </div>
                                         </div>
                                         <div className="card-hover">
-                                            <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                            </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
+                                            <div className="card-link-options">
+                                                <Link className="icon view-icon" to="/productDetailPage"><ImageContainer src="icons/view.png" /></Link>
+                                                <Link className="icon edit-icon" to="/editProduct"><ImageContainer src="icons/edit.png" /></Link>
+                                                <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
                                         </div>
                                     </div>
                                 </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
+import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 class ProductDetail extends Component {
 
@@ -22,12 +23,12 @@ class ProductDetail extends Component {
         console.log(list);
         return (
             <div>
-                <div className="preloader">
+                {/* <div className="preloader">
                     <div className="loader">
                         <div className="loader__figure" />
                         <p className="loader__label">Please Wait..</p>
                     </div>
-                </div>
+                </div> */}
                 <div id="main-wrapper">
 
 

@@ -1,8 +1,7 @@
-import React, { Component } from "react"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import React, { Component } from "react";
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
-import Footer from '../Footer/index';
+import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import axios from "axios";
 
@@ -41,12 +40,12 @@ class ProductList extends Component {
 
         return (
             <div>
-                <div className="preloader">
+                {/* <div className="preloader">
                     <div className="loader">
                         <div className="loader__figure"></div>
                         <p className="loader__label">Please Wait..</p>
                     </div>
-                </div>
+                </div> */}
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
@@ -138,7 +137,9 @@ class ProductList extends Component {
                                     <div className="col-md-12">
                                         <div className="filter float-right">
                                             <div className="float-right col-md-12">
-                                                <button className="primary-button float-right"><a href="create-new-Product.html"> <span className="icon plus" />NEW PRODUCT</a></button>
+                                                <button className="primary-button float-right">
+                                                    <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
+                                                </button>
                                                 <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
                                                 <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
                                                 <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
@@ -329,10 +330,13 @@ class ProductList extends Component {
                                                 </div>
                                                 <div className="card-hover">
                                                     <div className="card-link-options">
-                                                        <a className="icon view-icon" href="detailpage.html">
-                                                            <ImageContainer src="icons/view.png" /></a> <a className="icon edit-icon" href="editProduct.html">
-                                                            <ImageContainer src="icons/edit.png" />
-                                                        </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                        <Link className="icon view-icon" to="/productDetailPage" >
+                                                            <ImageContainer src="icons/view.png" />
+                                                        </Link>
+                                                        <Link className="icon edit-icon" to="/editProduct">
+                                                        <ImageContainer src="icons/edit.png" />
+                                                        </Link>
+                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                         </a>  <a className="icon check-icon select_box" href="javscript:void(0)">
                                                             <ImageContainer src="icons/check.png" /></a>
                                                     </div>

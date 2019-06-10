@@ -35,16 +35,14 @@ class Aside extends Component {
                 </li>
                 <li><a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"> <i className="sprite_icon product" /><span className="hide-menu">Products </span></a>
                   <ul aria-expanded="false" className="collapse">
-                    {/* <li><a href="productlist.html">View All</a></li> */}
                     <li><Link to={"/productlist"}>View All</Link></li>
                     <li><a href="avascript:void(0)">Manage Collections</a></li>
                   </ul>
                 </li>
                 <li> <a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"><i className="sprite_icon digital" /><span className="hide-menu">Digital Assets</span></a>
                   <ul aria-expanded="false" className="collapse">
-                    <li><a href="digitalImage.html">Images</a></li>
-                    <li><a href="digitalVideo.html">Videos</a></li>
-                    <li><a href="digitalDocuments.html"> Documents</a></li>
+                    <li><Link to={"/digitalImages"}>Images</Link></li>
+                    <li><Link to={"/digitalDocuments"}>Documents</Link></li>
                   </ul>
                 </li>
                 <li> <a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"><i className="sprite_icon more_icon" /><span className="hide-menu">More</span></a>
