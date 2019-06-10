@@ -1,25 +1,111 @@
 import React, { Component } from "react"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
-import ImageContainer from "../../components/imageContainer"
 import Aside from '../SideBar/index';
+import axios from "axios";
 class EditProduct extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            product_id: '',
+            product_name: '',
+            upc: '',
+            category: '',
+            link: '',
+            product_line: '',
+            product_status: '',
+            cost: '',
+            wholesale_price: '',
+            msrp: '',
+            retail_price: '',
+            medium_description: '',
+            long_description: '',
+            tags: '',
+            warnings: '',
+            material: '',
+            style: '',
+            workflow_state: '',
+            main_image: ''
         }
     }
 
 
     componentDidMount() {
+        try {
+            let product = this.props.location.state._data
+            this.setState({
+                product_id: product.product_id,
+                product_name: product.product_name,
+                upc: product.upc,
+                category: product.category,
+                link: product.link,
+                product_line: product.product_line,
+                product_status: product.product_status,
+                cost: product.cost,
+                wholesale_price: product.wholesale_price,
+                msrp: product.msrp,
+                retail_price: product.retail_price,
+                medium_description: product.medium_description,
+                long_description: product.long_description,
+                tags: product.tags,
+                warnings: product.warnings,
+                material: product.material,
+                style: product.style,
+                main_image: product.main_image,
+                workflow_state: product.workflow_state
+            })
+        } catch (e) { console.log("errr", e) }
+    }
+    change(e) {
+        this.setState({ errMessage: false })
+        this.setState({
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    updateProduct() {
+        console.log("state on update====", this.state);
+        let state = this.state;
+        let updateProductByID = {
+            product_id: state.product_id,
+            product_name: state.product_name,
+            upc: state.upc,
+            category: state.category,
+            link: state.link,
+            product_line: state.product_line,
+            product_status: state.product_status,
+            cost: state.cost,
+            wholesale_price: state.wholesale_price,
+            msrp: state.msrp,
+            retail_price: state.retail_price,
+            medium_description: state.medium_description,
+            long_description: state.long_description,
+            tags: state.tags,
+            warnings: state.warnings,
+            material: state.material,
+            style: state.style,
+            main_image: state.main_image,
+            // workflow_state: state.workflow_state change after DB update
+        }
+        //change update API
+        axios.post("/api/updateProductByID", updateProductByID).then(function (response) {
+            console.log('resposne from updateProductByID=========', response.data)
+            if (response.data.product) {
+                //window.location.href = "/productList"
+            }
+
+        }).catch(function (error) {
+
+        })
     }
 
 
 
     render() {
-        const { list } = this.state;
-        console.log(list);
+        console.log("props in product Edit page", this.props)
+        console.log("state in product Edit page", this.state)
+        let { product } = this.state
+        console.log("product==========", product)
         return (
             <div>
                 {/* <div className="preloader">
@@ -37,7 +123,7 @@ class EditProduct extends Component {
                                 <div className="col-md-12 top_part20">
                                     <h2 className="page-title float-left">Edit Product</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary">SAVE</button>
+                                        <button type="button" className="btn btn-primary" onClick={this.updateProduct.bind(this)}>Update</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -52,19 +138,10 @@ class EditProduct extends Component {
                                             <a className="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Pricing</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">Rich Content</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Extended Product Details</a>
-                                        </li>
-                                        <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Digital Asset</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Status</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Unformatted from ERP</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -77,7 +154,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Product ID</label>
-                                                                <input className="form-control" type="text" name="search" placeholder={12345} />
+                                                                <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -93,7 +170,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Product Name</label>
-                                                                <input className="form-control" type="text" name="search" placeholder="Product Name" />
+                                                                <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -111,7 +188,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>UPC</label>
-                                                                <input className="form-control" type="text" name="search" placeholder={234567789} />
+                                                                <input className="form-control" type="text"name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -130,15 +207,14 @@ class EditProduct extends Component {
                                                             <div className="form-group">
                                                                 <label>Category</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" className="form-control">
+                                                                <select id="pref-perpage" value={this.state.category} name="category" className="form-control" onChange={(e)=>this.change(e)}>
                                                                         <option value={0}>Category</option>
-                                                                        <option value={1}>3</option>
-                                                                        <option value={2}>4</option>
-                                                                        <option value={3}>5</option>
-                                                                        <option value={4}>6</option>
-                                                                        <option value={7}>7</option>
-                                                                        <option value={8}>8</option>
-                                                                        <option value={9}>9</option>
+                                                                        <option value={"Toothpastes"}>Toothpastes</option>
+                                                                        <option value={"Toothbrushes"}>Toothbrushes</option>
+                                                                        <option value={"Mouthwashes"}>Mouthwashes</option>
+                                                                        <option value={"Kids Products"}>Kids Products</option>
+                                                                        <option value={"Toothpowder"}>Toothpowder</option>
+                                                                        <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
                                                                     <p className="value_ofcategory">Value inherited from parent product</p>
                                                                 </div>
@@ -159,7 +235,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Link</label>
-                                                                <input className="form-control" type="text" name="search" placeholder="Links" />
+                                                                <input className="form-control" type="text" name="link" value={this.state.link} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -178,15 +254,9 @@ class EditProduct extends Component {
                                                             <div className="form-group">
                                                                 <label>Product Status</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" className="form-control">
-                                                                        <option value={0}>Active</option>
-                                                                        <option value={1}>3</option>
-                                                                        <option value={2}>4</option>
-                                                                        <option value={3}>5</option>
-                                                                        <option value={4}>6</option>
-                                                                        <option value={7}>7</option>
-                                                                        <option value={8}>8</option>
-                                                                        <option value={9}>9</option>
+                                                                <select id="pref-perpage" name="product_status" onChange={(e)=>this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                        <option value={"Active"}>Active</option>
+                                                                        <option value={"Inactive"}>Inactive</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -198,7 +268,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Style</label>
-                                                                <input className="form-control" type="text" name="search" placeholder="Style" />
+                                                                <input className="form-control" type="text" name="style" value={this.state.style} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -214,7 +284,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Cost</label>
-                                                                <input className="form-control" type="text" name="search" placeholder={12345} />
+                                                                <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
                                                                 <p className="value_ofcategory">Value inherited from parent product</p>
                                                             </div>
                                                         </div>
@@ -225,7 +295,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Formatted Base Wholesale Price</label>
-                                                                <input className="form-control pricedate_form" type="text" name="search" placeholder="$89.45" />
+                                                                <input className="form-control pricedate_form" type="text" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -234,8 +304,8 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Base Wholesale Price</label>
-                                                                <input className="form-control pricedate_form" type="text" name="search" placeholder="$110.45" />
+                                                            <label>Formatted MSRP</label>
+                                                                <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -245,7 +315,7 @@ class EditProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Formatted Retail Price</label>
-                                                                <input className="form-control pricedate_form" type="text" name="search" placeholder="$100.45" />
+                                                                <input className="form-control pricedate_form" type="text" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -399,7 +469,21 @@ class EditProduct extends Component {
                                                 </ul>
                                             </form>
                                         </div>
-                                        <div className="tab-pane" id="settings" role="tabpanel">Comming Soon...</div>
+                                        <div className="tab-pane" id="settings" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Workflow_state</label>
+                                                    <div className="form-group">
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
+                                                            <option value="In Review">In Review</option>
+                                                            <option value="In Publish">In Publish</option>
+                                                            <option value="Published">Published</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

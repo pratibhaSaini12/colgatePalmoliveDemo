@@ -9,18 +9,42 @@ class ProductDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            product: []
         }
     }
 
 
-    componentDidMount() {
+    // componentWillMount() {
+    //     let self = this
+    //     try {
+    //         axios.get("/api/getAllProducts").then(function (response) {
+    //             console.log("product list ", response.data);
+    //             if (response.data) {
+    //                 self.setState({
+    //                     product: response.data.products
+    //                 })
+    //             }
+
+    //         }).catch(function (error) {
+    //             console.log("error  login is ", error);
+    //         })
+    //     } catch (e) { }
+    // }
+    componentDidMount(){
+        try{
+            this.setState({
+                product: this.props.location.state._data
+            })
+        }catch(e){console.log("errr", errr)}
     }
 
 
 
     render() {
-        const { list } = this.state;
-        console.log(list);
+        console.log("props in product detail page", this.props)
+        console.log("state in product detail page", this.state)
+        let {product} = this.state
+        console.log("product==========", product)
         return (
             <div>
                 {/* <div className="preloader">
@@ -65,7 +89,7 @@ class ProductDetail extends Component {
                                                 <li>
                                                     <a href="#">Product &gt;&gt; </a>
                                                 </li>
-                                                <li>  102918 Palmolive</li>
+                                                <li>  {product.product_id} {product.category}</li>
                                             </ul>
                                             <ul className="prevnext-btn">
                                                 <li className="btn-icon prev">
@@ -90,8 +114,8 @@ class ProductDetail extends Component {
                                             </div>
                                             <div className="col-md-9">
                                                 <h2 className="page-title productid approved"><i className="fas fa-check-circle" />
-                                                    102918</h2>
-                                                <h4 className="productname">PALMOLIVE NATURALS CAMELLIA OIL &amp; ALMOND</h4>
+                                                {product.product_id}</h2>
+                                                <h4 className="productname">{product.product_name}</h4>
                                                 <p className="date-time">May 8, 2019, 6:05:33 PM </p>
                                                 <button className="primary-button" style={{ marginLeft: 0 }}><a href="javascript:void(0)">6 variants Available</a></button>
                                             </div>
@@ -127,31 +151,31 @@ class ProductDetail extends Component {
                                                         <table>
                                                             <tbody><tr>
                                                                 <td width="20%">Product Name</td>
-                                                                <td width="80%">Palmolive Naturals Camellia Oil &amp; Almond</td>
+                                                                <td width="80%">{product.product_name}</td>
                                                             </tr>
                                                                 <tr>
                                                                     <td>Product ID</td>
-                                                                    <td>102918</td>
+                                                                    <td>{product.product_id}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>UPC</td>
-                                                                    <td>143287212918</td>
+                                                                    <td>{product.upc}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Category</td>
-                                                                    <td>Luggage</td>
+                                                                    <td>{product.category}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Link</td>
-                                                                    <td>http://gmail.com</td>
+                                                                    <td>{product.link}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Product Line</td>
-                                                                    <td>Jetsetter</td>
+                                                                    <td>{product.product_line}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Product Status </td>
-                                                                    <td>Active</td>
+                                                                    <td>{product.product_status}</td>
                                                                 </tr>
                                                             </tbody></table>
                                                     </div>
@@ -171,7 +195,7 @@ class ProductDetail extends Component {
                                                         <table>
                                                             <tbody><tr>
                                                                 <td width="20%">Cost</td>
-                                                                <td width="80%">Jetsetter Carry On Roller - Purple</td>
+                                                                <td width="80%">{product.cost}</td>
                                                             </tr>
                                                                 <tr>
                                                                     <td>Formatted Base Wholesale Price </td>
@@ -188,47 +212,7 @@ class ProductDetail extends Component {
                                                             </tbody></table>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="card adnewcard">
-                                                <div className="card-header" id="headingThree">
-                                                    <h5 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                            <i className="fas fa-chevron-right" />
-                                                            <div className="heading">Rich Content</div>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseThree" className="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                                    <div className="card-body">
-                                                        <table>
-                                                            <tbody><tr>
-                                                                <td width="20%">Medium Description</td>
-                                                                <td width="80%">The 21" Spinner is part of the Jetsetter Collection. Pack away any travel worries and woes with the efficient design of the Jettsetter rolling bag. Features top and side carrying handles for easy lifting, dual-tube handle with push-button extension. Maneuvers easily on four 360 degree wheels. Easy upright rolling for minimal arm strain. Jetset in style!</td>
-                                                            </tr>
-                                                                <tr>
-                                                                    <td>Long Description </td>
-                                                                    <td>The 21" Spinner is part of the Jetsetter Collection. Pack away any travel worries and woes with the efficient design of the Jettsetter rolling bag. Features top and side carrying handles for easy lifting, dual-tube handle with push-button extension. Maneuvers easily on four 360 degree wheels. Easy upright rolling for minimal arm strain. Jetset in style!
-                                                                      Constructed of 100% polycarbonate material.
-                                                                      Four spinner wheels provide a silent and smooth roll.
-                                    Fully-lined interior with two compartments for organized packing.</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Tags</td>
-                                                                    <td>air travel        </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Warnings</td>
-                                                                    <td>WARNING: To avoid danger of suffocation, keep inner plastic bag away from babies and children. Do not use bag in cribs, beds, carriages or play pens. This bag is not a toy.</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Material</td>
-                                                                    <td>Polycarbonate exterior, cloth-lined interior.
-                                  </td>
-                                                                </tr>
-                                                            </tbody></table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </div>                                            
                                             <div className="card adnewcard">
                                                 <div className="card-header" id="headingFour">
                                                     <h5 className="mb-0">
