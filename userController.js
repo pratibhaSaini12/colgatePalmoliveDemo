@@ -11,6 +11,16 @@ module.exports = {
 
   //Get All users
   getAllUsers(req, res) {
+    con.query("SELECT * FROM `users` ", function (err, result) {
+     if (err)
+          throw err;
+      else {
+
+          return res.status(200).json({
+              users: result
+          })
+      }
+  })
 
   },
   validateUser(req, res) {

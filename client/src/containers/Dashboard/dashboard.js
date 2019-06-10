@@ -11,17 +11,21 @@ import Highcharts from "highcharts"
 // import Highcharts from "react-jsx-highcharts": "^3.0.1"
 // import Highcharts from "highcharts"
 import 'chart.js'
+import axios from "axios";
+
 
 class Dashboard extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            taskList: []
         }
     }
 
 
     componentDidMount() {
+        let self = this
         Highcharts.chart('container', {
             chart: {
                 plotBackgroundColor: null,
@@ -29,7 +33,7 @@ class Dashboard extends Component {
                 plotShadow: false,
                 type: 'pie'
             },
-         
+
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
             },
@@ -40,7 +44,7 @@ class Dashboard extends Component {
                     dataLabels: {
                         enabled: false
                     },
-                   
+
                 }
             },
             series: [{
@@ -57,6 +61,19 @@ class Dashboard extends Component {
                 },]
             }]
         });
+
+        let id = 1
+        axios.get("/api/getTaskByUserID?id=" + id).then(function (response) {
+
+            console.log('response from getTaskByUserID===', response)
+            if (response.data) {
+                self.setState({
+                    taskList: response.data.tasks
+                })
+            }
+        }).catch(function (error) {
+
+        })
     }
 
 
@@ -177,7 +194,7 @@ class Dashboard extends Component {
                                                 <p>As of 03/20/2019</p>
                                             </div>
                                             <div id="donutchart" style={{ width: '300px', height: '400px', margin: '0 auto' }} >
-                                            <PieChart donut={true} data={[["Cherry",50],["Blueberry", 20], ["Strawberry", 30]]} colors={["#3366cc","#dc3912", "#ff9900"]}/>
+                                                <PieChart donut={true} data={[["Cherry", 50], ["Blueberry", 20], ["Strawberry", 30]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
                                             </div>
                                         </div>
                                     </div>
@@ -195,15 +212,15 @@ class Dashboard extends Component {
                                                 loader={<div>Loading Chart</div>}
                                                 data={[
                                                     [
-                                                    'Element',
-                                                    'Density',
-                                                    { role: 'style' },
-                                                    {
-                                                        sourceColumn: 0,
-                                                        role: 'annotation',
-                                                        type: 'string',
-                                                        calc: 'stringify',
-                                                    },
+                                                        'Element',
+                                                        'Density',
+                                                        { role: 'style' },
+                                                        {
+                                                            sourceColumn: 0,
+                                                            role: 'annotation',
+                                                            type: 'string',
+                                                            calc: 'stringify',
+                                                        },
                                                     ],
                                                     ['Silver', 50, '#f6e490', null],
                                                     ['Gold', 30, '#76bc5e', null],
@@ -211,7 +228,7 @@ class Dashboard extends Component {
                                                 ]}
                                                 options={{
                                                     // title: 'Density of Precious Metals, in g/cm^3',
-                                                   
+
                                                     width: 500,
                                                     height: 350,
                                                     bar: { groupWidth: '60%' },
@@ -219,7 +236,7 @@ class Dashboard extends Component {
                                                 }}
                                                 // For tests
                                                 rootProps={{ 'data-testid': '6' }}
-                                                />
+                                            />
 
                                         </div>
                                     </div>
@@ -321,29 +338,22 @@ class Dashboard extends Component {
                                                             <tr>
                                                                 <th>Date</th>
                                                                 <th>Subject</th>
+                                                                <th>Status</th>
+                                                                <th>Priority</th>
+                                                                <th>Assigned By</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>05-06-2019</td>
-                                                                <td><a href="#">Approval Required !</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>05-06-2019</td>
-                                                                <td><a href="#">Latest Project Details</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>05-06-2019</td>
-                                                                <td><a href="#">Regarding New Products</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>05-06-2019</td>
-                                                                <td><a href="#">Product Update Request!</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>05-06-2019</td>
-                                                                <td><a href="#">Notification</a></td>
-                                                            </tr>
+                                                            {
+                                                                this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
+                                                                    return <tr>
+                                                                        <td></td>
+                                                                        <td>{key.subject}</td>
+                                                                        <td>{key.status}</td>
+                                                                        <td>{key.priority}</td>
+                                                                        <td>{key.assignedBy}</td>
+                                                                    </tr>
+                                                                }) : ''}
                                                         </tbody>
                                                     </table>
                                                 </div>

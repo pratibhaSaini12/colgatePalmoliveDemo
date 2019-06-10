@@ -30,7 +30,7 @@ module.exports = {
       else {
 
         return res.status(200).json({
-          product: result
+          tasks: result
         })
       }
     })
@@ -40,14 +40,14 @@ module.exports = {
   //Create new task
   createNewTask(req, res) {
     console.log('data ===', req.body)
-    con.query("INSERT INTO task (`assignedBy`, `assignedTo`, `subject`, `priority`,`status`,`due_date`) VALUES ('" + req.body.assignedBy + "', '" + req.body.assignedTo + "', '" + req.body.subject + "', '" + req.body.priority + "','" + req.body.due_date + "')", function (err, result) {
+    con.query("INSERT INTO task (`assignedBy`, `assignedTo`, `subject`, `priority`,`status`) VALUES ('" + req.body.assignedBy + "', '" + req.body.assignedTo + "', '" + req.body.subject + "', '" + req.body.priority + "','" + req.body.status + "')", function (err, result) {
       console.log('response from create task====', result)
       if (err)
         throw err;
       else {
 
         return res.status(200).json({
-          product: result
+          task: result
         })
       }
     })
