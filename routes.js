@@ -3,6 +3,7 @@ const userController=require('./userController');
 const taskController=require('./taskController');
 const productController=require('./productController');
 const assetController=require('./assetController');
+const uploadImageController=require("./uploadImageController")
 
 
 
@@ -38,6 +39,7 @@ module.exports = (app) => {
   app.get('/api/getAllTasks',taskController.getAllTasks);
   app.get('/api/getTaskByUserID',taskController.getTaskByUserID);
   app.post('/api/createNewTask',taskController.createNewTask);
+  app.post('/api/upload/image',uploadImageController.upploadImage);
 
   
 

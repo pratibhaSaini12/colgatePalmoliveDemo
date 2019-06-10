@@ -91,7 +91,7 @@ class EditProduct extends Component {
         axios.post("/api/updateProductByID", updateProductByID).then(function (response) {
             console.log('resposne from updateProductByID=========', response.data)
             if (response.data.product) {
-                //window.location.href = "/productList"
+                window.location.href = "/productList"
             }
 
         }).catch(function (error) {

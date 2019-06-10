@@ -16,6 +16,7 @@ import NewDigitalAsset from "./src/containers/DigitalAssets/newDigitalAsset"
 import ProductCompare from "./src/containers/Product/productCompare"
 import ProductDetails from "./src/containers/Product/productDetails"
 import NewTask from "./src/containers/Task/createNewTask"
+import UploadImage from "./src/containers/uploadImage"
 
 const history = createHistory()
 
@@ -35,6 +36,7 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/digitalImages' component={DigitalImages} />
 					<Route exact path='/digitalDocuments' component={DigitalDocuments} />
 					<Route exact path='/newTask' component={NewTask} />
+					<Route exact path='/uploadImage' component={UploadImage} />
 				</Switch>
 			</Router>
 		)
