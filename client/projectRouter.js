@@ -15,11 +15,12 @@ import DigitalDocuments from "./src/containers/DigitalAssets/digitalDocuments"
 import NewDigitalAsset from "./src/containers/DigitalAssets/newDigitalAsset"
 import ProductCompare from "./src/containers/Product/productCompare"
 import ProductDetails from "./src/containers/Product/productDetails"
+import NewTask from "./src/containers/Task/createNewTask"
 
 const history = createHistory()
 
 export default class ProjectRouter extends React.Component {
-	render () {
+	render() {
 		return (
 			<Router history={history}>
 				<Switch>
@@ -28,11 +29,13 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/productList' component={ProductList} />
 					<Route exact path='/newProduct' component={NewProduct} />
 					<Route exact path='/editProduct' component={EditProduct} />
-					<Route exact path='/compareProducts' component={ProductCompare} />				
-					<Route exact path='/productDetailPage' component={ProductDetails} />				
-					<Route exact path='/newDigitalAsset' component={NewDigitalAsset} />	
+					<Route exact path='/compareProducts' component={ProductCompare} />
+					<Route exact path='/productDetailPage' component={ProductDetails} />
+					<Route exact path='/newDigitalAsset' component={NewDigitalAsset} />
 					<Route exact path='/digitalImages' component={DigitalImages} />
-					<Route exact path='/digitalDocuments' component={DigitalDocuments} /></Switch>
+					<Route exact path='/digitalDocuments' component={DigitalDocuments} />
+					<Route exact path='/newTask' component={NewTask} />
+				</Switch>
 			</Router>
 		)
 	}
