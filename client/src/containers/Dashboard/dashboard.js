@@ -176,7 +176,7 @@ class Dashboard extends Component {
                                                 <h5>Product Content Updates</h5>
                                                 <p>As of 03/20/2019</p>
                                             </div>
-                                            <div id="donutchart" style={{ width: '530px', height: '400px', margin: '0 auto' }} >
+                                            <div id="donutchart" style={{ width: '300px', height: '400px', margin: '0 auto' }} >
                                             <PieChart donut={true} data={[["Cherry",50],["Blueberry", 20], ["Strawberry", 30]]} colors={["#3366cc","#dc3912", "#ff9900"]}/>
                                             </div>
                                         </div>
@@ -225,7 +225,7 @@ class Dashboard extends Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-lg-6">
+                                    <div className="col-lg-6 d-flex">
                                         <div className="card dashboard_section">
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
@@ -309,47 +309,7 @@ class Dashboard extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div className="card dashboard_section">
-                                            <div className="piechart_section">
-                                                <h5>Completeness by Channels</h5>
-                                                <p>As of 03/20/2019</p>
-                                            </div>
-                                            {/* <div id="columnchart_values" style={{ width: '790px', height: '490px' }} /> */}
-                                            <Chart
-                                                width={'500px'}
-                                                height={'300px'}
-                                                chartType="Bar"
-                                                loader={<div>Loading Chart</div>}
-                                                data={[
-                                                    ["Element", "Density", { role: "style" }],
-                                                    ["Amazon", 60, "#5269ae"],
-                                                    ["Walmart", 100, "#f7c381"],
-                                                    ["Ebay", 40, "#8addd8"],
-                                                    ["Website", 80., "#dd8a8a"],
-                                                    ["Wayfair", 60, "color: #639a68"]
-                                                    // ['Year', 'Sales', 'Expenses', 'Profit'],
-                                                    // ['2014', 1000],
-                                                    // ['2015', 1170],
-                                                    // ['2016', 660],
-                                                    // ['2017', 1030],
-                                                ]}
-                                                options={{
-                                                    // Material design options
-                                                    chart: {
-                                                    title: 'Company Performance',
-                                                    subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-                                                    },
-                                                }}
-                                                // For tests
-                                                rootProps={{ 'data-testid': '2' }}
-                                                />
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-lg-4 d-flex">
+                                    <div className="col-lg-6 d-flex">
                                         <div className="card dashboard_section">
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
@@ -390,19 +350,60 @@ class Dashboard extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-4 d-flex">
+                                    {/* <div className="col-md-6">
                                         <div className="card dashboard_section">
-                                            <div className="card-body">
+                                            <div className="piechart_section">
+                                                <h5>Completeness by Channels</h5>
+                                                <p>As of 03/20/2019</p>
                                             </div>
+                                            {<div id="columnchart_values" style={{ width: '790px', height: '490px' }} />}
+                                            <Chart
+                                                width={'500px'}
+                                                height={'300px'}
+                                                chartType="Bar"
+                                                loader={<div>Loading Chart</div>}
+                                                data={[
+                                                    ["Element", "Density", { role: "style" }],
+                                                    ["Amazon", 60, "#5269ae"],
+                                                    ["Walmart", 100, "#f7c381"],
+                                                    ["Ebay", 40, "#8addd8"],
+                                                    ["Website", 80., "#dd8a8a"],
+                                                    ["Wayfair", 60, "color: #639a68"]
+                                                    ['Year', 'Sales', 'Expenses', 'Profit'],
+                                                    ['2014', 1000],
+                                                    ['2015', 1170],
+                                                    ['2016', 660],
+                                                    ['2017', 1030],
+                                                ]}
+                                                options={{
+                                                  
+                                                    chart: {
+                                                    title: 'Company Performance',
+                                                    subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                                                    },
+                                                }}
+                                            
+                                                rootProps={{ 'data-testid': '2' }}
+                                                />
+
                                         </div>
-                                    </div>
-                                    <div className="col-lg-4 d-flex">
-                                        <div className="card dashboard_section">
-                                            <div className="card-body">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div> */}
                                 </div>
+                                {/* <div className="row">
+                               
+                                    <div className="col-lg-4 d-flex">
+                                        <div className="card dashboard_section">
+                                            <div className="card-body">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-4 d-flex">
+                                        <div className="card dashboard_section">
+                                            <div className="card-body">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
