@@ -11,7 +11,8 @@ class ProductList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            product: []
+            product: [],
+            deleteProductId: ''
         }
     }
 
@@ -31,6 +32,20 @@ class ProductList extends Component {
         })
     }
 
+    async deleteProductById (){
+        console.log("this.stateeeeee", this.state)
+        await axios.post("/api/deleteProductByID", {id:this.state.deleteProductId}).then(function (response) {
+            console.log('resposne from Delete api==', response)
+            if(response.data.product){
+                this.setState({deleteProductId:''})
+                window.location.href = "/productList"
+            }
+
+        }).catch(function (error) {
+            this.setState({deleteProductId:''})
+            console.log("error in delete product",error)
+        })
+    }
 
 
     render() {
@@ -321,15 +336,18 @@ class ProductList extends Component {
                                                 </div>
                                                 <div className="card-hover">
                                                     <div className="card-link-options">
-                                                        <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key} }} >
+                                                        <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} >
                                                             <ImageContainer src="icons/view.png" />
                                                         </Link>
-                                                        <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key} }}>
-                                                        <ImageContainer src="icons/edit.png" />
+                                                        <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}>
+                                                            <ImageContainer src="icons/edit.png" />
                                                         </Link>
-                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)">
-                                                            <ImageContainer src="icons/check.png" /></a>
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e)=>this.setState({deleteProductId:key.product_id})}>
+                                                            <ImageContainer src="icons/delete.png" />
+                                                        </a>
+                                                        <a className="icon check-icon select_box" href="javscript:void(0)">
+                                                            <ImageContainer src="icons/check.png" />
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,6 +357,28 @@ class ProductList extends Component {
 
                                 }
                             </div>
+                            {/* The product delete */}
+                            <div className="modal fade allmodalcolgate" id="delete">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        {/* Modal Header */}
+                                        <div className="modal-header">
+                                            <h4 className="modal-title title_modalheader">Delete Product</h4>
+                                            <button type="button" className="close" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>×</button>
+                                        </div>
+                                        {/* Modal body */}
+                                        <div className="modal-body filtercustome">
+                                            <h1 className="delete_product_list">Are you sure you want to delete</h1>
+                                        </div>
+                                        {/* Modal footer */}
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e)=>this.deleteProductById()}>Yes</button>
+                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>No</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
