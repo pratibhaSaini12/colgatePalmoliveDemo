@@ -22,7 +22,7 @@
 
 </head>
 
-<body>
+<body class="fix-header fix-sidebar card-no-border">
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
@@ -55,7 +55,7 @@
         $('#Counting').html(parseInt($('#Counting').html()) + 1);
     });
     $('.activebtn').click(function(){
-        $(this).css('display','none');
+  
         $(this).parents('.card').find('.card-hover').fadeIn('fast');
         $('#Counting').html(parseInt($('#Counting').html()) - 1);
     });

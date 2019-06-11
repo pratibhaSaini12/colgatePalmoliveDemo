@@ -104,11 +104,12 @@ class DigitalImages extends Component {
                                 </div>
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
-                            <div className="table-view digitalImage">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="filter float-right">
-                                            <div className="float-right col-md-12">
+                            <div className="row mar_bt_30">
+                            <div className="col-md-6">
+                                    <input class="content-search" type="text" name="search" placeholder="Filter Records"/>
+                                    </div>
+                                    <div className="filter float-right col-md-6">
+                                
                                                 <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
                                                 <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
                                                 <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
@@ -141,8 +142,21 @@ class DigitalImages extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <select name="example_length" aria-controls="example" class="form-control form-control-sm">
+                                            <option value="5">5 per page</option>
+                                            <option value="10">10 per page</option>
+                                            <option value="25">25 per page</option>
+                                            <option value="-1">All</option>
+                                            </select>
+                                       
                                         </div>
+                            </div>
+                            <div className="table-view digitalImage">
+                                <div className="row">
+                                   
+
+                                    <div className="col-md-12">
+                                        
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">

@@ -188,54 +188,63 @@ class ProductList extends Component {
                                 </div>
                             </div>
 
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <input class="content-search" type="text" name="search" placeholder="Search for product" onChange={this.filterSearch.bind(this)} />
-                                </div>
+                                <div className="row mar_bt_30">
+                                    <div className="col-md-6">
+                                    <input class="content-search" type="text" name="search" placeholder="Filter Records"/>
+                                    </div>
                                 <div className="filter float-right col-md-6">
-                                    <div className="float-right">
-                                        <button className="primary-button float-right">
-                                            <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
-                                        </button>
-                                        <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
-                                        <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
-                                        <div className="selected-actions">
-                                            <div className="option-box drop-option-link">
-                                                <div className="nav-item dropdown dropcolgate">
-                                                    <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
-                                                        <div className="dot-icon">
-                                                            {/* <img src="img/icons/option-all.png" />src="img/icons/option-all.png" */}
-                                                            <ImageContainer src="icons/option-all.png" />
-                                                        </div>
-                                                    </a>
-                                                    <div className="dropdown-menu drop_20">
-                                                        <div className="counting-action-section">
-                                                            <div className="selections">
-                                                                <div className="group-selection">
-                                                                    <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
-                                                                </div>
-                                                                <div className="group-action">
-                                                                    <div className="option-box delete"><a href="#">Delete</a></div>
-                                                                    <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                                                    <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
-                                                                    <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
-                                                                    <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
-                                                                    <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                        Batch Update
-                                  </div>
-                                                                    <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
-                                                    </div>
+                                                <button className="primary-button float-right">
+                                                    <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
+                                                </button>
+                                                <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
+                                                <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
+                                                <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                                <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+
+                                                <div className="selected-actions">
+        <div className="option-box drop-option-link">
+          <div className="nav-item dropdown dropcolgate">
+            <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
+              <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
+            </a>
+            <div className="dropdown-menu drop_20">
+              <div className="counting-action-section">
+                <div className="selections">
+                  <div className="group-selection">
+                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
+                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                  </div>
+                  <div className="group-action">
+                    <div className="option-box delete"><a href>Delete</a></div>
+                    <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
+                    <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
+                    <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
+                    <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
+                    <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
+                      Batch Update
+                    </div>
+                    <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
+                  </div>
+                </div>
+              </div>
+              <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> 
+              <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> 
+              <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> 
+            </div>
+          </div>
+        </div>
+      </div>
+                                                
+                                       <select name="example_length" aria-controls="example" class="form-control form-control-sm">
+                                            <option value="5">5 per page</option>
+                                            <option value="10">10 per page</option>
+                                            <option value="25">25 per page</option>
+                                            <option value="-1">All</option>
+                                            </select>
                                                 </div>
-                                            </div>
+                                           
+                                         
                                         </div>
                                     </div>
                                 </div>
@@ -293,8 +302,8 @@ class ProductList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
-                                                            <ImageContainer src="icons/edit.png" /> </a>
+                                                        <div className="row-link-options"> 
+                                                        <a className="icon edit-icon" href="editProduct.html"><ImageContainer src="icons/edit.png" /> </a>
                                                             <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
                                                                 <ImageContainer src="icons/delete.png" />
                                                             </a></div>
@@ -386,20 +395,12 @@ class ProductList extends Component {
                                                     <p className="card-text">{key.product_name}<br />{key.product_name}</p>
                                                 </div>
                                                 <div className="card-hover">
-                                                    <div className="card-link-options">
-                                                        <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} >
-                                                            <ImageContainer src="icons/view.png" />
-                                                        </Link>
-                                                        <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}>
-                                                            <ImageContainer src="icons/edit.png" />
-                                                        </Link>
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}>
-                                                            <ImageContainer src="icons/delete.png" />
-                                                        </a>
-                                                        <a className="icon check-icon select_box" href="javscript:void(0)">
-                                                            <ImageContainer src="icons/check.png" />
-                                                        </a>
-                                                    </div>
+<div className="card-link-options">
+<Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
+<Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
+<a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e)=>this.setState({deleteProductId:key.product_id})}><ImageContainer src="icons/delete.png" /></a>
+<a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a>
+</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -430,10 +431,119 @@ class ProductList extends Component {
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
+                            {/* The Modal */}
+      <div className="modal fade allmodalcolgate" id="setting">
+        <div className="modal-dialog productlist_section">
+          <div className="modal-content"> 
+            {/* Modal Header */}
+            <div className="modal-header">
+              <h4 className="modal-title title_modalheader col-md-7">Grid Configuration</h4>
+              <div className="filtercustome col-md-4">
+                <li className="nav-item dropdown Select_Language">
+                  <a className="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Language</a>
+                  <div className="dropdown-menu" aria-labelledby="dropdown09">
+                    <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-us"> </span>  English</a>
+                    <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-fr"> </span>  French</a>
+                    <a className="dropdown-item" href="#it"><span className="flag-icon flag-icon-it"> </span>  Italian</a>
+                    <a className="dropdown-item" href="#ru"><span className="flag-icon flag-icon-ru"> </span>  Russian</a>
+                  </div>
+                </li>
+              </div>
+              <button type="button" className="close" data-dismiss="modal">×</button>
             </div>
+            {/* Modal body */}
+            <div className="modal-body filtercustome productlist_body">
+              <div className="row">
+                <div className="col-md-12 custome_section_productlist_body">
+                  <div className="row">
+                    <div className="col-md-6 nopad_left">
+                      <div id="accordion">
+                        <div className="card">
+                          <div className="card-header" id="heading-1">
+                            <h5 className="mb-0">
+                              <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                Class Attributes
+                              </a>
+                            </h5>
+                          </div>
+                          <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
+                            <ul>
+                              <li><a href="#">Layout</a></li>
+                              <li><a href="#">SKU Number</a></li>
+                              <li><a href="#">Global SKU Number</a></li>
+                              <li><a href="#">SKU legal Name</a></li>
+                              <li><a href="#">Product Legal Name</a></li>
+                              <li><a href="#">Article Number</a></li>
+                              <li><a href="#">Subsidiary</a></li>
+                              <li><a href="#">Each</a></li>
+                              <li><a href="#">AISE Code</a></li>
+                              <li><a href="#">Name</a></li>
+                              <li><a href="#">Country of Origin</a></li>
+                              <li><a href="#">Brand</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="card">
+                          <div className="card-header" id="heading-2">
+                            <h5 className="mb-0">
+                              <a role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
+                                Formatters
+                              </a>
+                            </h5>
+                          </div>
+                          <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                            <ul>
+                              <li><a href="#">Bool</a>
+                                <ul>
+                                  <li>Operator Boolean Formatter</li>
+                                </ul>
+                              </li>
+                              <li><a href="#">Other</a>
+                                <ul>
+                                  <li>Operator Date Formatter</li>
+                                </ul>
+                              </li>
+                              <li><a href="#">String</a>
+                                <ul>
+                                  <li>Operator Text</li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <div className="col-md-6">
+                      <ul className="list_ofproduct">
+                        <li>ID</li>
+                        <li>Published</li>
+                        <li>SKU Number</li>
+                        <li>Each(EA) - EAN Code (eaEanCode)</li>
+                        <li>Workflow State</li>
+                        <li>Color(s)</li>
+                        <li>Shelf LLife (Months) (ShelfLife)</li>
+                        <li>Subsidiary</li>
+                        <li>Brand</li>
+                        <li>Sub Brand</li>
+                        <li>Product Lagal Name</li>
+                        <li>Name</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Modal footer */}
+            <div className="modal-footer productlist_footer">
+              <button type="button" className="btn btn-primary" data-dismiss="modal">SAVE</button>
+              <button type="button" className="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+                        </div>
+           
 
 
 

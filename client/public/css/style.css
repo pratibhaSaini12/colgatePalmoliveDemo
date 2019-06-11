@@ -2208,6 +2208,7 @@ button.primary-button:hover .icon.plus {
 	border-radius: 50%;
 	display: inline-block;
 	opacity: 1;
+	margin: 0 3px;
 }
 .card-link-options .icon:hover {
 	background: #3485d6;
@@ -2273,14 +2274,10 @@ input.content-search {
 	box-sizing: border-box;
 	width: 330px;
 	height: 45px;
-	background: url("../img/icons/search.png") no-repeat 10px;
+	background: url(../images/search.png) no-repeat 10px;
 	box-sizing: border-box;
 }
-input.content-search:focus {
-	padding: 5px 20px;
-	font-weight: 600;
-	background: url("../img/icons/search-blue.png") no-repeat 295px 10px;
-}
+
 /*form elements*/
 input.content-search, .dataTables_filter .form-control-sm {
 	background: #fff;
@@ -2291,14 +2288,10 @@ input.content-search, .dataTables_filter .form-control-sm {
 	box-sizing: border-box;
 	width: 330px;
 	height: 45px;
-	background: url("../img/icons/search.png") no-repeat 10px #fff;
+	background: url(../images/search.png) no-repeat 10px #fff;
 	box-sizing: border-box;
 }
-input.content-search:focus {
-	padding: 5px 20px;
-	font-weight: 600;
-	background: url("../img/icons/search-blue.png") no-repeat 295px 10px;
-}
+
 /*counting-action-section*/
 .selected-actions {
 	position: relative;
@@ -2308,7 +2301,7 @@ input.content-search:focus {
 	border-radius: 3px;
 	display: block;
 	background: #fff;
-	float: right;
+	float: right; margin-left: 10px;
 }
 .counting-action-section {
 	font-size: 13px;
@@ -2498,11 +2491,7 @@ input.content-search:focus {
 	text-indent: -99999px;
 	float: right;
 }
-.filter.float-right {
-	position: absolute;
-	right: 0;
-	z-index: 1;
-}
+
 select.form-control-sm:not([size]):not([multiple]) {
 	width: auto;
 	text-indent: initial;
@@ -2654,7 +2643,7 @@ h2.page-title.productid {
 .detail-page .btn-link {
 	float: left;
 }
-.dataTable a {
+.product-name a {
 	text-decoration: none;
 	color: #959ba2;
 }
@@ -3083,7 +3072,7 @@ padding: .3rem 1rem;
 	font-weight: 900;
 	position: absolute;
 	top: -28px;
-	right: 255px;
+	right: 300px;
 	font-size: 32px;
 	color: #fff;
 }
@@ -3676,4 +3665,4 @@ to {
 	color: #fff;
 	border-radius: 3px;
 }
-
+.mar_bt_30 {margin-bottom: 30px;}
