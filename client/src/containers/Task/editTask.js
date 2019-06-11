@@ -11,7 +11,7 @@ import axios from "axios";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-class NewTask extends Component {
+class EditTask extends Component {
 
     constructor(props) {
         super(props)
@@ -29,12 +29,27 @@ class NewTask extends Component {
             priority: 'Low',
             status: 'Open',
             assignedBy: '',
-            related_to: ''
+            related_to: '',
+            task_id: ''
         }
     }
 
 
     componentDidMount() {
+        try {
+            let product = this.props.location.state._data
+            console.log('data on mount---', product)
+            this.setState({
+                DueDate: moment(product.due_date),
+                assignedTo: product.assignedTo,
+                subject: product.subject,
+                priority: product.priority,
+                status: product.status,
+                assignedBy: product.assignedBy,
+                related_to: product.related_to,
+                task_id: product.task_id
+            })
+        } catch (e) { console.log("errr", e) }
     }
 
     handleChangeDate(date) {
@@ -130,7 +145,7 @@ class NewTask extends Component {
 
             console.log('userrrrrrrrrrrrrr-------', user)
             this.setState({
-                assignedTo: user,
+                assignedTo: user.Name,
 
             })
 
@@ -141,21 +156,22 @@ class NewTask extends Component {
     createNewTask() {
         console.log("state on save====", this.state);
         let state = this.state;
-        let createTask = {
+        let updateTask = {
             due_date: moment(state.DueDate).format('YYYY/MM/DD'),
-            assignedTo: state.assignedTo.Name,
+            assignedTo: state.assignedTo,
             subject: state.subject,
             priority: state.priority,
             status: state.status,
             assignedBy: 'Pratibha',
-            related_to:state.related_to
+            related_to: state.related_to?state.related_to:state.ProductList[0].product_name,
+            task_id: state.task_id
 
         }
-        console.log('createTask===', createTask)
-        axios.post("api/createNewTask", createTask).then(function (response) {
+        console.log('createTask===', updateTask)
+        axios.post("api/updateTaskByID", updateTask).then(function (response) {
             console.log('resposne from api==', response)
-            if (response.data.task) {
-                window.location.href = "/dashboard"
+            if (response.data.updatedTask) {
+                window.location.href = "/taskList"
             }
 
         }).catch(function (error) {
@@ -214,16 +230,16 @@ class NewTask extends Component {
                                         </div> */}
                                         <div className="form-group col-md-11">
                                             <label>Assigned To</label>
-                                            <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo ? this.state.assignedTo.Name : ''} />
+                                            <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo} />
                                         </div>
                                         <div className="search_icon col-md-1" data-toggle="modal" data-target="#search_list"><i className="ti-search" /></div>
                                         <div className="form-group col-md-12">
                                             <label>Subject</label>
-                                            <input className="form-control" type="text" name="subject" placeholder="Subject" onChange={e => this.change(e)} />
+                                            <input className="form-control" type="text" name="subject" placeholder="Subject" onChange={e => this.change(e)} value={this.state.subject} />
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Priority</label>
-                                            <select id="pref-perpage" className="form-control" name="priority" onChange={e => this.change(e)}>
+                                            <select id="pref-perpage" className="form-control" name="priority" value={this.state.priority} onChange={e => this.change(e)}>
                                                 <option value={"Low"}>Low</option>
                                                 <option value={"High"}>High</option>
                                                 <option value={"Medium"}>Medium</option>
@@ -231,7 +247,7 @@ class NewTask extends Component {
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Status</label>
-                                            <select id="pref-perpage" className="form-control" name="status" onChange={e => this.change(e)}>
+                                            <select id="pref-perpage" className="form-control" name="status" value={this.state.status} onChange={e => this.change(e)}>
                                                 <option value={"Open"}>Open</option>
                                                 <option value={"Closed"}>Closed</option>
                                                 <option value={"Pending"}>Pending</option>
@@ -239,7 +255,7 @@ class NewTask extends Component {
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Related To</label>
-                                            <select id="pref-perpage" className="form-control" name="related_to" onChange={e => this.change(e)}>
+                                            <select id="pref-perpage" className="form-control" name="related_to" value={this.state.related_to} onChange={e => this.change(e)}>
                                                 {
                                                     this.state.ProductList.length ? this.state.ProductList.map((product, index) => {
                                                         return <option value={product.product_name}>{product.product_name}</option>
@@ -316,4 +332,4 @@ class NewTask extends Component {
 }
 
 
-export default NewTask;
+export default EditTask;

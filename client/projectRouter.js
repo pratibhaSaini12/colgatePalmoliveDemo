@@ -18,6 +18,7 @@ import ProductDetails from "./src/containers/Product/productDetails"
 import NewTask from "./src/containers/Task/createNewTask"
 import UploadImage from "./src/containers/uploadImage"
 import TaskList from "./src/containers/Task/taskList"
+import EditTask from "./src/containers/Task/editTask"
 
 const history = createHistory()
 
@@ -39,6 +40,8 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/newTask' component={NewTask} />
 					<Route exact path='/uploadImage' component={UploadImage} />
 					<Route exact path='/taskList' component={TaskList} />
+					<Route exact path='/editTask' component={EditTask} />
+
 				</Switch>
 			</Router>
 		)

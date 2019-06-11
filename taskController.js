@@ -40,7 +40,7 @@ module.exports = {
   //Create new task
   createNewTask(req, res) {
     console.log('data ===', req.body)
-    con.query("INSERT INTO task (`assignedBy`, `assignedTo`, `subject`, `priority`,`status`,`due_date`) VALUES ('" + req.body.assignedBy + "', '" + req.body.assignedTo + "', '" + req.body.subject + "', '" + req.body.priority + "','" + req.body.status + "','" + req.body.due_date + "')", function (err, result) {
+    con.query("INSERT INTO task (`assignedBy`, `assignedTo`, `subject`, `priority`,`status`,`due_date`,`related_to`) VALUES ('" + req.body.assignedBy + "', '" + req.body.assignedTo + "', '" + req.body.subject + "', '" + req.body.priority + "','" + req.body.status + "','" + req.body.due_date + "','" + req.body.related_to + "')", function (err, result) {
       console.log('response from create task====', result)
       if (err)
         throw err;
@@ -57,7 +57,7 @@ module.exports = {
     console.log('inside controller')
 
     con.query("select assignedTo,count(*) as count from `task` where status='Open' Group By assignedTo", function (err, result) {
-   console.log('response from DB====', result)
+      console.log('response from DB====', result)
       if (err)
         throw err;
       else {
@@ -72,7 +72,7 @@ module.exports = {
   //Update new task
   updateTaskByID(req, res) {
     console.log("req.body=============", req.body)
-    con.query("update `task` SET assignedBy=?,assignedTo=?,subject=?,priority=?,status=? where task_id=?", [req.body.assignedBy, req.body.assignedBy, req.body.assignedTo, req.body.subject, req.body.priority, req.body.status, req.body.task_id], function (err, result) {
+    con.query("update `task` SET assignedBy=?,assignedTo=?,subject=?,priority=?,status=?,due_date=?,related_to=? where task_id=?", [ req.body.assignedBy, req.body.assignedTo, req.body.subject, req.body.priority, req.body.status,req.body.due_date,req.body.related_to,req.body.task_id], function (err, result) {
       console.log('response from update====', result)
       if (err)
         throw err;
@@ -105,7 +105,7 @@ module.exports = {
     console.log('inside controller')
 
     con.query("select * from `task` where status='Open' where assignedTo=?", [req.query.id], function (err, result) {
-   console.log('response from DB====', result)
+      console.log('response from DB====', result)
       if (err)
         throw err;
       else {

@@ -45,6 +45,7 @@ module.exports = (app) => {
   app.get('/api/getAllOpenTaskByUser',taskController.getAllOpenTaskByUser);
   
   app.post('/api/get-images',uploadImageController.getImages);
+  app.post('/api/updateTaskByID',taskController.updateTaskByID);
 
   
 

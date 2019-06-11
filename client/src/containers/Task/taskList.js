@@ -4,6 +4,7 @@ import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import axios from "axios";
+import moment from "moment"
 
 
 class TaskList extends Component {
@@ -67,7 +68,7 @@ class TaskList extends Component {
                             <div className="page-header">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <h2 className="page-title">Products</h2>
+                                        <h2 className="page-title">Task List</h2>
                                     </div>
                                 </div>
                             </div>
@@ -283,24 +284,28 @@ class TaskList extends Component {
                                                     <table className="table dashboard_table data_table_30">
                                                         <thead>
                                                             <tr>
-                                                                <th>Date</th>
+                                                                <th>Task ID</th>
+                                                                <th>Due Date</th>
                                                                 <th>Subject</th>
                                                                 <th>Status</th>
                                                                 <th>Priority</th>
                                                                 <th>Assigned By</th>
                                                                 <th>Assigned To</th>
+                                                                <th>Related To</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
-                                                                        <td>{key.due_date}</td>
+                                                                        <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
+                                                                        <td>{key.due_date?moment(key.due_date).format('YYYY/MM/DD'):''}</td>
                                                                         <td>{key.subject}</td>
                                                                         <td>{key.status}</td>
                                                                         <td>{key.priority}</td>
                                                                         <td>{key.assignedBy}</td>
                                                                         <td>{key.assignedTo}</td>
+                                                                        <td>{key.related_to}</td>
                                                                     </tr>
                                                                 }) : ''}
                                                         </tbody>
