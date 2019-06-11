@@ -296,13 +296,13 @@ class ProductList extends Component {
                                         <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
                                         <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
                                         <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
-                                        <div className="selected-actions">
+                                        
+                                        {/* <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
                                                     <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                         <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
                                                         <div className="dot-icon">
-                                                            {/* <img src="img/icons/option-all.png" />src="img/icons/option-all.png" */}
                                                             <ImageContainer src="icons/option-all.png" />
                                                         </div>
                                                     </a>
@@ -334,9 +334,46 @@ class ProductList extends Component {
                                                     <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
                                                 </div>
                                             </div>
+                                        </div> */}
+                                        <div className="selected-actions">
+                                            <div className="option-box drop-option-link">
+                                            <div className="nav-item dropdown dropcolgate">
+                                                <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
+                                                <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
+                                                </a>
+                                                <div className="dropdown-menu drop_20">
+                                                <div className="counting-action-section">
+                                                    <div className="selections">
+                                                    <div className="group-selection">
+                                                        <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
+                                                        <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                    </div>
+                                                    <div className="group-action">
+                                                        <div className="option-box delete"><a href>Delete</a></div>
+                                                        <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
+                                                        <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
+                                                        <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
+                                                        <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
+                                                        <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
+                                                        Batch Update
+                                                        </div>
+                                                        <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> 
+                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> 
+                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> 
+                                                </div>
+                                            </div>
+                                            </div>
                                         </div>
-                                    </div>
 
+
+
+                                        
+                                    </div>
                                     <select name="example_length" aria-controls="example" class="form-control form-control-sm">
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
