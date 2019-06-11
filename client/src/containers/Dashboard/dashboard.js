@@ -13,6 +13,8 @@ import ReactLoading from 'react-loading'
 // import Highcharts from "highcharts"
 import 'chart.js'
 import axios from "axios";
+import moment from "moment"
+
 
 
 class Dashboard extends Component {
@@ -414,7 +416,7 @@ class Dashboard extends Component {
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
-                                                                        <td>{key.due_date}</td>
+                                                                        <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
                                                                         <td>{key.subject}</td>
                                                                         <td>{key.status}</td>
                                                                         <td>{key.priority}</td>
