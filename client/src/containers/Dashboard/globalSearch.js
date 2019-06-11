@@ -2,6 +2,8 @@ import React from 'react';
 import axios from "axios";
 import { Link } from "react-router-dom"
 import moment from "moment"
+import Header from '../Header/index';
+import Aside from '../SideBar/index';
 
 
 class Search extends React.Component {
@@ -116,7 +118,12 @@ class Search extends React.Component {
 
         return (
             <div>
-                <div className="table-responsive">
+                 <div id="main-wrapper">
+                    <Header />
+                    <Aside />
+                    <div className="page-wrapper">
+                    <div className="container-fluid r-aside custome_container">
+                <div className="table-responsive martop_25">
                     <table className="table dashboard_table data_table_30">
                         <thead>
                             <tr>
@@ -179,6 +186,9 @@ class Search extends React.Component {
                         </tbody>
                     </table>
                 </div>
+            </div>
+            </div>
+            </div>
             </div>
         )
     }

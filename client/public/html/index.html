@@ -37,7 +37,6 @@
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
   <script type="text/javascript">
     $(document).ready(function(){
     var add = (function () {
@@ -55,7 +54,7 @@
         $('#Counting').html(parseInt($('#Counting').html()) + 1);
     });
     $('.activebtn').click(function(){
-  
+        $(this).css('display','none');
         $(this).parents('.card').find('.card-hover').fadeIn('fast');
         $('#Counting').html(parseInt($('#Counting').html()) - 1);
     });
@@ -67,97 +66,116 @@
         else if($(this).prop("checked") == false){
             $('#Counting').html(parseInt($('#Counting').html()) - 1);
         }
-        function selectAll() {
-            document.getElementById("Counting").innerHTML = $('.card-block').length;
-            $('.check-icon.activebtn').css('display', 'block');
+    });
+    
+    $('#example thead input[type="checkbox"]').click(function(){
+        if($(this).prop("checked") == true){
+    
+          var totalProducts = $('#example tbody tr').length;
+          $('#Counting').html(totalProducts);
         }
-        function clearAll() {
-            document.getElementById("Counting").innerHTML = 0;
-            $('.check-icon.activebtn').css('display', 'none');
-            $('.card-hover').fadeIn('fast');
+        else if($(this).prop("checked") == false){
+            $('#Counting').html(0);
         }
-
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
-                    $('#imagePreview').hide();
-                    $('#imagePreview').fadeIn(650);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-    </script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="js/dataTables.bootstrap4.min.js"></script>
-    <!-- <script type="text/javascript">
+    });
     
-        $(document).ready(function() {
+    $('.select_box').click(function(){
+      $('.counting-action-section').fadeIn('fast')
+    });
     
-          $('#example_filter > input').addClass("test123");
-        $('#example').DataTable(
-           {
-            
-            "language": { 
-                search: "",
-                searchPlaceholder: 'filter records',
-                "lengthMenu": "_MENU_",
-            },
+    $('.list-view').click(function(){
+    $('.tabtable').fadeIn('slow');
+    $('.card-block').fadeOut('slow');
+    $('.list-view').addClass('list-viewactive');
     
-            "aLengthMenu": [[5, 10, 25, -1], [5 +"" + " per page", 10 +"" + " per page", 25 +"" + " per page", "All"]],
-            "iDisplayLength": 5
-           } 
-            );
-        $('.dsfasdfa').keyup(function(){
-            var input, filter, cards, cardContainer, h5, title, i;
-            input = $('input[type=search]').val();
-            //cardContainer = document.getElementById("myItems");
-            cards = document.getElementsByClassName("card-block");
-                for (i = 0; i < cards.length; i++) {
-                title = cards[i].querySelector(".card-body h4.card-title");
-                //console.log(title);
-                if (title.innerText.toUpperCase().indexOf(input) > -1) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
+    });
     
-        });
-        $('.dsfasdfa').click(function(){
-            var input, filter, cards, cardContainer, h5, title, i;
-            input = '';
-            //cardContainer = document.getElementById("myItems");
-            cards = document.getElementsByClassName("card-block");
-                for (i = 0; i < cards.length; i++) {
-                title = '';
-                cards[i].style.display = "block";
-            }
+    $('.list-view').click(function(){
+    $('.noactive').removeClass('card-view');
     
-        });
+    });
+    $('.list-view').click(function(){
+    $('.noactive').addClass('card-viewactive');
     
-        var table = $('#example').DataTable();
+    });
+    
+    $('.noactive').click(function(){
+    $('.list-view').removeClass('list-viewactive')
+    $('.noactive').removeClass('card-viewactive')
+    $('.noactive').addClass('card-view')
+    })
+    
+    $('.card-view').click(function(){
+     $('.tabtable').fadeOut('slow');
+    $('.card-block').fadeIn('slow');
+    
+    
+    })
+    
+    $('.clear-all').click(function() {
+        location.reload();
+    });
+    
+    $("#imageUpload").change(function() {
+        readURL(this);
+    });
+    $('.paginationshow').click(function(){
+     $('.pagebottompart').css('display','flex'); 
+    });
+    $('.noactive').click(function(){
+     $('.pagebottompart').hide();   
+    });
+    
+    $('.removeproduct').click(function(){
+    $('.card-block').addClass('hidesection')  
+    })
+    
+    
+    
+    
+    });
+    
+    
+    
+    </script> 
+    <script>
+    
+    
+    // var remove = (function () {
+    //   var counter = parseInt(document.getElementById("Counting").innerHTML);
+    //   return function () {return counter -= 1;}
       
+    // })();
     
-        $( table.table().container() )
-            .addClass( 'selectable' );
-    } );
+    function myFunction(){
+      document.getElementById("Counting").innerHTML = add();
     
-    
-    function checkAll(bx) {
-      var cbs = document.getElementsByTagName('input');
-      for(var i=0; i < cbs.length; i++) {
-        if(cbs[i].type == 'checkbox') {
-          cbs[i].checked = bx.checked;
-        }
-      }
+    }
+    function selectAll(){
+        document.getElementById("Counting").innerHTML = $('.card-block').length;
+         $('.check-icon.activebtn').css('display','block');
+    }
+    function clearAll(){
+        document.getElementById("Counting").innerHTML = 0;
+        $('.check-icon.activebtn').css('display','none');
+        $('.card-hover').fadeIn('fast');
     }
     
     
-    </script> -->
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    </script> 
+   
 </body>
 
 </html>

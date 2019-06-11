@@ -507,8 +507,8 @@ if(img !== ''){
                                             <div className="form-group">
                                                 <label>Digital Asset</label>
                                                     <div className="form-group">
-                                                        <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
                                                             : ''}

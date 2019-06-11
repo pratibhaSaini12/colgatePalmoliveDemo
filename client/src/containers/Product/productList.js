@@ -283,7 +283,7 @@ class ProductList extends Component {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row mar_bt_30">
                                 <div className="col-md-6">
                                     <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
                                 </div>
@@ -385,7 +385,7 @@ class ProductList extends Component {
                             </div>
 
 
-                        </div>
+                    
 
 
 
@@ -551,8 +551,120 @@ class ProductList extends Component {
 
                             }
                         </div>
+                            </div>
                     </div>
                 </div>
+
+                 {/* The Modal */}
+      <div className="modal fade allmodalcolgate" id="setting">
+        <div className="modal-dialog productlist_section">
+          <div className="modal-content"> 
+            {/* Modal Header */}
+            <div className="modal-header">
+              <h4 className="modal-title title_modalheader col-md-7">Grid Configuration</h4>
+              <div className="filtercustome col-md-4">
+                <li className="nav-item dropdown Select_Language">
+                  <a className="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Language</a>
+                  <div className="dropdown-menu" aria-labelledby="dropdown09">
+                    <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-us"> </span>  English</a>
+                    <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-fr"> </span>  French</a>
+                    <a className="dropdown-item" href="#it"><span className="flag-icon flag-icon-it"> </span>  Italian</a>
+                    <a className="dropdown-item" href="#ru"><span className="flag-icon flag-icon-ru"> </span>  Russian</a>
+                  </div>
+                </li>
+              </div>
+              <button type="button" className="close" data-dismiss="modal">×</button>
+            </div>
+            {/* Modal body */}
+            <div className="modal-body filtercustome productlist_body">
+              <div className="row">
+                <div className="col-md-12 custome_section_productlist_body">
+                  <div className="row">
+                    <div className="col-md-6 nopad_left">
+                      <div id="accordion">
+                        <div className="card">
+                          <div className="card-header" id="heading-1">
+                            <h5 className="mb-0">
+                              <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                Class Attributes
+                              </a>
+                            </h5>
+                          </div>
+                          <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
+                            <ul>
+                              <li><a href="#">Layout</a></li>
+                              <li><a href="#">SKU Number</a></li>
+                              <li><a href="#">Global SKU Number</a></li>
+                              <li><a href="#">SKU legal Name</a></li>
+                              <li><a href="#">Product Legal Name</a></li>
+                              <li><a href="#">Article Number</a></li>
+                              <li><a href="#">Subsidiary</a></li>
+                              <li><a href="#">Each</a></li>
+                              <li><a href="#">AISE Code</a></li>
+                              <li><a href="#">Name</a></li>
+                              <li><a href="#">Country of Origin</a></li>
+                              <li><a href="#">Brand</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="card">
+                          <div className="card-header" id="heading-2">
+                            <h5 className="mb-0">
+                              <a role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
+                                Formatters
+                              </a>
+                            </h5>
+                          </div>
+                          <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                            <ul>
+                              <li><a href="#">Bool</a>
+                                <ul>
+                                  <li>Operator Boolean Formatter</li>
+                                </ul>
+                              </li>
+                              <li><a href="#">Other</a>
+                                <ul>
+                                  <li>Operator Date Formatter</li>
+                                </ul>
+                              </li>
+                              <li><a href="#">String</a>
+                                <ul>
+                                  <li>Operator Text</li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div> 
+                    </div>
+                    <div className="col-md-6">
+                      <ul className="list_ofproduct">
+                        <li>ID</li>
+                        <li>Published</li>
+                        <li>SKU Number</li>
+                        <li>Each(EA) - EAN Code (eaEanCode)</li>
+                        <li>Workflow State</li>
+                        <li>Color(s)</li>
+                        <li>Shelf LLife (Months) (ShelfLife)</li>
+                        <li>Subsidiary</li>
+                        <li>Brand</li>
+                        <li>Sub Brand</li>
+                        <li>Product Lagal Name</li>
+                        <li>Name</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Modal footer */}
+            <div className="modal-footer productlist_footer">
+              <button type="button" className="btn btn-primary" data-dismiss="modal">SAVE</button>
+              <button type="button" className="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
                 {/* The product delete */}

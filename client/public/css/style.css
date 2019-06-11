@@ -3698,3 +3698,10 @@ to {
     margin-top: 11px;
     background: #fbfbfb;
     padding: 4px;}
+.uploadfile {background: #9c9b9b;
+    padding: 6px 18px;
+    color: #fff !important;
+    display: inline-block;
+    font-size: 13px;
+	border-radius: 2px;}
+	.martop_25 { margin-top: 25px;}
