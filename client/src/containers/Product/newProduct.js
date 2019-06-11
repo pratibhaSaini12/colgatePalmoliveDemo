@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
+import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
 
 class NewProduct extends Component {
@@ -27,7 +28,9 @@ class NewProduct extends Component {
             material: '',
             style: '',
             workflow_state:'',
-            main_image: ''
+            main_image: '',
+            asset_id: 99999,
+            image: ''
 
         }
     }
@@ -67,7 +70,7 @@ class NewProduct extends Component {
             warnings: state.warnings,
             material: state.material,
             style: state.style,
-            main_image: state.main_image,
+            main_image: '',
             workflow_state: state.workflow_state
         }
         axios.post("api/createProduct", createProduct).then(function (response) {
@@ -81,8 +84,61 @@ class NewProduct extends Component {
         })
     }
 
+    //handeling image upload
+    handleUploadAttachment(ev) {
+        console.log("ev========",ev)
+		let self = this
+		var idCardBase64
+		var assetBodyData
+		ev.preventDefault()
+		var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+		if (FileSize <= 5) {
+			self.getBase64(self.uploadInput.files[0], (result) => {
+				var base64 = result.split(",");
+				idCardBase64 = base64[1]
+				assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                console.log("===assetBodyData====",assetBodyData)
+                self.setState({
+                    image: assetBodyData.data
+                })
+                axios.post("/api/upload/image",assetBodyData).then((res)=>{
+                    console.log("error in response",res)
+                    if(res.data){
+						console.log("res in uploading",res)
+						return 
+                    } else {
+						console.log("error in response",res)
+						return						
+                    }
+                }).catch((err)=>{
+					console.log("errorrrrrrrrrrrrrr in uploading",err)
+					return
+                })
+			});
+		}
+		else {
+			console.log("fileSizeExceedMessage=======")
+		}
+    }
+
+    //Method to get Bas64 of file
+	getBase64(file, cb) {
+		let reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			cb(reader.result)
+		};
+		reader.onerror = function (error) {
+		};
+	}
+
     render() {
 console.log("statessss in newProduct",this.state)
+let img = this.state.image
+let image = ''
+if(img !== ''){
+    image = "data:"+img.mimetype+";base64,"+img.data
+}
         return (
             <div>
                 {/* <div className="preloader">
@@ -449,9 +505,13 @@ console.log("statessss in newProduct",this.state)
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                         <div className="tab-pane filtercustome " id="settings" role="tabpanel">
                                             <div className="form-group">
-                                                <label>Workflow state</label>
+                                                <label>Digital Asset</label>
                                                     <div className="form-group">
-                                                    <input className="form-control" type="file" name="myFile" />
+                                                        <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+                                                        {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''}
                                                     </div>
                                                 </div>
                                             </div>
@@ -460,7 +520,7 @@ console.log("statessss in newProduct",this.state)
                                         <div className="tab-pane" id="settings2" role="tabpanel">
                                         <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
                                             <div className="form-group">
-                                                <label>Workflow state2</label>
+                                                <label>Workflow state</label>
                                                     <div className="form-group">
                                                  
                                                         <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"

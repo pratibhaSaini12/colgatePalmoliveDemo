@@ -2,23 +2,23 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Colgate Palmolive</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
-  <link rel="stylesheet" href="../css/style.css" type="text/css" />
-  <link rel="stylesheet" href="../css/allstyle.css" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
-  <link rel="stylesheet" href="../css/icons/themify-icons/themify-icons.css" type="text/css" />
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> -->
-  <script src="../js/jquery.min.js"></script>
-  <script src="../js/bootstrap.min.js"></script>
-  <script src="../js/popper.min.js"></script>
-  <script src="../js/perfect-scrollbar.jquery.min.js"></script>
-  <script src="../js/waves.js"></script>
-  <script src="../js/sidebarmenu.js"></script>
-  <script src="../js/custom.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Colgate Palmolive</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../css/style.css" type="text/css" />
+    <link rel="stylesheet" href="../css/allstyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
+    <link rel="stylesheet" href="../css/icons/themify-icons/themify-icons.css" type="text/css" />
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="../js/waves.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+    <script src="../js/custom.min.js"></script>
 
 </head>
 
@@ -67,109 +67,31 @@
         else if($(this).prop("checked") == false){
             $('#Counting').html(parseInt($('#Counting').html()) - 1);
         }
-    });
-    
-    $('#example thead input[type="checkbox"]').click(function(){
-        if($(this).prop("checked") == true){
-    
-          var totalProducts = $('#example tbody tr').length;
-          $('#Counting').html(totalProducts);
+        function selectAll() {
+            document.getElementById("Counting").innerHTML = $('.card-block').length;
+            $('.check-icon.activebtn').css('display', 'block');
         }
-        else if($(this).prop("checked") == false){
-            $('#Counting').html(0);
+        function clearAll() {
+            document.getElementById("Counting").innerHTML = 0;
+            $('.check-icon.activebtn').css('display', 'none');
+            $('.card-hover').fadeIn('fast');
         }
-    });
-    
-    $('.select_box').click(function(){
-      $('.counting-action-section').fadeIn('fast')
-    });
-    
-    $('.list-view').click(function(){
-    $('.tabtable').fadeIn('slow');
-    $('.card-block').fadeOut('slow');
-    $('.list-view').addClass('list-viewactive');
-    
-    });
-    
-    $('.list-view').click(function(){
-    $('.noactive').removeClass('card-view');
-    
-    });
-    $('.list-view').click(function(){
-    $('.noactive').addClass('card-viewactive');
-    
-    });
-    
-    $('.noactive').click(function(){
-    $('.list-view').removeClass('list-viewactive')
-    $('.noactive').removeClass('card-viewactive')
-    $('.noactive').addClass('card-view')
-    })
-    
-    $('.card-view').click(function(){
-     $('.tabtable').fadeOut('slow');
-    $('.card-block').fadeIn('slow');
-    
-    
-    })
-    
-    $('.clear-all').click(function() {
-        location.reload();
-    });
-    
-    $("#imageUpload").change(function() {
-        readURL(this);
-    });
-    $('.paginationshow').click(function(){
-     $('.pagebottompart').css('display','flex'); 
-    });
-    $('.noactive').click(function(){
-     $('.pagebottompart').hide();   
-    })
-    
-    });
-    
-    
-    
-    </script> 
-    <script>
-    
-    
-    // var remove = (function () {
-    //   var counter = parseInt(document.getElementById("Counting").innerHTML);
-    //   return function () {return counter -= 1;}
-      
-    // })();
-    
-    function myFunction(){
-      document.getElementById("Counting").innerHTML = add();
-    
-    }
-    function selectAll(){
-        document.getElementById("Counting").innerHTML = $('.card-block').length;
-         $('.check-icon.activebtn').css('display','block');
-    }
-    function clearAll(){
-        document.getElementById("Counting").innerHTML = 0;
-        $('.check-icon.activebtn').css('display','none');
-        $('.card-hover').fadeIn('fast');
-    }
-    
-    
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-                $('#imagePreview').hide();
-                $('#imagePreview').fadeIn(650);
+
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
             }
-            reader.readAsDataURL(input.files[0]);
         }
-    }
-    
-    </script> 
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> 
+
+    </script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="js/dataTables.bootstrap4.min.js"></script>
     <!-- <script type="text/javascript">
     

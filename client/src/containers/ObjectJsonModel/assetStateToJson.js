@@ -9,7 +9,7 @@ module.exports = {
         "data":
               { 
                   "data":assetData.base64,
-                  "id": 0,
+                  "id": assetData.id,
                   "parentId": 1,
                   "filename": name+"_"+new Date(),
                   "type":"document",

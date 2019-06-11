@@ -30,12 +30,12 @@ class ProductDetail extends Component {
     //         })
     //     } catch (e) { }
     // }
-    componentDidMount(){
-        try{
+    componentDidMount() {
+        try {
             this.setState({
                 product: this.props.location.state._data
             })
-        }catch(e){console.log("errr", errr)}
+        } catch (e) { console.log("errr", errr) }
     }
 
 
@@ -43,8 +43,9 @@ class ProductDetail extends Component {
     render() {
         console.log("props in product detail page", this.props)
         console.log("state in product detail page", this.state)
-        let {product} = this.state
+        let { product } = this.state
         console.log("product==========", product)
+        console.log("productmain_image==========", product.main_image)
         return (
             <div>
                 {/* <div className="preloader">
@@ -109,12 +110,14 @@ class ProductDetail extends Component {
                                         <div className="row">
                                             <div className="col-md-2">
                                                 <div className="thumb">
-                                                    <ImageContainer src="1.jpg" />
+                                                    {product.main_image !== null && product.main_image !== undefined && product.main_image.length > 0?
+                                                        <img src={product.main_image[0].image} />
+                                                        : <ImageContainer src="1.jpg" />}
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
                                                 <h2 className="page-title productid approved"><i className="fas fa-check-circle" />
-                                                {product.product_id}</h2>
+                                                    {product.product_id}</h2>
                                                 <h4 className="productname">{product.product_name}</h4>
                                                 <p className="date-time">May 8, 2019, 6:05:33 PM </p>
                                                 <button className="primary-button" style={{ marginLeft: 0 }}><a href="javascript:void(0)">6 variants Available</a></button>
@@ -212,7 +215,7 @@ class ProductDetail extends Component {
                                                             </tbody></table>
                                                     </div>
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                             <div className="card adnewcard">
                                                 <div className="card-header" id="headingFour">
                                                     <h5 className="mb-0">

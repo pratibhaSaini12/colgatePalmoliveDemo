@@ -1424,11 +1424,11 @@ Preloader
 	position: fixed;
 	z-index: 99999;
 	background: #fff;
- .cssload-speeding-wheel {
- position: absolute;
- top: calc(50% - 3.5px);
- left: calc(50% - 3.5px);
-}
+	.cssload-speeding-wheel {
+	position: absolute;
+	top: calc(50% - 3.5px);
+	left: calc(50% - 3.5px);
+	}
 }
 .loader, .loader__figure {
 	position: absolute;
@@ -3668,3 +3668,33 @@ to {
 .mar_bt_30 {margin-bottom: 30px;}
 .react-datepicker__input-container {width: 100%;}
 .react-datepicker-wrapper{width: 100%;}
+
+
+/*** React    Loader CSS  **/
+
+.loader-react {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%!important;
+	height: 100%!important;
+	z-index: 9999999;
+	text-align: center;
+	background: rgba(0, 0, 0, .2)
+}
+.loader-react>div {
+	margin: 20% auto 0;
+}
+.dashboard-widget-charts .loader-react {
+	position: absolute;
+}
+.dashboard-widget-charts .loader-react>div {
+	margin: 100px auto 0;
+}
+.digital_img {    display: block;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ececec;
+    margin-top: 11px;
+    background: #fbfbfb;
+    padding: 4px;}

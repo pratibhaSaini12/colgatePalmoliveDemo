@@ -484,6 +484,25 @@ class EditProduct extends Component {
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div className="tab-pane" id="settings" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                            <div className="form-group">
+                                                <label>Digital Asset</label>
+                                                    <div className="form-group">
+                                                        <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+                                                        {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img"/>
+                                                            : ''}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                      
+
+
                                     </div>
                                 </div>
                             </div>

@@ -4,11 +4,13 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
+import ReactLoading from 'react-loading'
 class DigitalDocument extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      Loading: false
     }
   }
 
@@ -29,6 +31,11 @@ class DigitalDocument extends Component {
             <p className="loader__label">Please Wait..</p>
           </div>
         </div> */}
+        {
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                    </div>
+                }
         <div id="main-wrapper">
           <Header />
           <Aside />

@@ -7,6 +7,7 @@ import ImageContainer from "../../components/imageContainer"
 import { Link } from "react-router-dom"
 import { PieChart } from 'react-chartkick'
 import Highcharts from "highcharts"
+import ReactLoading from 'react-loading'
 // import Highcharts from "react-highcharts"
 // import Highcharts from "react-jsx-highcharts": "^3.0.1"
 // import Highcharts from "highcharts"
@@ -22,52 +23,18 @@ class Dashboard extends Component {
             taskList: [],
             openTask: [],
             completeIncomplete: [],
-            updateProduct: []
+            updateProduct: [],
+            Loading: false
 
         }
     }
 
 
-    componentDidMount() {
+    async componentDidMount() {
         let self = this
-        Highcharts.chart('container', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-
-                }
-            },
-            series: [{
-                name: 'Product',
-                colorByPoint: true,
-                data: [{
-                    name: 'Complete',
-                    y: 70.41,
-                    sliced: true,
-                    selected: true
-                }, {
-                    name: 'Incomplete',
-                    y: 29.59
-                },]
-            }]
-        });
-
+        self.setState({ Loading: true })
         let id = "Pratibha"
-        axios.get("/api/getTaskByUserID?id=" + id).then(function (response) {
+        await axios.get("/api/getTaskByUserID?id=" + id).then(function (response) {
 
             console.log('response from getTaskByUserID===', response)
             if (response.data) {
@@ -79,7 +46,7 @@ class Dashboard extends Component {
 
         })
 
-        axios.get("/api/getAllOpenTask").then(function (response) {
+        await axios.get("/api/getAllOpenTask").then(function (response) {
 
             console.log('response from getAllOpenTask===', response)
             if (response.data) {
@@ -91,31 +58,61 @@ class Dashboard extends Component {
 
         })
 
-        axios.get("/api/getProductCompletion").then(function (response) {
+        await axios.get("/api/getProductCompletion").then(function (response) {
 
             console.log('response from getProductCompletion===', response)
             if (response.data) {
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+        
+                        }
+                    },
+                    series: [{
+                        name: 'Product',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'Complete',
+                            y: response.data.product[0] ? response.data.product[0].complete : 0,
+                            sliced: true,
+                            selected: true
+                        }, {
+                            name: 'Incomplete',
+                            y: response.data.product[0] ? response.data.product[0].incomplete : 0
+                        },]
+                    }]
+                });
                 self.setState({
-                    completeIncomplete: response.data.product[0]
+                    completeIncomplete: response.data.product[0],
+                    Loading: false
                 })
             }
         }).catch(function (error) {
 
         })
 
-        axios.get("/api/productContentUpdates").then(function (response) {
+        await axios.get("/api/productContentUpdates").then(function (response) {
 
             console.log('response from productContentUpdates===', response)
             if (response.data) {
                 self.setState({
-                    updateProduct: response.data.product[0]
+                    updateProduct: response.data.product[0],
                 })
             }
         }).catch(function (error) {
 
         })
-
-
     }
 
     // componentWillMount(){
@@ -134,7 +131,8 @@ class Dashboard extends Component {
     // }
 
     render() {
-        const { openTask } = this.state;
+        const { openTask, updateProduct } = this.state;
+        console.log("states in dashbpard", this.state)
         return (
             <div>
                 {/* <div className="preloader">
@@ -143,6 +141,11 @@ class Dashboard extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
 
 
@@ -248,7 +251,7 @@ class Dashboard extends Component {
                                                 <p>As of 03/20/2019</p>
                                             </div>
                                             <div id="donutchart" style={{ width: '300px', height: '400px', margin: '0 auto' }} >
-                                                <PieChart donut={true} data={[["Cherry", 50], ["Blueberry", 20], ["Strawberry", 30]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
+                                                <PieChart donut={true} data={[["30 - 90 Days", updateProduct ? updateProduct.first : 0], ["90+ Days", updateProduct ? updateProduct.second : 0], ["Last 30 Days", updateProduct ? updateProduct.third : 0]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
                                             </div>
                                         </div>
                                     </div>
@@ -260,7 +263,7 @@ class Dashboard extends Component {
                                             </div>
                                             {/* <div id="barchart_values" style={{ width: '550px', height: '400px' }} /> */}
 
-                                            {this.state.openTask != undefined ?
+                                            {openTask.length >= 2 ?
                                                 <Chart
                                                     width={'500px'}
                                                     height={'400px'}
@@ -280,9 +283,13 @@ class Dashboard extends Component {
                                                         ],
 
 
-                                                        ['Pratibha', 2, '#f6e490', null],
-                                                        ['Uday', 2, '#76bc5e', null],
-                                                        ['Anuj', 2, 'color: #70b7ed', null],
+                                                        // ['Pratibha', 2, '#f6e490', null],
+                                                        // ['Uday', 2, '#76bc5e', null],
+                                                        // ['Anuj', 2, 'color: #70b7ed', null],
+
+                                                        [openTask.length > 0 ? openTask[0].assignedTo : '', openTask.length > 0 ? openTask[0].count : 0, '#f6e490', null ],
+                                                        [openTask.length >= 1 ? openTask[1].assignedTo : '', openTask.length >= 1 ? openTask[1].count : 0, '#76bc5e', null ],
+                                                        [openTask.length >= 2 ? openTask[2].assignedTo : '', openTask.length >= 2 ? openTask[2].count : 0, 'color: #70b7ed', null ]
                                                     ]}
                                                     options={{
                                                         // title: 'Density of Precious Metals, in g/cm^3',
