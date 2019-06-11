@@ -1,4 +1,3 @@
-const leadController = require('./leadController');
 const userController=require('./userController');
 const taskController=require('./taskController');
 const productController=require('./productController');
@@ -45,6 +44,7 @@ module.exports = (app) => {
   app.get('/api/getAllOpenTask',taskController.getAllOpenTask);
   app.get('/api/getAllOpenTaskByUser',taskController.getAllOpenTaskByUser);
   
+  app.post('/api/get-images',uploadImageController.getImages);
 
   
 

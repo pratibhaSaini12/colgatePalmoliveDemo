@@ -118,7 +118,7 @@ console.log("statessss in newProduct",this.state)
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Digital Asset</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Workflow State</a>
+                                            <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -451,6 +451,18 @@ console.log("statessss in newProduct",this.state)
                                             <div className="form-group">
                                                 <label>Workflow state</label>
                                                     <div className="form-group">
+                                                    <input className="form-control" type="file" name="myFile" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="tab-pane" id="settings2" role="tabpanel">
+                                        <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+                                            <div className="form-group">
+                                                <label>Workflow state2</label>
+                                                    <div className="form-group">
+                                                 
                                                         <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
                                                         value={this.state.workflow_state ===''? '': this.state.workflow_state}>
                                                             <option value="In Review">In Review</option>

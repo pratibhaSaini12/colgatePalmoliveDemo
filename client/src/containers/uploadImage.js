@@ -9,7 +9,8 @@ class UploadImage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-             pictures: [] 
+			 pictures: [],
+			 image: ''
         }
     }
     handleUploadAttachment(ev) {
@@ -20,9 +21,6 @@ class UploadImage extends Component {
 		ev.preventDefault()
 		var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
 		if (FileSize <= 5) {
-			self.setState({
-				Loading: true
-			})
 			self.getBase64(self.uploadInput.files[0], (result) => {
 				var base64 = result.split(",");
 				idCardBase64 = base64[1]
@@ -31,35 +29,16 @@ class UploadImage extends Component {
                 Axios.post("/api/upload/image",assetBodyData).then((res)=>{
                     console.log("error in response",res)
                     if(res.data){
-                        console.log("res in uploading",res)
+						console.log("res in uploading",res)
+						return 
                     } else {
-                        console.log("error in response",res)
+						console.log("error in response",res)
+						return						
                     }
                 }).catch((err)=>{
-                    console.log("err in uploading",err)
+					console.log("err in uploading",err)
+					return
                 })
-				// axios.post(properties.baseUrl + "asset?apikey=" + properties.apiKey, JSON.stringify(assetBodyData.data)).then(function (response) {
-				// 	if (response.status == 200 && response.data.data.id != undefined) {
-				// 		var attachmentBodyData = AttachmentJsonModel._getJsonDataFromAttachment({ ObjectId: self.state.oo_id, AttachmentObject: "Activity", AttachmentName: self.uploadInput.files[0].name, AttachmentFile: "/" + self.uploadInput.files[0], AttachmentPath: self.uploadInput.files[0].name, AssetId: response.data.data.id, AssetSubType: response.data.data.type, Attachment_OO_Id: '' })
-				// 		console.log("===attachmentBodyData====",attachmentBodyData)
-				// 		axios.post(properties.baseUrl + "object?apikey=" + properties.apiKey, JSON.stringify(attachmentBodyData)).then(function (response) {
-				// 			if (response.status == 200) {
-				// 				self.getAttachmentList(self.state.oo_id)
-				// 				self.setState({
-			    //                 	Loading: false
-			    //                  })
-				// 			}
-				// 		}).catch(function (error) {
-				// 			self.setState({
-				// 				ActiveErrorMessage: true
-				// 			})
-				// 		})
-				// 	}
-				// }).catch(function (error) {
-				// 	self.setState({
-				// 		ActiveErrorMessage: true
-				// 	})
-				// })
 			});
 		}
 		else {
@@ -77,13 +56,58 @@ class UploadImage extends Component {
 		reader.onerror = function (error) {
 		};
 	}
+
+	getImages(e){
+		let self = this
+		let imageData =[]
+		e.preventDefault()
+		try{
+			Axios.post("/api/get-images").then((res)=>{
+				console.log("res======",res)
+				if (res.status === 200){
+					console.log("imagessssss", res)
+					
+					let data = res.data.data[0].imageData
+					console.log("imagessssss in json", res.data.data)
+					console.log("data in json", JSON.parse(data))
+					data = JSON.parse(data)
+					let image = "data:"+data.data.mimetype+";base64,"+data.data.data
+					console.log("image found===========",image)
+					// convert values into object
+					if(res.data.data.length){
+						res.data.data.map((imageString)=>{
+							let imageJsonData = JSON.parse(imageString.imageData)
+							imageData.push(imageJsonData.data)
+						})
+						console.log("imageData=============",imageData)
+					}
+					self.setState({
+						pictures: imageData,
+						image: image,
+					})
+
+				} else {
+					console.log("error in image fetching response", res)
+				}
+			})
+		}catch(err){
+			console.log("error in image fetching",err)
+		}
+		
+	}
     render(){
+		console.log("statessssss", this.state)
         return(
             <div>
                <form>
                <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                 <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+
+				<button onClick={this.getImages.bind(this)}>get images</button>
                </form>
+			   {this.state.image !== '' && this.state.image !== undefined ?
+			   <img src={this.state.image} height="50px" width="50px"/>
+			: ''}
                 
             </div>
         )
