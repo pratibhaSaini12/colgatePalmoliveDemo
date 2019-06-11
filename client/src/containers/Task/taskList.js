@@ -13,6 +13,8 @@ class TaskList extends Component {
         super(props)
         this.state = {
             taskList: [],
+            filteredList: [],
+            listToFilter: [],
            
         }
     }
@@ -24,7 +26,9 @@ class TaskList extends Component {
             console.log("getAllTasks list ", response.data);
             if (response.data) {
                 self.setState({
-                    taskList: response.data.tasks
+                    taskList: response.data.tasks,
+                    filteredList: response.data.tasks,
+                    listToFilter: response.data.tasks,
                 })
             }
 
@@ -48,10 +52,38 @@ class TaskList extends Component {
         })
     }
 
+    filterSearch(event) {
+        console.log('state on filtersearcch===', this.state)
+        var newList = this.state.listToFilter
+        var searchString = event.target.value
+
+        console.log('product to be search---', searchString)
+
+        var newFilteredList = newList.filter(function (searchResult) {
+            if (
+                ((typeof searchResult.assignedBy != "undefined" && searchResult.assignedBy != null && searchResult.assignedBy !== "") && searchResult.assignedBy.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.priority != "undefined" && searchResult.priority != null && searchResult.priority !== "") && searchResult.priority.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.subject != "undefined" && searchResult.subject != null && searchResult.subject !== "") && searchResult.subject.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.task_id != "undefined" && searchResult.task_id != null && searchResult.task_id !== "") && searchResult.task_id.toString().includes(searchString)) ||
+                ((typeof searchResult.status != "undefined" && searchResult.status != null && searchResult.status !== "") && searchResult.status.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.assignedTo != "undefined" && searchResult.assignedTo != null && searchResult.assignedTo !== "") && searchResult.assignedTo.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.related_to != "undefined" && searchResult.related_to != null && searchResult.related_to !== "") && searchResult.related_to.toLowerCase().includes(searchString.toLowerCase()))
+                ) {
+                    return searchResult
+                }
+            })
+
+    
+            this.setState({
+                filteredList: newFilteredList,
+                listToFilter: this.state.listToFilter
+            })
+            console.log("valueeeee",filteredList)
+        }
 
     render() {
+        const { filteredList } = this.state;
         
-
         return (
             <div>
                 {/* <div className="preloader">
@@ -148,7 +180,7 @@ class TaskList extends Component {
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="row mar_bt_30">
                                     <div className="col-md-6">
-                                    <input class="content-search" type="text" name="search" placeholder="Filter Records"/>
+                                    <input class="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e)=>this.filterSearch(e)} />
                                     </div>
                                     <div className="col-md-6">
                                     <button className="primary-button float-right">
@@ -296,7 +328,7 @@ class TaskList extends Component {
                                                         </thead>
                                                         <tbody>
                                                             {
-                                                                this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
+                                                                filteredList.length > 0 ? filteredList.map((key, index) => {
                                                                     return <tr>
                                                                         <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
                                                                         <td>{key.due_date?moment(key.due_date).format('YYYY/MM/DD'):''}</td>
