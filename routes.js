@@ -47,6 +47,9 @@ module.exports = (app) => {
   app.post('/api/get-images',uploadImageController.getImages);
   app.post('/api/updateTaskByID',taskController.updateTaskByID);
 
+  app.get('/api/getAssetList',assetController.getAssetList);
+  app.get('/api/getAssetByID',assetController.getAssetByID);
+
   
 
 
