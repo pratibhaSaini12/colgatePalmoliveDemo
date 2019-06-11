@@ -1,9 +1,12 @@
+// const leadController = require('./leadController');
 const userController=require('./userController');
 const taskController=require('./taskController');
 const productController=require('./productController');
 const assetController=require('./assetController');
 const uploadImageController=require("./uploadImageController")
 
+// const cronController = require('./CRON/cronController');
+require('./CRON/cronController')
 
 
 module.exports = (app) => {
@@ -49,6 +52,9 @@ module.exports = (app) => {
 
   app.get('/api/getAssetList',assetController.getAssetList);
   app.get('/api/getAssetByID',assetController.getAssetByID);
+
+// CRON JOBS
+ //app.post('/api/listFiles',cronController.listFiles);  /*  CRON for fetching data from Google Drive*/
 
   
 

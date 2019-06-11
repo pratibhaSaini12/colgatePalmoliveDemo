@@ -8,14 +8,14 @@ const fileUpload = require('express-fileupload');
 const webpack = require('webpack')
 const config = require('./webpack.config')
 const validator = require('validator');
-var Sequelize = require("sequelize");
+//var Sequelize = require("sequelize");
 const cookieParser = require('cookie-parser');
 // var cors = require('cors')
 // const expressSession = require('express-session');
 const ejs = require('ejs');
 //var passport = require('passport');
 const flash    = require('connect-flash');
-var sequelize = new Sequelize();
+//var sequelize = new Sequelize();
 // var sequelize = require('./config.js')
 
 

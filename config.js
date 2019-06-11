@@ -1,18 +1,18 @@
 var mysql = require('mysql')
-var Sequelize = require("sequelize");
+//var Sequelize = require("sequelize");
 
 
 //Setting up the config
-sequelize = new Sequelize('colgateDemo', 'colgate', 'colgate', {
-  host: '18.222.97.182',
-  dialect: 'mysql',
+// sequelize = new Sequelize('colgateDemo', 'colgate', 'colgate', {
+//   host: '18.222.97.182',
+//   dialect: 'mysql',
 
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
+//   pool: {
+//     max: 5,
+//     min: 0,
+//     idle: 10000
+//   }
+// });
 
 var con = mysql.createConnection({
   host: "18.222.97.182",    // ip address of server running mysql
