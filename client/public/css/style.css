@@ -3666,3 +3666,5 @@ to {
 	border-radius: 3px;
 }
 .mar_bt_30 {margin-bottom: 30px;}
+.react-datepicker__input-container {width: 100%;}
+.react-datepicker-wrapper{width: 100%;}

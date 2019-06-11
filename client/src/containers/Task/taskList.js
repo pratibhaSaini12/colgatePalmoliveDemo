@@ -145,56 +145,21 @@ class TaskList extends Component {
                                 </div>
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
+                            <div className="row mar_bt_30">
+                                    <div className="col-md-6">
+                                    <input class="content-search" type="text" name="search" placeholder="Filter Records"/>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <button className="primary-button float-right">
+                                                    <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
+                                                </button>
+                                    </div>
+                            
+                            </div>
                             <div className="table-view fullpageview">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <div className="filter float-right">
-                                            <div className="float-right col-md-12">
-                                                <button className="primary-button float-right">
-                                                    <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
-                                                </button>
-                                                <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
-                                                <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
-                                                <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                                <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
-                                                <div className="selected-actions">
-                                                    <div className="option-box drop-option-link">
-                                                        <div className="nav-item dropdown dropcolgate">
-                                                            <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
-                                                                <div className="dot-icon">
-                                                                    {/* <img src="img/icons/option-all.png" />src="img/icons/option-all.png" */}
-                                                                    <ImageContainer src="icons/option-all.png" />
-                                                                </div>
-                                                            </a>
-                                                            <div className="dropdown-menu drop_20">
-                                                                <div className="counting-action-section">
-                                                                    <div className="selections">
-                                                                        <div className="group-selection">
-                                                                            <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
-                                                                        </div>
-                                                                        <div className="group-action">
-                                                                            <div className="option-box delete"><a href="#">Delete</a></div>
-                                                                            <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                                                            <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
-                                                                            <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
-                                                                            <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
-                                                                            <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                                Batch Update
-                                  </div>
-                                                                            <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">
@@ -315,7 +280,7 @@ class TaskList extends Component {
                                 </div>
                             </div>
                             <div className="table-responsive">
-                                                    <table className="table dashboard_table notification">
+                                                    <table className="table dashboard_table data_table_30">
                                                         <thead>
                                                             <tr>
                                                                 <th>Date</th>
