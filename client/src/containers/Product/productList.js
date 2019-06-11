@@ -12,7 +12,9 @@ class ProductList extends Component {
         super(props)
         this.state = {
             product: [],
-            deleteProductId: ''
+            deleteProductId: '',
+            filteredList: [],
+            listToFilter: []
         }
     }
 
@@ -23,7 +25,9 @@ class ProductList extends Component {
             console.log("product list ", response.data);
             if (response.data) {
                 self.setState({
-                    product: response.data.products
+                    product: response.data.products,
+                    filteredList: response.data.products,
+                    listToFilter: response.data.products
                 })
             }
 
@@ -32,24 +36,61 @@ class ProductList extends Component {
         })
     }
 
-    async deleteProductById (){
+    async deleteProductById() {
         console.log("this.stateeeeee", this.state)
-        await axios.post("/api/deleteProductByID", {id:this.state.deleteProductId}).then(function (response) {
+        await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
             console.log('resposne from Delete api==', response)
-            if(response.data.product){
-                this.setState({deleteProductId:''})
+            if (response.data.product) {
+                this.setState({ deleteProductId: '' })
                 window.location.href = "/productList"
             }
 
         }).catch(function (error) {
-            this.setState({deleteProductId:''})
-            console.log("error in delete product",error)
+            this.setState({ deleteProductId: '' })
+            console.log("error in delete product", error)
+        })
+    }
+
+    filterSearch(event) {
+        console.log('state on filtersearcch===', this.state)
+       var newList = this.state.listToFilter
+        var searchString = event.target.value
+
+        console.log('product to be search---', searchString)
+
+        var newFilteredList = newList.filter(function (searchResult) {
+            if (
+                ((typeof searchResult.category != "undefined" && searchResult.category != null && searchResult.category !== "") && searchResult.category.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.product_name != "undefined" && searchResult.product_name != null && searchResult.product_name !== "") && searchResult.product_name.toLowerCase().includes(searchString.toLowerCase()))||
+                ((typeof searchResult.link != "undefined" && searchResult.link != null && searchResult.link !== "") && searchResult.link.toLowerCase().includes(searchString.toLowerCase()))||
+                ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toString().includes(searchString))
+
+
+                // ((typeof e.Phone != "undefined" && e.Phone != null && e.Phone !== "") && e.Phone.toString().includes(val))
+
+            //     ||
+               
+            //     ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toLowerCase().includes(searchString.toLowerCase()))||
+            //     ((typeof searchResult.cost != "undefined" && searchResult.cost != null && searchResult.cost !== "") && searchResult.cost.toLowerCase().includes(searchString.toLowerCase()))||
+            //    ((typeof searchResult.long_description != "undefined" && searchResult.long_description != null && searchResult.long_description !== "") && searchResult.long_description.toLowerCase().includes(searchString.toLowerCase()))||
+            //     ((typeof searchResult.material != "undefined" && searchResult.material != null && searchResult.material !== "") && searchResult.material.toLowerCase().includes(searchString.toLowerCase()))||
+            //     ((typeof searchResult.medium_description != "undefined" && searchResult.medium_description != null && searchResult.medium_description !== "") && searchResult.medium_description.toLowerCase().includes(searchString.toLowerCase()))||
+            //     ((typeof searchResult.msrp != "undefined" && searchResult.msrp != null && searchResult.msrp !== "") && searchResult.msrp.toLowerCase().includes(searchString.toLowerCase()))||
+            //     ((typeof searchResult.style != "undefined" && searchResult.style != null && searchResult.style !== "") && searchResult.style.toLowerCase().includes(searchString.toLowerCase()))
+            ) {
+                return searchResult
+            }
+        })
+
+        this.setState({
+            filteredList: newFilteredList,
+            listToFilter: this.state.listToFilter
         })
     }
 
 
     render() {
-        const { product } = this.state;
+        const { filteredList } = this.state;
         let buff
         let base64data
 
@@ -147,66 +188,66 @@ class ProductList extends Component {
                                 </div>
                             </div>
 
-                                <div className="row">
-                                    <div className="col-md-6">
-                                    <input class="content-search" type="text" name="search" placeholder="Search for digital assets"/>
-                                    </div>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <input class="content-search" type="text" name="search" placeholder="Search for product" onChange={this.filterSearch.bind(this)} />
+                                </div>
                                 <div className="filter float-right col-md-6">
-                                            <div className="float-right">
-                                                <button className="primary-button float-right">
-                                                    <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
-                                                </button>
-                                                <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
-                                                <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
-                                                <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                                <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
-                                                <div className="selected-actions">
-                                                    <div className="option-box drop-option-link">
-                                                        <div className="nav-item dropdown dropcolgate">
-                                                            <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
-                                                                <div className="dot-icon">
-                                                                    {/* <img src="img/icons/option-all.png" />src="img/icons/option-all.png" */}
-                                                                    <ImageContainer src="icons/option-all.png" />
+                                    <div className="float-right">
+                                        <button className="primary-button float-right">
+                                            <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
+                                        </button>
+                                        <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
+                                        <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
+                                        <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                        <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                                        <div className="selected-actions">
+                                            <div className="option-box drop-option-link">
+                                                <div className="nav-item dropdown dropcolgate">
+                                                    <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
+                                                        <div className="dot-icon">
+                                                            {/* <img src="img/icons/option-all.png" />src="img/icons/option-all.png" */}
+                                                            <ImageContainer src="icons/option-all.png" />
+                                                        </div>
+                                                    </a>
+                                                    <div className="dropdown-menu drop_20">
+                                                        <div className="counting-action-section">
+                                                            <div className="selections">
+                                                                <div className="group-selection">
+                                                                    <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
                                                                 </div>
-                                                            </a>
-                                                            <div className="dropdown-menu drop_20">
-                                                                <div className="counting-action-section">
-                                                                    <div className="selections">
-                                                                        <div className="group-selection">
-                                                                            <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
-                                                                        </div>
-                                                                        <div className="group-action">
-                                                                            <div className="option-box delete"><a href="#">Delete</a></div>
-                                                                            <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                                                            <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
-                                                                            <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
-                                                                            <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
-                                                                            <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                                Batch Update
+                                                                <div className="group-action">
+                                                                    <div className="option-box delete"><a href="#">Delete</a></div>
+                                                                    <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
+                                                                    <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
+                                                                    <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
+                                                                    <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
+                                                                    <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
+                                                                        Batch Update
                                   </div>
-                                                                            <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
-                                                                        </div>
-                                                                    </div>
+                                                                    <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
                                                                 </div>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
                                                             </div>
                                                         </div>
+                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
+                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
+                                    </div>
                                 </div>
+
+                            </div>
 
 
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="table-view fullpageview">
                                 <div className="row">
                                     <div className="col-md-12">
-                          
+
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">
@@ -328,7 +369,7 @@ class ProductList extends Component {
                             </div>
                             <div className="row">
                                 {
-                                    product.length > 0 ? product.map((key, index) => {
+                                    filteredList.length > 0 ? filteredList.map((key, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
@@ -352,7 +393,7 @@ class ProductList extends Component {
                                                         <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}>
                                                             <ImageContainer src="icons/edit.png" />
                                                         </Link>
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e)=>this.setState({deleteProductId:key.product_id})}>
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}>
                                                             <ImageContainer src="icons/delete.png" />
                                                         </a>
                                                         <a className="icon check-icon select_box" href="javscript:void(0)">
@@ -374,7 +415,7 @@ class ProductList extends Component {
                                         {/* Modal Header */}
                                         <div className="modal-header">
                                             <h4 className="modal-title title_modalheader">Delete Product</h4>
-                                            <button type="button" className="close" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>×</button>
+                                            <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
                                         </div>
                                         {/* Modal body */}
                                         <div className="modal-body filtercustome">
@@ -382,8 +423,8 @@ class ProductList extends Component {
                                         </div>
                                         {/* Modal footer */}
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e)=>this.deleteProductById()}>Yes</button>
-                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>No</button>
+                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e) => this.deleteProductById()}>Yes</button>
+                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>No</button>
                                         </div>
                                     </div>
                                 </div>

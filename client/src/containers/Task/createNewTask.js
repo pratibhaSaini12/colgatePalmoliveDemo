@@ -9,6 +9,7 @@ import moment from "moment"
 import UserModal from "./userModal"
 import axios from "axios";
 
+import "react-datepicker/dist/react-datepicker.css";
 
 class NewTask extends Component {
 
