@@ -146,12 +146,13 @@ class ProductList extends Component {
                                     </div>
                                 </div>
                             </div>
-                            {/* card row start ---------------------------------------------------------------------*/}
-                            <div className="table-view fullpageview">
+
                                 <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="filter float-right">
-                                            <div className="float-right col-md-12">
+                                    <div className="col-md-6">
+                                    <input class="content-search" type="text" name="search" placeholder="Search for digital assets"/>
+                                    </div>
+                                <div className="filter float-right col-md-6">
+                                            <div className="float-right">
                                                 <button className="primary-button float-right">
                                                     <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
                                                 </button>
@@ -197,6 +198,15 @@ class ProductList extends Component {
                                                 </div>
                                             </div>
                                         </div>
+
+                                </div>
+
+
+                            {/* card row start ---------------------------------------------------------------------*/}
+                            <div className="table-view fullpageview">
+                                <div className="row">
+                                    <div className="col-md-12">
+                          
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">

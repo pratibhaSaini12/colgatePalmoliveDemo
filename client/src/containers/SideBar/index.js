@@ -45,14 +45,11 @@ class Aside extends Component {
                     <li><Link to={"/digitalDocuments"}>Documents</Link></li>
                   </ul>
                 </li>
-                <li> <a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"><i className="sprite_icon more_icon" /><span className="hide-menu">More</span></a>
-                  <ul aria-expanded="false" className="collapse">
-                    <li><a href="channels.html">Channels</a></li>
-                    <li><a href="javascript:void(0)">Catalogs</a></li>
-                    <li><a href="javascript:void(0)">Imports</a></li>
-                    <li><a href="javascript:void(0)">Tasks</a></li>
-                    <li><a href="javascript:void(0)">Workflow</a></li>
-                  </ul>
+                <li>
+                  <Link to={"/taskList"} className="has-arrow waves-effect waves-dark" aria-expanded="false">
+                    <i className="sprite_icon dashboard" />
+                    <span className="hide-menu">Task </span>
+                  </Link>
                 </li>
               </ul>
             </nav>

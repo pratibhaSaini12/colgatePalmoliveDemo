@@ -151,7 +151,7 @@ class TaskList extends Component {
                                         <div className="filter float-right">
                                             <div className="float-right col-md-12">
                                                 <button className="primary-button float-right">
-                                                    <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
+                                                    <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
                                                 </button>
                                                 <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
                                                 <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
