@@ -131,10 +131,29 @@ class Dashboard extends Component {
 
     //     })
     // }
+    redirectURL (e) {
+        try{
+            console.log("e=======",e)
+            let self = this
+            let page 
+            if (e == 1) {
+                page = "/productlist"
+            } else if(e == 3){
+                page = "/taskList"
+            }
+            // if (totalOrders) {
+                self.props.history.push({
+                    pathname: page
+                })
+            // }
+        }catch(e){}
+        
+    }
 
     render() {
         const { openTask, updateProduct } = this.state;
         console.log("states in dashbpard", this.state)
+        console.log("props in dashbpard", this.props)
         return (
             <div>
                 {/* <div className="preloader">
@@ -234,12 +253,12 @@ class Dashboard extends Component {
                             <div className="table-view digitalImage">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <div className="card dashboard_section">
+                                        <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}>
                                             <div className="piechart_section">
                                                 <h5>Product Completion</h5>
                                                 <p>As of 03/20/2019</p>
                                             </div>
-                                            <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />
+                                            <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />                                                                                            
                                             <div className="leg-div">
                                                 <div className="leg-detail-1"><span />Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%</div>
                                                 <div className="leg-detail-2"><span />Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%</div>
@@ -247,7 +266,7 @@ class Dashboard extends Component {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="card dashboard_section">
+                                        <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}>
                                             <div className="piechart_section">
                                                 <h5>Product Content Updates</h5>
                                                 <p>As of 03/20/2019</p>
@@ -258,7 +277,7 @@ class Dashboard extends Component {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="card dashboard_section">
+                                        <div className="card dashboard_section" onClick={(e) => this.redirectURL(3)}>
                                             <div className="piechart_section">
                                                 <h5>Open Tasks by Assignee</h5>
                                                 <p>As of 03/20/2019</p>
