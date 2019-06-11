@@ -140,12 +140,13 @@ class NewTask extends Component {
         console.log("state on save====", this.state);
         let state = this.state;
         let createTask = {
-            due_date: new Date(),
-            assignedTo: state.assignedTo.id,
+            due_date: moment(state.DueDate).format('YYYY/MM/DD'),
+            assignedTo: state.assignedTo.Name,
             subject: state.subject,
             priority: state.priority,
             status: state.status,
-            assignedBy: 'patibha'
+            assignedBy: 'patibha',
+    
         }
         console.log('createTask===',createTask)
         axios.post("api/createNewTask", createTask).then(function (response) {
@@ -230,6 +231,7 @@ class NewTask extends Component {
                                             <select id="pref-perpage" className="form-control" name="status" onChange={e => this.change(e)}>
                                                 <option value={"Open"}>Open</option>
                                                 <option value={"Closed"}>Closed</option>
+                                                <option value={"Pending"}>Pending</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-12">

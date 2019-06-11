@@ -22,6 +22,8 @@ module.exports = (app) => {
   app.post('/api/deleteProducts',productController.deleteProducts);
   app.post('/api/createProduct',productController.createProduct);
   app.post('/api/bulkProductDelete',productController.bulkProductDelete);
+  app.get('/api/getProductCompletion',productController.getProductCompletion);
+  app.get('/api/productContentUpdates',productController.productContentUpdates);
 
   //Assets
   app.get('/api/getAllImages',assetController.getAllImages);
@@ -40,6 +42,9 @@ module.exports = (app) => {
   app.get('/api/getTaskByUserID',taskController.getTaskByUserID);
   app.post('/api/createNewTask',taskController.createNewTask);
   app.post('/api/upload/image',uploadImageController.upploadImage);
+  app.get('/api/getAllOpenTask',taskController.getAllOpenTask);
+  app.get('/api/getAllOpenTaskByUser',taskController.getAllOpenTaskByUser);
+  
 
   
 

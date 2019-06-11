@@ -19,7 +19,11 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            taskList: []
+            taskList: [],
+            openTask: [],
+            completeIncomplete: [],
+            updateProduct: []
+
         }
     }
 
@@ -62,7 +66,7 @@ class Dashboard extends Component {
             }]
         });
 
-        let id = 1
+        let id = "Pratibha"
         axios.get("/api/getTaskByUserID?id=" + id).then(function (response) {
 
             console.log('response from getTaskByUserID===', response)
@@ -74,13 +78,63 @@ class Dashboard extends Component {
         }).catch(function (error) {
 
         })
+
+        axios.get("/api/getAllOpenTask").then(function (response) {
+
+            console.log('response from getAllOpenTask===', response)
+            if (response.data) {
+                self.setState({
+                    openTask: response.data.openTasks
+                })
+            }
+        }).catch(function (error) {
+
+        })
+
+        axios.get("/api/getProductCompletion").then(function (response) {
+
+            console.log('response from getProductCompletion===', response)
+            if (response.data) {
+                self.setState({
+                    completeIncomplete: response.data.product[0]
+                })
+            }
+        }).catch(function (error) {
+
+        })
+
+        axios.get("/api/productContentUpdates").then(function (response) {
+
+            console.log('response from productContentUpdates===', response)
+            if (response.data) {
+                self.setState({
+                    updateProduct: response.data.product[0]
+                })
+            }
+        }).catch(function (error) {
+
+        })
+
+
     }
 
+    // componentWillMount(){
 
+    //     axios.get("/api/getAllOpenTask").then(function (response) {
+
+    //         console.log('response from getAllOpenTask===', response)
+    //         if (response.data) {
+    //             self.setState({
+    //                 openTask: response.data.openTasks
+    //             })
+    //         }
+    //     }).catch(function (error) {
+
+    //     })
+    // }
 
     render() {
-        const { list } = this.state;
-        console.log(list);
+        const { openTask } = this.state;
         return (
             <div>
                 {/* <div className="preloader">
@@ -182,8 +236,8 @@ class Dashboard extends Component {
                                             </div>
                                             <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />
                                             <div className="leg-div">
-                                                <div className="leg-detail-1"><span />Complete: 70%</div>
-                                                <div className="leg-detail-2"><span />Incomplete: 30%</div>
+                                                <div className="leg-detail-1"><span />Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%</div>
+                                                <div className="leg-detail-2"><span />Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%</div>
                                             </div>
                                         </div>
                                     </div>
@@ -205,38 +259,44 @@ class Dashboard extends Component {
                                                 <p>As of 03/20/2019</p>
                                             </div>
                                             {/* <div id="barchart_values" style={{ width: '550px', height: '400px' }} /> */}
-                                            <Chart
-                                                width={'500px'}
-                                                height={'400px'}
-                                                chartType="BarChart"
-                                                loader={<div>Loading Chart</div>}
-                                                data={[
-                                                    [
-                                                        'Element',
-                                                        'Density',
-                                                        { role: 'style' },
-                                                        {
-                                                            sourceColumn: 0,
-                                                            role: 'annotation',
-                                                            type: 'string',
-                                                            calc: 'stringify',
-                                                        },
-                                                    ],
-                                                    ['Silver', 50, '#f6e490', null],
-                                                    ['Gold', 30, '#76bc5e', null],
-                                                    ['Platinum', 20, 'color: #70b7ed', null],
-                                                ]}
-                                                options={{
-                                                    // title: 'Density of Precious Metals, in g/cm^3',
 
-                                                    width: 500,
-                                                    height: 350,
-                                                    bar: { groupWidth: '60%' },
-                                                    legend: { position: 'none' },
-                                                }}
-                                                // For tests
-                                                rootProps={{ 'data-testid': '6' }}
-                                            />
+                                            {this.state.openTask != undefined ?
+                                                <Chart
+                                                    width={'500px'}
+                                                    height={'400px'}
+                                                    chartType="BarChart"
+                                                    loader={<div>Loading Chart</div>}
+                                                    data={[
+                                                        [
+                                                            'Element',
+                                                            'Density',
+                                                            { role: 'style' },
+                                                            {
+                                                                sourceColumn: 0,
+                                                                role: 'annotation',
+                                                                type: 'string',
+                                                                calc: 'stringify',
+                                                            },
+                                                        ],
+
+
+                                                        ['Pratibha', 2, '#f6e490', null],
+                                                        ['Uday', 2, '#76bc5e', null],
+                                                        ['Anuj', 2, 'color: #70b7ed', null],
+                                                    ]}
+                                                    options={{
+                                                        // title: 'Density of Precious Metals, in g/cm^3',
+
+                                                        width: 500,
+                                                        height: 350,
+                                                        bar: { groupWidth: '60%' },
+                                                        legend: { position: 'none' },
+                                                    }}
+                                                    // For tests
+                                                    rootProps={{ 'data-testid': '6' }}
+                                                />
+
+                                                : ''}
 
                                         </div>
                                     </div>
@@ -347,7 +407,7 @@ class Dashboard extends Component {
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
-                                                                        <td></td>
+                                                                        <td>{key.due_date}</td>
                                                                         <td>{key.subject}</td>
                                                                         <td>{key.status}</td>
                                                                         <td>{key.priority}</td>
