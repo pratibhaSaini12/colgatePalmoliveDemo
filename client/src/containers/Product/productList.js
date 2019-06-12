@@ -609,7 +609,7 @@ class ProductList extends Component {
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
-                                                    <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                         <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
                                                         <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
                                                     </a>
@@ -635,9 +635,9 @@ class ProductList extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
+                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="ti-check" />Approve</a>
+                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="ti-close" />Reject</a>
+                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="fas fa-upload" />Publish</a>
                                                     </div>
                                                 </div>
                                             </div>
