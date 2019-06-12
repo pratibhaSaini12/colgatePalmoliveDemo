@@ -41,8 +41,30 @@ module.exports = {
     //Update product by ID
     updateProductByID(req, res) {
         console.log("req.body=============", req.body)
-        con.query("update `product` SET product_name=?,upc=?,category=?,link=?,product_line=?,product_status=?,cost=?,wholesale_price=?,msrp=?,retail_price=?,medium_description=?,long_description=? ,tags=?,warnings=?,material=?,style=?, main_image=?,workflow_state=?  where product_id=?", [req.body.product_name, req.body.upc, req.body.category, req.body.link, req.body.product_line, req.body.product_status, req.body.cost, req.body.wholesale_price, req.body.msrp, req.body.retail_price, req.body.medium_description, req.body.long_description, req.body.tags, req.body.warnings, req.body.material, req.body.style, req.body.main_image, req.body.workflow_state, req.body.product_id], function (err, result) {
-            console.log('response from update====', result)
+        try {
+            let queryForSql = `update product SET product_name='${req.body.product_name}',
+            upc='${req.body.upc}',
+            category='${req.body.category}',
+            link='${req.body.link}',
+            product_line='${req.body.product_line}',
+            product_status='${req.body.product_status}',
+            cost='${req.body.cost}',
+            wholesale_price='${req.body.wholesale_price}',
+            msrp='${req.body.msrp}',
+            retail_price='${req.body.retail_price}',
+            medium_description='${req.body.medium_description}',
+            long_description='${req.body.long_description}',
+            tags='${req.body.tags}',
+            warnings='${req.body.warnings}',
+            material='${req.body.material}',
+            style='${req.body.style}',
+            main_image='${req.body.main_image}',
+            workflow_state='${req.body.workflow_state}'
+            where product_id=${req.body.product_id}`;
+            console.log('query code ',queryForSql)
+            // process.exit(0)
+            con.query(queryForSql, function (err, result) {
+            // console.log('response from update====', result)
             if (err)
                 throw err;
             else {
@@ -52,6 +74,7 @@ module.exports = {
                 })
             }
         })
+        } catch(e) { console.log('errorn', e)}
     },
 
     //Delete product by ID
@@ -161,107 +184,107 @@ module.exports = {
         const options = {}; /* see below */
         const codinateArray = [
             {
-                lang:'TR',
+                lang: 'TR',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "BESLEME TALİMATLARI:",
                 ques3: "Bu mamayı ilk defa mı kullanıyorsunuz?",
                 ques4: "İÇİNDEKİLER",
                 ques5: "Avrupa daüretilmiştir. *Kalite, tutarlılık ve lezzet için %100 Garanti, yoksa paranız iade",
-                codinate: {xu: 966, xl: 871, yu: 1113, yl: 860}
+                codinate: { xu: 966, xl: 871, yu: 1113, yl: 860 }
             },
             {
-                lang:'CZ',
+                lang: 'CZ',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "POKYNY KE KRMENÍ",
                 ques3: "Podáváte toto krmivo poprvé?",
                 ques4: "SLOŽENÍ:",
                 ques5: "Vyrobeno v EU. *100% zárukakvality, konzistence a chuti, nebo Vám vrátíme peníze zpět",
-                codinate: {xu: 855, xl: 763, yu: 1113, yl: 860}
+                codinate: { xu: 855, xl: 763, yu: 1113, yl: 860 }
             },
             {
-                lang:'GR',
+                lang: 'GR',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "ΟΔΗΓΙΕΣ ΧΟΡΗΓΗΣΗΣ",
                 ques3: "Χορηγείτεαυτή την τροφή για πρώτη φορά?",
                 ques4: "ΣΥΝΘΕΣΗ:",
                 ques5: "Παρασκευάζεται στη Ε.Ε. *100% Εγγύηση για ποιότητα, συνέπεια καιγεύση, ή τα λεφτά σας πίσω.",
 
-                codinate: {xu: 750, xl: 645, yu: 1113, yl: 860}
+                codinate: { xu: 750, xl: 645, yu: 1113, yl: 860 }
             },
             {
-                lang:'PL',
+                lang: 'PL',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "INSTRUKCJA KARMENIA",
                 ques3: "Jeśli to nowa karma",
                 ques4: "SKŁAD:",
                 ques5: "Wyprodukowano w UE. *100% Gwarancji jakości, konsystencji i smakualbo zwrot pieniędzy.",
 
-                codinate: {xu: 632, xl: 525, yu: 1113, yl: 860}
+                codinate: { xu: 632, xl: 525, yu: 1113, yl: 860 }
             },
-//            {
-//                lang:'',
-//                ques1: '',
-//                codinate: {xu: 512, xl: 400, yu: 1113, yl: 860}
-//            },
+            //            {
+            //                lang:'',
+            //                ques1: '',
+            //                codinate: {xu: 512, xl: 400, yu: 1113, yl: 860}
+            //            },
             {
-                lang:'ES',
+                lang: 'ES',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD con POLLO",
                 ques2: "MODO DE EMPLEO:",
                 ques3: "Si se utiliza este alimentopor primera vez",
                 ques4: "COMPOSICIÓN:",
                 ques5: "Fabricado en la UE. *100% Garantizado en calidad, consistencia ysabor o te devolvemos el dinero.",
 
-                codinate: {xu: 966, xl: 871, yu: 1336, yl: 1160}
+                codinate: { xu: 966, xl: 871, yu: 1336, yl: 1160 }
             },
             {
-                lang:'PT',
+                lang: 'PT',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "MODO DE UTILIZAÇÃO:",
                 ques3: "É a primeira vez que utiliza este alimento?",
                 ques4: "COMPOSIÇÃO",
                 ques5: "Produzido na UE. *100% Garantia de qualidade,consistência e sabor, ou devolvemos-lhe o seu dinheiro.",
 
-                codinate: {xu: 855, xl: 753, yu: 1336, yl: 1160}
+                codinate: { xu: 855, xl: 753, yu: 1336, yl: 1160 }
             },
             {
-                lang:'DK,NO',
+                lang: 'DK,NO',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "FODRINGSVEJLEDNING:",
                 ques3: "Anvender du foderet for første gang?",
                 ques4: "SAMMENSÆTNING:",
                 ques5: "Fremstillet i EU. *100%Garanti for kvalitet, konsistens og smag, eller dine penge tilbage.",
 
-                codinate: {xu: 735, xl: 640, yu: 1336, yl: 1160}
+                codinate: { xu: 735, xl: 640, yu: 1336, yl: 1160 }
             },
             {
-               lang:'SE',
+                lang: 'SE',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "UTFODRINGSINSTRUKTIONER:",
                 ques3: "Utfodra med fodret för första gången?",
                 ques4: "SAMMANSÄTTNING:",
                 ques5: "Produzido na UE. *100% Garantia de qualidade, consistência e sabor, ou devolvemos-lhe o seu dinheiro.",
 
-                codinate: {xu: 625, xl: 520, yu: 1336, yl: 1160}
+                codinate: { xu: 625, xl: 520, yu: 1336, yl: 1160 }
             },
             {
-                lang:'FL',
+                lang: 'FL',
                 ques1: "Hill's™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN",
                 ques2: "RUOKINTAOHJEET:",
                 ques3: "Syötätkö tätä ruokaa ensimmäistä kertaa?",
                 ques4: "KOOSTUMUS:",
                 ques5: "Valmistettu EU:ssa. *100 % Takuu laadulle, koostumukselle ja maulle, tai saat rahasi takaisin.",
 
-                codinate: {xu: 512, xl: 395, yu: 1336, yl: 1160}
+                codinate: { xu: 512, xl: 395, yu: 1336, yl: 1160 }
             },
             {
-                lang:'RU,BY',
+                lang: 'RU,BY',
                 ques1: "Hill's™ Science Plan™ ДЛЯ КОШЕК СТАРШЕ 7 ЛЕТ с КУРИЦЕЙ",
                 ques2: "РЕКОМЕНДАЦИИ ПОКОРМЛЕНИЮ:",
                 ques3: "Пробуете этотрацион впервые?",
                 ques4: "СОСТАВ:",
                 ques5: "Изготовлено в странах ЕС. *100% Гарантии качества, консистенции и вкуса.",
 
-                codinate: {xu: 395, xl: 250, yu: 1336, yl: 1160}
+                codinate: { xu: 395, xl: 250, yu: 1336, yl: 1160 }
             }
 
         ];
@@ -287,26 +310,26 @@ module.exports = {
                 reversed.forEach(function (element) {
                     sendStr = sendStr + element.str;
                 });
-                console.log('lang',codinate.lang);
-                console.log('ques1',sendStr.indexOf(codinate.ques1));
-                console.log('ques2',sendStr.indexOf(codinate.ques2));
-                console.log('ques3',sendStr.indexOf(codinate.ques3));
-                console.log('ques4',sendStr.indexOf(codinate.ques4));
-                console.log('ques5',sendStr.indexOf(codinate.ques5));
-                
+                console.log('lang', codinate.lang);
+                console.log('ques1', sendStr.indexOf(codinate.ques1));
+                console.log('ques2', sendStr.indexOf(codinate.ques2));
+                console.log('ques3', sendStr.indexOf(codinate.ques3));
+                console.log('ques4', sendStr.indexOf(codinate.ques4));
+                console.log('ques5', sendStr.indexOf(codinate.ques5));
+
                 var object = {
-                    lang :codinate.lang,
-                    description:sendStr.substring(0,sendStr.indexOf(codinate.ques1)),
-                    ques1:codinate.ques1,
-                    ans1:sendStr.substring(sendStr.indexOf(codinate.ques1)+codinate.ques1.length,sendStr.indexOf(codinate.ques2)),
-                    ques2:codinate.ques2,
-                    ans2:sendStr.substring(sendStr.indexOf(codinate.ques2)+codinate.ques2.length,sendStr.indexOf(codinate.ques3)),
-                    ques3:codinate.ques3,
-                    ans3:sendStr.substring(sendStr.indexOf(codinate.ques3)+codinate.ques3.length,sendStr.indexOf(codinate.ques4)),
-                    ques4:codinate.ques4,
-                    ans4:sendStr.substring(sendStr.indexOf(codinate.ques4)+codinate.ques4.length,sendStr.indexOf(codinate.ques5)),
-                    ques5:codinate.ques5,
-                    ans5:sendStr.substring(sendStr.indexOf(codinate.ques5)+codinate.ques5.length,sendStr.length)
+                    lang: codinate.lang,
+                    description: sendStr.substring(0, sendStr.indexOf(codinate.ques1)),
+                    ques1: codinate.ques1,
+                    ans1: sendStr.substring(sendStr.indexOf(codinate.ques1) + codinate.ques1.length, sendStr.indexOf(codinate.ques2)),
+                    ques2: codinate.ques2,
+                    ans2: sendStr.substring(sendStr.indexOf(codinate.ques2) + codinate.ques2.length, sendStr.indexOf(codinate.ques3)),
+                    ques3: codinate.ques3,
+                    ans3: sendStr.substring(sendStr.indexOf(codinate.ques3) + codinate.ques3.length, sendStr.indexOf(codinate.ques4)),
+                    ques4: codinate.ques4,
+                    ans4: sendStr.substring(sendStr.indexOf(codinate.ques4) + codinate.ques4.length, sendStr.indexOf(codinate.ques5)),
+                    ques5: codinate.ques5,
+                    ans5: sendStr.substring(sendStr.indexOf(codinate.ques5) + codinate.ques5.length, sendStr.length)
                 }
                 finalarray.push(object);
             });
@@ -316,20 +339,34 @@ module.exports = {
     },
 
     batchUpdate(req, res) {
-        console.log('###################',req.body.id)
+        console.log('###################', req.body.id)
         con.query(
-           `update product set ${req.body.batchKey}=? where product_id IN (${req.body.id})`,[req.body.batchValue] ,function (err, result) {
+            `update product set ${req.body.batchKey}=? where product_id IN (${req.body.id})`, [req.body.batchValue], function (err, result) {
 
-            console.log('response from bulk delete by id====', result)
+                console.log('response from bulk delete by id====', result)
+                if (err)
+                    throw err;
+                else {
+                    return res.status(200).json({
+                        product: result
+                    })
+                }
+            })
+
+    },
+
+    searchFilterByValues(req, res) {
+        con.query("SELECT * FROM `product` where category=? AND product_status=? ", [req.body.searchValue1,req.body.searchValue2],function (err, result) {
+            //     console.log('response from DB====', result)
             if (err)
                 throw err;
             else {
+
                 return res.status(200).json({
-                    product: result
+                    products: result
                 })
             }
         })
-
     }
 
 

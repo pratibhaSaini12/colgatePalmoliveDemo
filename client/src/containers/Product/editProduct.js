@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import axios from "axios";
+import ReactLoading from 'react-loading'
+
 class EditProduct extends Component {
 
     constructor(props) {
@@ -25,7 +27,8 @@ class EditProduct extends Component {
             material: '',
             style: '',
             workflow_state: '',
-            main_image: ''
+            main_image: '',
+            Loading: false
         }
     }
 
@@ -52,7 +55,8 @@ class EditProduct extends Component {
                 material: product.material,
                 style: product.style,
                 main_image: product.main_image,
-                workflow_state: product.workflow_state
+                workflow_state: product.workflow_state,
+                Loading: false
             })
         } catch (e) { console.log("errr", e) }
     }
@@ -105,6 +109,7 @@ class EditProduct extends Component {
         console.log("props in product Edit page", this.props)
         console.log("state in product Edit page", this.state)
         let { product } = this.state
+        // let image = "data:"+img.mimetype+";base64,"+img.data
         console.log("product==========", product)
         return (
             <div>
@@ -123,7 +128,7 @@ class EditProduct extends Component {
                                 <div className="col-md-12 top_part20">
                                     <h2 className="page-title float-left">Edit Product</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={this.updateProduct.bind(this)}>Update</button>
+                                        <button type="button" className="btn btn-primary" onClick={(e)=>this.updateProduct(this)}>Update</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -216,7 +221,7 @@ class EditProduct extends Component {
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -233,10 +238,10 @@ class EditProduct extends Component {
                                                     </li>
                                                     <li className="row">
                                                         <div className="col-md-11">
-                                                            <div className="form-group">
+                                                            {/* <div className="form-group">
                                                                 <label>Link</label>
                                                                 <input className="form-control" type="text" name="link" value={this.state.link} onChange={e => this.change(e)} />
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                         <div className="col-md-1">
                                                             {/*<div class="rightpartedit_delete">
@@ -283,9 +288,9 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Cost</label>
+                                                                <label>Cost($)</label>
                                                                 <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -294,7 +299,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Base Wholesale Price</label>
+                                                                <label>Formatted Base Wholesale Price($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -304,7 +309,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted MSRP</label>
+                                                                <label>Formatted MSRP($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -314,7 +319,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Retail Price</label>
+                                                                <label>Formatted Retail Price($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -343,7 +348,7 @@ class EditProduct extends Component {
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -416,7 +421,7 @@ class EditProduct extends Component {
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -490,9 +495,9 @@ class EditProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Digital Asset</label>
                                                     <div className="form-group">
-                                                        {/* <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        {/* <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e)=>this.handleUploadAttachment(this)} style={{ display: 'none' }} /> */}
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
-                                                        {image !== '' && image !== undefined ?
+                                                        {/* {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img"/>
                                                             : ''} */}
                                                     </div>

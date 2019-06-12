@@ -1,227 +1,82 @@
 import React, { Component } from "react"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
-import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
-//import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
-
-class NewProduct extends Component {
+class EditDigitalImage extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            product_id: '',
-            product_name: '',
-            upc: '',
-            category: '',
-            link: '',
-            product_line: '',
-            product_status: 'Active',
-            cost: '',
-            wholesale_price: '',
-            msrp: '',
-            retail_price: '',
-            medium_description: '',
-            long_description: '',
-            tags: '',
-            warnings: '',
-            material: '',
-            style: '',
-            workflow_state: '',
-            main_image: '',
-            asset_id: 99999,
-            image: ''
-
+            asset_data: "",
+            asset_id: '',
+            asset_name: "",
+            asset_type: "",
+            created_at: "",
+            dimenssion: "",
+            imageDoc: '',
+            size: "",
+            updated_at: "",
+            errMessage: false
         }
     }
 
 
     componentDidMount() {
-        axios.get("api/readpdf").then(function (response) {
-            console.log('resposne from api readpdf ==', response);
-        }).catch(function (error) {
-
-        })
+        try {
+            let asset = this.props.location.state._data
+            this.setState({
+                asset_data: asset.asset_data,
+                asset_id: asset.asset_id,
+                asset_name: asset.asset_name,
+                asset_type: asset.asset_type,
+                created_at: asset.created_at,
+                dimenssion: asset.dimenssion,
+                imageDoc: asset.imageDoc,
+                size: asset.size,
+                updated_at: asset.updated_at
+            })
+        } catch (e) { console.log("errr", e) }
     }
-
-
     change(e) {
-        console.log("e.target.value", e.target.value)
-        console.log("e.target.name", e.target.name)
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
         })
     }
 
-    createNewProduct() {
-        console.log("state on save====", this.state);
+    updateasset() {
+        console.log("state on update====", this.state);
         let state = this.state;
-        let createProduct = {
-            product_id: state.product_id,
-            product_name: state.product_name,
-            upc: state.upc,
-            category: state.category,
-            link: state.link,
-            product_line: state.product_line,
-            product_status: state.product_status,
-            cost: state.cost,
-            wholesale_price: state.wholesale_price,
-            msrp: state.msrp,
-            retail_price: state.retail_price,
-            medium_description: state.medium_description,
-            long_description: state.long_description,
-            tags: state.tags,
-            warnings: state.warnings,
-            material: state.material,
-            style: state.style,
-            main_image: '',
-            workflow_state: state.workflow_state
+        let updateAssetByID = {
+            asset_data: state.asset_data,
+            asset_id: state.asset_id,
+            asset_name: state.asset_name,
+            asset_type: state.asset_type,
+            created_at: state.created_at,
+            dimenssion: state.dimenssion,
+            imageDoc: state.imageDoc,
+            size: state.size,
+            updated_at: state.updated_at
         }
-        axios.post("api/createProduct", createProduct).then(function (response) {
-            console.log('resposne from api==', response)
-            if (response.data.product) {
-                window.location.href = "/productList"
-            }
+        //change update API
+        // axios.post("/api/updateAssetByID", updateAssetByID).then(function (response) {
+        //     console.log('resposne from updateAssetByID=========', response.data)
+        //     if (response.data.asset) {
+        //         window.location.href = "/assetList"
+        //     }
 
-        }).catch(function (error) {
+        // }).catch(function (error) {
 
-        })
-    }
-
-    //handeling image upload
-    handleUploadAttachment(ev) {
-        console.log("ev========", ev)
-        let self = this
-        var idCardBase64
-        var assetBodyData
-        ev.preventDefault()
-        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-        if (FileSize <= 5) {
-            self.getBase64(self.uploadInput.files[0], (result) => {
-                var base64 = result.split(",");
-                idCardBase64 = base64[1]
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-                console.log("===assetBodyData====", assetBodyData)
-                self.setState({
-                    image: assetBodyData.data
-                })
-                axios.post("/api/upload/image", assetBodyData).then((res) => {
-                    console.log("error in response", res)
-                    if (res.data) {
-                        console.log("res in uploading", res)
-                        return
-                    } else {
-                        console.log("error in response", res)
-                        return
-                    }
-                }).catch((err) => {
-                    console.log("errorrrrrrrrrrrrrr in uploading", err)
-                    return
-                })
-            });
-        }
-        else {
-            console.log("fileSizeExceedMessage=======")
-        }
+        // })
     }
 
 
-    /*Upload PDF files 
-    Author: Shashnak Saxena
-    Date: June 12th 2019
-    */
-    UploadPDF(ev) {
-		let self = this
-		var idCardBase64
-		var assetBodyData
-		ev.preventDefault()
-        var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
-        axios.get("/api/readpdf",assetBodyData).then((res)=>{
-            console.log("error in response",res)
-            if(res.data){
-               
-             //   alert(res.data.length);
-               
-//   var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
-//                 var box2;
-//                 for (var i = 0; i < res.data.length; i++)  
-//                 { 
-//                     box2 =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
-//                 } 
-//           +'</ul>';
-
-var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel"> <ul class="nav nav-tabs datetab" id="myTab" role="tablist"> <li class="nav-item"><a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> </ul> <div class="tab-content custome_content under_tabs" id="myTabContent"> <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab"> <div class="row"> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Hills™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="BESLEME TALİMATLARI"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Bu mamayı ilk defa mı kullanıyorsunuz?"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="İÇİNDEKİLER"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Avrupa daüretilmiştir. *Kalite, tutarlılık ve lezzet için %100 Garanti, yoksa paranız iade"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value=""></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> </div> </div> <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div> </div></div>';
-
-            document.getElementById("pdfData").innerHTML = Box;
-
-
-
-
-
-              //  $(".pdfData").html(JSON.stringify(res.data)); 
-                console.log("res in uploading",res)
-                return 
-            } else {
-                $(".pdfData").html('Can not read the file !!'); 
-                console.log("error in response",res)
-                return						
-            }
-        }).catch((err)=>{
-            console.log("errorrrrrrrrrrrrrr in uploading",err)
-            return
-        })
-
-
-
-		//if (FileSize <= 5) {
-            // self.getBase64(self.uploadInputFile.files[0], (result) => {
-			// 	var base64 = result.split(",");
-			// 	idCardBase64 = base64[1]
-			// 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-            //     console.log("===assetBodyData====",assetBodyData)
-            //     self.setState({
-            //         image: assetBodyData.data
-            //     })
-            //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
-            //         console.log("error in response",res)
-            //         if(res.data){
-			// 			console.log("res in uploading",res)
-			// 			return 
-            //         } else {
-			// 			console.log("error in response",res)
-			// 			return						
-            //         }
-            //     }).catch((err)=>{
-			// 		console.log("errorrrrrrrrrrrrrr in uploading",err)
-			// 		return
-            //     })
-			// });
-		//}
-		// else {
-		// 	console.log("fileSizeExceedMessage=======")
-		// }
-    }
-
-    //Method to get Bas64 of file
-    getBase64(file, cb) {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-        };
-    }
 
     render() {
-        console.log("statessss in newProduct", this.state)
-        let img = this.state.image
-        let image = ''
-        if (img !== '') {
-            image = "data:" + img.mimetype + ";base64," + img.data
-        }
+        console.log("props in asset Edit page", this.props)
+        console.log("state in asset Edit page", this.state)
+        let { asset } = this.state
+        console.log("asset==========", asset)
         return (
             <div>
                 {/* <div className="preloader">
@@ -237,9 +92,9 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                         <div className="container-fluid r-aside">
                             <div className="row">
                                 <div className="col-md-12 top_part20">
-                                    <h2 className="page-title float-left">Create New Product</h2>
+                                    <h2 className="page-title float-left">Edit asset</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
+                                        <button type="button" className="btn btn-primary" onClick={this.updateasset.bind(this)}>Update</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -254,16 +109,10 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                             <a className="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Pricing</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Upload Image</a>
+                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Digital Asset</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Upload PDF</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
+                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Status</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -275,14 +124,14 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product ID</label>
-                                                                <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
+                                                                <label>asset ID</label>
+                                                                <input className="form-control" type="text" name="asset_id" value={this.state.asset_id} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/* <div className="rightpartedit_delete">
+                                                            {/* <div class="rightpartedit_delete">
           <center>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+      		<a href="javascript:void(0)"><i class="ti-trash align-middle"></i></a>
            
           </center>
           </div> */}
@@ -291,15 +140,15 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name</label>
-                                                                <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
+                                                                <label>asset Name</label>
+                                                                <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
+                                                            {/*<div class="rightpartedit_delete">
           <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+            <a href="javascript:void(0)"><i class="ti-plus align-middle"></i></a>
+      		<a href="javascript:void(0)"><i class="ti-trash align-middle"></i></a>
           
            
           </center>
@@ -310,14 +159,14 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>UPC</label>
-                                                                <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
+                                                                <input className="form-control" type="text"name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
+                                                            {/*<div class="rightpartedit_delete">
           <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+            <a href="javascript:void(0)"><i class="ti-plus align-middle"></i></a>
+      		<a href="javascript:void(0)"><i class="ti-trash align-middle"></i></a>
           
            
           </center>
@@ -329,24 +178,24 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                             <div className="form-group">
                                                                 <label>Category</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" value={this.state.category === '' ? '' : this.state.category} name="category" className="form-control" onChange={(e) => this.change(e)}>
+                                                                <select id="pref-perpage" value={this.state.category} name="category" className="form-control" onChange={(e)=>this.change(e)}>
                                                                         <option value={0}>Category</option>
                                                                         <option value={"Toothpastes"}>Toothpastes</option>
                                                                         <option value={"Toothbrushes"}>Toothbrushes</option>
                                                                         <option value={"Mouthwashes"}>Mouthwashes</option>
-                                                                        <option value={"Kids Products"}>Kids Products</option>
+                                                                        <option value={"Kids assets"}>Kids assets</option>
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    <p className="value_ofcategory">Value inherited from parent asset</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
+                                                            {/*<div class="rightpartedit_delete">
           <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+            <a href="javascript:void(0)"><i class="ti-plus align-middle"></i></a>
+      		<a href="javascript:void(0)"><i class="ti-trash align-middle"></i></a>
           
            
           </center>
@@ -361,10 +210,10 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
+                                                            {/*<div class="rightpartedit_delete">
           <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+            <a href="javascript:void(0)"><i class="ti-plus align-middle"></i></a>
+      		<a href="javascript:void(0)"><i class="ti-trash align-middle"></i></a>
           
            
           </center>
@@ -374,9 +223,9 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Status</label>
+                                                                <label>asset Status</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" name="product_status" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                <select id="pref-perpage" name="asset_status" onChange={(e)=>this.change(e)} value={this.state.asset_status === '' ? '' : this.state.asset_status} className="form-control">
                                                                         <option value={"Active"}>Active</option>
                                                                         <option value={"Inactive"}>Inactive</option>
                                                                     </select>
@@ -407,7 +256,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                             <div className="form-group">
                                                                 <label>Cost</label>
                                                                 <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                <p className="value_ofcategory">Value inherited from parent asset</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -426,7 +275,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted MSRP</label>
+                                                            <label>Formatted MSRP</label>
                                                                 <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -465,7 +314,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                <p className="value_ofcategory">Value inherited from parent asset</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -538,7 +387,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    <p className="value_ofcategory">Value inherited from parent asset</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -594,135 +443,38 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
                                                 <div className="form-group">
-                                                    <label>Upload Image</label>
+                                                    <label>Workflow_state</label>
                                                     <div className="form-group">
-                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
-                                                        {image !== '' && image !== undefined ?
-                                                            <img src={image} height="50px" width="50px" className="digital_img" />
-                                                            : ''}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    {/* Panel for pdf upload in specification panel*/}
-                                    <div className="tab-pane" id="uploadPDF" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
-                                            <div className="form-group">
-                                                <label>Upload PDF</label>
-                                                    <div className="form-group">
-                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} onChange={this.UploadPDF.bind(this)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
-                                                        {image !== '' && image !== undefined ?
-                                                            <img src={image} height="50px" width="50px" className="digital_img" />
-                                                            : ''}
-
-                                                            <div id="pdfData"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div className="tab-pane" id="settings2" role="tabpanel">
-                                            <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
-                                                <div className="form-group">
-                                                    <label>Workflow state</label>
-                                                    <div className="form-group">
-                                                 
-                                                        <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
-                                                        value={this.state.workflow_state ===''? '': this.state.workflow_state}>
-                                                            <option value={"In Review"}>In Review</option>
-                                                            <option value={"In Publish"}>In Publish</option>
-                                                            <option value={"Published"}>Published</option>
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
+                                                            <option value="In Review">In Review</option>
+                                                            <option value="In Publish">In Publish</option>
+                                                            <option value="Published">Published</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="tab-pane filtercustome tabsectionform  custome_listfile" id="settings3" role="tabpanel">
-                                            <ul className="nav nav-tabs datetab" id="myTab" role="tablist">
 
-
-                                                <li className="nav-item">
-                                                    <a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a>
-                                                </li>
-                                                <li className="nav-item">
-                                                    <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
-                                                </li>
-                                                <li className="nav-item">
-                                                    <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
-                                                </li>
-                                           
-                                            </ul>
-                                            <div className="tab-content custome_content under_tabs" id="myTabContent">
-
-                                                <div className="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                                <div className="row">
-                                                <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1"  />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1" />
-                                                            </div>
-                                                        </div>
+                                        <div className="tab-pane" id="settings" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                            <div className="form-group">
+                                                <label>Digital Asset</label>
+                                                    <div className="form-group">
+                                                        <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+                                                        {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img"/>
+                                                            : ''}
+                                                    </div>
                                                 </div>
-                                                
-                                                </div>
-                                                <div className="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div>
                                             </div>
-
-
                                         </div>
+
+                                      
+
+
                                     </div>
-
-
-
-                                    
                                 </div>
                             </div>
                         </div>
@@ -733,21 +485,21 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                             <div className="modal-content">
                                 {/* Modal Header */}
                                 <div className="modal-header">
-                                    <h4 className="modal-title title_modalheader">Create New Product</h4>
+                                    <h4 className="modal-title title_modalheader">Create New asset</h4>
                                     <button type="button" className="close" data-dismiss="modal">×</button>
                                 </div>
                                 {/* Modal body */}
                                 <div className="modal-body filtercustome">
                                     <form>
                                         <div className="form-group">
-                                            <label>Product Id</label>
+                                            <label>asset Id</label>
                                             <input className="form-control" type="text" name="search" placeholder={12345} />
                                         </div>
                                         <div className="form-group">
-                                            <label>Product Name</label>
+                                            <label>asset Name</label>
                                             <input className="form-control" type="text" name="search" placeholder={12345} />
                                         </div>
-                                        <div className="avatar-upload"> <span>Product Name</span>
+                                        <div className="avatar-upload"> <span>asset Name</span>
                                             <div className="avatar-preview">
                                                 <div id="imagePreview" style={{ backgroundImage: 'url(http://i.pravatar.cc/500?img=7)' }}> </div>
                                             </div>
@@ -775,4 +527,4 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
 }
 
 
-export default NewProduct;
+export default EditDigitalImage;

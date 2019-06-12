@@ -26,7 +26,9 @@ class ProductList extends Component {
             routeToPage: false,
             batchKey: 'product_name',
             batchValue: '',
-            bulkDelete: []
+            bulkDelete: [],
+            searchValue1:'',
+            searchValue2:''
         }
     }
 
@@ -88,7 +90,7 @@ class ProductList extends Component {
     async deleteProductById() {
         console.log('delete product by id', this.state)
         let self = this
-       // self.setState({ Loading: true })
+        // self.setState({ Loading: true })
         console.log("this.stateeeeee", this.state)
         if (self.state.deleteProductId) {
             await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
@@ -105,9 +107,9 @@ class ProductList extends Component {
         }
 
         else if (self.state.bulkDelete) {
-            console.log('bulk delete===',self.state.bulkDelete)
-            var id= self.state.bulkDelete
-            axios.post("api/bulkProductDelete",{id:id}).then(function (response) {
+            console.log('bulk delete===', self.state.bulkDelete)
+            var id = self.state.bulkDelete
+            axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
                 console.log('resposne from api==', product)
                 if (response.data.product) {
                     self.setState({ bulkDelete: '', Loading: false })
@@ -263,7 +265,7 @@ class ProductList extends Component {
             document.getElementById(`activebtn${index}`).style.display = 'none'
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
             this.setState({ countItems: counter })
-            
+
         } catch (e) { console.log("error ", e) }
 
     }
@@ -283,41 +285,41 @@ class ProductList extends Component {
     }
 
 
-/**
- * Method for formating data for CSV
- */
-filterDataCSV(data) {
-    let tempData = []
-    let json = {}
+    /**
+     * Method for formating data for CSV
+     */
+    filterDataCSV(data) {
+        let tempData = []
+        let json = {}
 
-    data.map(data => {
-      json = {
-        "Category": `${data.category}`,
-        "Cost": data.cost,
-        "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),
-        "Link": data.link,
-        "Product Decription": data.long_description,
-        "Material": data.material,
-        "Medium Description": data.medium_description,
-        "MSRP" :data.msrp,
-        "Product Id":data.product_id,
-        "product Line ":data.product_line,
-        "Product Name":data.product_name,
-        "Product Status":data.product_status,
-        "Retail Price":data.retail_price,
-        "Style" :data.style,
-        "Tags" : data.tags,
-        "UPC" : data.upc,
-        "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY'),
-        "Warnings":data.warnings,
-        "Wholesale Price" : data.wholesale_price,
-        "Workflow State" : data.workflow_state
-      }
-      tempData.push(json)
-    })
-    return tempData
+        data.map(data => {
+            json = {
+                "Category": `${data.category}`,
+                "Cost": data.cost,
+                "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),
+                "Link": data.link,
+                "Product Decription": data.long_description,
+                "Material": data.material,
+                "Medium Description": data.medium_description,
+                "MSRP": data.msrp,
+                "Product Id": data.product_id,
+                "product Line ": data.product_line,
+                "Product Name": data.product_name,
+                "Product Status": data.product_status,
+                "Retail Price": data.retail_price,
+                "Style": data.style,
+                "Tags": data.tags,
+                "UPC": data.upc,
+                "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY'),
+                "Warnings": data.warnings,
+                "Wholesale Price": data.wholesale_price,
+                "Workflow State": data.workflow_state
+            }
+            tempData.push(json)
+        })
+        return tempData
 
-  }
+    }
 
 
 
@@ -351,7 +353,7 @@ filterDataCSV(data) {
                 { wch: 30 },
                 { wch: 30 },
                 { wch: 30 },
-              
+
             ];
             var wsrows = [
                 { hpt: 15 }, // "points"
@@ -479,9 +481,43 @@ filterDataCSV(data) {
 
     }
 
+    searchValues(e){
+
+        var searchValue1=this.state.searchValue1
+        var searchValue2=e.target.value
+
+        console.log('searchValue1--',searchValue1)
+        console.log('searchValue2',searchValue2)
+        var data={
+            searchValue1:searchValue1,
+            searchValue2:searchValue2
+        }
+
+        axios.get("/api/searchFilterByValues",data).then(function (response) {
+            console.log("product list ", response.data);
+            if (response.data) {
+                // self.setState({
+                //     product: response.data.products,
+                //     filteredList: response.data.products,
+                //     listToFilter: response.data.products,
+                //     stateUpdate: true,
+                //     Loading: false
+                // })
+            }
+
+        }).catch(function (error) {
+           // self.setState({ Loading: false })
+            console.log("error  login is ", error);
+        })
+
+
+
+    }
+
     render() {
         const { filteredList } = this.state;
         
+
         const { product, pictures } = this.state;
         let buff
         let base64data
@@ -500,7 +536,7 @@ filterDataCSV(data) {
                         <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
-                <div id="main-wrapper"> 
+                <div id="main-wrapper">
                     <Header />
                     <Aside />
                     <div className="page-wrapper">
@@ -523,60 +559,32 @@ filterDataCSV(data) {
                                                             <div className="row">
                                                                 <div className="col-md-4">
                                                                     <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value={0}>Brand</option>
-                                                                            <option value="Colgate Total TP">Colgate Total TP</option>
-                                                                            <option value="Colgate 360 Bat TB">Colgate 360 Bat TB</option>
-                                                                            <option value="Colgate 360 Man TB">Colgate 360 Man TB</option>
-                                                                            <option value="Colgate Max Fresh TP">Colgate Max Fresh TP</option>
-                                                                            <option value="Colgate Optic White TP">Colgate Optic White TP</option>
-                                                                            <option value="Palmolive Essential Clean HD">Palmolive Essential Clean HD</option>
-                                                                            <option value="Palmolive Antibacterial Ultra HD">Palmolive Antibacterial Ultra HD</option>
-                                                                            <option value="Palmolive Sensorial Ultra HD">Palmolive Sensorial Ultra HD</option>
-                                                                            <option value="Palmolive Soft Touch Ultra HD">Palmolive Soft Touch Ultra HD</option>
-                                                                            <option value="Palmolive Pure + Ultra HD">Palmolive Pure + Ultra HD</option>
-                                                                            <option value="Palmolive Ultra HD">Palmolive Ultra HD</option>
-                                                                            <option value="Palmolive Oxy Plus Ultra HD">Palmolive Oxy Plus Ultra HD</option>
-                                                                            <option value="Palmolive Eco+ AD">Palmolive Eco+ AD</option>
-                                                                            <option value="Palmolive BS">Palmolive BS</option>
-                                                                            <option value="Palmolive Aquarium LHW">Palmolive Aquarium LHW</option>
-                                                                            <option value="Palmolive Shave Prep">Palmolive Shave Prep</option>
+                                                                        <select id="pref-perpage" className="form-control" name="searchValue1" onChange={e => this.change(e)}>
+                                                                            <option value={0}>Category</option>
+                                                                            <option value={"Toothpastes"}>Toothpastes</option>
+                                                                            <option value={"Toothbrushes"}>Toothbrushes</option>
+                                                                            <option value={"Mouthwashes"}>Mouthwashes</option>
+                                                                            <option value={"Kids Products"}>Kids Products</option>
+                                                                            <option value={"Toothpowder"}>Toothpowder</option>
+                                                                            <option value={"Liquid handwash"}>Liquid handwash</option>
+
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-md-4">
                                                                     <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value>Category</option>
-                                                                            <option value="Toothpaste">Toothpaste</option>
-                                                                            <option value="Bar Soap">Bar Soap</option>
-                                                                            <option value="Liquid Hand Wash">Liquid Hand Wash</option>
-                                                                            <option value="Shave Prep">Shave Prep</option>
-                                                                            <option value="Shower Gel">Shower Gel</option>
-                                                                            <option value="Manual TB">Manual TB</option>
-                                                                            <option value="Battery TB">Battery TB</option>
+                                                                        <select id="pref-perpage" className="form-control" name="searchValue2" onChange={e => this.searchValues(e)}>
+                                                                            <option value={0}>Status</option>
+                                                                            <option value={"Active"}>Active</option>
+                                                                            <option value={"Inactive"}>Inactive</option>
+
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value>Collection</option>
-                                                                            <option value="Oral Health">Oral Health</option>
-                                                                            <option value="Foaming">Foaming </option>
-                                                                            <option value="Maxfresh">Maxfresh</option>
-                                                                            <option value="Strong Teeth">Strong Teeth</option>
-                                                                            <option value="Naturals">Naturals</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-4">
-                                                            <div className="form-group">
-                                                                <input className="form-control search_filter" type="text" name="search" placeholder="Search Products" />
-                                                                <i className="ti-search filtersearch"></i> </div>
-                                                            </div>
+
                                                     </div>
                                                 </form>
                                             </div>
@@ -601,7 +609,7 @@ filterDataCSV(data) {
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
-                                                    <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                         <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
                                                         <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
                                                     </a>
@@ -627,9 +635,9 @@ filterDataCSV(data) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                        <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
+                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="ti-check" />Approve</a>
+                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="ti-close" />Reject</a>
+                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="fas fa-upload" />Publish</a>
                                                     </div>
                                                 </div>
                                             </div>
