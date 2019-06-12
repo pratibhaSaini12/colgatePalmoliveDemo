@@ -23,9 +23,10 @@ class ProductList extends Component {
             Loading: false,
             countItems: 0,
             selectedProducytId: [],
-            routeToPage:false,
+            routeToPage: false,
             batchKey: 'product_name',
-            batchValue: ''
+            batchValue: '',
+            bulkDelete: []
         }
     }
 
@@ -85,20 +86,41 @@ class ProductList extends Component {
     }
 
     async deleteProductById() {
+        console.log('delete product by id', this.state)
         let self = this
-        self.setState({ Loading: true })
+       // self.setState({ Loading: true })
         console.log("this.stateeeeee", this.state)
-        await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
-            console.log('resposne from Delete api==', response)
-            if (response.data.product) {
-                self.setState({ deleteProductId: '', Loading: false })
-                window.location.href = "/productList"
-            }
+        if (self.state.deleteProductId) {
+            await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
+                console.log('resposne from Delete api==', response)
+                if (response.data.product) {
+                    self.setState({ deleteProductId: '', Loading: false })
+                    window.location.href = "/productList"
+                }
 
-        }).catch(function (error) {
-            this.setState({ deleteProductId: '', Loading: false })
-            console.log("error in delete product", error)
-        })
+            }).catch(function (error) {
+                this.setState({ deleteProductId: '', Loading: false })
+                console.log("error in delete product", error)
+            })
+        }
+
+        else if (self.state.bulkDelete) {
+            console.log('bulk delete===',self.state.bulkDelete)
+            var id= self.state.bulkDelete
+            axios.post("api/bulkProductDelete",{id:id}).then(function (response) {
+                console.log('resposne from api==', product)
+                if (response.data.product) {
+                    self.setState({ bulkDelete: '', Loading: false })
+                    window.location.href = "/productList"
+                }
+
+            }).catch(function (error) {
+                this.setState({ bulkDelete: '', Loading: false })
+            })
+        }
+
+
+
     }
 
     filterSearch(event) {
@@ -200,12 +222,12 @@ class ProductList extends Component {
     handleIcon(e, index, key) {
         try {
             let counter = this.state.countItems
-            if(counter<0){
+            if (counter < 0) {
                 counter = 0
             }
             let selectedProdeuctIds = this.state.selectedProducytId
             let domIcon = document.getElementById(`activebtn${index}`)
-            if(domIcon.style.display === '' || domIcon.style.display==='none') {
+            if (domIcon.style.display === '' || domIcon.style.display === 'none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
                 document.getElementById(`activebtn${index}`).style.display = 'block'
@@ -233,9 +255,9 @@ class ProductList extends Component {
         try {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
-            counter = counter-1
-            if(counter<0) {
-                counter = 0 
+            counter = counter - 1
+            if (counter < 0) {
+                counter = 0
             }
             let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
             document.getElementById(`activebtn${index}`).style.display = 'none'
@@ -377,7 +399,7 @@ filterDataCSV(data) {
      */
     clearAllProduct(e) {
         try {
-            
+
             let allproduct = this.state.filteredList
             if (allproduct.length > 0) {
                 allproduct.map((key, index) => {
@@ -385,8 +407,8 @@ filterDataCSV(data) {
                     this.setState({ countItems: 0 })
                 })
             }
-        } catch(e){console.log("error",e)}
-       
+        } catch (e) { console.log("error", e) }
+
     }
 
     change(e) {
@@ -414,9 +436,9 @@ filterDataCSV(data) {
         console.log('batchUpdate----', batchUpdate)
         axios.post("api/batchUpdate", batchUpdate).then(function (response) {
             console.log('resposne from api==', product)
-            // if (response.data.task) {
-            //     window.location.href = "/dashboard"
-            // }
+            if (response.data.task) {
+                window.location.href = "/productList"
+            }
 
         }).catch(function (error) {
 
@@ -426,19 +448,36 @@ filterDataCSV(data) {
     /****
      * @param {event} 
      */
-    compareProducts(e){
-       
-        if(this.props.history!==undefined && this.state.routeToPage===false) {
-            this.setState({routeToPage:true})
+    compareProducts(e) {
+
+        if (this.props.history !== undefined && this.state.routeToPage === false) {
+            this.setState({ routeToPage: true })
             this.props.history.push(
                 {
                     pathname: '/compareProducts',
                     state: { compareProductsList: this.state.selectedProducytId }
                 }
-            )   
+            )
         }
-     }
+    }
 
+
+
+    bulkDelete() {
+        console.log('state on batch update----', this.state)
+        var state = this.state
+        var id = []
+
+        state.selectedProducytId.length ? state.selectedProducytId.map((key) => {
+            return id.push(key.product_id)
+        }) : ''
+
+        this.setState({
+            bulkDelete: id
+        })
+
+
+    }
 
     render() {
         const { filteredList } = this.state;
@@ -570,20 +609,21 @@ filterDataCSV(data) {
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)" onClick={(e)=>{this.selectAllProduct(e)}}><i className="ti-layout-grid2"></i>Select All</a></div>
-                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)" onClick={(e)=>{this.clearAllProduct(e)}}><i class="fa fa-times-circle"></i> Clear All</a></div>
+                                                                    <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a href="#" onClick={(e) => { this.clearAllProduct(e) }}>Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
-                                                                    <div className="option-box delete"><a href><i className="ti-trash"></i>Delete</a></div>
-                                                                    
-                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e)=>{this.createExcel(e)}}><i class="fa fa-file-download"></i>Download</a></div>
-                                                                    <div className="option-box move-folder"><a href="javscript:void(0)"><i className="ti-folder"></i>Move to Folder</a></div>
-                                                                    <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
-                                                                    <div className="option-box export"><a href="javscript:void(0)"><i className="ti-import"></i>Export Template</a></div>
+                                                                    <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}>Delete</a></div>
+
+                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}>Download</a></div>
+                                                                    <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
+                                                                    <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
+                                                                    <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                    <a href="javascript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
-                                                        </div>
-                                                                    <div className="option-box compare"><a href="compair.html"><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                        Batch Update
+                                                                    </div>
+                                                                    <div className="option-box compare">
+                                                                        <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}>Compare Products</a></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -629,7 +669,6 @@ filterDataCSV(data) {
                                                     <th scope="col">Product Line</th>
                                                     <th scope="col">Product Status</th>
                                                     <th scope="col">UPC</th>
-
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -675,7 +714,7 @@ filterDataCSV(data) {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => {this.handledeSelect(e, index, key) }}>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                         <ImageContainer src="icons/check.png" />
                                                     </a>
 
@@ -890,7 +929,7 @@ filterDataCSV(data) {
                                         </div>
                                         {/* Modal footer */}
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e) => this.deleteProductById()}>Yes</button>
+                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>Yes</button>
                                             <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>No</button>
                                         </div>
                                     </div>
@@ -898,8 +937,8 @@ filterDataCSV(data) {
                             </div>
                             {/* Modal footer */}
                             <div className="modal-footer productlist_footer">
-                                <button type="button" className="btn btn-primary" data-dismiss="modal">SAVE</button>
-                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>DELETE</button>
+                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>CANCEL</button>
                             </div>
                         </div>
                     </div>
