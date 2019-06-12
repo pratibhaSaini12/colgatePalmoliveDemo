@@ -3,7 +3,8 @@ const userController=require('./userController');
 const taskController=require('./taskController');
 const productController=require('./productController');
 const assetController=require('./assetController');
-const uploadImageController=require("./uploadImageController")
+const uploadImageController=require("./uploadImageController");
+const uploadPDFController=require("./uploadPDFController");
 
 // const cronController = require('./CRON/cronController');
 require('./CRON/cronController')
@@ -44,6 +45,7 @@ module.exports = (app) => {
   app.get('/api/getTaskByUserID',taskController.getTaskByUserID);
   app.post('/api/createNewTask',taskController.createNewTask);
   app.post('/api/upload/image',uploadImageController.upploadImage);
+  app.post('/api/upload/pdf',uploadPDFController.upploadPDF);
   app.get('/api/getAllOpenTask',taskController.getAllOpenTask);
   app.get('/api/getAllOpenTaskByUser',taskController.getAllOpenTaskByUser);
   

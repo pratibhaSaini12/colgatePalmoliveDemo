@@ -121,6 +121,46 @@ class NewProduct extends Component {
 		}
     }
 
+
+    /*Upload PDF files 
+    Author: Shashnak Saxena
+    Date: June 12th 2019
+    */
+    UploadPDF(ev) {
+		let self = this
+		var idCardBase64
+		var assetBodyData
+		ev.preventDefault()
+		var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
+		if (FileSize <= 5) {
+            self.getBase64(self.uploadInputFile.files[0], (result) => {
+				var base64 = result.split(",");
+				idCardBase64 = base64[1]
+				assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                console.log("===assetBodyData====",assetBodyData)
+                self.setState({
+                    image: assetBodyData.data
+                })
+                axios.post("/api/upload/pdf",assetBodyData).then((res)=>{
+                    console.log("error in response",res)
+                    if(res.data){
+						console.log("res in uploading",res)
+						return 
+                    } else {
+						console.log("error in response",res)
+						return						
+                    }
+                }).catch((err)=>{
+					console.log("errorrrrrrrrrrrrrr in uploading",err)
+					return
+                })
+			});
+		}
+		else {
+			console.log("fileSizeExceedMessage=======")
+		}
+    }
+
     //Method to get Bas64 of file
 	getBase64(file, cb) {
 		let reader = new FileReader();
@@ -172,6 +212,9 @@ if(img !== ''){
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Upload Image</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Upload PDF</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
@@ -517,6 +560,25 @@ if(img !== ''){
                                             </div>
                                         </div>
 
+
+                                    {/* Panel for pdf upload in specification panel*/}
+                                    <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                        <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
+                                            <div className="form-group">
+                                                <label>Upload PDF</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} onChange={this.UploadPDF.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
+                                                        {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
                                         <div className="tab-pane" id="settings2" role="tabpanel">
                                         <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
                                             <div className="form-group">
@@ -534,6 +596,10 @@ if(img !== ''){
                                             </div>
                                         </div>
                                     </div>
+
+
+
+                                    
                                 </div>
                             </div>
                         </div>
