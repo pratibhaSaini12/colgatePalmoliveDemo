@@ -27,7 +27,8 @@ class Dashboard extends Component {
             completeIncomplete: [],
             updateProduct: [],
             Loading: false,
-            workflow_task: []
+            workflow_task: [],
+            filterdata: '',
 
         }
     }
@@ -320,6 +321,16 @@ class Dashboard extends Component {
 
     }
 
+    // searchResult(e){
+    //     let self = this
+    //     var val = e.target.value
+
+    //     this.setState({
+    //         filterdata : val,
+    //     })
+
+    // }
+
     render() {
         const { openTask, updateProduct } = this.state;
         console.log("states in dashbpard", this.state)
@@ -410,7 +421,7 @@ class Dashboard extends Component {
                                                         </div>
                                                         <div className="col-md-4">
                                                             <div className="form-group">
-                                                                <input className="form-control search_filter" type="text" name="search" placeholder="Search for digital assets" />
+                                                                <input className="form-control search_filter" type="text" name="search" value={this.state.filterdata} placeholder="Search for digital assets"  />
                                                                 <i className="ti-search filtersearch" /> </div>
                                                         </div>
                                                     </div>

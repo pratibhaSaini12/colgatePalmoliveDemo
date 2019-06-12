@@ -105,12 +105,15 @@ class Search extends React.Component {
 
     }
 
-    //     componentDidMount(){
-    // console.log('inside filtersearch')
-    //         if (this.state.taskList.length && this.state.product.length) {
-    //             this.filterSearch();
-    //         }
-    //     }
+        componentDidMount(){
+    console.log('inside filtersearch')
+            if (this.state.taskList.length && this.state.product.length) {
+                this.filterSearch();
+            }
+            else{
+                return;
+            }
+        }
 
     render() {
         console.log('state on render====', this.state)

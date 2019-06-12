@@ -17,9 +17,15 @@ class Header extends React.Component {
   }
 
   change(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
+    try {
+      this.setState({
+        [e.target.name]: e.target.value,
+      })
+      if (this.state.searchValue == '') {
+        return;
+      }
+    } 
+    catch(e) {  }
   }
 
   render() {
@@ -37,7 +43,7 @@ class Header extends React.Component {
         <header className="topbar">
           <nav className="navbar top-navbar navbar-expand-md navbar-light">
             <div className="navbar-collapse container-fluid">
-            <ul class="navbar-nav col-md-9">
+              <ul class="navbar-nav col-md-9">
                 {/* This is  */}
                 <li className="nav-item"> <a className="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i className="ti-menu" /></a> </li>
                 <li className="nav-item"> <a className="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i className="ti-menu" /></a> </li>
@@ -48,14 +54,14 @@ class Header extends React.Component {
                 </li>
                 <li className="nav-item -xs-down search-box">
                   <form className="app-search" style={{ display: 'block !important' }}>
-                    <input type="text" className="form-control" placeholder="Search Product, Assets or List" name="searchValue" onChange={e => this.change(e)}/>
+                    <input type="text" className="form-control" placeholder="Search Product, Assets or List" name="searchValue" onChange={e => this.change(e)} />
                     <Link to={{ pathname: '/search', state: { _data: this.state.searchValue } }} className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>
                   </form>
                 </li>
               </ul>
-              
-                  <ul className="navbar-nav">
-                  <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
+
+              <ul className="navbar-nav">
+                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
                   <div className="notify" />
                 </a> </li>
                 <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span className="adminsection">Jessica Jones <br />
@@ -64,8 +70,8 @@ class Header extends React.Component {
                   <i className="fas fa-caret-down all_iconsize caretdrop" /></a>
                 </li>
                 <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#"> <i className="ti-help-alt all_iconsize" /> </a> </li>
-           
-                  </ul>
+
+              </ul>
             </div>
           </nav>
         </header>

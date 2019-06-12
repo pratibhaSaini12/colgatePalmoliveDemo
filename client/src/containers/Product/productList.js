@@ -28,9 +28,9 @@ class ProductList extends Component {
             batchKey: 'product_name',
             batchValue: '',
             selectedArray: [
-            { key: 'product_line', value: 'product_line' },
-            { key: 'product_name', value: 'product_name' }, { key: 'category', value: 'Category' },
-            { key: 'cost', value: 'Cost' }],
+                { key: 'product_line', value: 'product_line' },
+                { key: 'product_name', value: 'product_name' }, { key: 'category', value: 'Category' },
+                { key: 'cost', value: 'Cost' }],
             attrebuteArray: [
                 { key: 'category', value: 'Category' },
                 { key: 'cost', value: 'Cost' },
@@ -55,8 +55,8 @@ class ProductList extends Component {
                 { key: 'workflow_state', value: 'workflow_state' },
             ],
             bulkDelete: [],
-            searchValue1:'',
-            searchValue2:'',
+            searchValue1: '',
+            searchValue2: '',
             pageactive: 1,
             dataPerPage: 5,
         }
@@ -583,7 +583,7 @@ class ProductList extends Component {
         let buff
         let base64data
         this.showhideSpan()
-        let {dataPerPage} = this.state
+        let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>
@@ -691,7 +691,7 @@ class ProductList extends Component {
                                                                     <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
                                                                     <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div>
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                    <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
+                                                                        <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
                                                                     <div className="option-box compare">
                                                                         <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
@@ -710,7 +710,7 @@ class ProductList extends Component {
 
 
                                     </div>
-                                    <select name="example_length" aria-controls="example" class="form-control form-control-sm">
+                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
@@ -768,7 +768,7 @@ class ProductList extends Component {
                                         </table>
                                         <div className="pagebottompart">
                                             {/* <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p> */}
-                                            <div className="pagination pull-right my-1 float-right">
+                                            {/* <div className="pagination pull-right my-1 float-right">
                                                 <Pagination
                                                     hideFirstLastPages
                                                     activePage={this.state.pageactive}
@@ -779,14 +779,14 @@ class ProductList extends Component {
                                                     prevPageText='Prev'
                                                     nextPageText='Next'
                                                 />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
                                 {
-                                    filteredList.length > 0 ? filteredList.map((key, index) => {
+                                    list.length > 0 ? list.map((key, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
@@ -816,12 +816,25 @@ class ProductList extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
 
                                     }) : ''
 
                                 }
+                                
                             </div>
+                            <div className="pagination pull-right my-1 float-right">
+                                    <Pagination
+                                        hideFirstLastPages
+                                        activePage={this.state.pageactive}
+                                        itemsCountPerPage={dataPerPage}
+                                        totalItemsCount={filteredList.length}
+                                        pageRangeDisplayed={4}
+                                        onChange={this.handlePageChange.bind(this)}
+                                        prevPageText='Prev'
+                                        nextPageText='Next'
+                                    />
+                                </div>
                         </div>
                     </div>
                 </div>
