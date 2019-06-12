@@ -28,31 +28,31 @@ class ProductList extends Component {
             batchKey: 'product_name',
             batchValue: '',
             selectedArray: [
-                { key: 'product_line', value: 'product_line' },
-                { key: 'product_name', value: 'product_name' }, { key: 'category', value: 'Category' },
+                { key: 'product_line', value: 'Product Line' },
+                { key: 'product_name', value: 'Product Name' },
+                { key: 'category', value: 'Category' },
                 { key: 'cost', value: 'Cost' }],
             attrebuteArray: [
                 { key: 'category', value: 'Category' },
                 { key: 'cost', value: 'Cost' },
-                { key: 'created_at', value: 'created_at' },
-                { key: 'link', value: 'link' },
-                { key: 'long_description', value: 'long_description' },
-                { key: 'main_image', value: 'main_image' },
-                { key: 'material', value: 'material' },
-                { key: 'medium_description', value: 'medium_description' },
-                { key: 'msrp', value: 'msrp' },
-                { key: 'product_id', value: 'product_id' },
-                { key: 'product_line', value: 'product_line' },
-                { key: 'product_name', value: 'product_name' },
-                { key: 'product_status', value: 'product_status' },
-                { key: 'retail_price', value: 'retail_price' },
-                { key: 'style', value: 'style' },
-                { key: 'tags', value: 'tags' },
-                { key: 'upc', value: 'upc' },
-                { key: 'updated_at', value: 'updated_at' },
-                { key: 'warnings', value: 'warnings' },
-                { key: 'wholesale_price', value: 'wholesale_price' },
-                { key: 'workflow_state', value: 'workflow_state' },
+                { key: 'created_at', value: 'Created At' },
+                { key: 'long_description', value: 'Long Description' },
+                //  { key: 'main_image', value: 'main_image' },
+                { key: 'material', value: 'Material' },
+                { key: 'medium_description', value: 'Medium Description' },
+                { key: 'msrp', value: 'Msrp' },
+                { key: 'product_id', value: 'Product Id' },
+                { key: 'product_line', value: 'Product Line' },
+                { key: 'product_name', value: 'Product Name' },
+                { key: 'product_status', value: 'Product Status' },
+                { key: 'retail_price', value: 'Retail Price' },
+                { key: 'style', value: 'Style' },
+                { key: 'tags', value: 'Tags' },
+                { key: 'upc', value: 'Upc' },
+                { key: 'updated_at', value: 'Updated At' },
+                { key: 'warnings', value: 'Warnings' },
+                { key: 'wholesale_price', value: 'Wholesale Price' },
+                { key: 'workflow_state', value: 'Workflow State' },
             ],
             bulkDelete: [],
             searchValue1: '',
@@ -561,7 +561,7 @@ class ProductList extends Component {
         let self = this
 
         console.log('dataaaaaa', data)
-        axios.post("/api/searchFilterByValues" , data).then(function (response) {
+        axios.post("/api/searchFilterByValues", data).then(function (response) {
             console.log("product list ", response.data);
             if (response.data) {
                 console.log('inside response========', response.data.products)
@@ -842,28 +842,26 @@ class ProductList extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
+                                        </div>                                    
                                      
 
 
                                     }) : ''
 
                                 }
-                                
+
                             </div>
                             <div className="pagination pull-right my-1 float-right">
-                                    <Pagination
-                                        hideFirstLastPages
-                                        activePage={this.state.pageactive}
-                                        itemsCountPerPage={dataPerPage}
-                                        totalItemsCount={filteredList.length}
-                                        pageRangeDisplayed={4}
-                                        onChange={this.handlePageChange.bind(this)}
-                                        prevPageText='Prev'
-                                        nextPageText='Next'
-                                    />
-                                </div>
+                                <Pagination
+                                    hideFirstLastPages
+                                    activePage={this.state.pageactive}
+                                    itemsCountPerPage={dataPerPage}
+                                    totalItemsCount={filteredList.length}
+                                    pageRangeDisplayed={4}
+                                    onChange={this.handlePageChange.bind(this)}
+                                    prevPageText='Prev'
+                                    nextPageText='Next'
+                                />
                             </div>
                         </div>
                     </div>
@@ -949,7 +947,7 @@ class ProductList extends Component {
                                                 <ul className="list_ofproduct">
                                                     {
                                                         selectedArray.length > 0 ? selectedArray.map((key, index) => {
-                                                            return <li>{key.key}</li>
+                                                            return <li>{key.value}</li>
                                                         }) : ''
                                                     }
                                                 </ul>
@@ -1050,7 +1048,7 @@ class ProductList extends Component {
 
             </div>
 
-
+            </div>
 
 
         )

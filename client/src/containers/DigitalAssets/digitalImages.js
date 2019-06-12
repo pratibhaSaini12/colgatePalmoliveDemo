@@ -24,7 +24,8 @@ class DigitalImages extends Component {
             filteredList: '',
             listToFilter: '',
             assetList: [],
-            existAsset: ''
+            existAsset: '',
+            deleteAssetId:''
         }
     }
 
@@ -227,6 +228,44 @@ class DigitalImages extends Component {
         } catch (e) {
             console.log("not wokreddd===========")
          }
+
+    }
+
+    async deleteProductById() {
+        console.log('delete asset by id', this.state)
+        let self = this
+        // self.setState({ Loading: true })
+        console.log("this.stateeeeee", this.state)
+        if (self.state.deleteAssetId) {
+            await axios.post("/api/deleteAssetByID", { id: this.state.deleteAssetId }).then(function (response) {
+                console.log('resposne from Delete api==', response)
+                if (response.data.asset) {
+                    self.setState({ deleteAssetId: '', Loading: false })
+                    window.location.href = "/digitalImages"
+                }
+
+            }).catch(function (error) {
+                this.setState({ deleteAssetId: '', Loading: false })
+                console.log("error in delete product", error)
+            })
+        }
+
+        // else if (self.state.bulkDelete) {
+        //     console.log('bulk delete===', self.state.bulkDelete)
+        //     var id = self.state.bulkDelete
+        //     axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
+        //         console.log('resposne from api==', product)
+        //         if (response.data.product) {
+        //             self.setState({ bulkDelete: '', Loading: false })
+        //             window.location.href = "/productList"
+        //         }
+
+        //     }).catch(function (error) {
+        //         this.setState({ bulkDelete: '', Loading: false })
+        //     })
+        // }
+
+
 
     }
 
@@ -529,7 +568,7 @@ class DigitalImages extends Component {
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link>
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.asset_id })}> <ImageContainer src="icons/delete.png" />
                                                         </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
@@ -553,13 +592,13 @@ class DigitalImages extends Component {
                                 {/* Modal body */}
                                 <div className="modal-body filtercustome">
                                     <form>
-                                        <div className="form-group">
+                                        {/* <div className="form-group">
                                             <label>Asset Id</label>
                                             <input className="form-control" type="text" name="asset_id" placeholder={12345} value={this.state.asset_id} onChange={e => this.change(e)} />
-                                        </div>
+                                        </div> */}
                                         <div className="form-group">
                                             <label>Asset Name</label>
-                                            <input className="form-control" type="text" name="asset_name" placeholder={12345} value={this.state.asset_name} onChange={e => this.change(e)} />
+                                            <input className="form-control" type="text" name="asset_name"  value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
                                         {existAsset !== '' ?
                                             <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
@@ -606,7 +645,7 @@ class DigitalImages extends Component {
                                 </div>
                                 {/* Modal footer */}
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal">Yes</button>
+                                    <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>Yes</button>
                                     <button type="button" className="btn btn-outline-primary" data-dismiss="modal">No</button>
                                 </div>
                             </div>

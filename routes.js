@@ -61,6 +61,7 @@ module.exports = (app) => {
   app.post('/api/batchUpdate',productController.batchUpdate);
 
   app.post('/api/searchFilterByValues',productController.searchFilterByValues);
+  app.post('/api/deleteAssetByID',assetController.deleteAssetByID);
 
 // CRON JOBS
  //app.post('/api/listFiles',cronController.listFiles);  /*  CRON for fetching data from Google Drive*/

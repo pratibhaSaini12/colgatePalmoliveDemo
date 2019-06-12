@@ -81,7 +81,7 @@ module.exports = {
 
     //Create new Asset 
     createNewAsset(req, res) {
-        con.query("INSERT INTO assets (`asset_id`, `asset_name`,`asset_data`,`asset_type` ) VALUES ('" + req.body.asset_id + "', '" + req.body.asset_name + "', '" + req.body.asset_data + "', '" + req.body.asset_type + "')", function (err, result) {
+        con.query("INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + req.body.asset_name + "', '" + req.body.asset_data + "', '" + req.body.asset_type + "')", function (err, result) {
             console.log('response from create Product====', result)
             if (err)
                 throw err;
@@ -121,6 +121,24 @@ module.exports = {
                 })
             }
         })
+    },
+
+    //Delete product by ID
+    deleteAssetByID(req, res) {
+        console.log('###############', req.body)
+        con.query("DELETE from `assets` where asset_id=" + req.body.id, function (err, result) {
+            console.log('response from delete by id====', result)
+            if (err)
+                throw err;
+            else {
+
+                return res.status(200).json({
+                    asset: result
+                })
+            }
+        })
+
+
     },
 
     createAssetThroughDriv(req, res) {
