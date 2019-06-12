@@ -272,7 +272,13 @@ class ProductList extends Component {
     }
 
     openListView() {
-        console.log('list viewwwwwwwwwwwwwww')
+        try{
+            let tableView = document.getElementsByClassName('tabtable')[0];
+            let cardView = document.getElementById('row-view')
+            tableView.style.display = 'block';
+            cardView.style.display = 'none'
+            console.log('xx',tableView,cardView);
+        }catch(e){console.log('hello',e)}
     }
 
     /**
@@ -580,6 +586,21 @@ class ProductList extends Component {
     selectAttrebute(index) {
         this.state.selectedArray.push(index);
     }
+    
+    /**
+     * Method for handle card view 
+     */
+    cardView(e) {
+        console.log('console.log')
+        try {
+            let tableView = document.getElementsByClassName('tabtable')[0];
+            let cardView = document.getElementById('row-view')
+            console.log("ZZZZZZZ",tableView,cardView)
+            tableView.style.display = 'none';
+            cardView.style.display = 'block'
+        } catch(e){console.log("erro",e)}
+       
+    }
 
     render() {
         console.log("porps in productlist", this.props)
@@ -671,7 +692,7 @@ class ProductList extends Component {
                                             <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
                                         </button>
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn card-view noactive">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e)=>{this.cardView(e)}}       >filter</a>
                                         <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
                                         <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                         <div className="selected-actions">
@@ -731,11 +752,11 @@ class ProductList extends Component {
 
 
                             {/* card row start ---------------------------------------------------------------------*/}
-                            <div className="table-view fullpageview">
+                            <div className="table-view fullpageview tabtable">
                                 <div className="row">
                                     <div className="col-md-12">
 
-                                        <table id="example" className="table tabtable">
+                                        <table id="example" className="table ">
                                             <thead>
                                                 <tr className="starting">
                                                     <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
@@ -787,9 +808,10 @@ class ProductList extends Component {
                                             </div> */}
                                         </div>
                                     </div>
-                                </div>
+                                </div>`
                             </div>
-                            <div className="row">
+                            <div id="row-view">
+                            <div className="row ">
                                 {
                                     list.length > 0 ? list.map((key, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
@@ -822,6 +844,8 @@ class ProductList extends Component {
                                             </div>
                                         </div>
                                         
+                                     
+
 
                                     }) : ''
 
@@ -840,6 +864,7 @@ class ProductList extends Component {
                                         nextPageText='Next'
                                     />
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>

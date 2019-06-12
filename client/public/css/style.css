@@ -3727,3 +3727,13 @@ to {
 	font-weight: 300;
 	text-decoration: none;
 }
+.google_btn{background: #554b6c;
+    padding: 8px 24px;
+    border: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: #fff;
+    margin-left: 10px;
+	text-transform: capitalize;}
+	.google_btn:hover {background: #3a2e55;}
+	.google_btn .ti-upload { margin-right: 5px;}

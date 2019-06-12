@@ -328,13 +328,14 @@ class DigitalImages extends Component {
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="row mar_bt_30">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" />
-                                    <button onClick={(e) => this.getImageFromDrive(this)}>get images form google</button>
+                                 
                                 </div>
-                                <div className="filter float-right col-md-6">
-
+                                <div className="filter float-right col-md-8">
+                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload"></i>get images form google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
+                                    
                                     <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
                                     <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
