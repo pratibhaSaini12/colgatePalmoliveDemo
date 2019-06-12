@@ -2309,7 +2309,7 @@ input.content-search, .dataTables_filter .form-control-sm {
 	border: 1px solid #ebeef1;
 	box-sizing: border-box;
 	width: 330px;
-	height: 45px;
+	height: 40px;
 	background: url(../images/search.png) no-repeat 10px #fff;
 	box-sizing: border-box;
 }
@@ -3360,6 +3360,7 @@ margin-top: .8rem;
 .leg-div .leg-detail-2 span {
 	background-color: #434348;
 }
+.leg-detail-2 { margin-bottom: 5px;}
 .leg-div .leg-detail-3 span {
 	background-color: rgb(144,237,125)
 }
@@ -3737,3 +3738,7 @@ to {
 	text-transform: capitalize;}
 	.google_btn:hover {background: #3a2e55;}
 	.google_btn .ti-upload { margin-right: 5px;}
+	.digital_img.Assets {height: 153px;
+		width: 100%;
+		margin: 0;
+		padding: 0;}

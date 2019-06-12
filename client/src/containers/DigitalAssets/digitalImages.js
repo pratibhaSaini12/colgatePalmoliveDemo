@@ -608,7 +608,7 @@ class DigitalImages extends Component {
                                             <div className="avatar-preview">
                                                 <div id="imagePreview">
                                                     {image !== '' && image !== undefined ?
-                                                        <img src={image} height="50px" width="50px" className="digital_img" />
+                                                        <img src={image} className="digital_img Assets" />
                                                         : ''} </div>
                                             </div>
                                             <div className="avatar-edit">
