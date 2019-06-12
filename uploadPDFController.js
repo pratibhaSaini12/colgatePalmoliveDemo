@@ -11,7 +11,6 @@ function loadPdf (){
     }
 }
 function upploadPDF(req, res, err){
-    console.log("req in upload image===========",req.body)
     try{
         // to load
         let imageFileData = loadPdf()
@@ -51,5 +50,5 @@ function upploadPDF(req, res, err){
 // }
 module.exports = {
     upploadPDF,
-  //  getImages
+  //comm  getImages
 }

@@ -136,34 +136,50 @@ class NewProduct extends Component {
 		var idCardBase64
 		var assetBodyData
 		ev.preventDefault()
-		var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
-		if (FileSize <= 5) {
-            self.getBase64(self.uploadInputFile.files[0], (result) => {
-				var base64 = result.split(",");
-				idCardBase64 = base64[1]
-				assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-                console.log("===assetBodyData====",assetBodyData)
-                self.setState({
-                    image: assetBodyData.data
-                })
-                axios.post("/api/upload/pdf",assetBodyData).then((res)=>{
-                    console.log("error in response",res)
-                    if(res.data){
-						console.log("res in uploading",res)
-						return 
-                    } else {
-						console.log("error in response",res)
-						return						
-                    }
-                }).catch((err)=>{
-					console.log("errorrrrrrrrrrrrrr in uploading",err)
-					return
-                })
-			});
-		}
-		else {
-			console.log("fileSizeExceedMessage=======")
-		}
+        var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
+        axios.post("/api/readpdf",assetBodyData).then((res)=>{
+            console.log("error in response",res)
+            if(res.data){
+                console.log("res in uploading",res)
+                return 
+            } else {
+                console.log("error in response",res)
+                return						
+            }
+        }).catch((err)=>{
+            console.log("errorrrrrrrrrrrrrr in uploading",err)
+            return
+        })
+
+
+
+		//if (FileSize <= 5) {
+            // self.getBase64(self.uploadInputFile.files[0], (result) => {
+			// 	var base64 = result.split(",");
+			// 	idCardBase64 = base64[1]
+			// 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+            //     console.log("===assetBodyData====",assetBodyData)
+            //     self.setState({
+            //         image: assetBodyData.data
+            //     })
+            //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
+            //         console.log("error in response",res)
+            //         if(res.data){
+			// 			console.log("res in uploading",res)
+			// 			return 
+            //         } else {
+			// 			console.log("error in response",res)
+			// 			return						
+            //         }
+            //     }).catch((err)=>{
+			// 		console.log("errorrrrrrrrrrrrrr in uploading",err)
+			// 		return
+            //     })
+			// });
+		//}
+		// else {
+		// 	console.log("fileSizeExceedMessage=======")
+		// }
     }
 
     //Method to get Bas64 of file
