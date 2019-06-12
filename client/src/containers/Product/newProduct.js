@@ -37,6 +37,11 @@ class NewProduct extends Component {
 
 
     componentDidMount() {
+        axios.get("api/readpdf").then(function (response) {
+            console.log('resposne from api readpdf ==', response);
+        }).catch(function (error) {
+
+        })
     }
 
 
