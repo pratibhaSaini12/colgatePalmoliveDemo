@@ -394,7 +394,7 @@ class ProductList extends Component {
      * @param {event} 
      */
     compareProducts(e){
-        console.log("this props ",this.props)
+       
         if(this.props.history!==undefined && this.state.routeToPage===false) {
             this.setState({routeToPage:true})
             this.props.history.push(
