@@ -64,6 +64,7 @@ class ProductList extends Component {
 
 
     componentWillMount() {
+        console.log("willmount=========")
         let self = this
         self.setState({ Loading: true })
         axios.get("/api/getAllProducts").then(function (response) {
@@ -116,6 +117,30 @@ class ProductList extends Component {
             console.log("error in image fetching", err)
         }
     }
+
+    // componentWillReceiveProps (nextProps) {
+    //     console.log("called============",nextProps)
+    //     let self = this
+    //     let data
+    //     let  {filteredList} = self.state
+    //     if(self.props.location.state !== undefined){
+    //         console.log("found============")
+    //         let status = self.props.location.state._complete
+    //         if(status === "complete") {
+    //             data = filteredList.filter((dat)=> dat.product_status === "Active")
+    //         } else if( status === "incomplete") {
+    //             data = filteredList.filter((dat)=> dat.product_status === "Inactive")
+    //         } else {
+    //             data = filteredList.filter((dat)=> dat.product_status === "")
+    //         }
+    //         console.log("data============", data)
+    //         self.setState({
+    //             product: data,
+    //             filteredList: data,
+    //             listToFilter: data,
+    //         })
+    //     }
+    // }
 
     async deleteProductById() {
         console.log('delete product by id', this.state)
@@ -604,8 +629,24 @@ class ProductList extends Component {
 
     render() {
         console.log("porps in productlist", this.props)
-        const { filteredList, attrebuteArray, selectedArray } = this.state;
-        const { product, pictures } = this.state;
+        console.log("states in productlist", this.state)
+        let { filteredList, attrebuteArray, selectedArray, product, pictures } = this.state;
+        let data
+        if(this.props.location.state !== undefined){
+            console.log("found============")
+            let status = this.props.location.state._complete
+            if(status === "complete") {
+                data = filteredList.filter((dat)=> dat.product_status === "Active")
+            } else if( status === "incomplete") {
+                data = filteredList.filter((dat)=> dat.product_status === "Inactive")
+            } else {
+                data = filteredList.filter((dat)=> dat.product_status === "")
+            }
+
+            console.log("data============", data)
+                product = data
+                filteredList= data
+        }
         let buff
         let base64data
         this.showhideSpan()
