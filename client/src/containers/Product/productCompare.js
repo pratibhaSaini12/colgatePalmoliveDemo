@@ -15,11 +15,20 @@ class ProductCompare extends Component {
         }
     }
 
-
-    componentWillMount() {
-        var id = [4, 13]
+    componentWillReceiveProps() {
+       
+    }
+    
+    async componentWillMount() {
         let self = this
-        axios.get("/api/compareProducts?id=" + id).then(function (response) {
+        let recieveProducts = this.props.location.state.compareProductsList
+        let compareProductsIdLits  = []
+
+        recieveProducts.map(product=>{
+            compareProductsIdLits.push(product.product_id)
+        })
+        
+        await axios.get("/api/compareProducts?id=" + compareProductsIdLits).then(function (response) {
             console.log("response from compare ", response.data);
             if (response.data) {
                 self.setState({

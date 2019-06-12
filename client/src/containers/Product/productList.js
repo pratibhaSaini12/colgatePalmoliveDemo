@@ -24,7 +24,9 @@ class ProductList extends Component {
             countItems: 0,
             selectedProducytId: [],
             batchKey: '',
-            batchValue: ''
+            batchValue: '',
+            selectedProducytId:[],
+            routeToPage:false,
         }
     }
 
@@ -199,9 +201,12 @@ class ProductList extends Component {
     handleIcon (e,index,key) {
         try{
             let counter = this.state.countItems
+            if(counter<0){
+                counter = 0
+            }
             let selectedProdeuctIds = this.state.selectedProducytId
             let domIcon = document.getElementById(`activebtn${index}`)
-            if (domIcon.style.display === '' || domIcon.style.display === 'none') {
+            if(domIcon.style.display === '' || domIcon.style.display==='none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
                 document.getElementById(`activebtn${index}`).style.display = 'block'
@@ -229,7 +234,10 @@ class ProductList extends Component {
         try{
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
-            counter = counter - 1
+            counter = counter-1
+            if(counter<0) {
+                counter = 0 
+            }
             let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
             document.getElementById(`activebtn${index}`).style.display = 'none'
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
@@ -382,6 +390,22 @@ class ProductList extends Component {
         // })
 
     }
+    /****
+     * @param {event} 
+     */
+    compareProducts(e){
+        console.log("this props ",this.props)
+        if(this.props.history!==undefined && this.state.routeToPage===false) {
+            this.setState({routeToPage:true})
+            this.props.history.push(
+                {
+                    pathname: '/compareProducts',
+                    state: { compareProductsList: this.state.selectedProducytId }
+                }
+            )   
+        }
+     }
+
 
     render() {
         const { filteredList } = this.state;
@@ -520,8 +544,9 @@ class ProductList extends Component {
                                                                     <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         Batch Update
-                                                        </div>
-                                                                    <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
+                                                                    </div>
+                                                                    <div className="option-box compare">
+                                                                    <a href="javscript:void(0)"onClick={(e)=>{this.compareProducts(e)}}>Compare Products</a></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -613,7 +638,7 @@ class ProductList extends Component {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.hnadledeSelect(e, index, key) }}>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => {this.handledeSelect(e, index, key) }}>
                                                         <ImageContainer src="icons/check.png" />
                                                     </a>
 
