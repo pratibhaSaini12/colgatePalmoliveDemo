@@ -221,7 +221,7 @@ class NewProduct extends Component {
                                 <div className="col-md-12 top_part20">
                                     <h2 className="page-title float-left">Create New Product</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={this.createNewProduct.bind(this)}>SAVE</button>
+                                        <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -614,21 +614,12 @@ class NewProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Workflow state</label>
                                                     <div className="form-group">
-<<<<<<< Updated upstream
                                                  
                                                         <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
                                                         value={this.state.workflow_state ===''? '': this.state.workflow_state}>
                                                             <option value={"In Review"}>In Review</option>
                                                             <option value={"In Publish"}>In Publish</option>
                                                             <option value={"Published"}>Published</option>
-=======
-
-                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
-                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
-                                                            <option value="In Review">In Review</option>
-                                                            <option value="In Publish">In Publish</option>
-                                                            <option value="Published">Published</option>
->>>>>>> Stashed changes
                                                         </select>
                                                     </div>
                                                 </div>
