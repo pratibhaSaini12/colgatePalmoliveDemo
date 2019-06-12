@@ -26,33 +26,36 @@ class ProductList extends Component {
             routeToPage: false,
             batchKey: 'product_name',
             batchValue: '',
-            selectedArray:[],
-            attrebuteArray:[
-                {key:'category',value:'Category'},
-                {key:'cost',value:'Cost'},
-                {key:'created_at',value:'created_at'},
-                {key:'link',value:'link'},
-                {key:'long_description',value:'long_description'},
-                {key:'main_image',value:'main_image'},
-                {key:'material',value:'material'},
-                {key:'medium_description',value:'medium_description'},
-                {key:'msrp',value:'msrp'},
-                {key:'product_id',value:'product_id'},
-                {key:'product_line',value:'product_line'},
-                {key:'product_name',value:'product_name'},
-                {key:'product_status',value:'product_status'},
-                {key:'retail_price',value:'retail_price'},
-                {key:'style',value:'style'},
-                {key:'tags',value:'tags'},
-                {key:'upc',value:'upc'},
-                {key:'updated_at',value:'updated_at'},
-                {key:'warnings',value:'warnings'},
-                {key:'wholesale_price',value:'wholesale_price'},
-                {key:'workflow_state',value:'workflow_state'},
+            selectedArray: [
+            { key: 'product_line', value: 'product_line' },
+            { key: 'product_name', value: 'product_name' }, { key: 'category', value: 'Category' },
+            { key: 'cost', value: 'Cost' }],
+            attrebuteArray: [
+                { key: 'category', value: 'Category' },
+                { key: 'cost', value: 'Cost' },
+                { key: 'created_at', value: 'created_at' },
+                { key: 'link', value: 'link' },
+                { key: 'long_description', value: 'long_description' },
+                { key: 'main_image', value: 'main_image' },
+                { key: 'material', value: 'material' },
+                { key: 'medium_description', value: 'medium_description' },
+                { key: 'msrp', value: 'msrp' },
+                { key: 'product_id', value: 'product_id' },
+                { key: 'product_line', value: 'product_line' },
+                { key: 'product_name', value: 'product_name' },
+                { key: 'product_status', value: 'product_status' },
+                { key: 'retail_price', value: 'retail_price' },
+                { key: 'style', value: 'style' },
+                { key: 'tags', value: 'tags' },
+                { key: 'upc', value: 'upc' },
+                { key: 'updated_at', value: 'updated_at' },
+                { key: 'warnings', value: 'warnings' },
+                { key: 'wholesale_price', value: 'wholesale_price' },
+                { key: 'workflow_state', value: 'workflow_state' },
             ],
             bulkDelete: [],
-            searchValue1:'',
-            searchValue2:''
+            searchValue1: '',
+            searchValue2: ''
         }
     }
 
@@ -506,19 +509,19 @@ class ProductList extends Component {
 
     }
 
-    searchValues(e){
+    searchValues(e) {
 
-        var searchValue1=this.state.searchValue1
-        var searchValue2=e.target.value
+        var searchValue1 = this.state.searchValue1
+        var searchValue2 = e.target.value
 
-        console.log('searchValue1--',searchValue1)
-        console.log('searchValue2',searchValue2)
-        var data={
-            searchValue1:searchValue1,
-            searchValue2:searchValue2
+        console.log('searchValue1--', searchValue1)
+        console.log('searchValue2', searchValue2)
+        var data = {
+            searchValue1: searchValue1,
+            searchValue2: searchValue2
         }
 
-        axios.get("/api/searchFilterByValues",data).then(function (response) {
+        axios.get("/api/searchFilterByValues", data).then(function (response) {
             console.log("product list ", response.data);
             if (response.data) {
                 // self.setState({
@@ -531,7 +534,7 @@ class ProductList extends Component {
             }
 
         }).catch(function (error) {
-           // self.setState({ Loading: false })
+            // self.setState({ Loading: false })
             console.log("error  login is ", error);
         })
 
@@ -539,12 +542,12 @@ class ProductList extends Component {
 
     }
 
-    selectAttrebute(index){
+    selectAttrebute(index) {
         this.state.selectedArray.push(index);
     }
 
     render() {
-        const { filteredList ,attrebuteArray,selectedArray} = this.state;
+        const { filteredList, attrebuteArray, selectedArray } = this.state;
         const { product, pictures } = this.state;
         let buff
         let base64data
@@ -700,11 +703,11 @@ class ProductList extends Component {
                                                     <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Product ID</th>
-                                                    { selectedArray.map((keyinner,indexinner) =>{
-                                                                return (<th scope="col">{keyinner.value}</th>);
-                                                            
-                                                            })
-                                                            }
+                                                    {selectedArray.map((keyinner, indexinner) => {
+                                                        return (<th scope="col">{keyinner.value}</th>);
+
+                                                    })
+                                                    }
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -716,9 +719,9 @@ class ProductList extends Component {
                                                             <td><div className="image-thumb"><a href="detailpage.html">
                                                                 <ImageContainer src="1.png" /> </a></div></td>
                                                             <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }} >{key.product_id}</Link></td>
-                                                            { selectedArray.map((keyinner,indexinner) =>{
+                                                            {selectedArray.map((keyinner, indexinner) => {
                                                                 return (<td>{key[keyinner.key]}</td>);
-                                                            
+
                                                             })
                                                             }
                                                             <td><div className="row-hover">
@@ -826,9 +829,9 @@ class ProductList extends Component {
                                                         </div>
                                                         <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
                                                             <ul>
-                                                                { attrebuteArray.length > 0 ? attrebuteArray.map((key, index) => {
-                                                                   return <li><a href="#" onClick={(e) => this.selectAttrebute(key)}>{key.value}</a></li>
-                                                                }):''
+                                                                {attrebuteArray.length > 0 ? attrebuteArray.map((key, index) => {
+                                                                    return <li><a href="#" onClick={(e) => this.selectAttrebute(key)}>{key.value}</a></li>
+                                                                }) : ''
                                                                 }
                                                             </ul>
                                                         </div>
