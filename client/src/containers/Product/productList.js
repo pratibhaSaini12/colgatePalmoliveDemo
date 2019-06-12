@@ -23,7 +23,7 @@ class ProductList extends Component {
             Loading: false,
             countItems: 0,
             selectedProducytId: [],
-            batchKey: '',
+            batchKey: 'product_name',
             batchValue: ''
         }
     }
@@ -196,8 +196,8 @@ class ProductList extends Component {
      * Method for select Product and handle  
      * @param {e,index,key}
      */
-    handleIcon (e,index,key) {
-        try{
+    handleIcon(e, index, key) {
+        try {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
             let domIcon = document.getElementById(`activebtn${index}`)
@@ -207,7 +207,7 @@ class ProductList extends Component {
                 document.getElementById(`activebtn${index}`).style.display = 'block'
                 document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
             } else {
-                counter =counter-1
+                counter = counter - 1
                 // document.getElementById(`activebtn${index}`).style.display = 'none'
             }
 
@@ -225,8 +225,8 @@ class ProductList extends Component {
      * @param(e,index,key) 
      * 
      * */
-    handledeSelect(e,index,key) {
-        try{
+    handledeSelect(e, index, key) {
+        try {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
             counter = counter - 1
@@ -319,20 +319,20 @@ class ProductList extends Component {
 
         }
         catch (e) { console.log("catch", e) }
-      }
-      /****
-       * Method for select all Product
-       * @param{}
-       ***/
-      selectAllProduct(e) {
+    }
+    /****
+     * Method for select all Product
+     * @param{}
+     ***/
+    selectAllProduct(e) {
         let allproduct = this.state.filteredList
-        if(allproduct.length>0) {
-            allproduct.map((key,index)=>{
-                this.handleIcon(e,index,key)  
-                this.setState({countItems:allproduct.length})
+        if (allproduct.length > 0) {
+            allproduct.map((key, index) => {
+                this.handleIcon(e, index, key)
+                this.setState({ countItems: allproduct.length })
             })
         }
-      
+
     }
     /**
      * 
@@ -340,10 +340,10 @@ class ProductList extends Component {
      */
     clearAllProduct(e) {
         let allproduct = this.state.filteredList
-        if(allproduct.length>0) {
-            allproduct.map((key,index)=>{
-                handledeSelect(e,index,key)
-                this.setState({countItems:0})
+        if (allproduct.length > 0) {
+            allproduct.map((key, index) => {
+                handledeSelect(e, index, key)
+                this.setState({ countItems: 0 })
             })
         }
     }
@@ -360,8 +360,8 @@ class ProductList extends Component {
         var id = []
 
         state.selectedProducytId.length ? state.selectedProducytId.map((key) => {
-          return id.push(key.product_id)
-        }):''
+            return id.push(key.product_id)
+        }) : ''
 
 
         var batchUpdate = {
@@ -371,15 +371,15 @@ class ProductList extends Component {
         }
 
         console.log('batchUpdate----', batchUpdate)
-        // axios.post("api/batchUpdate", batchUpdate).then(function (response) {
-        //     console.log('resposne from api==', product)
-        //     // if (response.data.task) {
-        //     //     window.location.href = "/dashboard"
-        //     // }
+        axios.post("api/batchUpdate", batchUpdate).then(function (response) {
+            console.log('resposne from api==', product)
+            // if (response.data.task) {
+            //     window.location.href = "/dashboard"
+            // }
 
-        // }).catch(function (error) {
+        }).catch(function (error) {
 
-        // })
+        })
 
     }
 
@@ -508,8 +508,8 @@ class ProductList extends Component {
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)" onClick={(e)=>{this.selectAllProduct(e)}}>Select All</a></div>
-                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)" onClick={(e)=>{this.clearAllProduct(e)}}>Clear All</a></div>
+                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)" onClick={(e) => { this.clearAllProduct(e) }}>Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
                                                                     <div className="option-box delete"><a href>Delete</a></div>
@@ -613,8 +613,7 @@ class ProductList extends Component {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.hnadledeSelect(e, index, key) }}>
-                                                        <ImageContainer src="icons/check.png" />
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                     </a>
 
                                                     <p className="img">

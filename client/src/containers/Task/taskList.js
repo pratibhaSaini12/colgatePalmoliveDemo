@@ -21,7 +21,7 @@ class TaskList extends Component {
 
 
     componentWillMount() {
-        console.log('props on pageeee====', this.props.location.state._data)
+        //console.log('props on pageeee====', this.props.location.state._data)
         //var filterBy = this.props.location ? this.props.location.state._data : ''
         let self = this
         var taskFilterData = []
