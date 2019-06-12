@@ -217,7 +217,7 @@ class DigitalImages extends Component {
                 </div> */}
                 {
                     this.state.Loading === true && <div className="loader-react">
-                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
                 <div id="main-wrapper">

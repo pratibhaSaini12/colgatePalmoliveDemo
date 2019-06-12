@@ -27,7 +27,7 @@ class NewProduct extends Component {
             warnings: '',
             material: '',
             style: '',
-            workflow_state:'',
+            workflow_state: '',
             main_image: '',
             asset_id: 99999,
             image: ''
@@ -46,8 +46,8 @@ class NewProduct extends Component {
 
 
     change(e) {
-        console.log("e.target.value",e.target.value)
-        console.log("e.target.name",e.target.name)
+        console.log("e.target.value", e.target.value)
+        console.log("e.target.name", e.target.name)
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
@@ -56,9 +56,9 @@ class NewProduct extends Component {
 
     createNewProduct() {
         console.log("state on save====", this.state);
-        let state=this.state;
+        let state = this.state;
         let createProduct = {
-            product_id:state.product_id ,
+            product_id: state.product_id,
             product_name: state.product_name,
             upc: state.upc,
             category: state.category,
@@ -80,7 +80,7 @@ class NewProduct extends Component {
         }
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
-            if(response.data.product){
+            if (response.data.product) {
                 window.location.href = "/productList"
             }
 
@@ -91,39 +91,39 @@ class NewProduct extends Component {
 
     //handeling image upload
     handleUploadAttachment(ev) {
-        console.log("ev========",ev)
-		let self = this
-		var idCardBase64
-		var assetBodyData
-		ev.preventDefault()
-		var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-		if (FileSize <= 5) {
-			self.getBase64(self.uploadInput.files[0], (result) => {
-				var base64 = result.split(",");
-				idCardBase64 = base64[1]
-				assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-                console.log("===assetBodyData====",assetBodyData)
+        console.log("ev========", ev)
+        let self = this
+        var idCardBase64
+        var assetBodyData
+        ev.preventDefault()
+        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            self.getBase64(self.uploadInput.files[0], (result) => {
+                var base64 = result.split(",");
+                idCardBase64 = base64[1]
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                console.log("===assetBodyData====", assetBodyData)
                 self.setState({
                     image: assetBodyData.data
                 })
-                axios.post("/api/upload/image",assetBodyData).then((res)=>{
-                    console.log("error in response",res)
-                    if(res.data){
-						console.log("res in uploading",res)
-						return 
+                axios.post("/api/upload/image", assetBodyData).then((res) => {
+                    console.log("error in response", res)
+                    if (res.data) {
+                        console.log("res in uploading", res)
+                        return
                     } else {
-						console.log("error in response",res)
-						return						
+                        console.log("error in response", res)
+                        return
                     }
-                }).catch((err)=>{
-					console.log("errorrrrrrrrrrrrrr in uploading",err)
-					return
+                }).catch((err) => {
+                    console.log("errorrrrrrrrrrrrrr in uploading", err)
+                    return
                 })
-			});
-		}
-		else {
-			console.log("fileSizeExceedMessage=======")
-		}
+            });
+        }
+        else {
+            console.log("fileSizeExceedMessage=======")
+        }
     }
 
 
@@ -187,23 +187,23 @@ class NewProduct extends Component {
     }
 
     //Method to get Bas64 of file
-	getBase64(file, cb) {
-		let reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = function () {
-			cb(reader.result)
-		};
-		reader.onerror = function (error) {
-		};
-	}
+    getBase64(file, cb) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            cb(reader.result)
+        };
+        reader.onerror = function (error) {
+        };
+    }
 
     render() {
-console.log("statessss in newProduct",this.state)
-let img = this.state.image
-let image = ''
-if(img !== ''){
-    image = "data:"+img.mimetype+";base64,"+img.data
-}
+        console.log("statessss in newProduct", this.state)
+        let img = this.state.image
+        let image = ''
+        if (img !== '') {
+            image = "data:" + img.mimetype + ";base64," + img.data
+        }
         return (
             <div>
                 {/* <div className="preloader">
@@ -243,6 +243,9 @@ if(img !== ''){
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -308,7 +311,7 @@ if(img !== ''){
                                                             <div className="form-group">
                                                                 <label>Category</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" value={this.state.category === '' ? '' : this.state.category} name="category" className="form-control" onChange={(e)=>this.change(e)}>
+                                                                    <select id="pref-perpage" value={this.state.category === '' ? '' : this.state.category} name="category" className="form-control" onChange={(e) => this.change(e)}>
                                                                         <option value={0}>Category</option>
                                                                         <option value={"Toothpastes"}>Toothpastes</option>
                                                                         <option value={"Toothbrushes"}>Toothbrushes</option>
@@ -355,7 +358,7 @@ if(img !== ''){
                                                             <div className="form-group">
                                                                 <label>Product Status</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" name="product_status" onChange={(e)=>this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                    <select id="pref-perpage" name="product_status" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
                                                                         <option value={"Active"}>Active</option>
                                                                         <option value={"Inactive"}>Inactive</option>
                                                                     </select>
@@ -571,9 +574,9 @@ if(img !== ''){
                                             </form>
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                            <div className="form-group">
-                                                <label>Upload Image</label>
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Upload Image</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
@@ -607,20 +610,104 @@ if(img !== ''){
 
 
                                         <div className="tab-pane" id="settings2" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
-                                            <div className="form-group">
-                                                <label>Workflow state</label>
+                                            <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Workflow state</label>
                                                     <div className="form-group">
+<<<<<<< Updated upstream
                                                  
                                                         <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
                                                         value={this.state.workflow_state ===''? '': this.state.workflow_state}>
                                                             <option value={"In Review"}>In Review</option>
                                                             <option value={"In Publish"}>In Publish</option>
                                                             <option value={"Published"}>Published</option>
+=======
+
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
+                                                            <option value="In Review">In Review</option>
+                                                            <option value="In Publish">In Publish</option>
+                                                            <option value="Published">Published</option>
+>>>>>>> Stashed changes
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div className="tab-pane filtercustome tabsectionform  custome_listfile" id="settings3" role="tabpanel">
+                                            <ul className="nav nav-tabs datetab" id="myTab" role="tablist">
+
+
+                                                <li className="nav-item">
+                                                    <a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
+                                                </li>
+                                           
+                                            </ul>
+                                            <div className="tab-content custome_content under_tabs" id="myTabContent">
+
+                                                <div className="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                                <div className="row">
+                                                <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1"  />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                
+                                                </div>
+                                                <div className="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div>
+                                            </div>
+
+
                                         </div>
                                     </div>
 

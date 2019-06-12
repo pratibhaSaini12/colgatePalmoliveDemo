@@ -431,10 +431,10 @@ class ProductList extends Component {
                 {
                     this.state.Loading === true &&
                     <div className="loader-react">
-                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
-                <div id="main-wrapper">
+                <div id="main-wrapper"> 
                     <Header />
                     <Aside />
                     <div className="page-wrapper">
@@ -506,6 +506,11 @@ class ProductList extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div className="col-md-4">
+                                                            <div className="form-group">
+                                                                <input className="form-control search_filter" type="text" name="search" placeholder="Search Products" />
+                                                                <i className="ti-search filtersearch"></i> </div>
+                                                            </div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -538,21 +543,20 @@ class ProductList extends Component {
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a  href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
-                                                                    <div className="option-box clear-all"><a  href="#" onClick={(e) =>{this.clearAllProduct(e) }}>Clear All</a></div>
+                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)" onClick={(e)=>{this.selectAllProduct(e)}}><i className="ti-layout-grid2"></i>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)" onClick={(e)=>{this.clearAllProduct(e)}}><i class="fa fa-times-circle"></i> Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
-                                                                    <div className="option-box delete"><a href>Delete</a></div>
-
-                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}>Download</a></div>
-                                                                    <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
-                                                                    <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
-                                                                    <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
+                                                                    <div className="option-box delete"><a href><i className="ti-trash"></i>Delete</a></div>
+                                                                    
+                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e)=>{this.createExcel(e)}}><i class="fa fa-file-download"></i>Download</a></div>
+                                                                    <div className="option-box move-folder"><a href="javscript:void(0)"><i className="ti-folder"></i>Move to Folder</a></div>
+                                                                    <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
+                                                                    <div className="option-box export"><a href="javscript:void(0)"><i className="ti-import"></i>Export Template</a></div>
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                        Batch Update
-                                                                    </div>
-                                                                    <div className="option-box compare">
-                                                                    <a href="javscript:void(0)"onClick={(e)=>{this.compareProducts(e)}}>Compare Products</a></div>
+                                                                    <a href="javascript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
+                                                        </div>
+                                                                    <div className="option-box compare"><a href="compair.html"><i className="ti-layout-column2"></i>Compare Products</a></div>
                                                                 </div>
                                                             </div>
                                                         </div>

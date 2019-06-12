@@ -190,7 +190,7 @@ class Dashboard extends Component {
                 </div> */}
                 {
                     this.state.Loading === true && <div className="loader-react">
-                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
                 <div id="main-wrapper">
@@ -308,12 +308,14 @@ class Dashboard extends Component {
                                                 <h5>Open Tasks by Assignee</h5>
                                                 <p>As of 03/20/2019</p>
                                             </div>
+                                            
                                             {/* <div id="barchart_values" style={{ width: '550px', height: '400px' }} /> */}
 
                                             {openTask.length >= 2 ?
                                                 <Chart
-                                                    width={'500px'}
+                                                    width={'350px'}
                                                     height={'400px'}
+                
                                                     chartType="BarChart"
                                                     loader={<div>Loading Chart</div>}
                                                     data={[
@@ -341,8 +343,9 @@ class Dashboard extends Component {
                                                     options={{
                                                         // title: 'Density of Precious Metals, in g/cm^3',
 
-                                                        width: 500,
+                                                        width: 350,
                                                         height: 350,
+                                                    
                                                         bar: { groupWidth: '60%' },
                                                         legend: { position: 'none' },
                                                     }}

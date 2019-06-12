@@ -13,7 +13,6 @@
 }
 .topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
 	color: #c8bbf2;
-	padding: 10px 12px;
 }
 .topbar .navbar-light .navbar-nav .nav-item > a.nav-link:hover, .topbar .navbar-light .navbar-nav .nav-item > a.nav-link:focus {
 	color: #fff !important;
