@@ -190,6 +190,10 @@ class ProductList extends Component {
         console.log('list viewwwwwwwwwwwwwww')
     }
 
+    /**
+     * Method for select Product and handle  
+     * @param {e,index,key}
+     */
     handleIcon (e,index,key) {
         try{
             let counter = this.state.countItems
@@ -202,7 +206,7 @@ class ProductList extends Component {
                 document.getElementById(`card-hover${index}`).style.visibility='hidden'
             } else {
                 counter =counter-1
-                document.getElementById(`activebtn${index}`).style.display = 'none'
+                // document.getElementById(`activebtn${index}`).style.display = 'none'
             }
    
             this.setState({countItems:counter,selectedProducytId:selectedProdeuctIds})
@@ -214,7 +218,12 @@ class ProductList extends Component {
         
     }
 
-    hnadledeSelect(e,index,key) {
+    /**
+     * Method for Handel deSlect product 
+     * @param(e,index,key) 
+     * 
+     * */
+    handledeSelect(e,index,key) {
         try{
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
@@ -228,6 +237,8 @@ class ProductList extends Component {
       
     }
 
+
+    /**Method for hide and show menu option s */
     showhideSpan() {
         let spanSho = document.getElementsByClassName('counting-action-section')[0]
         try{
@@ -240,6 +251,7 @@ class ProductList extends Component {
       
     }
 
+    /**  Method for download CSV file  */
     createExcel() {
         try {
     
@@ -306,7 +318,33 @@ class ProductList extends Component {
         }
         catch (e) { console.log("catch", e) }
       }
-
+      /****
+       * Method for select all Product
+       * @param{}
+       ***/
+      selectAllProduct(e) {
+        let allproduct = this.state.filteredList
+        if(allproduct.length>0) {
+            allproduct.map((key,index)=>{
+                this.handleIcon(e,index,key)  
+                this.setState({countItems:allproduct.length})
+            })
+        }
+      
+    }
+    /**
+     * 
+     * @param {event,index,key} 
+     */
+    clearAllProduct(e) {
+        let allproduct = this.state.filteredList
+        if(allproduct.length>0) {
+            allproduct.map((key,index)=>{
+                handledeSelect(e,index,key)
+                this.setState({countItems:0})
+            })
+        }
+    }
 
     render() {
         const { filteredList } = this.state;
@@ -433,8 +471,8 @@ class ProductList extends Component {
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)" onClick={(e)=>{this.selectAllProduct(e)}}>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)" onClick={(e)=>{this.clearAllProduct(e)}}>Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
                                                                     <div className="option-box delete"><a href>Delete</a></div>
@@ -538,7 +576,7 @@ class ProductList extends Component {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
-                                                <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e)=>{this.hnadledeSelect(e,index,key)}}>
+                                                <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e)=>{this.handledeSelect(e,index,key)}}>
                                                     <ImageContainer src="icons/check.png" />
                                                 </a>
 
