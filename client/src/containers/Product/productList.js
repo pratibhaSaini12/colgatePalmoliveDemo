@@ -7,7 +7,7 @@ import axios from "axios";
 import ReactLoading from 'react-loading'
 import _ from 'lodash';
 import XLSX from 'xlsx';
-
+import moment from 'moment'
 
 class ProductList extends Component {
 
@@ -241,7 +241,7 @@ class ProductList extends Component {
             document.getElementById(`activebtn${index}`).style.display = 'none'
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
             this.setState({ countItems: counter })
-            console.log(selectedProdeuctIds, '$$$$$$$$$$$')
+            
         } catch (e) { console.log("error ", e) }
 
     }
@@ -260,21 +260,59 @@ class ProductList extends Component {
 
     }
 
+
+/**
+ * Method for formating data for CSV
+ */
+filterDataCSV(data) {
+    let tempData = []
+    let json = {}
+
+    data.map(data => {
+      json = {
+        "Category": `${data.category}`,
+        "Cost": data.cost,
+        "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),
+        "Link": data.link,
+        "Product Decription": data.long_description,
+        "Material": data.material,
+        "Medium Description": data.medium_description,
+        "MSRP" :data.msrp,
+        "Product Id":data.product_id,
+        "product Line ":data.product_line,
+        "Product Name":data.product_name,
+        "Product Status":data.product_status,
+        "Retail Price":data.retail_price,
+        "Style" :data.style,
+        "Tags" : data.tags,
+        "UPC" : data.upc,
+        "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY'),
+        "Warnings":data.warnings,
+        "Wholesale Price" : data.wholesale_price,
+        "Workflow State" : data.workflow_state
+      }
+      tempData.push(json)
+    })
+    return tempData
+
+  }
+
+
+
+
     /**  Method for download CSV file  */
     createExcel() {
         try {
 
             let e = []
-            e = this.state.selectedProducytId
+            e = this.filterDataCSV(this.state.selectedProducytId)
 
             var wb = XLSX.utils.book_new();
             var wscols = [
-                { wch: 15 },
-                { wch: 25 },
                 { wch: 30 },
-                { wch: 20 },
-                { wch: 20 },
                 { wch: 30 },
+                { wch: 30 },
+                { wch: 100 },
                 { wch: 30 },
                 { wch: 30 },
                 { wch: 30 },
@@ -291,18 +329,7 @@ class ProductList extends Component {
                 { wch: 30 },
                 { wch: 30 },
                 { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-                { wch: 30 },
-
+              
             ];
             var wsrows = [
                 { hpt: 15 }, // "points"
@@ -415,7 +442,7 @@ class ProductList extends Component {
 
     render() {
         const { filteredList } = this.state;
-        console.log("states in productlist", this.state)
+        
         const { product, pictures } = this.state;
         let buff
         let base64data
