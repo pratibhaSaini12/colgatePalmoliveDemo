@@ -4,7 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
-import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
+//import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
 
@@ -144,24 +144,15 @@ class NewProduct extends Component {
                
              //   alert(res.data.length);
                
-  var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
-                // +'<li className="nav-item">'
-                // +'<a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>'
-                // +'</li>'
-                
-                for (var i = 0; i < res.data.length; i++)  
-                { 
-                    Box =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
-                } 
-         
-            // <li className="nav-item">
-            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
-            // </li>
-            // <li className="nav-item">
-            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
-            // </li>
-            +'</ul>';
-            alert(Box);
+//   var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
+//                 var box2;
+//                 for (var i = 0; i < res.data.length; i++)  
+//                 { 
+//                     box2 =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
+//                 } 
+//           +'</ul>';
+
+var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel"> <ul class="nav nav-tabs datetab" id="myTab" role="tablist"> <li class="nav-item"><a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> </ul> <div class="tab-content custome_content under_tabs" id="myTabContent"> <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab"> <div class="row"> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Hills™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="BESLEME TALİMATLARI"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Bu mamayı ilk defa mı kullanıyorsunuz?"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="İÇİNDEKİLER"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Avrupa daüretilmiştir. *Kalite, tutarlılık ve lezzet için %100 Garanti, yoksa paranız iade"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value=""></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> </div> </div> <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div> </div></div>';
 
             document.getElementById("pdfData").innerHTML = Box;
 
