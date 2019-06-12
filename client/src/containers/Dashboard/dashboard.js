@@ -335,7 +335,8 @@ class Dashboard extends Component {
         const { openTask, updateProduct } = this.state;
         console.log("states in dashbpard", this.state)
         console.log("props in dashbpard", this.props)
-        var current_Date = new Date()
+        var current_Date = new Date().toString()
+        console.log('current_Date---',current_Date)
         return (
             <div>
                 {/* <div className="preloader">
@@ -438,7 +439,7 @@ class Dashboard extends Component {
                                         <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}>
                                             <div className="piechart_section">
                                                 <h5>Product Completion</h5>
-                                                <p>As of {}</p>
+                                                <p>As of {current_Date}</p>
                                             </div>
                                             <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />
                                             <div className="leg-div">
@@ -451,7 +452,7 @@ class Dashboard extends Component {
                                         <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}>
                                             <div className="piechart_section">
                                                 <h5>Product Content Updates</h5>
-                                                <p>As of 03/20/2019</p>
+                                                <p>As of {current_Date}</p>
                                             </div>
                                             <div id="donutchart" style={{ width: '300px', height: '400px', margin: '0 auto' }} >
                                                 <PieChart donut={true} data={[["30 - 90 Days", updateProduct ? updateProduct.first : 0], ["90+ Days", updateProduct ? updateProduct.second : 0], ["Last 30 Days", updateProduct ? updateProduct.third : 0]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
@@ -462,7 +463,7 @@ class Dashboard extends Component {
                                         <div className="card dashboard_section" onClick={(e) => this.redirectURL(3)}>
                                             <div className="piechart_section">
                                                 <h5>Open Tasks by Assignee</h5>
-                                                <p>As of 03/20/2019</p>
+                                                <p>As of {current_Date}</p>
                                             </div>
                                             
                                             {/* <div id="barchart_values" style={{ width: '550px', height: '400px' }} /> */}
@@ -521,7 +522,7 @@ class Dashboard extends Component {
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
                                                     <h5>My Workflow Tasks</h5>
-                                                    <p>As of 03/20/2019</p>
+                                                    <p>As of {current_Date}</p>
                                                 </div>
                                                 <div className="table-responsive">
                                                     <table className="table dashboard_table">

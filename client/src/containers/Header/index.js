@@ -54,8 +54,8 @@ class Header extends React.Component {
                 </li>
                 <li className="nav-item -xs-down search-box">
                   <form className="app-search" style={{ display: 'block !important' }}>
-                    <input type="text" className="form-control" placeholder="Search Product, Assets or List" name="searchValue" onChange={e => this.change(e)} />
-                    <Link to={{ pathname: '/search', state: { _data: this.state.searchValue } }} className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>
+                    <input type="text" className="form-control" placeholder="Search Product, Task" name="searchValue" onChange={e => this.change(e)}/>
+                 {this.state.searchValue? <Link to={{ pathname: '/search', state: { _data: this.state.searchValue } }} className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>:<Link to="#" className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>}
                   </form>
                 </li>
               </ul>

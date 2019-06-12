@@ -548,20 +548,24 @@ class ProductList extends Component {
         console.log('searchValue1--', searchValue1)
         console.log('searchValue2', searchValue2)
         var data = {
-            searchValue1: searchValue1,
-            searchValue2: searchValue2
+            searchValue1: this.state.searchValue1,
+            searchValue2: e.target.value
         }
 
-        axios.get("/api/searchFilterByValues", data).then(function (response) {
+        let self = this
+
+        console.log('dataaaaaa', data)
+        axios.post("/api/searchFilterByValues" , data).then(function (response) {
             console.log("product list ", response.data);
             if (response.data) {
-                // self.setState({
-                //     product: response.data.products,
-                //     filteredList: response.data.products,
-                //     listToFilter: response.data.products,
-                //     stateUpdate: true,
-                //     Loading: false
-                // })
+                console.log('inside response========', response.data.products)
+                self.setState({
+                    // product: response.data.products,
+                    filteredList: response.data.products,
+                    //listToFilter: response.data.products,
+                    // stateUpdate: true,
+                    // Loading: false
+                })
             }
 
         }).catch(function (error) {

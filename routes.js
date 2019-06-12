@@ -60,7 +60,7 @@ module.exports = (app) => {
   app.get('/api/readpdf',productController.readPDf);
   app.post('/api/batchUpdate',productController.batchUpdate);
 
-  app.get('/api/searchFilterByValues',productController.searchFilterByValues);
+  app.post('/api/searchFilterByValues',productController.searchFilterByValues);
 
 // CRON JOBS
  //app.post('/api/listFiles',cronController.listFiles);  /*  CRON for fetching data from Google Drive*/
