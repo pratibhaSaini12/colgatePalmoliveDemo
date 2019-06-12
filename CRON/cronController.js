@@ -91,7 +91,8 @@ async function listFiles(auth) {
 
       drive.files.get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' },
         async function (err, res) {
-          await res.data
+          if(res!==undefined) {
+            res.data
             .on('end', () => {
               console.log('Done');
             })
@@ -99,6 +100,8 @@ async function listFiles(auth) {
               console.log('Error', err);
             })
             .pipe(dest);
+          } 
+         
         });
     })
   })

@@ -3716,3 +3716,11 @@ to {
 
 .custome_listfile { padding: 0 !important; box-shadow: none !important}
 .tab-content.custome_content.under_tabs .active { box-shadow: none; border: none;}
+.pagination li a {
+	padding: 12px 18px;
+	background: #fff;
+	color: #2b2b2b;
+	font-size: 14px;
+	font-weight: 300;
+	text-decoration: none;
+}

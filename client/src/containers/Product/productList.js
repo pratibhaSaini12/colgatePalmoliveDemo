@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import axios from "axios";
 import ReactLoading from 'react-loading'
+import Pagination from "react-js-pagination";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment'
@@ -54,8 +55,10 @@ class ProductList extends Component {
                 { key: 'workflow_state', value: 'workflow_state' },
             ],
             bulkDelete: [],
-            searchValue1: '',
-            searchValue2: ''
+            searchValue1:'',
+            searchValue2:'',
+            pageactive: 1,
+            dataPerPage: 5,
         }
     }
 
@@ -238,6 +241,34 @@ class ProductList extends Component {
                 })
             }
         }
+    }
+
+    handleChange(e) {
+        var val = e.target.value
+        let self = this
+        self.setState({
+            filter
+        })
+        self.setState({
+            dataPerPage: Number(val)
+        })
+    }
+
+
+    // method for change active page pagination
+    changeactive(page) {
+        this.setState({
+            pageactive: page
+        })
+    }
+
+    //method for change page number in pagination
+    handlePageChange(pageNumber) {
+        let self = this
+        console.log("valueeeee====", pageNumber)
+        self.setState({
+            pageactive: pageNumber
+        })
     }
 
     openListView() {
@@ -552,6 +583,8 @@ class ProductList extends Component {
         let buff
         let base64data
         this.showhideSpan()
+        let {dataPerPage} = this.state
+        var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>
                 {/* <div className="preloader">
@@ -713,8 +746,8 @@ class ProductList extends Component {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    filteredList.length > 0 ? filteredList.map((key, index) => {
-                                                        return <tr>
+                                                    list.length > 0 ? list.map((key, index) => {
+                                                        return <tr key={index}>
                                                             <td><input type="checkbox" name="" /></td>
                                                             <td><div className="image-thumb"><a href="detailpage.html">
                                                                 <ImageContainer src="1.png" /> </a></div></td>
@@ -734,15 +767,18 @@ class ProductList extends Component {
                                             </tbody>
                                         </table>
                                         <div className="pagebottompart">
-                                            <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p>
-                                            <div className="col-md-2 pull-right">
-                                                <ul className="pagination">
-                                                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                                                    <li className="page-item active"><a className="page-link" href="#">2</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                </ul>
+                                            {/* <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p> */}
+                                            <div className="pagination pull-right my-1 float-right">
+                                                <Pagination
+                                                    hideFirstLastPages
+                                                    activePage={this.state.pageactive}
+                                                    itemsCountPerPage={dataPerPage}
+                                                    totalItemsCount={filteredList.length}
+                                                    pageRangeDisplayed={4}
+                                                    onChange={this.handlePageChange.bind(this)}
+                                                    prevPageText='Prev'
+                                                    nextPageText='Next'
+                                                />
                                             </div>
                                         </div>
                                     </div>

@@ -46,7 +46,7 @@ a.link:hover, a.link:focus {
 	background-color: #398bf7 !important;
 }
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-	background-color: #398bf7;
+	background-color: #554b6c;
 	border-color: #398bf7;
 	color: #fff;
 }
