@@ -315,19 +315,19 @@ module.exports = {
 
     }
 
-    // batchUpdate(req,res){
-    //     var field='',
-    //     var value='',
-    //     con.query("update `product` set",field=value "where product_id IN (" + req.body.id + ")", function (err, result) {
-    //         console.log('response from bulk delete by id====', result)
-    //         if (err)
-    //             throw err;
-    //         else {
-    //             return res.status(200).json({
-    //                 product: result
-    //             })
-    //         }
-    //     })
+    // batchUpdate(req, res) {
+    //     console.log('fggfg')
+    //     // con.query(
+    //     //     'update product set '+req.body.batchKey+'= \"' + req.body.batchValue+ '\" where product_id IN '(req.body.id)', function (err, result) {
+    //     //     console.log('response from bulk delete by id====', result)
+    //     //     if (err)
+    //     //         throw err;
+    //     //     else {
+    //     //         return res.status(200).json({
+    //     //             product: result
+    //     //         })
+    //     //     }
+    //     // })
 
     // }
 

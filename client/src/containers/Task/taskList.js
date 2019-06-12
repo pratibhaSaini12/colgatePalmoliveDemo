@@ -15,21 +15,35 @@ class TaskList extends Component {
             taskList: [],
             filteredList: [],
             listToFilter: [],
-           
+
         }
     }
 
 
     componentWillMount() {
+        console.log('props on pageeee====', this.props.location.state._data)
+        //var filterBy = this.props.location ? this.props.location.state._data : ''
         let self = this
+        var taskFilterData = []
         axios.get("/api/getAllTasks").then(function (response) {
             console.log("getAllTasks list ", response.data);
             if (response.data) {
-                self.setState({
-                    taskList: response.data.tasks,
-                    filteredList: response.data.tasks,
-                    listToFilter: response.data.tasks,
-                })
+                // if (filterBy) {
+                //     taskFilterData = _.filter(response.data.tasks, l => l.assignedTo == filterBy)
+                //     self.setState({
+                //         taskList: taskFilterData,
+                //         filteredList: taskFilterData,
+                //         listToFilter: taskFilterData,
+                //     })
+                // }
+                // else {
+                    self.setState({
+                        taskList: response.data.tasks,
+                        filteredList: response.data.tasks,
+                        listToFilter: response.data.tasks,
+                    })
+                // }
+
             }
 
         }).catch(function (error) {
@@ -37,18 +51,18 @@ class TaskList extends Component {
         })
     }
 
-    async deleteProductById (){
+    async deleteProductById() {
         console.log("this.stateeeeee", this.state)
-        await axios.post("/api/deleteProductByID", {id:this.state.deleteProductId}).then(function (response) {
+        await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
             console.log('resposne from Delete api==', response)
-            if(response.data.product){
-                this.setState({deleteProductId:''})
+            if (response.data.product) {
+                this.setState({ deleteProductId: '' })
                 window.location.href = "/productList"
             }
 
         }).catch(function (error) {
-            this.setState({deleteProductId:''})
-            console.log("error in delete product",error)
+            this.setState({ deleteProductId: '' })
+            console.log("error in delete product", error)
         })
     }
 
@@ -68,22 +82,22 @@ class TaskList extends Component {
                 ((typeof searchResult.status != "undefined" && searchResult.status != null && searchResult.status !== "") && searchResult.status.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.assignedTo != "undefined" && searchResult.assignedTo != null && searchResult.assignedTo !== "") && searchResult.assignedTo.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.related_to != "undefined" && searchResult.related_to != null && searchResult.related_to !== "") && searchResult.related_to.toLowerCase().includes(searchString.toLowerCase()))
-                ) {
-                    return searchResult
-                }
-            })
+            ) {
+                return searchResult
+            }
+        })
 
-    
-            this.setState({
-                filteredList: newFilteredList,
-                listToFilter: this.state.listToFilter
-            })
-            console.log("valueeeee",filteredList)
-        }
+
+        this.setState({
+            filteredList: newFilteredList,
+            listToFilter: this.state.listToFilter
+        })
+        console.log("valueeeee", filteredList)
+    }
 
     render() {
         const { filteredList } = this.state;
-        
+
         return (
             <div>
                 {/* <div className="preloader">
@@ -179,20 +193,20 @@ class TaskList extends Component {
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="row mar_bt_30">
-                                    <div className="col-md-6">
-                                    <input class="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e)=>this.filterSearch(e)} />
-                                    </div>
-                                    <div className="col-md-6">
+                                <div className="col-md-6">
+                                    <input class="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
+                                </div>
+                                <div className="col-md-6">
                                     <button className="primary-button float-right">
-                                                    <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
-                                                </button>
-                                    </div>
-                            
+                                        <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
+                                    </button>
+                                </div>
+
                             </div>
                             <div className="table-view fullpageview">
                                 <div className="row">
                                     <div className="col-md-12">
-                                    
+
                                         <table id="example" className="table tabtable">
                                             <thead>
                                                 <tr className="starting">
@@ -313,36 +327,36 @@ class TaskList extends Component {
                                 </div>
                             </div>
                             <div className="table-responsive">
-                                                    <table className="table dashboard_table data_table_30">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Task ID</th>
-                                                                <th>Due Date</th>
-                                                                <th>Subject</th>
-                                                                <th>Status</th>
-                                                                <th>Priority</th>
-                                                                <th>Assigned By</th>
-                                                                <th>Assigned To</th>
-                                                                <th>Related To</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {
-                                                                filteredList.length > 0 ? filteredList.map((key, index) => {
-                                                                    return <tr>
-                                                                        <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
-                                                                        <td>{key.due_date?moment(key.due_date).format('YYYY/MM/DD'):''}</td>
-                                                                        <td>{key.subject}</td>
-                                                                        <td>{key.status}</td>
-                                                                        <td>{key.priority}</td>
-                                                                        <td>{key.assignedBy}</td>
-                                                                        <td>{key.assignedTo}</td>
-                                                                        <td>{key.related_to}</td>
-                                                                    </tr>
-                                                                }) : ''}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                <table className="table dashboard_table data_table_30">
+                                    <thead>
+                                        <tr>
+                                            <th>Task ID</th>
+                                            <th>Due Date</th>
+                                            <th>Subject</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Assigned By</th>
+                                            <th>Assigned To</th>
+                                            <th>Related To</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            filteredList.length > 0 ? filteredList.map((key, index) => {
+                                                return <tr>
+                                                    <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
+                                                    <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
+                                                    <td>{key.subject}</td>
+                                                    <td>{key.status}</td>
+                                                    <td>{key.priority}</td>
+                                                    <td>{key.assignedBy}</td>
+                                                    <td>{key.assignedTo}</td>
+                                                    <td>{key.related_to}</td>
+                                                </tr>
+                                            }) : ''}
+                                    </tbody>
+                                </table>
+                            </div>
                             {/* The product delete */}
                             <div className="modal fade allmodalcolgate" id="delete">
                                 <div className="modal-dialog">
@@ -350,7 +364,7 @@ class TaskList extends Component {
                                         {/* Modal Header */}
                                         <div className="modal-header">
                                             <h4 className="modal-title title_modalheader">Delete Product</h4>
-                                            <button type="button" className="close" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>×</button>
+                                            <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
                                         </div>
                                         {/* Modal body */}
                                         <div className="modal-body filtercustome">
@@ -358,8 +372,8 @@ class TaskList extends Component {
                                         </div>
                                         {/* Modal footer */}
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e)=>this.deleteProductById()}>Yes</button>
-                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>No</button>
+                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e) => this.deleteProductById()}>Yes</button>
+                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>No</button>
                                         </div>
                                     </div>
                                 </div>

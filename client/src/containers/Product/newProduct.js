@@ -608,9 +608,9 @@ if(img !== ''){
                                                  
                                                         <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
                                                         value={this.state.workflow_state ===''? '': this.state.workflow_state}>
-                                                            <option value="In Review">In Review</option>
-                                                            <option value="In Publish">In Publish</option>
-                                                            <option value="Published">Published</option>
+                                                            <option value={"In Review"}>In Review</option>
+                                                            <option value={"In Publish"}>In Publish</option>
+                                                            <option value={"Published"}>Published</option>
                                                         </select>
                                                     </div>
                                                 </div>
