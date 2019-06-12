@@ -2,61 +2,38 @@ import React, { Component } from "react"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import axios from "axios";
-import ReactLoading from 'react-loading'
-
-class EditProduct extends Component {
+class EditDigitalImage extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            product_id: '',
-            product_name: '',
-            upc: '',
-            category: '',
-            link: '',
-            product_line: '',
-            product_status: '',
-            cost: '',
-            wholesale_price: '',
-            msrp: '',
-            retail_price: '',
-            medium_description: '',
-            long_description: '',
-            tags: '',
-            warnings: '',
-            material: '',
-            style: '',
-            workflow_state: '',
-            main_image: '',
-            Loading: false
+            asset_data: "",
+            asset_id: '',
+            asset_name: "",
+            asset_type: "",
+            created_at: "",
+            dimenssion: "",
+            imageDoc: '',
+            size: "",
+            updated_at: "",
+            errMessage: false
         }
     }
 
 
     componentDidMount() {
         try {
-            let product = this.props.location.state._data
+            let asset = this.props.location.state._data
             this.setState({
-                product_id: product.product_id,
-                product_name: product.product_name,
-                upc: product.upc,
-                category: product.category,
-                link: product.link,
-                product_line: product.product_line,
-                product_status: product.product_status,
-                cost: product.cost,
-                wholesale_price: product.wholesale_price,
-                msrp: product.msrp,
-                retail_price: product.retail_price,
-                medium_description: product.medium_description,
-                long_description: product.long_description,
-                tags: product.tags,
-                warnings: product.warnings,
-                material: product.material,
-                style: product.style,
-                main_image: product.main_image,
-                workflow_state: product.workflow_state,
-                Loading: false
+                asset_data: asset.asset_data,
+                asset_id: asset.asset_id,
+                asset_name: asset.asset_name,
+                asset_type: asset.asset_type,
+                created_at: asset.created_at,
+                dimenssion: asset.dimenssion,
+                imageDoc: asset.imageDoc,
+                size: asset.size,
+                updated_at: asset.updated_at
             })
         } catch (e) { console.log("errr", e) }
     }
@@ -67,50 +44,39 @@ class EditProduct extends Component {
         })
     }
 
-    updateProduct() {
+    updateasset() {
         console.log("state on update====", this.state);
         let state = this.state;
-        let updateProductByID = {
-            product_id: state.product_id,
-            product_name: state.product_name,
-            upc: state.upc,
-            category: state.category,
-            link: state.link,
-            product_line: state.product_line,
-            product_status: state.product_status,
-            cost: state.cost,
-            wholesale_price: state.wholesale_price,
-            msrp: state.msrp,
-            retail_price: state.retail_price,
-            medium_description: state.medium_description,
-            long_description: state.long_description,
-            tags: state.tags,
-            warnings: state.warnings,
-            material: state.material,
-            style: state.style,
-            main_image: state.main_image,
-            // workflow_state: state.workflow_state change after DB update
+        let updateAssetByID = {
+            asset_data: state.asset_data,
+            asset_id: state.asset_id,
+            asset_name: state.asset_name,
+            asset_type: state.asset_type,
+            created_at: state.created_at,
+            dimenssion: state.dimenssion,
+            imageDoc: state.imageDoc,
+            size: state.size,
+            updated_at: state.updated_at
         }
         //change update API
-        axios.post("/api/updateProductByID", updateProductByID).then(function (response) {
-            console.log('resposne from updateProductByID=========', response.data)
-            if (response.data.product) {
-                window.location.href = "/productList"
-            }
+        // axios.post("/api/updateAssetByID", updateAssetByID).then(function (response) {
+        //     console.log('resposne from updateAssetByID=========', response.data)
+        //     if (response.data.asset) {
+        //         window.location.href = "/assetList"
+        //     }
 
-        }).catch(function (error) {
+        // }).catch(function (error) {
 
-        })
+        // })
     }
 
 
 
     render() {
-        console.log("props in product Edit page", this.props)
-        console.log("state in product Edit page", this.state)
-        let { product } = this.state
-        // let image = "data:"+img.mimetype+";base64,"+img.data
-        console.log("product==========", product)
+        console.log("props in asset Edit page", this.props)
+        console.log("state in asset Edit page", this.state)
+        let { asset } = this.state
+        console.log("asset==========", asset)
         return (
             <div>
                 {/* <div className="preloader">
@@ -126,9 +92,9 @@ class EditProduct extends Component {
                         <div className="container-fluid r-aside">
                             <div className="row">
                                 <div className="col-md-12 top_part20">
-                                    <h2 className="page-title float-left">Edit Product</h2>
+                                    <h2 className="page-title float-left">Edit asset</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={(e)=>this.updateProduct(this)}>Update</button>
+                                        <button type="button" className="btn btn-primary" onClick={this.updateasset.bind(this)}>Update</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -158,8 +124,8 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product ID</label>
-                                                                <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
+                                                                <label>asset ID</label>
+                                                                <input className="form-control" type="text" name="asset_id" value={this.state.asset_id} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -174,8 +140,8 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name</label>
-                                                                <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
+                                                                <label>asset Name</label>
+                                                                <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -217,11 +183,11 @@ class EditProduct extends Component {
                                                                         <option value={"Toothpastes"}>Toothpastes</option>
                                                                         <option value={"Toothbrushes"}>Toothbrushes</option>
                                                                         <option value={"Mouthwashes"}>Mouthwashes</option>
-                                                                        <option value={"Kids Products"}>Kids Products</option>
+                                                                        <option value={"Kids assets"}>Kids assets</option>
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    <p className="value_ofcategory">Value inherited from parent asset</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -257,9 +223,9 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Status</label>
+                                                                <label>asset Status</label>
                                                                 <div className="form-group">
-                                                                <select id="pref-perpage" name="product_status" onChange={(e)=>this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                <select id="pref-perpage" name="asset_status" onChange={(e)=>this.change(e)} value={this.state.asset_status === '' ? '' : this.state.asset_status} className="form-control">
                                                                         <option value={"Active"}>Active</option>
                                                                         <option value={"Inactive"}>Inactive</option>
                                                                     </select>
@@ -290,7 +256,7 @@ class EditProduct extends Component {
                                                             <div className="form-group">
                                                                 <label>Cost</label>
                                                                 <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                <p className="value_ofcategory">Value inherited from parent asset</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -348,7 +314,7 @@ class EditProduct extends Component {
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                <p className="value_ofcategory">Value inherited from parent asset</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -421,7 +387,7 @@ class EditProduct extends Component {
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    <p className="value_ofcategory">Value inherited from parent asset</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -495,11 +461,11 @@ class EditProduct extends Component {
                                             <div className="form-group">
                                                 <label>Digital Asset</label>
                                                     <div className="form-group">
-                                                        <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e)=>this.handleUploadAttachment(this)} style={{ display: 'none' }} />
+                                                        <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
-                                                        {/* {image !== '' && image !== undefined ?
+                                                        {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img"/>
-                                                            : ''} */}
+                                                            : ''}
                                                     </div>
                                                 </div>
                                             </div>
@@ -519,21 +485,21 @@ class EditProduct extends Component {
                             <div className="modal-content">
                                 {/* Modal Header */}
                                 <div className="modal-header">
-                                    <h4 className="modal-title title_modalheader">Create New Product</h4>
+                                    <h4 className="modal-title title_modalheader">Create New asset</h4>
                                     <button type="button" className="close" data-dismiss="modal">×</button>
                                 </div>
                                 {/* Modal body */}
                                 <div className="modal-body filtercustome">
                                     <form>
                                         <div className="form-group">
-                                            <label>Product Id</label>
+                                            <label>asset Id</label>
                                             <input className="form-control" type="text" name="search" placeholder={12345} />
                                         </div>
                                         <div className="form-group">
-                                            <label>Product Name</label>
+                                            <label>asset Name</label>
                                             <input className="form-control" type="text" name="search" placeholder={12345} />
                                         </div>
-                                        <div className="avatar-upload"> <span>Product Name</span>
+                                        <div className="avatar-upload"> <span>asset Name</span>
                                             <div className="avatar-preview">
                                                 <div id="imagePreview" style={{ backgroundImage: 'url(http://i.pravatar.cc/500?img=7)' }}> </div>
                                             </div>
@@ -561,4 +527,4 @@ class EditProduct extends Component {
 }
 
 
-export default EditProduct;
+export default EditDigitalImage;

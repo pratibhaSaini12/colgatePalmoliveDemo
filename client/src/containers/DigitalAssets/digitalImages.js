@@ -24,6 +24,7 @@ class DigitalImages extends Component {
             filteredList: '',
             listToFilter: '',
             assetList: [],
+            existAsset: ''
         }
     }
 
@@ -112,6 +113,7 @@ class DigitalImages extends Component {
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
         let self = this
+        let {assetList} = self.state
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
@@ -122,25 +124,36 @@ class DigitalImages extends Component {
                 idCardBase64 = base64[1]
 
                 assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
-                console.log("===assetBodyData====", assetBodyData)
+                console.log("===assetBodyData====", assetBodyData)                
                 self.setState({
                     image: assetBodyData.data,
-                    asset_data: idCardBase64,
-                    asset_type: self.uploadInput.files[0].type
                 })
-                axios.post("/api/upload/asset", assetBodyData).then((res) => {
-                    console.log("error in response", res)
-                    if (res.data) {
-                        console.log("res in uploading", res)
-                        return
-                    } else {
-                        console.log("error in response", res)
-                        return
-                    }
-                }).catch((err) => {
-                    console.log("errorrrrrrrrrrrrrr in uploading", err)
-                    return
-                })
+                //compare image here
+                let duplicateAsset = assetList.filter((asset)=> asset.asset_data === idCardBase64)
+                if(duplicateAsset.length === 0 ) {
+                    console.log("new image found")
+                    self.setState({
+                        asset_data: idCardBase64,
+                        asset_type: self.uploadInput.files[0].type
+                    })
+                } else {
+                    console.log("Image already exist",duplicateAsset[0])
+                    self.setState({existAsset : duplicateAsset[0]})
+                }
+                // axios.post("/api/upload/asset", assetBodyData).then((res) => {
+                //     console.log("error in response", res)
+                //     if (res.data) {
+                //         console.log("res in uploading", res)
+                //         return
+                //     } else {
+                //         console.log("error in response", res)
+                //         return
+                //     }
+                // }).catch((err) => {
+                //     console.log("errorrrrrrrrrrrrrr in uploading", err)
+                //     return
+                // })
+
             });
         }
         else {
@@ -198,9 +211,27 @@ class DigitalImages extends Component {
         })
     }
 
+    async getImageFromDrive(){
+        let self = this
+        await axios.get("/api/getAssetFromDrive").then(function (response) {
+            console.log('resposne from /api/getAssetFromDrive==', response)
+            if(response.data.asset){
+                self.getAssetList()
+                window.location.href = "/digitalImages"
+            } else {
+                self.setState({ Loading: false })
+                console.log("resposne eror /api/getAssetFromDrive==", response)
+            }
+
+        }).catch(function (error) {
+            self.setState({ Loading: false })
+            console.log("error============/api/getAssetFromDrive", error)
+        })
+    }
+
     render() {
         console.log("states in digitalImage", this.state)
-        const { assetList } = this.state;
+        const { assetList, existAsset } = this.state;
         let img = this.state.image
         let image = ''
         if (img !== '') {
@@ -298,6 +329,7 @@ class DigitalImages extends Component {
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" />
+                                    <button onClick={(e)=>this.getImageFromDrive(this)}>get images form google</button>
                                 </div>
                                 <div className="filter float-right col-md-6">
 
@@ -493,8 +525,8 @@ class DigitalImages extends Component {
                                                 </div>
                                                 <div className="card-hover">
                                                     <div className="card-link-options">
-                                                        <Link className="icon view-icon" to="/productDetailPage"><ImageContainer src="icons/view.png" /></Link>
-                                                        <Link className="icon edit-icon" to="/editProduct"><ImageContainer src="icons/edit.png" /></Link>
+                                                        <Link className="icon view-icon" to={{pathname: '/digitalImagePage', state: { _data: asset }}}><ImageContainer src="icons/view.png" /></Link>
+                                                        <Link className="icon edit-icon" to={{pathname: '/editDigitalImage', state: { _data: asset }}}><ImageContainer src="icons/edit.png" /></Link>
                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                         </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
@@ -527,6 +559,9 @@ class DigitalImages extends Component {
                                             <label>Asset Name</label>
                                             <input className="form-control" type="text" name="asset_name" placeholder={12345} value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
+                                        {existAsset !== '' ? 
+                                        <span>Asset already Exist <Link to={{pathname: '/digitalImagePage', state: { _data: existAsset }}}>See here</Link></span>
+                                        : ''}
                                         <div className="avatar-upload">
 
                                             <div className="avatar-preview">

@@ -8,8 +8,10 @@ import DatePicker from "react-datepicker"
 import moment from "moment"
 import UserModal from "./userModal"
 import axios from "axios";
+import ReactLoading from 'react-loading'
 
 import "react-datepicker/dist/react-datepicker.css";
+import Loading from "react-loading";
 
 class NewTask extends Component {
 
@@ -29,7 +31,8 @@ class NewTask extends Component {
             priority: 'Low',
             status: 'Open',
             assignedBy: '',
-            related_to: ''
+            related_to: '',
+            Loading: false
         }
     }
 
@@ -87,6 +90,7 @@ class NewTask extends Component {
 
     componentWillMount() {
         let self = this
+        self.setState({Loading: true})
         axios.get("/api/getAllUsers").then(function (response) {
             console.log("response issss ", response.data);
             if (response.data) {
@@ -101,7 +105,8 @@ class NewTask extends Component {
                     })
                 })
                 self.setState({
-                    UserList: userNameData
+                    UserList: userNameData,
+                    Loading: false,
                 })
             }
 
@@ -113,7 +118,8 @@ class NewTask extends Component {
             console.log("response issss ", response.data);
             if (response.data) {
                 self.setState({
-                    ProductList: response.data.products
+                    ProductList: response.data.products,
+                    Loading: false
                 })
             }
 
@@ -183,6 +189,11 @@ class NewTask extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
