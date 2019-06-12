@@ -133,75 +133,75 @@ class NewProduct extends Component {
     Date: June 12th 2019
     */
     UploadPDF(ev) {
-		let self = this
-		var idCardBase64
-		var assetBodyData
-		ev.preventDefault()
+        let self = this
+        var idCardBase64
+        var assetBodyData
+        ev.preventDefault()
         var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
-        axios.get("/api/readpdf",assetBodyData).then((res)=>{
-            console.log("error in response",res)
-            if(res.data){
-               
-             //   alert(res.data.length);
-               
-//   var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
-//                 var box2;
-//                 for (var i = 0; i < res.data.length; i++)  
-//                 { 
-//                     box2 =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
-//                 } 
-//           +'</ul>';
+        axios.get("/api/readpdf", assetBodyData).then((res) => {
+            console.log("error in response", res)
+            if (res.data) {
 
-var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel"> <ul class="nav nav-tabs datetab" id="myTab" role="tablist"> <li class="nav-item"><a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> </ul> <div class="tab-content custome_content under_tabs" id="myTabContent"> <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab"> <div class="row"> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Hills™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="BESLEME TALİMATLARI"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Bu mamayı ilk defa mı kullanıyorsunuz?"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="İÇİNDEKİLER"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Avrupa daüretilmiştir. *Kalite, tutarlılık ve lezzet için %100 Garanti, yoksa paranız iade"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value=""></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> </div> </div> <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div> </div></div>';
+                //   alert(res.data.length);
 
-            document.getElementById("pdfData").innerHTML = Box;
+                //   var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
+                //                 var box2;
+                //                 for (var i = 0; i < res.data.length; i++)  
+                //                 { 
+                //                     box2 =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
+                //                 } 
+                //           +'</ul>';
 
+                var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel"> <ul class="nav nav-tabs datetab" id="myTab" role="tablist"> <li class="nav-item"><a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> </ul> <div class="tab-content custome_content under_tabs" id="myTabContent"> <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab"> <div class="row"> <div class="col-md-6"> <div class="form-group"><label></label> <input class="form-control" type="text" name="text1" value="Hills™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label> <input class="form-control" type="text" name="text1" value="BESLEME TALİMATLARI"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label> <input class="form-control" type="text" name="text1" value="Bu mamayı ilk defa mı kullanıyorsunuz?"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label> <input class="form-control" type="text" name="text1" value="İÇİNDEKİLER"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label> <input class="form-control" type="text" name="text1" value="Avrupa daüretilmiştir. *Kalite, tutarlılık ve lezzet için %100 Garanti, yoksa paranız iade"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label></label> <input class="form-control" type="text" name="text1" value=""></div> </div> <div class="col-md-6"> <div class="form-group"><label></label><input class="form-control" type="text" name="text1"></div> </div> </div> </div> <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div> </div></div>';
 
+                document.getElementById("pdfData").innerHTML = Box;
 
 
 
-              //  $(".pdfData").html(JSON.stringify(res.data)); 
-                console.log("res in uploading",res)
-                return 
+
+
+                //  $(".pdfData").html(JSON.stringify(res.data)); 
+                console.log("res in uploading", res)
+                return
             } else {
-                $(".pdfData").html('Can not read the file !!'); 
-                console.log("error in response",res)
-                return						
+                $(".pdfData").html('Can not read the file !!');
+                console.log("error in response", res)
+                return
             }
-        }).catch((err)=>{
-            console.log("errorrrrrrrrrrrrrr in uploading",err)
+        }).catch((err) => {
+            console.log("errorrrrrrrrrrrrrr in uploading", err)
             return
         })
 
 
 
-		//if (FileSize <= 5) {
-            // self.getBase64(self.uploadInputFile.files[0], (result) => {
-			// 	var base64 = result.split(",");
-			// 	idCardBase64 = base64[1]
-			// 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-            //     console.log("===assetBodyData====",assetBodyData)
-            //     self.setState({
-            //         image: assetBodyData.data
-            //     })
-            //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
-            //         console.log("error in response",res)
-            //         if(res.data){
-			// 			console.log("res in uploading",res)
-			// 			return 
-            //         } else {
-			// 			console.log("error in response",res)
-			// 			return						
-            //         }
-            //     }).catch((err)=>{
-			// 		console.log("errorrrrrrrrrrrrrr in uploading",err)
-			// 		return
-            //     })
-			// });
-		//}
-		// else {
-		// 	console.log("fileSizeExceedMessage=======")
-		// }
+        //if (FileSize <= 5) {
+        // self.getBase64(self.uploadInputFile.files[0], (result) => {
+        // 	var base64 = result.split(",");
+        // 	idCardBase64 = base64[1]
+        // 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+        //     console.log("===assetBodyData====",assetBodyData)
+        //     self.setState({
+        //         image: assetBodyData.data
+        //     })
+        //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
+        //         console.log("error in response",res)
+        //         if(res.data){
+        // 			console.log("res in uploading",res)
+        // 			return 
+        //         } else {
+        // 			console.log("error in response",res)
+        // 			return						
+        //         }
+        //     }).catch((err)=>{
+        // 		console.log("errorrrrrrrrrrrrrr in uploading",err)
+        // 		return
+        //     })
+        // });
+        //}
+        // else {
+        // 	console.log("fileSizeExceedMessage=======")
+        // }
     }
 
     //Method to get Bas64 of file
@@ -607,11 +607,11 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                         </div>
 
 
-                                    {/* Panel for pdf upload in specification panel*/}
-                                    <div className="tab-pane" id="uploadPDF" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
-                                            <div className="form-group">
-                                                <label>Upload PDF</label>
+                                        {/* Panel for pdf upload in specification panel*/}
+                                        <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Upload PDF</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} onChange={this.UploadPDF.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
@@ -619,7 +619,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
                                                             : ''}
 
-                                                            <div id="pdfData"></div>
+                                                        <div id="pdfData"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -632,9 +632,9 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                 <div className="form-group">
                                                     <label>Workflow state</label>
                                                     <div className="form-group">
-                                                 
-                                                        <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
-                                                        value={this.state.workflow_state ===''? '': this.state.workflow_state}>
+
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
                                                             <option value={"In Review"}>In Review</option>
                                                             <option value={"In Publish"}>In Publish</option>
                                                             <option value={"Published"}>Published</option>
@@ -656,18 +656,12 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                 <li className="nav-item">
                                                     <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
                                                 </li>
-                                           
+
                                             </ul>
                                             <div className="tab-content custome_content under_tabs" id="myTabContent">
 
                                                 <div className="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                                <div className="row">
-                                                <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1"  />
-                                                            </div>
-                                                        </div>
+                                                    <div className="row">
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label>text</label>
@@ -710,8 +704,14 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                 <input className="form-control" type="text" name="text1" />
                                                             </div>
                                                         </div>
-                                                </div>
-                                                
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                                 <div className="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div>
                                             </div>
@@ -722,7 +722,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
 
 
 
-                                    
+
                                 </div>
                             </div>
                         </div>

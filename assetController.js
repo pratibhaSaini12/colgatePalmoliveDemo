@@ -129,7 +129,7 @@ module.exports = {
             console.log("googleFolder=======",googleFolder)
             fs.readdirSync(googleFolder).forEach((file) => {
               console.log("file====", file);
-              let filePath = googleFolder + "\\" + file
+              let filePath = googleFolder + "/" + file
               image2base64(filePath) // you can also to use url
                 .then(
                   (response) => {
