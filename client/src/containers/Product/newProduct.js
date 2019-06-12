@@ -17,7 +17,7 @@ class NewProduct extends Component {
             category: '',
             link: '',
             product_line: '',
-            product_status: '',
+            product_status: 'Active',
             cost: '',
             wholesale_price: '',
             msrp: '',
