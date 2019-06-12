@@ -21,8 +21,10 @@ class ProductList extends Component {
             pictures: [],
             stateUpdate: false,
             Loading: false,
-            countItems:0,
-            selectedProducytId:[],
+            countItems: 0,
+            selectedProducytId: [],
+            batchKey: '',
+            batchValue: ''
         }
     }
 
@@ -199,23 +201,23 @@ class ProductList extends Component {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
             let domIcon = document.getElementById(`activebtn${index}`)
-            if(domIcon.style.display==='' || domIcon.style.display==='none') {
+            if (domIcon.style.display === '' || domIcon.style.display === 'none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
                 document.getElementById(`activebtn${index}`).style.display = 'block'
-                document.getElementById(`card-hover${index}`).style.visibility='hidden'
+                document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
             } else {
                 counter =counter-1
                 // document.getElementById(`activebtn${index}`).style.display = 'none'
             }
-   
-            this.setState({countItems:counter,selectedProducytId:selectedProdeuctIds})
 
-           
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+
+
         }
-        catch(e) {console.log("err",e)}
-       
-        
+        catch (e) { console.log("err", e) }
+
+
     }
 
     /**
@@ -227,94 +229,94 @@ class ProductList extends Component {
         try{
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
-            counter = counter-1
+            counter = counter - 1
             let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
             document.getElementById(`activebtn${index}`).style.display = 'none'
-            selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key),1)
-            this.setState({countItems:counter})
-            console.log(selectedProdeuctIds,'$$$$$$$$$$$')
-        }catch(e){console.log("error ",e)}
-      
+            selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
+            this.setState({ countItems: counter })
+            console.log(selectedProdeuctIds, '$$$$$$$$$$$')
+        } catch (e) { console.log("error ", e) }
+
     }
 
 
     /**Method for hide and show menu option s */
     showhideSpan() {
         let spanSho = document.getElementsByClassName('counting-action-section')[0]
-        try{
-            if(this.state.countItems>0) {
+        try {
+            if (this.state.countItems > 0) {
                 spanSho.style.display = 'block'
             } else {
                 spanSho.style.display = 'none'
             }
-        }catch(e) {}
-      
+        } catch (e) { }
+
     }
 
     /**  Method for download CSV file  */
     createExcel() {
         try {
-    
-          let e = []
-          e = this.state.selectedProducytId
-    
-          var wb = XLSX.utils.book_new();
-          var wscols = [
-            { wch: 15 },
-            { wch: 25 },
-            { wch: 30 },
-            { wch: 20 },
-            { wch: 20 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-           
-          ];
-          var wsrows = [
-            { hpt: 15 }, // "points"
-            { hpx: 16 }, // "pixels"
-          ];
-    
-    
-          XLSX.utils.book_append_sheet(wb, ws, "WorksheetName");
-    
-          / make the worksheet /
-          var ws = XLSX.utils.json_to_sheet(e);
-          ws['!cols'] = wscols;
-          ws['!rows'] = wsrows;
-    
-          / add to workbook /
-          var wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, ws, "People");
-    
-          / generate an XLSX file /
-          XLSX.writeFile(wb, `Product_report${new Date()}.xlsx`);
-    
+
+            let e = []
+            e = this.state.selectedProducytId
+
+            var wb = XLSX.utils.book_new();
+            var wscols = [
+                { wch: 15 },
+                { wch: 25 },
+                { wch: 30 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+
+            ];
+            var wsrows = [
+                { hpt: 15 }, // "points"
+                { hpx: 16 }, // "pixels"
+            ];
+
+
+            XLSX.utils.book_append_sheet(wb, ws, "WorksheetName");
+
+            / make the worksheet /
+            var ws = XLSX.utils.json_to_sheet(e);
+            ws['!cols'] = wscols;
+            ws['!rows'] = wsrows;
+
+            / add to workbook /
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "People");
+
+            / generate an XLSX file /
+            XLSX.writeFile(wb, `Product_report${new Date()}.xlsx`);
+
         }
         catch (e) { console.log("catch", e) }
       }
@@ -344,6 +346,41 @@ class ProductList extends Component {
                 this.setState({countItems:0})
             })
         }
+    }
+
+    change(e) {
+        this.setState({
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    batchUpdate() {
+        console.log('state on batch update----', this.state)
+        var state = this.state
+        var id = []
+
+        state.selectedProducytId.length ? state.selectedProducytId.map((key) => {
+          return id.push(key.product_id)
+        }):''
+
+
+        var batchUpdate = {
+            batchKey: state.batchKey,
+            batchValue: state.batchValue,
+            id: id
+        }
+
+        console.log('batchUpdate----', batchUpdate)
+        // axios.post("api/batchUpdate", batchUpdate).then(function (response) {
+        //     console.log('resposne from api==', product)
+        //     // if (response.data.task) {
+        //     //     window.location.href = "/dashboard"
+        //     // }
+
+        // }).catch(function (error) {
+
+        // })
+
     }
 
     render() {
@@ -476,8 +513,8 @@ class ProductList extends Component {
                                                                 </div>
                                                                 <div className="group-action">
                                                                     <div className="option-box delete"><a href>Delete</a></div>
-                                                                    
-                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e)=>{this.createExcel(e)}}>Download</a></div>
+
+                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}>Download</a></div>
                                                                     <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
                                                                     <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
                                                                     <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
@@ -576,9 +613,9 @@ class ProductList extends Component {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
-                                                <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e)=>{this.handledeSelect(e,index,key)}}>
-                                                    <ImageContainer src="icons/check.png" />
-                                                </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.hnadledeSelect(e, index, key) }}>
+                                                        <ImageContainer src="icons/check.png" />
+                                                    </a>
 
                                                     <p className="img">
                                                         {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
@@ -593,13 +630,13 @@ class ProductList extends Component {
                                                     <p className="card-text">{key.product_name}<br />{key.product_name}</p>
                                                 </div>
                                                 <div className="card-hover" id={`card-hover${index}`}>
-                                                <div className="card-link-options">
-                                                    <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
-                                                    <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
-                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
-                                                    <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e)=>{this.handleIcon(e,index,key)}}><ImageContainer src="icons/check.png" /></a>
+                                                    <div className="card-link-options">
+                                                        <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
+                                                        <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
+                                                        <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, key) }}><ImageContainer src="icons/check.png" /></a>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>
                                         </div>
 
@@ -611,6 +648,8 @@ class ProductList extends Component {
                         </div>
                     </div>
                 </div>
+
+
 
                 {/* The Modal */}
                 <div className="modal fade allmodalcolgate" id="setting">
@@ -723,6 +762,47 @@ class ProductList extends Component {
                     </div>
                 </div>
 
+
+
+                {/* <!-- The Modal --> */}
+                <div className="modal fade allmodalcolgate" id="colgate">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+
+                            {/* <!-- Modal Header --> */}
+                            <div className="modal-header">
+                                <h4 className="modal-title title_modalheader">Batch Update</h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            {/* <!-- Modal body --> */}
+                            <div className="modal-body filtercustome">
+                                <form>
+                                    <div className="form-group">
+                                        <label>Labels</label>
+                                        <select id="pref-perpage" class="form-control" name="batchKey" onChange={e => this.change(e)}>
+                                            <option value="product_name">Product Name</option>
+                                            <option value="link">Link</option>
+                                            <option value="upc">UPC</option>
+                                            <option value="category">Category</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Property Edit</label>
+                                        <input className="form-control" type="text" name="batchValue" onChange={e => this.change(e)} />
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            {/* <!-- Modal footer --> */}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.batchUpdate.bind(this)} >UPDATE</button>
+                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 {/* The product delete */}
                 <div className="modal fade allmodalcolgate" id="delete">

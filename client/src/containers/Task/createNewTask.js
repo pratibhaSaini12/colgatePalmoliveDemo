@@ -10,6 +10,7 @@ import UserModal from "./userModal"
 import axios from "axios";
 
 import "react-datepicker/dist/react-datepicker.css";
+import ProductCompare from "../Product/productCompare";
 
 class NewTask extends Component {
 
@@ -29,7 +30,9 @@ class NewTask extends Component {
             priority: 'Low',
             status: 'Open',
             assignedBy: '',
-            related_to: ''
+            related_to: {
+
+            }
         }
     }
 
@@ -141,6 +144,15 @@ class NewTask extends Component {
     createNewTask() {
         console.log("state on save====", this.state);
         let state = this.state;
+        var relatedTo={}
+        state.ProductList.length?state.ProductList.map((product)=>{
+            if(product.product_id==state.related_to){
+                console.log('save data',product)
+                relatedTo=product
+            }
+        }):{}
+
+
         let createTask = {
             due_date: moment(state.DueDate).format('YYYY/MM/DD'),
             assignedTo: state.assignedTo.Name,
@@ -148,8 +160,11 @@ class NewTask extends Component {
             priority: state.priority,
             status: state.status,
             assignedBy: 'Pratibha',
-            related_to:state.related_to
-
+            related_to:state.related_to,
+            images:'',
+            product_id:relatedTo?relatedTo.product_id:'',
+            product_name:relatedTo?relatedTo.product_name:'',
+            workflow_state:relatedTo?relatedTo.workflow_state:''
         }
         console.log('createTask===', createTask)
         axios.post("api/createNewTask", createTask).then(function (response) {
@@ -169,6 +184,14 @@ class NewTask extends Component {
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
+        })
+    }
+
+    selectRelatedTo(e){
+        var product=e.target.value
+        console.log('inside select related to---',e.target.value)
+        this.setState({
+            related_to:e.target.value
         })
     }
 
@@ -239,10 +262,10 @@ class NewTask extends Component {
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Related To</label>
-                                            <select id="pref-perpage" className="form-control" name="related_to" onChange={e => this.change(e)}>
+                                            <select id="pref-perpage" className="form-control" name="related_to" onChange={e => this.selectRelatedTo(e)}>
                                                 {
                                                     this.state.ProductList.length ? this.state.ProductList.map((product, index) => {
-                                                        return <option value={product.product_name}>{product.product_name}</option>
+                                                        return <option value={product.product_id}>{product.product_name}</option>
 
 
                                                     }) : ''

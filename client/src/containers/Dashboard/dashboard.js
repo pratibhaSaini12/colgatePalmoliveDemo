@@ -26,7 +26,8 @@ class Dashboard extends Component {
             openTask: [],
             completeIncomplete: [],
             updateProduct: [],
-            Loading: false
+            Loading: false,
+            workflow_task: []
 
         }
     }
@@ -78,7 +79,7 @@ class Dashboard extends Component {
                             dataLabels: {
                                 enabled: false
                             },
-        
+
                         }
                     },
                     series: [{
@@ -115,6 +116,18 @@ class Dashboard extends Component {
         }).catch(function (error) {
 
         })
+
+        await axios.get("/api/getAllTasks").then(function (response) {
+
+            console.log('response from workflowtask===', response)
+            if (response.data) {
+                self.setState({
+                    workflow_task: response.data.tasks,
+                })
+            }
+        }).catch(function (error) {
+
+        })
     }
 
     // componentWillMount(){
@@ -131,29 +144,42 @@ class Dashboard extends Component {
 
     //     })
     // }
-    redirectURL (e) {
-        try{
-            console.log("e=======",e)
+    redirectURL(e) {
+        try {
+            console.log("e=======", e)
             let self = this
-            let page 
+            let page
             if (e == 1) {
                 page = "/productlist"
-            } else if(e == 3){
+            } else if (e == 3) {
                 page = "/taskList"
+
             }
             // if (totalOrders) {
+
+            // if (page = '/taskList') {
+            //     self.props.history.push({
+            //         pathname: page,
+            //         state: {
+            //             _data: 'Anuj'
+            //         }
+            //     })
+            // }
+            // else if (page = '/productlis') {
                 self.props.history.push({
                     pathname: page
                 })
             // }
-        }catch(e){}
-        
+            // }
+        } catch (e) { }
+
     }
 
     render() {
         const { openTask, updateProduct } = this.state;
         console.log("states in dashbpard", this.state)
         console.log("props in dashbpard", this.props)
+        var current_Date = new Date()
         return (
             <div>
                 {/* <div className="preloader">
@@ -256,9 +282,9 @@ class Dashboard extends Component {
                                         <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}>
                                             <div className="piechart_section">
                                                 <h5>Product Completion</h5>
-                                                <p>As of 03/20/2019</p>
+                                                <p>As of {}</p>
                                             </div>
-                                            <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />                                                                                            
+                                            <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />
                                             <div className="leg-div">
                                                 <div className="leg-detail-1"><span />Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%</div>
                                                 <div className="leg-detail-2"><span />Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%</div>
@@ -308,9 +334,9 @@ class Dashboard extends Component {
                                                         // ['Uday', 2, '#76bc5e', null],
                                                         // ['Anuj', 2, 'color: #70b7ed', null],
 
-                                                        [openTask.length > 0 ? openTask[0].assignedTo : '', openTask.length > 0 ? openTask[0].count : 0, '#f6e490', null ],
-                                                        [openTask.length >= 1 ? openTask[1].assignedTo : '', openTask.length >= 1 ? openTask[1].count : 0, '#76bc5e', null ],
-                                                        [openTask.length >= 2 ? openTask[2].assignedTo : '', openTask.length >= 2 ? openTask[2].count : 0, 'color: #70b7ed', null ]
+                                                        [openTask.length > 0 ? openTask[0].assignedTo : '', openTask.length > 0 ? openTask[0].count : 0, '#f6e490', null],
+                                                        [openTask.length >= 1 ? openTask[1].assignedTo : '', openTask.length >= 1 ? openTask[1].count : 0, '#76bc5e', null],
+                                                        [openTask.length >= 2 ? openTask[2].assignedTo : '', openTask.length >= 2 ? openTask[2].count : 0, 'color: #70b7ed', null]
                                                     ]}
                                                     options={{
                                                         // title: 'Density of Precious Metals, in g/cm^3',
@@ -344,70 +370,25 @@ class Dashboard extends Component {
                                                                 <th>Images</th>
                                                                 <th>ID</th>
                                                                 <th>Name</th>
-                                                                <th>Article No</th>
                                                                 <th>Task</th>
                                                                 <th>Workflow State</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <ImageContainer src="1.jpg" alt="title" />
-                                                                </td>
-                                                                <td><a href="#">1095</a></td>
-                                                                <td>Palmolove Natural</td>
-                                                                <td>189891</td>
-                                                                <td>In Review the Product</td>
-                                                                <td><span className="label label-comman">In Review</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <ImageContainer src="11.png" alt="title" /></td>
-                                                                <td><a href="#">1502</a></td>
-                                                                <td>Colgate White</td>
-                                                                <td>554235 </td>
-                                                                <td>Content is Ready to Publish</td>
-                                                                <td><span className="label label-comman comman2">In Publish</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <ImageContainer src="1.jpg" alt="title" /></td>
-                                                                <td><a href="#">1095</a></td>
-                                                                <td>Palmolove Natural</td>
-                                                                <td>189891</td>
-                                                                <td>Pictures in Review</td>
-                                                                <td><span className="label label-comman">In Review</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <ImageContainer src="11.png" alt="title" />
-                                                                </td>
-                                                                <td><a href="#">1012</a></td>
-                                                                <td>Colgate White</td>
-                                                                <td>554235</td>
-                                                                <td>Product Published</td>
-                                                                <td><span className="label label-comman comman2">Published</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <ImageContainer src="1.jpg" alt="title" />
-                                                                </td>
-                                                                <td><a href="#">1095</a></td>
-                                                                <td>Palmolove Natural</td>
-                                                                <td>189891</td>
-                                                                <td>Content in Review</td>
-                                                                <td><span className="label label-comman">In Review</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <ImageContainer src="11.png" alt="title" />
-                                                                </td>
-                                                                <td><a href="#">1044</a></td>
-                                                                <td>Colgate White</td>
-                                                                <td>1834591</td>
-                                                                <td>Published the Product</td>
-                                                                <td><span className="label label-comman comman2">Published</span></td>
-                                                            </tr>
+
+                                                            {
+                                                                this.state.workflow_task.length > 0 ? this.state.workflow_task.map((key, index) => {
+                                                                    return <tr>
+                                                                        <td>
+                                                                            <ImageContainer src="11.png" alt="title" />
+                                                                        </td>
+                                                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td>
+                                                                        <td>{key.product_name}</td>
+                                                                        <td>{key.subject}</td>
+                                                                        <td><span className="label label-comman">{key.workflow_state}</span></td>
+                                                                    </tr>
+                                                                }) : ''}
+
                                                         </tbody>
                                                     </table>
                                                 </div>
