@@ -5,6 +5,7 @@ const fs = require('fs');
 const image2base64 = require('image-to-base64');
 const AssetJsonModel = require('./client/src/ObjectJsonModel/assetStateToJson')
 const path = require('path')
+var base64Img = require('base64-img')
 
 function loadAssets() {
     try {
@@ -123,74 +124,46 @@ module.exports = {
     },
 
     createAssetThroughDriv(req, res) {
-        let result = []
+        let assets = []
         try {
             const googleFolder = path.resolve(__dirname, './CRON/googleImage/');
             console.log("googleFolder=======", googleFolder)
-
-            fs.readdir(dir, (err, file) => {
+            fs.readdir(googleFolder, (err, file) => {
                 // if(file.includes("jpeg") && file.includes("png") && file.includes("jpg")){
-
+                console.log("inside")
                 // }
-                for(var i =0 ;i > file.length ; i++){
-                    let filePath = googleFolder + "/" + file[i]
-                    image2base64(filePath).then((response) => {
-                        let type = file[i].split(".")[0] !== undefined ? file[i].split(".")[1] : 'jpg'
-                        let asset_type = "image/" + type
-                        let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + file[i].split(".")[0] + "', '" + response + "', '" + asset_type + "')"
-                        con.query(que, function (err, resu) {
-                            if (err) { 
-                                console.log("erroooooooooo",err)
-                             }
-                            else {
-                                console.log("worked....")
-                            }
-                        })
-
-                    }).catch(
-                        (error) => {
-                            console.log("error in readFiles 156", error); //Exepection error....
-                        }
-                    )
+                if (err) {
+                    console.log("err line 135", err)
                 }
-                console.log(file.length);
-              });
-              res.status(200).json({
-                        asset: result,
-                        error: null
-                    })
+                for (var i = 0; i <= file.length; i++) {
+                    console.log("insiade", i)
+                    let filePath = googleFolder + "\\" + file[i]
+                    console.log("filePath==============", filePath)
+                    if (file[i].includes("jpeg") || file[i].includes("jpg") || file[i].includes("png")) {
+                        base64Img.base64(filePath, function (err, data) {
+                            if (err) {
+                                console.log("err======", i, err)
+                            }
+                            console.log("base64Img", i)
+                            // console.log("dat============",data)
+                            assets.push({
+                                asset_name: file[i].split(".")[0] !== undefined ? file[i].split(".")[0] : 'not found',
+                                asset_data: data,
+                            })
+                            console.log("assets==========", assets)
+                        })
+                    }
 
-
-            // fs.readdirSync(googleFolder).forEach((file) => {
-            //     let filePath = googleFolder + "/" + file
-                // image2base64(filePath) // you can also to use url
-                //     .then((response) => {
-                //         let type = file.split(".")[0] !== undefined ? file.split(".")[1] : 'jpg'
-                //         let asset_type = "image/" + type
-                //         let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "')"
-                //         con.query(que, function (err, resu) {
-                //             if (err) { 
-                //                 console.log("erroooooooooo",err)
-                //              }
-                //             else {
-                //                 console.log("worked....")
-                //             }
-                //         })
-
-                //     }).catch(
-                //         (error) => {
-                //             console.log("error in readFiles 156", error); //Exepection error....
-                //         }
-                //     )
-            // })
-        //      res.status(200).json({
-        //         asset: result,
-        //         error: null
-        //     })
+                }
+            });
+            return res.status(200).json({
+                asset: assets,
+                error: null
+            })
         } catch (e) {
             console.log("error in readFiles try", e);
             res.status(200).json({
-                asset: result,
+                asset: assets,
                 error: e
             })
         }

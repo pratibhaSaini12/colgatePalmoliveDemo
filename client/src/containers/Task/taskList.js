@@ -122,6 +122,7 @@ class TaskList extends Component {
         }
 
     render() {
+        console.log("porpssssssss in taskList", this.props)
         const { filteredList } = this.state;
         let {dataPerPage} = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''

@@ -3360,6 +3360,9 @@ margin-top: .8rem;
 .leg-div .leg-detail-2 span {
 	background-color: #434348;
 }
+.leg-div .leg-detail-3 span {
+	background-color: rgb(144,237,125)
+}
 .tab-pane .table-view .table tr td:last-child {
 	width: auto;
 }

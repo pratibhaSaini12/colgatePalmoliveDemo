@@ -582,6 +582,7 @@ class ProductList extends Component {
     }
 
     render() {
+        console.log("porps in productlist", this.props)
         const { filteredList, attrebuteArray, selectedArray } = this.state;
         const { product, pictures } = this.state;
         let buff

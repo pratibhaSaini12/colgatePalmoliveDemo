@@ -29,6 +29,7 @@ class Dashboard extends Component {
             Loading: false,
             workflow_task: [],
             filterdata: '',
+            othercompleteIncomplete: 0
 
         }
     }
@@ -72,7 +73,7 @@ class Dashboard extends Component {
                         title: {
                             text: ''
                         }
-                
+
                     },
                     legend: {
                         enabled: false
@@ -83,15 +84,26 @@ class Dashboard extends Component {
                             dataLabels: {
                                 enabled: true,
                                 /* format: '{point.y:.1f}%' */
+                            },
+                            cursor: 'pointer',
+                            events: {
+                                click: function (event) {
+                                    self.props.history.push({
+                                        pathname: "/taskList",
+                                        state: {
+                                            _assignedTo : event.point.category
+                                        }
+                                    })
+                                }
                             }
                         }
                     },
-                
+
                     tooltip: {
                         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
                         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
                     },
-                
+
                     series: [
                         {
                             name: "Browsers",
@@ -195,7 +207,7 @@ class Dashboard extends Component {
                                     ]
                                 ]
                             },
-                            
+
                         ]
                     }
                 });
@@ -225,26 +237,42 @@ class Dashboard extends Component {
                             dataLabels: {
                                 enabled: false
                             },
+                            events: {
+                                click: function (event) {
+                                    self.props.history.push({
+                                        pathname: "/productlist",
+                                        state: {
+                                            _complete : event.point.name.toLowerCase()
+                                        }
+                                    })
+                                }
+                            }
 
                         }
                     },
                     series: [{
                         name: 'Product',
                         colorByPoint: true,
-                        data: [{
-                            name: 'Complete',
-                            y: response.data.product[0] ? response.data.product[0].complete : 0,
-                            sliced: true,
-                            selected: true
-                        }, {
-                            name: 'Incomplete',
-                            y: response.data.product[0] ? response.data.product[0].incomplete : 0
-                        },]
+                        data: [
+                            {
+                                name: 'Complete',
+                                y: response.data.product[0] ? response.data.product[0].complete : 0,
+                                selected: true
+                            }, {
+                                name: 'Incomplete',
+                                y: response.data.product[0] ? response.data.product[0].incomplete : 0
+                            },
+                            {
+                                name: 'Others',
+                                y: 100 - response.data.product[0].complete + response.data.product[0].incomplete
+                            }
+                        ]
                     }]
                 });
                 self.setState({
                     completeIncomplete: response.data.product[0],
-                    Loading: false
+                    Loading: false,
+                    othercompleteIncomplete: 100 - response.data.product[0].complete + response.data.product[0].incomplete
                 })
             }
         }).catch(function (error) {
@@ -275,21 +303,6 @@ class Dashboard extends Component {
 
         })
     }
-
-    // componentWillMount(){
-
-    //     axios.get("/api/getAllOpenTask").then(function (response) {
-
-    //         console.log('response from getAllOpenTask===', response)
-    //         if (response.data) {
-    //             self.setState({
-    //                 openTask: response.data.openTasks
-    //             })
-    //         }
-    //     }).catch(function (error) {
-
-    //     })
-    // }
     redirectURL(e) {
         try {
             console.log("e=======", e)
@@ -312,9 +325,9 @@ class Dashboard extends Component {
             //     })
             // }
             // else if (page = '/productlis') {
-                self.props.history.push({
-                    pathname: page
-                })
+            self.props.history.push({
+                pathname: page
+            })
             // }
             // }
         } catch (e) { }
@@ -436,15 +449,27 @@ class Dashboard extends Component {
                             <div className="table-view digitalImage">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}>
+                                        <div className="card dashboard_section">
+                                        {/* <div className="card dashboard_section" onClick={(e) => this.redirectURL(1)}> */}
                                             <div className="piechart_section">
                                                 <h5>Product Completion</h5>
                                                 <p>As of {current_Date}</p>
                                             </div>
                                             <div id="container" style={{ minWidth: '240px', height: '400px', maxWidth: '600px', margin: '0 auto' }} />
                                             <div className="leg-div">
-                                                <div className="leg-detail-1"><span />Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%</div>
-                                                <div className="leg-detail-2"><span />Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%</div>
+                                                <div className="leg-detail-1"><span />
+                                                    {/* <Link to={{ pathname: '/productlist', state: { _data: "complete" } }}> */}
+                                                        Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%
+                                                    {/* </Link> */}
+                                                </div>
+                                                <div className="leg-detail-2"><span />
+                                                    {/* <Link to={{ pathname: '/productlist', state: { _data: "incomplete" } }}> */}
+                                                        Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%
+                                                    {/* </Link> */}
+                                                </div>
+                                                {this.state.othercompleteIncomplete > 0 ?
+                                                    <div className="leg-detail-3"><span />Other: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%</div>
+                                                    : ''}
                                             </div>
                                         </div>
                                     </div>
@@ -455,19 +480,19 @@ class Dashboard extends Component {
                                                 <p>As of {current_Date}</p>
                                             </div>
                                             <div id="donutchart" style={{ width: '300px', height: '400px', margin: '0 auto' }} >
-                                                <PieChart donut={true} data={[["30 - 90 Days", updateProduct ? updateProduct.first : 0], ["90+ Days", updateProduct ? updateProduct.second : 0], ["Last 30 Days", updateProduct ? updateProduct.third : 0]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
+                                                <PieChart donut={true} data={[["Last 30 Days", updateProduct ? updateProduct.first : 0], ["30 - 90 Days", updateProduct ? updateProduct.second : 0], ["90+ Days", updateProduct ? updateProduct.third : 0]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="card dashboard_section" onClick={(e) => this.redirectURL(3)}>
+                                        <div className="card dashboard_section" onClick={(e) => this.redirectURL(4)}>
                                             <div className="piechart_section">
                                                 <h5>Open Tasks by Assignee</h5>
                                                 <p>As of {current_Date}</p>
                                             </div>
-                                            
+
                                             {/* <div id="barchart_values" style={{ width: '550px', height: '400px' }} /> */}
-                                            <div id="columnchart_values" style={{width: "300px", height: "400px", margin:"auto"}}></div>
+                                            <div id="columnchart_values" style={{ width: "300px", height: "400px", margin: "auto" }}></div>
 
                                             {/* {openTask.length >= 2 ?
                                                 <Chart
@@ -590,7 +615,7 @@ class Dashboard extends Component {
                                             </div>
                                         </div>
                                     </div>
-                               
+
 
                                     {/* <div className="col-md-6">
                                         <div className="card dashboard_section">
