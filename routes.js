@@ -56,8 +56,11 @@ module.exports = (app) => {
   app.get('/api/getAssetByID',assetController.getAssetByID);
   app.get('/api/get-asset',assetController.getAssets);
   app.post('/api/upload/asset',assetController.upploadAsset);
+  app.get('/api/getAssetFromDrive',assetController.createAssetThroughDriv);
   app.get('/api/readpdf',productController.readPDf);
   app.post('/api/batchUpdate',productController.batchUpdate);
+
+  app.get('/api/searchFilterByValues',productController.searchFilterByValues);
 
 // CRON JOBS
  //app.post('/api/listFiles',cronController.listFiles);  /*  CRON for fetching data from Google Drive*/

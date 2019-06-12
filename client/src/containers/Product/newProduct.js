@@ -4,6 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
+//import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
 
@@ -16,7 +17,7 @@ class NewProduct extends Component {
             category: '',
             link: '',
             product_line: '',
-            product_status: '',
+            product_status: 'Active',
             cost: '',
             wholesale_price: '',
             msrp: '',
@@ -140,8 +141,34 @@ class NewProduct extends Component {
         axios.get("/api/readpdf",assetBodyData).then((res)=>{
             console.log("error in response",res)
             if(res.data){
-                alert(JSON.stringify(res));
-                document.getElementById("pdfData").innerHTML = JSON.stringify(res.data);
+               
+             //   alert(res.data.length);
+               
+  var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
+                // +'<li className="nav-item">'
+                // +'<a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>'
+                // +'</li>'
+                
+                for (var i = 0; i < res.data.length; i++)  
+                { 
+                    Box =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
+                } 
+         
+            // <li className="nav-item">
+            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
+            // </li>
+            // <li className="nav-item">
+            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
+            // </li>
+            +'</ul>';
+            alert(Box);
+
+            document.getElementById("pdfData").innerHTML = Box;
+
+
+
+
+
               //  $(".pdfData").html(JSON.stringify(res.data)); 
                 console.log("res in uploading",res)
                 return 
