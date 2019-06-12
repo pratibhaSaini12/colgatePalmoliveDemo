@@ -41,8 +41,30 @@ module.exports = {
     //Update product by ID
     updateProductByID(req, res) {
         console.log("req.body=============", req.body)
-        con.query("update `product` SET product_name=?,upc=?,category=?,link=?,product_line=?,product_status=?,cost=?,wholesale_price=?,msrp=?,retail_price=?,medium_description=?,long_description=? ,tags=?,warnings=?,material=?,style=?, main_image=?,workflow_state=?  where product_id=?", [req.body.product_name, req.body.upc, req.body.category, req.body.link, req.body.product_line, req.body.product_status, req.body.cost, req.body.wholesale_price, req.body.msrp, req.body.retail_price, req.body.medium_description, req.body.long_description, req.body.tags, req.body.warnings, req.body.material, req.body.style, req.body.main_image, req.body.workflow_state, req.body.product_id], function (err, result) {
-            console.log('response from update====', result)
+        try {
+            let queryForSql = `update product SET product_name='${req.body.product_name}',
+            upc='${req.body.upc}',
+            category='${req.body.category}',
+            link='${req.body.link}',
+            product_line='${req.body.product_line}',
+            product_status='${req.body.product_status}',
+            cost='${req.body.cost}',
+            wholesale_price='${req.body.wholesale_price}',
+            msrp='${req.body.msrp}',
+            retail_price='${req.body.retail_price}',
+            medium_description='${req.body.medium_description}',
+            long_description='${req.body.long_description}',
+            tags='${req.body.tags}',
+            warnings='${req.body.warnings}',
+            material='${req.body.material}',
+            style='${req.body.style}',
+            main_image='${req.body.main_image}',
+            workflow_state='${req.body.workflow_state}'
+            where product_id=${req.body.product_id}`;
+            console.log('query code ',queryForSql)
+            // process.exit(0)
+            con.query(queryForSql, function (err, result) {
+            // console.log('response from update====', result)
             if (err)
                 throw err;
             else {
@@ -52,6 +74,7 @@ module.exports = {
                 })
             }
         })
+        } catch(e) { console.log('errorn', e)}
     },
 
     //Delete product by ID
