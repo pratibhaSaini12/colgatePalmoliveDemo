@@ -736,7 +736,7 @@ class ProductList extends Component {
                                                         {/* <img src={base64data ? 'data:' + "image/png" + ';base64,' + base64data : ""} alt="" /> */}
                                                     </p>
                                                     <h4 className="card-title">{key.product_id}</h4>
-                                                    <p className="card-text">{key.product_name}<br />{key.product_name}</p>
+                                                    <p className="card-text">{key.product_name}<br /></p>
                                                 </div>
                                                 <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
