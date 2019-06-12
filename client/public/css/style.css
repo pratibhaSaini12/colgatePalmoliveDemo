@@ -284,6 +284,26 @@ li {
 	display: none
 }
 }
+
+@media screen and (min-width: 1400px) {
+	.topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
+		color: #c8bbf2;
+		padding: 10px 20px;
+	}
+  }
+  @media screen and (min-width: 1600px) {
+	.topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
+		color: #c8bbf2;
+		padding: 10px 13px;
+	}
+  }
+  @media screen and (min-width: 1900px) {
+	.topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
+		color: #c8bbf2;
+		padding: 10px 13px;
+	}
+  }
+
 @media (max-width:767px) {
 .mini-sidebar .left-sidebar {
 	position: fixed
@@ -1755,13 +1775,15 @@ Preloader
 	text-align: center;
 }
 .dropdown-menu.drop_20 {
-	border: none;
-	box-shadow: 0px -1px 9px 1px #d4d4d4;
-	transform: translate3d(-157px, 37px, 0px) !important;
-	border-radius: 0;
-	font-size: 13px;
-	min-width: 12rem;
-	left: 90px !important;
+    border: none;
+    box-shadow: 0px -1px 9px 1px #d4d4d4;
+    transform: inherit !important;
+    border-radius: 0;
+    font-size: 13px;
+    min-width: 12rem;
+    left: -69px !important;
+	top: 38px !important;
+	z-index: 9;
 }
 .dropdown-menu.drop_20 .dropdown-item {
 	color: #3485d6;
@@ -2308,7 +2330,7 @@ input.content-search, .dataTables_filter .form-control-sm {
 	font-weight: 300;
 }
 .counting-action-section .option-box {
-	padding: 10px 10px 10px 40px;
+	padding: 8px 1rem;
 	margin: 0;
 	display: block;
 }
@@ -2320,15 +2342,9 @@ input.content-search, .dataTables_filter .form-control-sm {
 	color: #8dc63f;
 	margin-top: -9px;
 }
-.counting-action-section .select-count {
-	background: url("../img/icons/checksmall.png") no-repeat 10px;
-}
-.counting-action-section .select-all {
-	background: url("../img/icons/selectall.png") no-repeat 10px;
-}
-.counting-action-section .clear-all {
-	background: url("../img/icons/clearall.png") no-repeat 10px;
-}
+
+
+
 .counting-action-section .selected-actions .option-box {
 }
 .counting-action-section .selected-actions .option-box:last-child {
@@ -2337,24 +2353,11 @@ input.content-search, .dataTables_filter .form-control-sm {
 .counting-action-section .selected-actions .option-box.drop-option-link {
 	padding: 10px 20px;
 }
-.counting-action-section .move-folder {
-	background: url("../img/icons/folder.png") no-repeat 14px 14px;
-}
-.counting-action-section .download {
-	background: url("../img/icons/import.png") no-repeat 10px 14px;
-}
-.counting-action-section .delete {
-	background: url("../img/icons/delete-gray.png") no-repeat 14px 14px;
-}
-.counting-action-section .import {
-	background: url("../img/icons/import.png") no-repeat 14px 14px;
-}
-.counting-action-section .export {
-	background: url("../img/icons/export.png") no-repeat 14px 14px;
-}
-.counting-action-section .compare {
-	background: url("../img/icons/compare.png") no-repeat 14px 14px;
-}
+
+
+
+
+.
 .group-selection, .group-action {
 	border-bottom: 1px solid #f7f7f7;
 }
@@ -3705,3 +3708,11 @@ to {
     font-size: 13px;
 	border-radius: 2px;}
 	.martop_25 { margin-top: 25px;}
+	.search-box { width: 100%;}
+#reactgooglegraph-2 {    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;}
+
+.custome_listfile { padding: 0 !important; box-shadow: none !important}
+.tab-content.custome_content.under_tabs .active { box-shadow: none; border: none;}

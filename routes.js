@@ -3,7 +3,8 @@ const userController=require('./userController');
 const taskController=require('./taskController');
 const productController=require('./productController');
 const assetController=require('./assetController');
-const uploadImageController=require("./uploadImageController")
+const uploadImageController=require("./uploadImageController");
+const uploadPDFController=require("./uploadPDFController");
 
 // const cronController = require('./CRON/cronController');
 require('./CRON/cronController')
@@ -44,6 +45,7 @@ module.exports = (app) => {
   app.get('/api/getTaskByUserID',taskController.getTaskByUserID);
   app.post('/api/createNewTask',taskController.createNewTask);
   app.post('/api/upload/image',uploadImageController.upploadImage);
+  app.post('/api/upload/pdf',uploadPDFController.upploadPDF);
   app.get('/api/getAllOpenTask',taskController.getAllOpenTask);
   app.get('/api/getAllOpenTaskByUser',taskController.getAllOpenTaskByUser);
   
@@ -55,6 +57,8 @@ module.exports = (app) => {
   app.get('/api/get-asset',assetController.getAssets);
   app.post('/api/upload/asset',assetController.upploadAsset);
   app.get('/api/getAssetFromDrive',assetController.createAssetThroughDriv);
+  app.get('/api/readpdf',productController.readPDf);
+  app.post('/api/batchUpdate',productController.batchUpdate);
 
 // CRON JOBS
  //app.post('/api/listFiles',cronController.listFiles);  /*  CRON for fetching data from Google Drive*/

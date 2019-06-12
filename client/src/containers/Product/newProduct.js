@@ -4,6 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
+import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
 
@@ -27,7 +28,7 @@ class NewProduct extends Component {
             warnings: '',
             material: '',
             style: '',
-            workflow_state:'',
+            workflow_state: '',
             main_image: '',
             asset_id: 99999,
             image: ''
@@ -37,12 +38,17 @@ class NewProduct extends Component {
 
 
     componentDidMount() {
+        axios.get("api/readpdf").then(function (response) {
+            console.log('resposne from api readpdf ==', response);
+        }).catch(function (error) {
+
+        })
     }
 
 
     change(e) {
-        console.log("e.target.value",e.target.value)
-        console.log("e.target.name",e.target.name)
+        console.log("e.target.value", e.target.value)
+        console.log("e.target.name", e.target.name)
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
@@ -51,9 +57,9 @@ class NewProduct extends Component {
 
     createNewProduct() {
         console.log("state on save====", this.state);
-        let state=this.state;
+        let state = this.state;
         let createProduct = {
-            product_id:state.product_id ,
+            product_id: state.product_id,
             product_name: state.product_name,
             upc: state.upc,
             category: state.category,
@@ -75,7 +81,7 @@ class NewProduct extends Component {
         }
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
-            if(response.data.product){
+            if (response.data.product) {
                 window.location.href = "/productList"
             }
 
@@ -86,59 +92,145 @@ class NewProduct extends Component {
 
     //handeling image upload
     handleUploadAttachment(ev) {
-        console.log("ev========",ev)
+        console.log("ev========", ev)
+        let self = this
+        var idCardBase64
+        var assetBodyData
+        ev.preventDefault()
+        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            self.getBase64(self.uploadInput.files[0], (result) => {
+                var base64 = result.split(",");
+                idCardBase64 = base64[1]
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                console.log("===assetBodyData====", assetBodyData)
+                self.setState({
+                    image: assetBodyData.data
+                })
+                axios.post("/api/upload/image", assetBodyData).then((res) => {
+                    console.log("error in response", res)
+                    if (res.data) {
+                        console.log("res in uploading", res)
+                        return
+                    } else {
+                        console.log("error in response", res)
+                        return
+                    }
+                }).catch((err) => {
+                    console.log("errorrrrrrrrrrrrrr in uploading", err)
+                    return
+                })
+            });
+        }
+        else {
+            console.log("fileSizeExceedMessage=======")
+        }
+    }
+
+
+    /*Upload PDF files 
+    Author: Shashnak Saxena
+    Date: June 12th 2019
+    */
+    UploadPDF(ev) {
 		let self = this
 		var idCardBase64
 		var assetBodyData
 		ev.preventDefault()
-		var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-		if (FileSize <= 5) {
-			self.getBase64(self.uploadInput.files[0], (result) => {
-				var base64 = result.split(",");
-				idCardBase64 = base64[1]
-				assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-                console.log("===assetBodyData====",assetBodyData)
-                self.setState({
-                    image: assetBodyData.data
-                })
-                axios.post("/api/upload/image",assetBodyData).then((res)=>{
-                    console.log("error in response",res)
-                    if(res.data){
-						console.log("res in uploading",res)
-						return 
-                    } else {
-						console.log("error in response",res)
-						return						
-                    }
-                }).catch((err)=>{
-					console.log("errorrrrrrrrrrrrrr in uploading",err)
-					return
-                })
-			});
-		}
-		else {
-			console.log("fileSizeExceedMessage=======")
-		}
+        var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
+        axios.get("/api/readpdf",assetBodyData).then((res)=>{
+            console.log("error in response",res)
+            if(res.data){
+               
+             //   alert(res.data.length);
+               
+  var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
+                // +'<li className="nav-item">'
+                // +'<a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>'
+                // +'</li>'
+                
+                for (var i = 0; i < res.data.length; i++)  
+                { 
+                    Box =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
+                } 
+         
+            // <li className="nav-item">
+            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
+            // </li>
+            // <li className="nav-item">
+            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
+            // </li>
+            +'</ul>';
+            alert(Box);
+
+            document.getElementById("pdfData").innerHTML = Box;
+
+
+
+
+
+              //  $(".pdfData").html(JSON.stringify(res.data)); 
+                console.log("res in uploading",res)
+                return 
+            } else {
+                $(".pdfData").html('Can not read the file !!'); 
+                console.log("error in response",res)
+                return						
+            }
+        }).catch((err)=>{
+            console.log("errorrrrrrrrrrrrrr in uploading",err)
+            return
+        })
+
+
+
+		//if (FileSize <= 5) {
+            // self.getBase64(self.uploadInputFile.files[0], (result) => {
+			// 	var base64 = result.split(",");
+			// 	idCardBase64 = base64[1]
+			// 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+            //     console.log("===assetBodyData====",assetBodyData)
+            //     self.setState({
+            //         image: assetBodyData.data
+            //     })
+            //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
+            //         console.log("error in response",res)
+            //         if(res.data){
+			// 			console.log("res in uploading",res)
+			// 			return 
+            //         } else {
+			// 			console.log("error in response",res)
+			// 			return						
+            //         }
+            //     }).catch((err)=>{
+			// 		console.log("errorrrrrrrrrrrrrr in uploading",err)
+			// 		return
+            //     })
+			// });
+		//}
+		// else {
+		// 	console.log("fileSizeExceedMessage=======")
+		// }
     }
 
     //Method to get Bas64 of file
-	getBase64(file, cb) {
-		let reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = function () {
-			cb(reader.result)
-		};
-		reader.onerror = function (error) {
-		};
-	}
+    getBase64(file, cb) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            cb(reader.result)
+        };
+        reader.onerror = function (error) {
+        };
+    }
 
     render() {
-console.log("statessss in newProduct",this.state)
-let img = this.state.image
-let image = ''
-if(img !== ''){
-    image = "data:"+img.mimetype+";base64,"+img.data
-}
+        console.log("statessss in newProduct", this.state)
+        let img = this.state.image
+        let image = ''
+        if (img !== '') {
+            image = "data:" + img.mimetype + ";base64," + img.data
+        }
         return (
             <div>
                 {/* <div className="preloader">
@@ -156,7 +248,7 @@ if(img !== ''){
                                 <div className="col-md-12 top_part20">
                                     <h2 className="page-title float-left">Create New Product</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={this.createNewProduct.bind(this)}>SAVE</button>
+                                        <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -174,7 +266,13 @@ if(img !== ''){
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Upload Image</a>
                                         </li>
                                         <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Upload PDF</a>
+                                        </li>
+                                        <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -240,7 +338,7 @@ if(img !== ''){
                                                             <div className="form-group">
                                                                 <label>Category</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" value={this.state.category === '' ? '' : this.state.category} name="category" className="form-control" onChange={(e)=>this.change(e)}>
+                                                                    <select id="pref-perpage" value={this.state.category === '' ? '' : this.state.category} name="category" className="form-control" onChange={(e) => this.change(e)}>
                                                                         <option value={0}>Category</option>
                                                                         <option value={"Toothpastes"}>Toothpastes</option>
                                                                         <option value={"Toothbrushes"}>Toothbrushes</option>
@@ -287,7 +385,7 @@ if(img !== ''){
                                                             <div className="form-group">
                                                                 <label>Product Status</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" name="product_status" onChange={(e)=>this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                    <select id="pref-perpage" name="product_status" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
                                                                         <option value={"Active"}>Active</option>
                                                                         <option value={"Inactive"}>Inactive</option>
                                                                     </select>
@@ -503,9 +601,9 @@ if(img !== ''){
                                             </form>
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                            <div className="form-group">
-                                                <label>Upload Image</label>
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Upload Image</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
@@ -517,23 +615,123 @@ if(img !== ''){
                                             </div>
                                         </div>
 
-                                        <div className="tab-pane" id="settings2" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+
+                                    {/* Panel for pdf upload in specification panel*/}
+                                    <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                        <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
                                             <div className="form-group">
-                                                <label>Workflow state</label>
+                                                <label>Upload PDF</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} onChange={this.UploadPDF.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
+                                                        {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''}
+
+                                                            <div id="pdfData"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div className="tab-pane" id="settings2" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Workflow state</label>
                                                     <div className="form-group">
                                                  
                                                         <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
                                                         value={this.state.workflow_state ===''? '': this.state.workflow_state}>
-                                                            <option value="In Review">In Review</option>
-                                                            <option value="In Publish">In Publish</option>
-                                                            <option value="Published">Published</option>
+                                                            <option value={"In Review"}>In Review</option>
+                                                            <option value={"In Publish"}>In Publish</option>
+                                                            <option value={"Published"}>Published</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="tab-pane filtercustome tabsectionform  custome_listfile" id="settings3" role="tabpanel">
+                                            <ul className="nav nav-tabs datetab" id="myTab" role="tablist">
+
+
+                                                <li className="nav-item">
+                                                    <a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
+                                                </li>
+                                           
+                                            </ul>
+                                            <div className="tab-content custome_content under_tabs" id="myTabContent">
+
+                                                <div className="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                                <div className="row">
+                                                <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1"  />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                
+                                                </div>
+                                                <div className="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div>
+                                            </div>
+
+
+                                        </div>
                                     </div>
+
+
+
+                                    
                                 </div>
                             </div>
                         </div>

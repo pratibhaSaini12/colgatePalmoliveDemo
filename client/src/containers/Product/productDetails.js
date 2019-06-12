@@ -88,7 +88,7 @@ class ProductDetail extends Component {
                                         <div className="breadcrumb">
                                             <ul>
                                                 <li>
-                                                    <a href="#">Product &gt;&gt; </a>
+                                                    <a href="/productList">Product &gt;&gt; </a>
                                                 </li>
                                                 <li>  {product.product_id} {product.category}</li>
                                             </ul>

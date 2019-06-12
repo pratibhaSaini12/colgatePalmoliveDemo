@@ -6,7 +6,8 @@ import ImageContainer from "../../components/imageContainer"
 import axios from "axios";
 import ReactLoading from 'react-loading'
 import _ from 'lodash';
-
+import XLSX from 'xlsx';
+import moment from 'moment'
 
 class ProductList extends Component {
 
@@ -19,7 +20,13 @@ class ProductList extends Component {
             listToFilter: [],
             pictures: [],
             stateUpdate: false,
-            Loading: false
+            Loading: false,
+            countItems: 0,
+            selectedProducytId: [],
+            routeToPage: false,
+            batchKey: 'product_name',
+            batchValue: '',
+            bulkDelete: []
         }
     }
 
@@ -79,20 +86,41 @@ class ProductList extends Component {
     }
 
     async deleteProductById() {
+        console.log('delete product by id', this.state)
         let self = this
-        self.setState({ Loading: true })
+       // self.setState({ Loading: true })
         console.log("this.stateeeeee", this.state)
-        await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
-            console.log('resposne from Delete api==', response)
-            if (response.data.product) {
-                self.setState({ deleteProductId: '', Loading: false })
-                window.location.href = "/productList"
-            }
+        if (self.state.deleteProductId) {
+            await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
+                console.log('resposne from Delete api==', response)
+                if (response.data.product) {
+                    self.setState({ deleteProductId: '', Loading: false })
+                    window.location.href = "/productList"
+                }
 
-        }).catch(function (error) {
-            this.setState({ deleteProductId: '', Loading: false })
-            console.log("error in delete product", error)
-        })
+            }).catch(function (error) {
+                this.setState({ deleteProductId: '', Loading: false })
+                console.log("error in delete product", error)
+            })
+        }
+
+        else if (self.state.bulkDelete) {
+            console.log('bulk delete===',self.state.bulkDelete)
+            var id= self.state.bulkDelete
+            axios.post("api/bulkProductDelete",{id:id}).then(function (response) {
+                console.log('resposne from api==', product)
+                if (response.data.product) {
+                    self.setState({ bulkDelete: '', Loading: false })
+                    window.location.href = "/productList"
+                }
+
+            }).catch(function (error) {
+                this.setState({ bulkDelete: '', Loading: false })
+            })
+        }
+
+
+
     }
 
     filterSearch(event) {
@@ -187,13 +215,277 @@ class ProductList extends Component {
         console.log('list viewwwwwwwwwwwwwww')
     }
 
+    /**
+     * Method for select Product and handle  
+     * @param {e,index,key}
+     */
+    handleIcon(e, index, key) {
+        try {
+            let counter = this.state.countItems
+            if (counter < 0) {
+                counter = 0
+            }
+            let selectedProdeuctIds = this.state.selectedProducytId
+            let domIcon = document.getElementById(`activebtn${index}`)
+            if (domIcon.style.display === '' || domIcon.style.display === 'none') {
+                counter = counter + 1
+                selectedProdeuctIds.push(key)
+                document.getElementById(`activebtn${index}`).style.display = 'block'
+                document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
+            } else {
+                counter = counter - 1
+                // document.getElementById(`activebtn${index}`).style.display = 'none'
+            }
+
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+
+
+        }
+        catch (e) { console.log("err", e) }
+
+
+    }
+
+    /**
+     * Method for Handel deSlect product 
+     * @param(e,index,key) 
+     * 
+     * */
+    handledeSelect(e, index, key) {
+        try {
+            let counter = this.state.countItems
+            let selectedProdeuctIds = this.state.selectedProducytId
+            counter = counter - 1
+            if (counter < 0) {
+                counter = 0
+            }
+            let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
+            document.getElementById(`activebtn${index}`).style.display = 'none'
+            selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
+            this.setState({ countItems: counter })
+            
+        } catch (e) { console.log("error ", e) }
+
+    }
+
+
+    /**Method for hide and show menu option s */
+    showhideSpan() {
+        let spanSho = document.getElementsByClassName('counting-action-section')[0]
+        try {
+            if (this.state.countItems > 0) {
+                spanSho.style.display = 'block'
+            } else {
+                spanSho.style.display = 'none'
+            }
+        } catch (e) { }
+
+    }
+
+
+/**
+ * Method for formating data for CSV
+ */
+filterDataCSV(data) {
+    let tempData = []
+    let json = {}
+
+    data.map(data => {
+      json = {
+        "Category": `${data.category}`,
+        "Cost": data.cost,
+        "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),
+        "Link": data.link,
+        "Product Decription": data.long_description,
+        "Material": data.material,
+        "Medium Description": data.medium_description,
+        "MSRP" :data.msrp,
+        "Product Id":data.product_id,
+        "product Line ":data.product_line,
+        "Product Name":data.product_name,
+        "Product Status":data.product_status,
+        "Retail Price":data.retail_price,
+        "Style" :data.style,
+        "Tags" : data.tags,
+        "UPC" : data.upc,
+        "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY'),
+        "Warnings":data.warnings,
+        "Wholesale Price" : data.wholesale_price,
+        "Workflow State" : data.workflow_state
+      }
+      tempData.push(json)
+    })
+    return tempData
+
+  }
+
+
+
+
+    /**  Method for download CSV file  */
+    createExcel() {
+        try {
+
+            let e = []
+            e = this.filterDataCSV(this.state.selectedProducytId)
+
+            var wb = XLSX.utils.book_new();
+            var wscols = [
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 100 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+              
+            ];
+            var wsrows = [
+                { hpt: 15 }, // "points"
+                { hpx: 16 }, // "pixels"
+            ];
+
+
+            XLSX.utils.book_append_sheet(wb, ws, "WorksheetName");
+
+            / make the worksheet /
+            var ws = XLSX.utils.json_to_sheet(e);
+            ws['!cols'] = wscols;
+            ws['!rows'] = wsrows;
+
+            / add to workbook /
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "People");
+
+            / generate an XLSX file /
+            XLSX.writeFile(wb, `Product_report${new Date()}.xlsx`);
+
+        }
+        catch (e) { console.log("catch", e) }
+    }
+
+    /****
+     * Method for select all Product
+     * @param{}
+     ***/
+    selectAllProduct(e) {
+        let allproduct = this.state.filteredList
+        if (allproduct.length > 0) {
+            allproduct.map((key, index) => {
+                this.handleIcon(e, index, key)
+                this.setState({ countItems: allproduct.length })
+            })
+        }
+
+    }
+
+
+    /**
+     * 
+     * @param {event,index,key} 
+     */
+    clearAllProduct(e) {
+        try {
+
+            let allproduct = this.state.filteredList
+            if (allproduct.length > 0) {
+                allproduct.map((key, index) => {
+                    this.handledeSelect(e, index, key)
+                    this.setState({ countItems: 0 })
+                })
+            }
+        } catch (e) { console.log("error", e) }
+
+    }
+
+    change(e) {
+        this.setState({
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    batchUpdate() {
+        console.log('state on batch update----', this.state)
+        var state = this.state
+        var id = []
+
+        state.selectedProducytId.length ? state.selectedProducytId.map((key) => {
+            return id.push(key.product_id)
+        }) : ''
+
+
+        var batchUpdate = {
+            batchKey: state.batchKey,
+            batchValue: state.batchValue,
+            id: id
+        }
+
+        console.log('batchUpdate----', batchUpdate)
+        axios.post("api/batchUpdate", batchUpdate).then(function (response) {
+            console.log('resposne from api==', product)
+            if (response.data.task) {
+                window.location.href = "/productList"
+            }
+
+        }).catch(function (error) {
+
+        })
+
+    }
+    /****
+     * @param {event} 
+     */
+    compareProducts(e) {
+
+        if (this.props.history !== undefined && this.state.routeToPage === false) {
+            this.setState({ routeToPage: true })
+            this.props.history.push(
+                {
+                    pathname: '/compareProducts',
+                    state: { compareProductsList: this.state.selectedProducytId }
+                }
+            )
+        }
+    }
+
+
+
+    bulkDelete() {
+        console.log('state on batch update----', this.state)
+        var state = this.state
+        var id = []
+
+        state.selectedProducytId.length ? state.selectedProducytId.map((key) => {
+            return id.push(key.product_id)
+        }) : ''
+
+        this.setState({
+            bulkDelete: id
+        })
+
+
+    }
+
     render() {
         const { filteredList } = this.state;
-        console.log("states in productlist", this.state)
+        
         const { product, pictures } = this.state;
         let buff
         let base64data
-
+        this.showhideSpan()
         return (
             <div>
                 {/* <div className="preloader">
@@ -205,10 +497,10 @@ class ProductList extends Component {
                 {
                     this.state.Loading === true &&
                     <div className="loader-react">
-                        <ReactLoading type={'spinningBubbles'} color={'green'} className="reactLoader" />
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
-                <div id="main-wrapper">
+                <div id="main-wrapper"> 
                     <Header />
                     <Aside />
                     <div className="page-wrapper">
@@ -280,6 +572,11 @@ class ProductList extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div className="col-md-4">
+                                                            <div className="form-group">
+                                                                <input className="form-control search_filter" type="text" name="search" placeholder="Search Products" />
+                                                                <i className="ti-search filtersearch"></i> </div>
+                                                            </div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -305,26 +602,28 @@ class ProductList extends Component {
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
                                                     <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
+                                                        <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
                                                         <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
                                                     </a>
                                                     <div className="dropdown-menu drop_20">
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                                                    <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                                    <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a href="#" onClick={(e) => { this.clearAllProduct(e) }}>Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
-                                                                    <div className="option-box delete"><a href>Delete</a></div>
-                                                                    <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
+                                                                    <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}>Delete</a></div>
+
+                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}>Download</a></div>
                                                                     <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
                                                                     <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
                                                                     <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         Batch Update
-                                                        </div>
-                                                                    <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
+                                                                    </div>
+                                                                    <div className="option-box compare">
+                                                                        <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}>Compare Products</a></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -370,7 +669,6 @@ class ProductList extends Component {
                                                     <th scope="col">Product Line</th>
                                                     <th scope="col">Product Status</th>
                                                     <th scope="col">UPC</th>
-
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -416,7 +714,7 @@ class ProductList extends Component {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card">
                                                 <div className="card-body text-center">
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)">
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                         <ImageContainer src="icons/check.png" />
                                                     </a>
 
@@ -432,12 +730,12 @@ class ProductList extends Component {
                                                     <h4 className="card-title">{key.product_id}</h4>
                                                     <p className="card-text">{key.product_name}<br />{key.product_name}</p>
                                                 </div>
-                                                <div className="card-hover">
+                                                <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
                                                         <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
-                                                        <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a>
+                                                        <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, key) }}><ImageContainer src="icons/check.png" /></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -451,6 +749,8 @@ class ProductList extends Component {
                         </div>
                     </div>
                 </div>
+
+
 
                 {/* The Modal */}
                 <div className="modal fade allmodalcolgate" id="setting">
@@ -564,6 +864,47 @@ class ProductList extends Component {
                 </div>
 
 
+
+                {/* <!-- The Modal --> */}
+                <div className="modal fade allmodalcolgate" id="colgate">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+
+                            {/* <!-- Modal Header --> */}
+                            <div className="modal-header">
+                                <h4 className="modal-title title_modalheader">Batch Update</h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            {/* <!-- Modal body --> */}
+                            <div className="modal-body filtercustome">
+                                <form>
+                                    <div className="form-group">
+                                        <label>Labels</label>
+                                        <select id="pref-perpage" class="form-control" name="batchKey" onChange={e => this.change(e)}>
+                                            <option value="product_name">Product Name</option>
+                                            <option value="link">Link</option>
+                                            <option value="upc">UPC</option>
+                                            <option value="category">Category</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Property Edit</label>
+                                        <input className="form-control" type="text" name="batchValue" onChange={e => this.change(e)} />
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            {/* <!-- Modal footer --> */}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.batchUpdate.bind(this)} >UPDATE</button>
+                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* The product delete */}
                 <div className="modal fade allmodalcolgate" id="delete">
                     <div className="modal-dialog">
@@ -588,7 +929,7 @@ class ProductList extends Component {
                                         </div>
                                         {/* Modal footer */}
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e) => this.deleteProductById()}>Yes</button>
+                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>Yes</button>
                                             <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>No</button>
                                         </div>
                                     </div>
@@ -596,8 +937,8 @@ class ProductList extends Component {
                             </div>
                             {/* Modal footer */}
                             <div className="modal-footer productlist_footer">
-                                <button type="button" className="btn btn-primary" data-dismiss="modal">SAVE</button>
-                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>DELETE</button>
+                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>CANCEL</button>
                             </div>
                         </div>
                     </div>
