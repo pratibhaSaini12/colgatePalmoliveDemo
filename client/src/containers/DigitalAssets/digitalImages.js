@@ -215,18 +215,20 @@ class DigitalImages extends Component {
         let self = this
         await axios.get("/api/getAssetFromDrive").then(function (response) {
             console.log('resposne from /api/getAssetFromDrive==', response)
-            if(response.data.asset){
+            if(response.status === 200){
+                // if(response.data.asset){
+                //     // window.location.href = "/digitalImages"
+                // } else {
+                //     console.log("resposne eror /api/getAssetFromDrive==", response)
+                // }
                 self.getAssetList()
-                window.location.href = "/digitalImages"
-            } else {
                 self.setState({ Loading: false })
-                console.log("resposne eror /api/getAssetFromDrive==", response)
-            }
-
+            }           
         }).catch(function (error) {
             self.setState({ Loading: false })
             console.log("error============/api/getAssetFromDrive", error)
         })
+        window.location.href = "/digitalImages"
     }
 
     render() {

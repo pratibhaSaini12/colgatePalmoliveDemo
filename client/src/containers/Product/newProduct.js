@@ -4,7 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
-import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
+// import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
 
