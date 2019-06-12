@@ -4,6 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
+import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
 
@@ -140,8 +141,34 @@ class NewProduct extends Component {
         axios.get("/api/readpdf",assetBodyData).then((res)=>{
             console.log("error in response",res)
             if(res.data){
-                alert(JSON.stringify(res));
-                document.getElementById("pdfData").innerHTML = JSON.stringify(res.data);
+               
+             //   alert(res.data.length);
+               
+  var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
+                // +'<li className="nav-item">'
+                // +'<a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>'
+                // +'</li>'
+                
+                for (var i = 0; i < res.data.length; i++)  
+                { 
+                    Box =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
+                } 
+         
+            // <li className="nav-item">
+            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Es</a>
+            // </li>
+            // <li className="nav-item">
+            // <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
+            // </li>
+            +'</ul>';
+            alert(Box);
+
+            document.getElementById("pdfData").innerHTML = Box;
+
+
+
+
+
               //  $(".pdfData").html(JSON.stringify(res.data)); 
                 console.log("res in uploading",res)
                 return 
@@ -614,21 +641,12 @@ class NewProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Workflow state</label>
                                                     <div className="form-group">
-<<<<<<< Updated upstream
-                                                 
-                                                        <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
-                                                        value={this.state.workflow_state ===''? '': this.state.workflow_state}>
-                                                            <option value={"In Review"}>In Review</option>
-                                                            <option value={"In Publish"}>In Publish</option>
-                                                            <option value={"Published"}>Published</option>
-=======
 
                                                         <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
                                                             value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
                                                             <option value="In Review">In Review</option>
                                                             <option value="In Publish">In Publish</option>
                                                             <option value="Published">Published</option>
->>>>>>> Stashed changes
                                                         </select>
                                                     </div>
                                                 </div>
