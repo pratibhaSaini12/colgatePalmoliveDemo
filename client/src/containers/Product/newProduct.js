@@ -137,12 +137,16 @@ class NewProduct extends Component {
 		var assetBodyData
 		ev.preventDefault()
         var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
-        axios.post("/api/readpdf",assetBodyData).then((res)=>{
+        axios.get("/api/readpdf",assetBodyData).then((res)=>{
             console.log("error in response",res)
             if(res.data){
+                alert(JSON.stringify(res));
+                document.getElementById("pdfData").innerHTML = JSON.stringify(res.data);
+              //  $(".pdfData").html(JSON.stringify(res.data)); 
                 console.log("res in uploading",res)
                 return 
             } else {
+                $(".pdfData").html('Can not read the file !!'); 
                 console.log("error in response",res)
                 return						
             }
@@ -593,6 +597,8 @@ if(img !== ''){
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
                                                             : ''}
+
+                                                            <div id="pdfData"></div>
                                                     </div>
                                                 </div>
                                             </div>
