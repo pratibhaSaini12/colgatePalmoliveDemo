@@ -25,7 +25,31 @@ class ProductList extends Component {
             selectedProducytId: [],
             routeToPage:false,
             batchKey: 'product_name',
-            batchValue: ''
+            batchValue: '',
+            selectedArray:[],
+            attrebuteArray:[
+                {key:'category',value:'Category'},
+                {key:'cost',value:'Cost'},
+                {key:'created_at',value:'created_at'},
+                {key:'link',value:'link'},
+                {key:'long_description',value:'long_description'},
+                {key:'main_image',value:'main_image'},
+                {key:'material',value:'material'},
+                {key:'medium_description',value:'medium_description'},
+                {key:'msrp',value:'msrp'},
+                {key:'product_id',value:'product_id'},
+                {key:'product_line',value:'product_line'},
+                {key:'product_name',value:'product_name'},
+                {key:'product_status',value:'product_status'},
+                {key:'retail_price',value:'retail_price'},
+                {key:'style',value:'style'},
+                {key:'tags',value:'tags'},
+                {key:'upc',value:'upc'},
+                {key:'updated_at',value:'updated_at'},
+                {key:'warnings',value:'warnings'},
+                {key:'wholesale_price',value:'wholesale_price'},
+                {key:'workflow_state',value:'workflow_state'},
+            ]
         }
     }
 
@@ -438,11 +462,12 @@ filterDataCSV(data) {
             )   
         }
      }
-
+    selectAttrebute(index){
+        this.state.selectedArray.push(index);
+    }
 
     render() {
-        const { filteredList } = this.state;
-        
+        const { filteredList ,attrebuteArray,selectedArray} = this.state;
         const { product, pictures } = this.state;
         let buff
         let base64data
@@ -555,10 +580,10 @@ filterDataCSV(data) {
                                         <button className="primary-button float-right">
                                             <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
                                         </button>
-                                        <a href="javscript:void(0)" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
-                                        <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn card-view noactive">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -625,10 +650,12 @@ filterDataCSV(data) {
                                                     <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Product ID</th>
-                                                    <th scope="col">Product Name</th>
-                                                    <th scope="col">Product Line</th>
-                                                    <th scope="col">Product Status</th>
-                                                    <th scope="col">UPC</th>
+                                                    { selectedArray.map((keyinner,indexinner) =>{
+                                                                return (<th scope="col">{keyinner.value}</th>);
+                                                            
+                                                            })
+                                                            }
+                                                    
 
                                                     <th />
                                                 </tr>
@@ -641,10 +668,11 @@ filterDataCSV(data) {
                                                             <td><div className="image-thumb"><a href="detailpage.html">
                                                                 <ImageContainer src="1.png" /> </a></div></td>
                                                             <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }} >{key.product_id}</Link></td>
-                                                            <td>{key.product_name}</td>
-                                                            <td>{key.product_line}</td>
-                                                            <td>{key.product_status}</td>
-                                                            <td>{key.upc}</td>
+                                                            { selectedArray.map((keyinner,indexinner) =>{
+                                                                return (<td>{key[keyinner.key]}</td>);
+                                                            
+                                                            })
+                                                            }
                                                             <td><div className="row-hover">
                                                                 <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                                 </a></div>
@@ -750,18 +778,10 @@ filterDataCSV(data) {
                                                         </div>
                                                         <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
                                                             <ul>
-                                                                <li><a href="#">Layout</a></li>
-                                                                <li><a href="#">SKU Number</a></li>
-                                                                <li><a href="#">Global SKU Number</a></li>
-                                                                <li><a href="#">SKU legal Name</a></li>
-                                                                <li><a href="#">Product Legal Name</a></li>
-                                                                <li><a href="#">Article Number</a></li>
-                                                                <li><a href="#">Subsidiary</a></li>
-                                                                <li><a href="#">Each</a></li>
-                                                                <li><a href="#">AISE Code</a></li>
-                                                                <li><a href="#">Name</a></li>
-                                                                <li><a href="#">Country of Origin</a></li>
-                                                                <li><a href="#">Brand</a></li>
+                                                                { attrebuteArray.length > 0 ? attrebuteArray.map((key, index) => {
+                                                                   return <li><a href="#" onClick={(e) => this.selectAttrebute(key)}>{key.value}</a></li>
+                                                                }):''
+                                                                }
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -797,18 +817,11 @@ filterDataCSV(data) {
                                             </div>
                                             <div className="col-md-6">
                                                 <ul className="list_ofproduct">
-                                                    <li>ID</li>
-                                                    <li>Published</li>
-                                                    <li>SKU Number</li>
-                                                    <li>Each(EA) - EAN Code (eaEanCode)</li>
-                                                    <li>Workflow State</li>
-                                                    <li>Color(s)</li>
-                                                    <li>Shelf LLife (Months) (ShelfLife)</li>
-                                                    <li>Subsidiary</li>
-                                                    <li>Brand</li>
-                                                    <li>Sub Brand</li>
-                                                    <li>Product Lagal Name</li>
-                                                    <li>Name</li>
+                                                    {
+                                                        selectedArray.length > 0 ? selectedArray.map((key, index) => {
+                                                            return <li>{key.key}</li>
+                                                        }) : ''
+                                                    }
                                                 </ul>
                                             </div>
                                         </div>
