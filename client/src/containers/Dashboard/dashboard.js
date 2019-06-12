@@ -53,6 +53,151 @@ class Dashboard extends Component {
 
             console.log('response from getAllOpenTask===', response)
             if (response.data) {
+                let task = response.data.openTasks
+                Highcharts.chart('columnchart_values', {
+                    chart: {
+                        type: 'column'
+                    },
+                    // title: {
+                    //     text: 'Browser market shares. January, 2018'
+                    // },
+                    // subtitle: {
+                    //     text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+                    // },
+                    xAxis: {
+                        categories: [task[0].assignedTo, task[1].assignedTo, task[2].assignedTo]
+                    },
+                    yAxis: {
+                        title: {
+                            text: ''
+                        }
+                
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                /* format: '{point.y:.1f}%' */
+                            }
+                        }
+                    },
+                
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                    },
+                
+                    series: [
+                        {
+                            name: "Browsers",
+                            colorByPoint: true,
+                            data: [
+                                {
+                                    name: task[0].assignedTo,
+                                    y: task[0].count,
+                                    drilldown: null
+                                },
+                                {
+                                    name: task[1].assignedTo,
+                                    y: task[1].count,
+                                    drilldown: null
+                                },
+                                {
+                                    name: task[2].assignedTo,
+                                    y: task[2].count,
+                                    drilldown: null
+                                }
+                            ]
+                        }
+                    ],
+                    drilldown: {
+                        series: [
+                            {
+                                name: "Chrome",
+                                id: "Chrome",
+                                data: [
+                                    [
+                                        "v65.0",
+                                        0.1
+                                    ],
+                                    [
+                                        "v64.0",
+                                        1.3
+                                    ],
+                                    [
+                                        "v63.0",
+                                        53.02
+                                    ],
+                                    [
+                                        "v62.0",
+                                        1.4
+                                    ],
+                                    [
+                                        "v61.0",
+                                        0.88
+                                    ],
+                                    [
+                                        "v60.0",
+                                        0.56
+                                    ],
+                                    [
+                                        "v59.0",
+                                        0.45
+                                    ],
+                                    [
+                                        "v58.0",
+                                        0.49
+                                    ],
+                                    [
+                                        "v57.0",
+                                        0.32
+                                    ],
+                                    [
+                                        "v56.0",
+                                        0.29
+                                    ],
+                                    [
+                                        "v55.0",
+                                        0.79
+                                    ],
+                                    [
+                                        "v54.0",
+                                        0.18
+                                    ],
+                                    [
+                                        "v51.0",
+                                        0.13
+                                    ],
+                                    [
+                                        "v49.0",
+                                        2.16
+                                    ],
+                                    [
+                                        "v48.0",
+                                        0.13
+                                    ],
+                                    [
+                                        "v47.0",
+                                        0.11
+                                    ],
+                                    [
+                                        "v43.0",
+                                        0.17
+                                    ],
+                                    [
+                                        "v29.0",
+                                        0.26
+                                    ]
+                                ]
+                            },
+                            
+                        ]
+                    }
+                });
                 self.setState({
                     openTask: response.data.openTasks
                 })
@@ -310,8 +455,9 @@ class Dashboard extends Component {
                                             </div>
                                             
                                             {/* <div id="barchart_values" style={{ width: '550px', height: '400px' }} /> */}
+                                            <div id="columnchart_values" style={{width: "300px", height: "400px", margin:"auto"}}></div>
 
-                                            {openTask.length >= 2 ?
+                                            {/* {openTask.length >= 2 ?
                                                 <Chart
                                                     width={'350px'}
                                                     height={'400px'}
@@ -353,7 +499,7 @@ class Dashboard extends Component {
                                                     rootProps={{ 'data-testid': '6' }}
                                                 />
 
-                                                : ''}
+                                                : ''} */}
 
                                         </div>
                                     </div>
@@ -432,6 +578,8 @@ class Dashboard extends Component {
                                             </div>
                                         </div>
                                     </div>
+                               
+
                                     {/* <div className="col-md-6">
                                         <div className="card dashboard_section">
                                             <div className="piechart_section">

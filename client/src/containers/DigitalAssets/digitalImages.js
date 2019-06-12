@@ -28,9 +28,9 @@ class DigitalImages extends Component {
         }
     }
 
-    getAssetList(){
+    getAssetList() {
         let self = this
-        try{
+        try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
                 if (response.data) {
@@ -44,14 +44,14 @@ class DigitalImages extends Component {
                     return
                     // document.getElementById("colgate").setAttribute("data-dismiss","modal")
                 }
-    
+
             }).catch(function (error) {
                 self.setState({ Loading: false })
                 console.log("error API getAssetList is ", error);
                 return
             })
-        }catch(err){
-            console.log("catch err=========getAssetList",err)
+        } catch (err) {
+            console.log("catch err=========getAssetList", err)
             return
         }
     }
@@ -113,7 +113,7 @@ class DigitalImages extends Component {
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
         let self = this
-        let {assetList} = self.state
+        let { assetList } = self.state
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
@@ -124,21 +124,21 @@ class DigitalImages extends Component {
                 idCardBase64 = base64[1]
 
                 assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
-                console.log("===assetBodyData====", assetBodyData)                
+                console.log("===assetBodyData====", assetBodyData)
                 self.setState({
                     image: assetBodyData.data,
                 })
                 //compare image here
-                let duplicateAsset = assetList.filter((asset)=> asset.asset_data === idCardBase64)
-                if(duplicateAsset.length === 0 ) {
+                let duplicateAsset = assetList.filter((asset) => asset.asset_data === idCardBase64)
+                if (duplicateAsset.length === 0) {
                     console.log("new image found")
                     self.setState({
                         asset_data: idCardBase64,
                         asset_type: self.uploadInput.files[0].type
                     })
                 } else {
-                    console.log("Image already exist",duplicateAsset[0])
-                    self.setState({existAsset : duplicateAsset[0]})
+                    console.log("Image already exist", duplicateAsset[0])
+                    self.setState({ existAsset: duplicateAsset[0] })
                 }
                 // axios.post("/api/upload/asset", assetBodyData).then((res) => {
                 //     console.log("error in response", res)
@@ -197,7 +197,7 @@ class DigitalImages extends Component {
         console.log("assetObj on submit", assetObj)
         await axios.post("/api/createNewAsset", assetObj).then(function (response) {
             console.log('resposne from api==', response)
-            if(response.data.asset){
+            if (response.data.asset) {
                 self.getAssetList()
                 window.location.href = "/digitalImages"
             } else {
@@ -211,24 +211,23 @@ class DigitalImages extends Component {
         })
     }
 
-    async getImageFromDrive(){
-        let self = this
-        await axios.get("/api/getAssetFromDrive").then(function (response) {
-            console.log('resposne from /api/getAssetFromDrive==', response)
-            if(response.status === 200){
-                // if(response.data.asset){
-                //     // window.location.href = "/digitalImages"
-                // } else {
-                //     console.log("resposne eror /api/getAssetFromDrive==", response)
-                // }
-                self.getAssetList()
+    async getImageFromDrive() {
+        try {
+            let self = this
+            await axios.get("/api/getAssetFromDrive").then(function (response) {
+                console.log('resposne from /api/getAssetFromDrive==', response)
+                if (response.status === 200) {
+                    self.setState({ Loading: false })
+                }
+            }).catch(function (error) {
                 self.setState({ Loading: false })
-            }           
-        }).catch(function (error) {
-            self.setState({ Loading: false })
-            console.log("error============/api/getAssetFromDrive", error)
-        })
-        window.location.href = "/digitalImages"
+                console.log("error============/api/getAssetFromDrive", error)
+            })
+            // window.location.href = "/digitalImages"
+        } catch (e) {
+            console.log("not wokreddd===========")
+         }
+
     }
 
     render() {
@@ -331,7 +330,7 @@ class DigitalImages extends Component {
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" />
-                                    <button onClick={(e)=>this.getImageFromDrive(this)}>get images form google</button>
+                                    <button onClick={(e) => this.getImageFromDrive(this)}>get images form google</button>
                                 </div>
                                 <div className="filter float-right col-md-6">
 
@@ -527,8 +526,8 @@ class DigitalImages extends Component {
                                                 </div>
                                                 <div className="card-hover">
                                                     <div className="card-link-options">
-                                                        <Link className="icon view-icon" to={{pathname: '/digitalImagePage', state: { _data: asset }}}><ImageContainer src="icons/view.png" /></Link>
-                                                        <Link className="icon edit-icon" to={{pathname: '/editDigitalImage', state: { _data: asset }}}><ImageContainer src="icons/edit.png" /></Link>
+                                                        <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                        <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link>
                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                         </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
@@ -561,9 +560,9 @@ class DigitalImages extends Component {
                                             <label>Asset Name</label>
                                             <input className="form-control" type="text" name="asset_name" placeholder={12345} value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
-                                        {existAsset !== '' ? 
-                                        <span>Asset already Exist <Link to={{pathname: '/digitalImagePage', state: { _data: existAsset }}}>See here</Link></span>
-                                        : ''}
+                                        {existAsset !== '' ?
+                                            <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
+                                            : ''}
                                         <div className="avatar-upload">
 
                                             <div className="avatar-preview">

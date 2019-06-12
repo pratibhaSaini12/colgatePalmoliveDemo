@@ -3337,10 +3337,10 @@ margin-top: .8rem;
 	display: block;
 }
 .leg-div {
-	position: absolute;
-	font-size: 12px;
-	right: 27px;
-	top: 150px;
+    position: absolute;
+    font-size: 12px;
+    right: 14px;
+    top: 102px;
 }
 .leg-div span {
 	display: block;
@@ -3709,7 +3709,7 @@ to {
 	border-radius: 2px;}
 	.martop_25 { margin-top: 25px;}
 	.search-box { width: 100%;}
-#reactgooglegraph-2 {    position: absolute;
+#reactgooglegraph-2 { position: absolute;
     left: 0;
     right: 0;
     margin: auto;}

@@ -6,51 +6,51 @@ const image2base64 = require('image-to-base64');
 const AssetJsonModel = require('./client/src/ObjectJsonModel/assetStateToJson')
 const path = require('path')
 
-function loadAssets (){
-    try{
+function loadAssets() {
+    try {
         const dataBuffer = fs.readFileSync('assetFilesJson.json')
         const dataJson = dataBuffer.toString()
         return JSON.parse(dataJson)
-    }catch(e){
+    } catch (e) {
         return []
     }
 }
-function upploadAsset(req, res, err){
-    console.log("req in upload Assets===========",req.body)
-    try{
+function upploadAsset(req, res, err) {
+    console.log("req in upload Assets===========", req.body)
+    try {
         // to load
         let assetsFileData = loadAssets()
-        console.log("assetsFileData from JSON===========",assetsFileData)
+        console.log("assetsFileData from JSON===========", assetsFileData)
         let dataToStore = JSON.stringify(req.body)
-        console.log("dataToStore in json===========",dataToStore)
+        console.log("dataToStore in json===========", dataToStore)
         //to save 
         assetsFileData.push({
-            assetData : dataToStore
+            assetData: dataToStore
         })
-        console.log("assetsFileData Updated===========",assetsFileData)
+        console.log("assetsFileData Updated===========", assetsFileData)
         assetsFileData = JSON.stringify(assetsFileData)
-        fs.writeFileSync('assetsFiles.json',assetsFileData)
+        fs.writeFileSync('assetsFiles.json', assetsFileData)
         return res.status(200).json({
             data: res
         })
-    }catch(e){
-        console.log("error in uploading",e)
+    } catch (e) {
+        console.log("error in uploading", e)
         return res.status(200).json({
             data: null
         })
     }
-  
+
 }
-function getAssets(req, res, err){
-    try{
+function getAssets(req, res, err) {
+    try {
         const dataBuffer = fs.readFileSync('assetFilesJson.json')
         const dataJson = dataBuffer.toString()
         let data = JSON.parse(dataJson)
         return res.status(200).json({
             data: data
         })
-    }catch(e){
-        console.log("e=====",e)
+    } catch (e) {
+        console.log("e=====", e)
         return []
     }
 }
@@ -126,65 +126,77 @@ module.exports = {
         let result = []
         try {
             const googleFolder = path.resolve(__dirname, './CRON/googleImage/');
-            console.log("googleFolder=======",googleFolder)
-            fs.readdirSync(googleFolder).forEach((file) => {
-              console.log("file====", file);
-              let filePath = googleFolder + "/" + file
-              image2base64(filePath) // you can also to use url
-                .then(
-                  (response) => {
-                    let imageFileData = loadAssets()
-                    let assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: response, fileName: file, mimetype: file.split(".")[1] !== undefined ? file.split(".")[1] : '' })
-                    let dataToStore = JSON.stringify(assetBodyData)
-        
-                    imageFileData.push({
-                      imageData: dataToStore
-                    })
-                    imageFileData = JSON.stringify(imageFileData)
+            console.log("googleFolder=======", googleFolder)
 
-                    let type = file.split(".")[0] !== undefined ? file.split(".")[1] : 'jpg'
-                    let asset_type = "image/" + type
-                    let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "')"
-                    // let que = `INSERT INTO assets ('asset_id',asset_name','asset_data','asset_type' ) VALUES (100,'${}', '${}', '${}')`
-                    con.query(que, function (err, resu) {
-                      if (err)
-                      {console.log(err) }
-                      else {
-                          fs.writeFile('assetFilesJson.json', imageFileData,(err) => {
-                            if (err) 
-                            {console.log(err) }
-                            result.push(resu)
-                            // file deletion
-                            // fs.unlink(filePath, (err) => {
-                            //   if (err) throw err;
-                            //   console.log(filePath +' was deleted');
-                            // });
-                          })
-                      }
-                  })
-                    
-                  }
-                )
-                .catch(
-                  (error) => {
-                    console.log("error in readFiles 156", error); //Exepection error....
-                  }
-                )
-            })
-            console.log("result=========",result)
-            return res.status(200).json({
-                asset: result
-            })
-          } catch (e) {
+            fs.readdir(dir, (err, file) => {
+                // if(file.includes("jpeg") && file.includes("png") && file.includes("jpg")){
+
+                // }
+                for(var i =0 ;i > file.length ; i++){
+                    let filePath = googleFolder + "/" + file[i]
+                    image2base64(filePath).then((response) => {
+                        let type = file[i].split(".")[0] !== undefined ? file[i].split(".")[1] : 'jpg'
+                        let asset_type = "image/" + type
+                        let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + file[i].split(".")[0] + "', '" + response + "', '" + asset_type + "')"
+                        con.query(que, function (err, resu) {
+                            if (err) { 
+                                console.log("erroooooooooo",err)
+                             }
+                            else {
+                                console.log("worked....")
+                            }
+                        })
+
+                    }).catch(
+                        (error) => {
+                            console.log("error in readFiles 156", error); //Exepection error....
+                        }
+                    )
+                }
+                console.log(file.length);
+              });
+              res.status(200).json({
+                        asset: result,
+                        error: null
+                    })
+
+
+            // fs.readdirSync(googleFolder).forEach((file) => {
+            //     let filePath = googleFolder + "/" + file
+                // image2base64(filePath) // you can also to use url
+                //     .then((response) => {
+                //         let type = file.split(".")[0] !== undefined ? file.split(".")[1] : 'jpg'
+                //         let asset_type = "image/" + type
+                //         let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "')"
+                //         con.query(que, function (err, resu) {
+                //             if (err) { 
+                //                 console.log("erroooooooooo",err)
+                //              }
+                //             else {
+                //                 console.log("worked....")
+                //             }
+                //         })
+
+                //     }).catch(
+                //         (error) => {
+                //             console.log("error in readFiles 156", error); //Exepection error....
+                //         }
+                //     )
+            // })
+        //      res.status(200).json({
+        //         asset: result,
+        //         error: null
+        //     })
+        } catch (e) {
             console.log("error in readFiles try", e);
             res.status(200).json({
                 asset: result,
                 error: e
             })
-          }
+        }
     },
 
-//image handeling
+    //image handeling
     upploadAsset,
     getAssets
 };
