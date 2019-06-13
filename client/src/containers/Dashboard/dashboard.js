@@ -223,6 +223,9 @@ class Dashboard extends Component {
 
             console.log('response from getProductCompletion===', response)
             if (response.data) {
+                let completeIncomplete = response.data.product[0].complete + response.data.product[0].incomplete
+                let othercompleteIncomplete = 100 - completeIncomplete
+                
                 Highcharts.chart('container', {
                     chart: {
                         plotBackgroundColor: null,
@@ -264,7 +267,7 @@ class Dashboard extends Component {
                             },
                             {
                                 name: 'Others',
-                                y: 100 - response.data.product[0].complete + response.data.product[0].incomplete
+                                y: othercompleteIncomplete
                             }
                         ]
                     }]
@@ -272,7 +275,7 @@ class Dashboard extends Component {
                 self.setState({
                     completeIncomplete: response.data.product[0],
                     Loading: false,
-                    othercompleteIncomplete: 100 - response.data.product[0].complete + response.data.product[0].incomplete
+                    othercompleteIncomplete: othercompleteIncomplete
                 })
             }
         }).catch(function (error) {
@@ -468,7 +471,7 @@ class Dashboard extends Component {
                                                     {/* </Link> */}
                                                 </div>
                                                 {this.state.othercompleteIncomplete > 0 ?
-                                                    <div className="leg-detail-3"><span />Other: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%</div>
+                                                    <div className="leg-detail-3"><span />Other: {this.state.othercompleteIncomplete}%</div>
                                                     : ''}
                                             </div>
                                         </div>
