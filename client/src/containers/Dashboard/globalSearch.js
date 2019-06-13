@@ -164,7 +164,7 @@ class Search extends React.Component {
             <h2 className="page-title">Task Search</h2>
           
           
-                    <table className="table dashboard_table data_table_30">
+                    <table className="table dashboard_table data_table_30 martop_25">
                         <thead>
                             <tr>
                                 <th>Task ID</th>

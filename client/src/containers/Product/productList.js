@@ -566,7 +566,8 @@ class ProductList extends Component {
 
         console.log('batchUpdate----', batchUpdate)
         axios.post("api/batchUpdate", batchUpdate).then(function (response) {
-            console.log('resposne from api==', product)
+            window.location.href = "/productList"
+            // console.log('resposne from api==', product)
             if (response.data.task) {
                 window.location.href = "/productList"
             }
@@ -791,7 +792,7 @@ class ProductList extends Component {
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
-                                        <option value="-1">All</option>
+                                        <option value="100">All</option>
                                     </select>
                                     </div>
                                     </div>

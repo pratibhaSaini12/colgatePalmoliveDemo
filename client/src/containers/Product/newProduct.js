@@ -38,6 +38,7 @@ class NewProduct extends Component {
             pdfData: [],
             pdfFileArray:[],
             selectPdf:''
+          
         }
     }
 
@@ -101,7 +102,8 @@ class NewProduct extends Component {
             workflow_state: state.workflow_state,
             brand: state.brand,
             product_completion: percent,
-            additional_image: ''
+            additional_image: '',
+            pdfFileArray:state.pdfFileArray
         }
 
         console.log('createProduct---',percent)
@@ -481,6 +483,8 @@ class NewProduct extends Component {
                                                                     <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
                                                                         <option value={"Colgate"}>Colgate</option>
                                                                         <option value={"Palmolive"}>Palmolive</option>
+                                                                        <option value={"Hills"}>Hills</option>
+
                                                                     </select>
                                                                 </div>
                                                             </div>
