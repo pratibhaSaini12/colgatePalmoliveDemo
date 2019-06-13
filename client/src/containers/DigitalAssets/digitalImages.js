@@ -30,7 +30,7 @@ class DigitalImages extends Component {
             countItems: 0,
             selectedProducytId: [],
             pageactive: 1,
-            dataPerPage: 5,
+            dataPerPage: 100,
         }
     }
 
@@ -593,7 +593,7 @@ class DigitalImages extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
+                                    <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
