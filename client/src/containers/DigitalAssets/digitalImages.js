@@ -24,13 +24,16 @@ class DigitalImages extends Component {
             filteredList: '',
             listToFilter: '',
             assetList: [],
-            existAsset: ''
+            existAsset: '',
+            deleteAssetId:'',
+            countItems: 0,
+            selectedProducytId: [],
         }
     }
 
-    getAssetList(){
+    getAssetList() {
         let self = this
-        try{
+        try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
                 if (response.data) {
@@ -44,14 +47,14 @@ class DigitalImages extends Component {
                     return
                     // document.getElementById("colgate").setAttribute("data-dismiss","modal")
                 }
-    
+
             }).catch(function (error) {
                 self.setState({ Loading: false })
                 console.log("error API getAssetList is ", error);
                 return
             })
-        }catch(err){
-            console.log("catch err=========getAssetList",err)
+        } catch (err) {
+            console.log("catch err=========getAssetList", err)
             return
         }
     }
@@ -113,10 +116,11 @@ class DigitalImages extends Component {
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
         let self = this
-        let {assetList} = self.state
+        let { assetList } = self.state
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
+        console.log("self.uploadInput.files[0]=============",self.uploadInput.files[0])
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
             self.getBase64(self.uploadInput.files[0], (result) => {
@@ -124,21 +128,21 @@ class DigitalImages extends Component {
                 idCardBase64 = base64[1]
 
                 assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
-                console.log("===assetBodyData====", assetBodyData)                
+                console.log("===assetBodyData====", assetBodyData)
                 self.setState({
                     image: assetBodyData.data,
                 })
                 //compare image here
-                let duplicateAsset = assetList.filter((asset)=> asset.asset_data === idCardBase64)
-                if(duplicateAsset.length === 0 ) {
+                let duplicateAsset = assetList.filter((asset) => asset.asset_data === idCardBase64)
+                if (duplicateAsset.length === 0) {
                     console.log("new image found")
                     self.setState({
                         asset_data: idCardBase64,
                         asset_type: self.uploadInput.files[0].type
                     })
                 } else {
-                    console.log("Image already exist",duplicateAsset[0])
-                    self.setState({existAsset : duplicateAsset[0]})
+                    console.log("Image already exist", duplicateAsset[0])
+                    self.setState({ existAsset: duplicateAsset[0] })
                 }
                 // axios.post("/api/upload/asset", assetBodyData).then((res) => {
                 //     console.log("error in response", res)
@@ -197,7 +201,7 @@ class DigitalImages extends Component {
         console.log("assetObj on submit", assetObj)
         await axios.post("/api/createNewAsset", assetObj).then(function (response) {
             console.log('resposne from api==', response)
-            if(response.data.asset){
+            if (response.data.asset) {
                 self.getAssetList()
                 window.location.href = "/digitalImages"
             } else {
@@ -211,24 +215,158 @@ class DigitalImages extends Component {
         })
     }
 
-    async getImageFromDrive(){
-        let self = this
-        await axios.get("/api/getAssetFromDrive").then(function (response) {
-            console.log('resposne from /api/getAssetFromDrive==', response)
-            if(response.status === 200){
-                // if(response.data.asset){
-                //     // window.location.href = "/digitalImages"
-                // } else {
-                //     console.log("resposne eror /api/getAssetFromDrive==", response)
-                // }
-                self.getAssetList()
+    async getImageFromDrive() {
+        try {
+            let self = this
+            await axios.get("/api/getAssetFromDrive").then(function (response) {
+                console.log('resposne from /api/getAssetFromDrive==', response)
+                if (response.status === 200) {
+                    self.setState({ Loading: false })
+                }
+            }).catch(function (error) {
                 self.setState({ Loading: false })
-            }           
-        }).catch(function (error) {
-            self.setState({ Loading: false })
-            console.log("error============/api/getAssetFromDrive", error)
-        })
-        window.location.href = "/digitalImages"
+                console.log("error============/api/getAssetFromDrive", error)
+            })
+            // window.location.href = "/digitalImages"
+        } catch (e) {
+            console.log("not wokreddd===========")
+         }
+
+    }
+
+    async deleteProductById() {
+        console.log('delete asset by id', this.state)
+        let self = this
+        // self.setState({ Loading: true })
+        console.log("this.stateeeeee", this.state)
+        if (self.state.deleteAssetId) {
+            await axios.post("/api/deleteAssetByID", { id: this.state.deleteAssetId }).then(function (response) {
+                console.log('resposne from Delete api==', response)
+                if (response.data.asset) {
+                    self.setState({ deleteAssetId: '', Loading: false })
+                    window.location.href = "/digitalImages"
+                }
+
+            }).catch(function (error) {
+                this.setState({ deleteAssetId: '', Loading: false })
+                console.log("error in delete product", error)
+            })
+        }
+
+        // else if (self.state.bulkDelete) {
+        //     console.log('bulk delete===', self.state.bulkDelete)
+        //     var id = self.state.bulkDelete
+        //     axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
+        //         console.log('resposne from api==', product)
+        //         if (response.data.product) {
+        //             self.setState({ bulkDelete: '', Loading: false })
+        //             window.location.href = "/productList"
+        //         }
+
+        //     }).catch(function (error) {
+        //         this.setState({ bulkDelete: '', Loading: false })
+        //     })
+        // }
+
+
+    }
+    /**
+     * Method for select Product and handle  
+     * @param {e,index,key}
+     */
+    handleIcon(e, index, key) {
+        try {
+            let counter = this.state.countItems
+            if (counter < 0) {
+                counter = 0
+            }
+            let selectedProdeuctIds = this.state.selectedProducytId
+            let domIcon = document.getElementById(`activebtn${index}`)
+            if (domIcon.style.display === '' || domIcon.style.display === 'none') {
+                counter = counter + 1
+                selectedProdeuctIds.push(key)
+                document.getElementById(`activebtn${index}`).style.display = 'block'
+                document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
+            } else {
+                counter = counter - 1
+                // document.getElementById(`activebtn${index}`).style.display = 'none'
+            }
+
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+
+
+        }
+        catch (e) { console.log("err", e) }
+
+
+    }
+
+    /**
+     * Method for Handel deSlect product 
+     * @param(e,index,key) 
+     * 
+     * */
+    handledeSelect(e, index, key) {
+        try {
+            let counter = this.state.countItems
+            let selectedProdeuctIds = this.state.selectedProducytId
+            counter = counter - 1
+            if (counter < 0) {
+                counter = 0
+            }
+            let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
+            document.getElementById(`activebtn${index}`).style.display = 'none'
+            selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
+            this.setState({ countItems: counter })
+
+        } catch (e) { console.log("error ", e) }
+
+    }
+
+    /****
+     * Method for select all Product
+     * @param{}
+     ***/
+    selectAllProduct(e) {
+        let allproduct = this.state.filteredList
+        if (allproduct.length > 0) {
+            allproduct.map((key, index) => {
+                this.handleIcon(e, index, key)
+                this.setState({ countItems: allproduct.length })
+            })
+        }
+
+    }
+    
+    /**Method for hide and show menu option s */
+    showhideSpan() {
+        let spanSho = document.getElementsByClassName('counting-action-section')[1]
+        try {
+            if (this.state.countItems > 0) {
+                spanSho.style.display = 'block'
+            } else {
+                spanSho.style.display = 'none'
+            }
+        } catch (e) { }
+
+    }
+
+    /**
+     * 
+     * @param {event,index,key} 
+     */
+    clearAllProduct(e) {
+        try {
+
+            let allproduct = this.state.filteredList
+            if (allproduct.length > 0) {
+                allproduct.map((key, index) => {
+                    this.handledeSelect(e, index, key)
+                    this.setState({ countItems: 0 })
+                })
+            }
+        } catch (e) { console.log("error", e) }
+
     }
 
     render() {
@@ -236,6 +374,7 @@ class DigitalImages extends Component {
         const { assetList, existAsset } = this.state;
         let img = this.state.image
         let image = ''
+        this.showhideSpan()
         if (img !== '') {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
@@ -255,7 +394,7 @@ class DigitalImages extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                  <Aside active={"digital"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
@@ -329,13 +468,14 @@ class DigitalImages extends Component {
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="row mar_bt_30">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" />
-                                    <button onClick={(e)=>this.getImageFromDrive(this)}>get images form google</button>
+                                 
                                 </div>
-                                <div className="filter float-right col-md-6">
-
+                                <div className="filter float-right col-md-8">
+                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images form google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
+                                    
                                     <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
                                     <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
@@ -343,15 +483,15 @@ class DigitalImages extends Component {
                                         <div className="option-box drop-option-link">
                                             <div className="nav-item dropdown dropcolgate">
                                                 <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
+                                                    <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
                                                     <div className="dot-icon"><ImageContainer src="icons/option-all.png" /></div>
                                                 </a>
                                                 <div className="dropdown-menu drop_20">
                                                     <div className="counting-action-section">
                                                         <div className="selections">
                                                             <div className="group-selection">
-                                                                <div className="option-box select-all"><a onClick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                                                <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                                <div className="option-box select-all"><a  href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                <div className="option-box clear-all"><a onClick={(e)=>{this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
                                                             </div>
                                                             <div className="group-action">
                                                                 <div className="option-box delete"><a href>Delete</a></div>
@@ -517,7 +657,7 @@ class DigitalImages extends Component {
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={"data:" + asset.asset_type + ";base64," + asset.asset_data} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
@@ -525,12 +665,12 @@ class DigitalImages extends Component {
                                                         <p className="card-text">2832 x 4256  |  2.74 MB</p>
                                                     </div>
                                                 </div>
-                                                <div className="card-hover">
+                                                <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
-                                                        <Link className="icon view-icon" to={{pathname: '/digitalImagePage', state: { _data: asset }}}><ImageContainer src="icons/view.png" /></Link>
-                                                        <Link className="icon edit-icon" to={{pathname: '/editDigitalImage', state: { _data: asset }}}><ImageContainer src="icons/edit.png" /></Link>
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                        {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.asset_id })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -553,28 +693,28 @@ class DigitalImages extends Component {
                                 {/* Modal body */}
                                 <div className="modal-body filtercustome">
                                     <form>
-                                        <div className="form-group">
+                                        {/* <div className="form-group">
                                             <label>Asset Id</label>
                                             <input className="form-control" type="text" name="asset_id" placeholder={12345} value={this.state.asset_id} onChange={e => this.change(e)} />
-                                        </div>
+                                        </div> */}
                                         <div className="form-group">
                                             <label>Asset Name</label>
-                                            <input className="form-control" type="text" name="asset_name" placeholder={12345} value={this.state.asset_name} onChange={e => this.change(e)} />
+                                            <input className="form-control" type="text" name="asset_name"  value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
-                                        {existAsset !== '' ? 
-                                        <span>Asset already Exist <Link to={{pathname: '/digitalImagePage', state: { _data: existAsset }}}>See here</Link></span>
-                                        : ''}
+                                        {existAsset !== '' ?
+                                            <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
+                                            : ''}
                                         <div className="avatar-upload">
 
                                             <div className="avatar-preview">
                                                 <div id="imagePreview">
                                                     {image !== '' && image !== undefined ?
-                                                        <img src={image} height="50px" width="50px" className="digital_img" />
+                                                        <img src={image} className="digital_img Assets" />
                                                         : ''} </div>
                                             </div>
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
-                                                <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+                                                <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadbtn">Upload Files</a>
                                                 {/* <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" />
                                                 <label htmlFor="imageUpload">Select images</label> */}
                                             </div>
@@ -606,7 +746,7 @@ class DigitalImages extends Component {
                                 </div>
                                 {/* Modal footer */}
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal">Yes</button>
+                                    <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>Yes</button>
                                     <button type="button" className="btn btn-outline-primary" data-dismiss="modal">No</button>
                                 </div>
                             </div>

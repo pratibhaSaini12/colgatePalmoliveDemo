@@ -13,6 +13,7 @@ import ReactLoading from 'react-loading'
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "react-loading";
 import ProductCompare from "../Product/productCompare";
+import { Link } from "react-router-dom"
 
 class NewTask extends Component {
 
@@ -219,13 +220,13 @@ class NewTask extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"Task"}/>
                     <div className="page-wrapper channel">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <h2 className="page-title">Task Information</h2>
+                                        <h2 className="page-title">New Task</h2>
                                     </div>
                                 </div>
                             </div>
@@ -287,7 +288,7 @@ class NewTask extends Component {
                                         </div>
                                         <div className="allmodalcolgate col-md-12">
                                             <button type="button" className="btn btn-primary" onClick={this.createNewTask.bind(this)}>Save</button>
-                                            <button type="button" className="btn btn-outline-primary">Cancel</button>
+                                            <button type="button" className="btn btn-outline-primary"><Link to="/taskList">Cancel</Link></button>
                                         </div>
                                     </form>
                                 </div>

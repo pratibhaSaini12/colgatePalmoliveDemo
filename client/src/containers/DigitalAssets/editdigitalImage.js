@@ -87,7 +87,7 @@ class EditDigitalImage extends Component {
                 </div> */}
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"digital"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside">
                             <div className="row">
@@ -158,7 +158,7 @@ class EditDigitalImage extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>UPC</label>
+                                                                <label>SKU</label>
                                                                 <input className="form-control" type="text"name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>

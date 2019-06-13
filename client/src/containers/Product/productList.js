@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import axios from "axios";
 import ReactLoading from 'react-loading'
+import Pagination from "react-js-pagination";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment'
@@ -26,14 +27,46 @@ class ProductList extends Component {
             routeToPage: false,
             batchKey: 'product_name',
             batchValue: '',
+            selectedArray: [
+                { key: 'product_line', value: 'Product Line' },
+                { key: 'product_name', value: 'Product Name' },
+                { key: 'category', value: 'Category' },
+                { key: 'cost', value: 'Cost' }],
+            attrebuteArray: [
+                { key: 'category', value: 'Category' },
+                { key: 'cost', value: 'Cost' },
+                { key: 'created_at', value: 'Created At' },
+                { key: 'long_description', value: 'Long Description' },
+                //  { key: 'main_image', value: 'main_image' },
+                { key: 'material', value: 'Material' },
+                { key: 'medium_description', value: 'Medium Description' },
+                { key: 'msrp', value: 'Msrp' },
+                { key: 'product_id', value: 'Product Id' },
+                { key: 'product_line', value: 'Product Line' },
+                { key: 'product_name', value: 'Product Name' },
+                { key: 'product_status', value: 'Product Status' },
+                { key: 'retail_price', value: 'Retail Price' },
+                { key: 'style', value: 'Style' },
+                { key: 'tags', value: 'Tags' },
+                { key: 'upc', value: 'Upc' },
+                { key: 'updated_at', value: 'Updated At' },
+                { key: 'warnings', value: 'Warnings' },
+                { key: 'wholesale_price', value: 'Wholesale Price' },
+                { key: 'workflow_state', value: 'Workflow State' },
+            ],
             bulkDelete: [],
-            searchValue1:'',
-            searchValue2:''
+            searchValue1: '',
+            searchValue2: '',
+            searchValue3: '',
+            pageactive: 1,
+            dataPerPage: 5,
+            additionalPictures: []
         }
     }
 
 
     componentWillMount() {
+        console.log("willmount=========")
         let self = this
         self.setState({ Loading: true })
         axios.get("/api/getAllProducts").then(function (response) {
@@ -85,7 +118,64 @@ class ProductList extends Component {
         } catch (err) {
             console.log("error in image fetching", err)
         }
+
+        //getting additional images
+        let additionalImage = []
+        try {
+            axios.get("/api/get-additional-image").then((res) => {
+                if (res.status === 200) {
+                    let data = res.data.data[0].imageData
+                    data = JSON.parse(data)
+                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
+                    console.log("additional-image found===========", image)
+                    // convert values into object
+                    if (res.data.data.length) {
+                        res.data.data.map((imageString) => {
+                            let imageJsonData = JSON.parse(imageString.imageData)
+                            additionalImage.push({
+                                data: imageJsonData.data,
+                                id: imageJsonData.data.id,
+                                image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
+                            })
+                        })
+                        console.log("imageData=============", additionalImage)
+                    }
+                    self.setState({
+                        additionalPictures: additionalImage,
+                    })
+
+                } else {
+                    console.log("error in additional image fetching response", res)
+                }
+            })
+        } catch (err) {
+            console.log("error in additional image fetching", err)
+        }
     }
+
+    // componentWillReceiveProps (nextProps) {
+    //     console.log("called============",nextProps)
+    //     let self = this
+    //     let data
+    //     let  {filteredList} = self.state
+    //     if(self.props.location.state !== undefined){
+    //         console.log("found============")
+    //         let status = self.props.location.state._complete
+    //         if(status === "complete") {
+    //             data = filteredList.filter((dat)=> dat.product_status === "Active")
+    //         } else if( status === "incomplete") {
+    //             data = filteredList.filter((dat)=> dat.product_status === "Inactive")
+    //         } else {
+    //             data = filteredList.filter((dat)=> dat.product_status === "")
+    //         }
+    //         console.log("data============", data)
+    //         self.setState({
+    //             product: data,
+    //             filteredList: data,
+    //             listToFilter: data,
+    //         })
+    //     }
+    // }
 
     async deleteProductById() {
         console.log('delete product by id', this.state)
@@ -167,10 +257,10 @@ class ProductList extends Component {
     componentDidUpdate() {
         if (this.state.stateUpdate === true) {
             let self = this
-            let { filteredList, pictures } = self.state
+            let { filteredList, pictures, additionalPictures } = self.state
             let newProductsWithImage = []
             // check length of pictures
-            if (pictures.length > 0 && filteredList.length > 0) {
+            if (pictures.length > 0 && filteredList.length > 0 || additionalPictures.length > 0) {
                 filteredList.map((prodct) => {
 
                     console.log("id in product", prodct.product_id)
@@ -182,6 +272,11 @@ class ProductList extends Component {
                         link: prodct.link,
                         long_description: prodct.long_description,
                         main_image: _.filter(pictures, (pic) => {
+                            if (prodct.product_id === Number(pic.id)) {
+                                return pic.image
+                            }
+                        }),
+                        additional_image : _.filter(additionalPictures, (pic) => {
                             if (prodct.product_id === Number(pic.id)) {
                                 return pic.image
                             }
@@ -213,8 +308,42 @@ class ProductList extends Component {
         }
     }
 
+    handleChange(e) {
+        var val = e.target.value
+        let self = this
+        self.setState({
+            filter
+        })
+        self.setState({
+            dataPerPage: Number(val)
+        })
+    }
+
+
+    // method for change active page pagination
+    changeactive(page) {
+        this.setState({
+            pageactive: page
+        })
+    }
+
+    //method for change page number in pagination
+    handlePageChange(pageNumber) {
+        let self = this
+        console.log("valueeeee====", pageNumber)
+        self.setState({
+            pageactive: pageNumber
+        })
+    }
+
     openListView() {
-        console.log('list viewwwwwwwwwwwwwww')
+        try {
+            let tableView = document.getElementsByClassName('tabtable')[0];
+            let cardView = document.getElementById('row-view')
+            tableView.style.display = 'block';
+            cardView.style.display = 'none'
+            console.log('xx', tableView, cardView);
+        } catch (e) { console.log('hello', e) }
     }
 
     /**
@@ -461,6 +590,7 @@ class ProductList extends Component {
                 }
             )
         }
+
     }
 
 
@@ -481,32 +611,38 @@ class ProductList extends Component {
 
     }
 
-    searchValues(e){
+    searchValues(e) {
 
-        var searchValue1=this.state.searchValue1
-        var searchValue2=e.target.value
+        var searchValue1 = this.state.searchValue1
+        var searchValue2 = e.target.value
+        var searchValue3 = this.state.searchValue3
 
-        console.log('searchValue1--',searchValue1)
-        console.log('searchValue2',searchValue2)
-        var data={
-            searchValue1:searchValue1,
-            searchValue2:searchValue2
+        console.log('searchValue1--', searchValue1)
+        console.log('searchValue2', searchValue2)
+        var data = {
+            searchValue1: this.state.searchValue1,
+            searchValue2: e.target.value,
+            searchValue3: this.state.searchValue3
         }
 
-        axios.get("/api/searchFilterByValues",data).then(function (response) {
+        let self = this
+
+        console.log('dataaaaaa', data)
+        axios.post("/api/searchFilterByValues", data).then(function (response) {
             console.log("product list ", response.data);
             if (response.data) {
-                // self.setState({
-                //     product: response.data.products,
-                //     filteredList: response.data.products,
-                //     listToFilter: response.data.products,
-                //     stateUpdate: true,
-                //     Loading: false
-                // })
+                console.log('inside response========', response.data.products)
+                self.setState({
+                    // product: response.data.products,
+                    filteredList: response.data.products,
+                    //listToFilter: response.data.products,
+                    // stateUpdate: true,
+                    // Loading: false
+                })
             }
 
         }).catch(function (error) {
-           // self.setState({ Loading: false })
+            // self.setState({ Loading: false })
             console.log("error  login is ", error);
         })
 
@@ -514,14 +650,57 @@ class ProductList extends Component {
 
     }
 
-    render() {
-        const { filteredList } = this.state;
-        
+    selectAttrebute(index) {
+        var flag = true;
+        this.state.selectedArray.map((key) => {
+            if(key.key == index.key){
+                flag = false;
+            }
+        }) 
+        if(flag)
+            this.state.selectedArray.push(index);
+    }
 
-        const { product, pictures } = this.state;
+    /**
+     * Method for handle card view 
+     */
+    cardView(e) {
+        console.log('console.log')
+        try {
+            let tableView = document.getElementsByClassName('tabtable')[0];
+            let cardView = document.getElementById('row-view')
+            console.log("ZZZZZZZ", tableView, cardView)
+            tableView.style.display = 'none';
+            cardView.style.display = 'block'
+        } catch (e) { console.log("erro", e) }
+
+    }
+
+    render() {
+        console.log("porps in productlist", this.props)
+        console.log("states in productlist", this.state)
+        let { filteredList, attrebuteArray, selectedArray, product, pictures } = this.state;
+        let data
+        if (this.props.location.state !== undefined) {
+            console.log("found============")
+            let status = this.props.location.state._complete
+            if (status === "complete") {
+                data = filteredList.filter((dat) => dat.product_status === "Active")
+            } else if (status === "incomplete") {
+                data = filteredList.filter((dat) => dat.product_status === "Inactive")
+            } else {
+                data = filteredList.filter((dat) => dat.product_status === "")
+            }
+
+            console.log("data============", data)
+            product = data
+            filteredList = data
+        }
         let buff
         let base64data
         this.showhideSpan()
+        let { dataPerPage } = this.state
+        var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>
                 {/* <div className="preloader">
@@ -538,7 +717,7 @@ class ProductList extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"product"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
@@ -557,6 +736,16 @@ class ProductList extends Component {
                                                     <div className="row custom_row">
                                                         <div className="col-md-8">
                                                             <div className="row">
+                                                                <div className="col-md-4">
+                                                                    <div className="form-group">
+                                                                        <select id="pref-perpage" className="form-control" name="searchValue3" onChange={e => this.change(e)}>
+                                                                            <option value={0}>Brand</option>
+                                                                            <option value={"Colgate"}>Toothpastes</option>
+                                                                            <option value={"Palmolive"}>Palmolive</option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                                 <div className="col-md-4">
                                                                     <div className="form-group">
                                                                         <select id="pref-perpage" className="form-control" name="searchValue1" onChange={e => this.change(e)}>
@@ -595,17 +784,29 @@ class ProductList extends Component {
 
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
+                                    <div className="row">
+                                    <div className="col-md-6">
                                     <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
+                                    </div>
+                                    <div className="col-md-4">
+                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm autowidth" >
+                                        <option value="5">5 per page</option>
+                                        <option value="10">10 per page</option>
+                                        <option value="25">25 per page</option>
+                                        <option value="-1">All</option>
+                                    </select>
+                                    </div>
+                                    </div>
                                 </div>
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
                                         <button className="primary-button float-right">
                                             <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
                                         </button>
-                                        <a href="javscript:void(0)" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
-                                        <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -617,21 +818,21 @@ class ProductList extends Component {
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
-                                                                    <div className="option-box clear-all"><a href="#" onClick={(e) => { this.clearAllProduct(e) }}>Clear All</a></div>
+                                                                    <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a href="#" onClick={(e) => { this.clearAllProduct(e) }}><i className="fa fa-times-circle"></i>Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
-                                                                    <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}>Delete</a></div>
+                                                                    <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}><i className="ti-trash"></i>Delete</a></div>
 
-                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}>Download</a></div>
-                                                                    <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
-                                                                    <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
-                                                                    <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
+                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
+                                                                    <div className="option-box move-folder"><a href="javscript:void(0)"><i className="ti-folder"></i>Move to Folder</a></div>
+                                                                    <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
+                                                                    <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div>
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                        Batch Update
+                                                                        <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
                                                                     <div className="option-box compare">
-                                                                        <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}>Compare Products</a></div>
+                                                                        <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -647,11 +848,11 @@ class ProductList extends Component {
 
 
                                     </div>
-                                    <select name="example_length" aria-controls="example" class="form-control form-control-sm">
+                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
-                                        <option value="-1">All</option>
+                                        <option value="100">All</option>
                                     </select>
                                 </div>
 
@@ -663,35 +864,38 @@ class ProductList extends Component {
 
 
                             {/* card row start ---------------------------------------------------------------------*/}
-                            <div className="table-view fullpageview">
+
+                            <div className="table-view fullpageview tabtable">
                                 <div className="row">
                                     <div className="col-md-12">
 
-                                        <table id="example" className="table tabtable">
+                                        <table id="example" className="table ">
                                             <thead>
                                                 <tr className="starting">
                                                     <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Product ID</th>
-                                                    <th scope="col">Product Name</th>
-                                                    <th scope="col">Product Line</th>
-                                                    <th scope="col">Product Status</th>
-                                                    <th scope="col">UPC</th>
+                                                    {selectedArray.map((keyinner, indexinner) => {
+                                                        return (<th scope="col">{keyinner.value}</th>);
+
+                                                    })
+                                                    }
                                                     <th />
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {
-                                                    filteredList.length > 0 ? filteredList.map((key, index) => {
-                                                        return <tr>
+                                                    list.length > 0 ? list.map((key, index) => {
+                                                        return <tr key={index}>
                                                             <td><input type="checkbox" name="" /></td>
                                                             <td><div className="image-thumb"><a href="detailpage.html">
                                                                 <ImageContainer src="1.png" /> </a></div></td>
                                                             <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }} >{key.product_id}</Link></td>
-                                                            <td>{key.product_name}</td>
-                                                            <td>{key.product_line}</td>
-                                                            <td>{key.product_status}</td>
-                                                            <td>{key.upc}</td>
+                                                            {selectedArray.map((keyinner, indexinner) => {
+                                                                return (<td>{key[keyinner.key]}</td>);
+
+                                                            })
+                                                            }
                                                             <td><div className="row-hover">
                                                                 <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                                 </a></div>
@@ -702,259 +906,263 @@ class ProductList extends Component {
                                             </tbody>
                                         </table>
                                         <div className="pagebottompart">
-                                            <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p>
-                                            <div className="col-md-2 pull-right">
-                                                <ul className="pagination">
-                                                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                                                    <li className="page-item active"><a className="page-link" href="#">2</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                </ul>
-                                            </div>
+                                            {/* <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p> */}
+
+                                        </div>
+                                        <div className="pagination pull-right my-1 float-right">
+                                            <Pagination
+                                                hideFirstLastPages
+                                                activePage={this.state.pageactive}
+                                                itemsCountPerPage={dataPerPage}
+                                                totalItemsCount={filteredList.length}
+                                                pageRangeDisplayed={4}
+                                                onChange={this.handlePageChange.bind(this)}
+                                                prevPageText='Prev'
+                                                nextPageText='Next'
+                                            />
                                         </div>
                                     </div>
+                                </div>`
+                            </div>
+                            <div id="row-view">
+                                <div className="row ">
+                                    {
+                                        list.length > 0 ? list.map((key, index) => {
+                                            return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
+                                                <div className="card">
+                                                    <div className="card-body text-center">
+                                                        <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
+                                                            <ImageContainer src="icons/check.png" />
+                                                        </a>
+
+                                                        <p className="img">
+                                                            {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
+                                                                <img src={key.main_image[0].image} alt="" />
+                                                                :
+                                                                <ImageContainer src="5.png" alt="" />
+                                                            }
+
+                                                            {/* <img src={base64data ? 'data:' + "image/png" + ';base64,' + base64data : ""} alt="" /> */}
+                                                        </p>
+                                                        <h4 className="card-title">{key.upc}</h4>
+                                                        <p className="card-text">{key.product_name}<br /></p>
+                                                    </div>
+                                                    <div className="card-hover" id={`card-hover${index}`}>
+                                                        <div className="card-link-options">
+                                                            <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
+                                                            <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
+                                                            <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
+                                                            <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, key) }}><ImageContainer src="icons/check.png" /></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        }) : ''
+
+                                    }
+                                </div>
+
+                                <div className="pagination pull-right my-1 float-right">
+                                    <Pagination
+                                        hideFirstLastPages
+                                        activePage={this.state.pageactive}
+                                        itemsCountPerPage={dataPerPage}
+                                        totalItemsCount={filteredList.length}
+                                        pageRangeDisplayed={4}
+                                        onChange={this.handlePageChange.bind(this)}
+                                        prevPageText='Prev'
+                                        nextPageText='Next'
+                                    />
                                 </div>
                             </div>
-                            <div className="row">
-                                {
-                                    filteredList.length > 0 ? filteredList.map((key, index) => {
-                                        return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
-                                            <div className="card">
-                                                <div className="card-body text-center">
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
-                                                        <ImageContainer src="icons/check.png" />
-                                                    </a>
+                        </div>
+                    </div>
 
-                                                    <p className="img">
-                                                        {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
-                                                            <img src={key.main_image[0].image} alt="" />
-                                                            :
-                                                            <ImageContainer src="5.png" alt="" />
+
+
+                    {/* The Modal */}
+                    <div className="modal fade allmodalcolgate" id="setting">
+                        <div className="modal-dialog productlist_section">
+                            <div className="modal-content">
+                                {/* Modal Header */}
+                                <div className="modal-header">
+                                    <h4 className="modal-title title_modalheader col-md-7">Grid Configuration</h4>
+                                    <div className="filtercustome col-md-4">
+                                        <li className="nav-item dropdown Select_Language">
+                                            <a className="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Language</a>
+                                            <div className="dropdown-menu" aria-labelledby="dropdown09">
+                                                <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-us"> </span>  English</a>
+                                                <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-fr"> </span>  French</a>
+                                                <a className="dropdown-item" href="#it"><span className="flag-icon flag-icon-it"> </span>  Italian</a>
+                                                <a className="dropdown-item" href="#ru"><span className="flag-icon flag-icon-ru"> </span>  Russian</a>
+                                            </div>
+                                        </li>
+                                    </div>
+                                    <button type="button" className="close" data-dismiss="modal">×</button>
+                                </div>
+                                {/* Modal body */}
+                                <div className="modal-body filtercustome productlist_body">
+                                    <div className="row">
+                                        <div className="col-md-12 custome_section_productlist_body">
+                                            <div className="row">
+                                                <div className="col-md-6 nopad_left">
+                                                    <div id="accordion">
+                                                        <div className="card">
+                                                            <div className="card-header" id="heading-1">
+                                                                <h5 className="mb-0">
+                                                                    <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                                                        Class Attributes
+                              </a>
+                                                                </h5>
+                                                            </div>
+                                                            <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
+                                                                <ul>
+                                                                    {attrebuteArray.length > 0 ? attrebuteArray.map((key, index) => {
+                                                                        return <li><a href="#" onClick={(e) => this.selectAttrebute(key)}>{key.value}</a></li>
+                                                                    }) : ''
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div className="card">
+                                                            <div className="card-header" id="heading-2">
+                                                                <h5 className="mb-0">
+                                                                    <a role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
+                                                                        Formatters
+                              </a>
+                                                                </h5>
+                                                            </div>
+                                                            <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                                                <ul>
+                                                                    <li><a href="#">Bool</a>
+                                                                        <ul>
+                                                                            <li>Operator Boolean Formatter</li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a href="#">Other</a>
+                                                                        <ul>
+                                                                            <li>Operator Date Formatter</li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a href="#">String</a>
+                                                                        <ul>
+                                                                            <li>Operator Text</li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <ul className="list_ofproduct">
+                                                        {
+                                                            selectedArray.length > 0 ? selectedArray.map((key, index) => {
+                                                                return <li>{key.value}</li>
+                                                            }) : ''
                                                         }
-
-                                                        {/* <img src={base64data ? 'data:' + "image/png" + ';base64,' + base64data : ""} alt="" /> */}
-                                                    </p>
-                                                    <h4 className="card-title">{key.product_id}</h4>
-                                                    <p className="card-text">{key.product_name}<br />{key.product_name}</p>
+                                                    </ul>
                                                 </div>
-                                                <div className="card-hover" id={`card-hover${index}`}>
-                                                    <div className="card-link-options">
-                                                        <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
-                                                        <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
-                                                        <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, key) }}><ImageContainer src="icons/check.png" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    }) : ''
-
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                {/* The Modal */}
-                <div className="modal fade allmodalcolgate" id="setting">
-                    <div className="modal-dialog productlist_section">
-                        <div className="modal-content">
-                            {/* Modal Header */}
-                            <div className="modal-header">
-                                <h4 className="modal-title title_modalheader col-md-7">Grid Configuration</h4>
-                                <div className="filtercustome col-md-4">
-                                    <li className="nav-item dropdown Select_Language">
-                                        <a className="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Language</a>
-                                        <div className="dropdown-menu" aria-labelledby="dropdown09">
-                                            <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-us"> </span>  English</a>
-                                            <a className="dropdown-item" href="#fr"><span className="flag-icon flag-icon-fr"> </span>  French</a>
-                                            <a className="dropdown-item" href="#it"><span className="flag-icon flag-icon-it"> </span>  Italian</a>
-                                            <a className="dropdown-item" href="#ru"><span className="flag-icon flag-icon-ru"> </span>  Russian</a>
-                                        </div>
-                                    </li>
-                                </div>
-                                <button type="button" className="close" data-dismiss="modal">×</button>
-                            </div>
-                            {/* Modal body */}
-                            <div className="modal-body filtercustome productlist_body">
-                                <div className="row">
-                                    <div className="col-md-12 custome_section_productlist_body">
-                                        <div className="row">
-                                            <div className="col-md-6 nopad_left">
-                                                <div id="accordion">
-                                                    <div className="card">
-                                                        <div className="card-header" id="heading-1">
-                                                            <h5 className="mb-0">
-                                                                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                                                                    Class Attributes
-                              </a>
-                                                            </h5>
-                                                        </div>
-                                                        <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
-                                                            <ul>
-                                                                <li><a href="#">Layout</a></li>
-                                                                <li><a href="#">SKU Number</a></li>
-                                                                <li><a href="#">Global SKU Number</a></li>
-                                                                <li><a href="#">SKU legal Name</a></li>
-                                                                <li><a href="#">Product Legal Name</a></li>
-                                                                <li><a href="#">Article Number</a></li>
-                                                                <li><a href="#">Subsidiary</a></li>
-                                                                <li><a href="#">Each</a></li>
-                                                                <li><a href="#">AISE Code</a></li>
-                                                                <li><a href="#">Name</a></li>
-                                                                <li><a href="#">Country of Origin</a></li>
-                                                                <li><a href="#">Brand</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card">
-                                                        <div className="card-header" id="heading-2">
-                                                            <h5 className="mb-0">
-                                                                <a role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
-                                                                    Formatters
-                              </a>
-                                                            </h5>
-                                                        </div>
-                                                        <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
-                                                            <ul>
-                                                                <li><a href="#">Bool</a>
-                                                                    <ul>
-                                                                        <li>Operator Boolean Formatter</li>
-                                                                    </ul>
-                                                                </li>
-                                                                <li><a href="#">Other</a>
-                                                                    <ul>
-                                                                        <li>Operator Date Formatter</li>
-                                                                    </ul>
-                                                                </li>
-                                                                <li><a href="#">String</a>
-                                                                    <ul>
-                                                                        <li>Operator Text</li>
-                                                                    </ul>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <ul className="list_ofproduct">
-                                                    <li>ID</li>
-                                                    <li>Published</li>
-                                                    <li>SKU Number</li>
-                                                    <li>Each(EA) - EAN Code (eaEanCode)</li>
-                                                    <li>Workflow State</li>
-                                                    <li>Color(s)</li>
-                                                    <li>Shelf LLife (Months) (ShelfLife)</li>
-                                                    <li>Subsidiary</li>
-                                                    <li>Brand</li>
-                                                    <li>Sub Brand</li>
-                                                    <li>Product Lagal Name</li>
-                                                    <li>Name</li>
-                                                </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* Modal footer */}
-                            <div className="modal-footer productlist_footer">
-                                <button type="button" className="btn btn-primary" data-dismiss="modal">SAVE</button>
-                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                {/* <!-- The Modal --> */}
-                <div className="modal fade allmodalcolgate" id="colgate">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-
-                            {/* <!-- Modal Header --> */}
-                            <div className="modal-header">
-                                <h4 className="modal-title title_modalheader">Batch Update</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-
-                            {/* <!-- Modal body --> */}
-                            <div className="modal-body filtercustome">
-                                <form>
-                                    <div className="form-group">
-                                        <label>Labels</label>
-                                        <select id="pref-perpage" class="form-control" name="batchKey" onChange={e => this.change(e)}>
-                                            <option value="product_name">Product Name</option>
-                                            <option value="link">Link</option>
-                                            <option value="upc">UPC</option>
-                                            <option value="category">Category</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Property Edit</label>
-                                        <input className="form-control" type="text" name="batchValue" onChange={e => this.change(e)} />
-                                    </div>
-
-                                </form>
-                            </div>
-
-                            {/* <!-- Modal footer --> */}
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.batchUpdate.bind(this)} >UPDATE</button>
-                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                                {/* Modal footer */}
+                                <div className="modal-footer productlist_footer">
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal">SAVE</button>
+                                    <button type="button" className="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* The product delete */}
-                <div className="modal fade allmodalcolgate" id="delete">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            {/* Modal Header */}
-                            <div className="modal-header">
-                                <h4 className="modal-title title_modalheader">Delete Product</h4>
-                                <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
+
+
+                    {/* <!-- The Modal --> */}
+                    <div className="modal fade allmodalcolgate" id="colgate">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+
+                                {/* <!-- Modal Header --> */}
+                                <div className="modal-header">
+                                    <h4 className="modal-title title_modalheader">Batch Update</h4>
+                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                {/* <!-- Modal body --> */}
+                                <div className="modal-body filtercustome">
+                                    <form>
+                                        <div className="form-group">
+                                            <label>Labels</label>
+                                            <select id="pref-perpage" class="form-control" name="batchKey" onChange={e => this.change(e)}>
+                                                <option value="product_name">Product Name</option>
+                                                <option value="link">Link</option>
+                                                <option value="upc">UPC</option>
+                                                <option value="category">Category</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Property Edit</label>
+                                            <input className="form-control" type="text" name="batchValue" onChange={e => this.change(e)} />
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                                {/* <!-- Modal footer --> */}
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.batchUpdate.bind(this)} >UPDATE</button>
+                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">CANCEL</button>
+                                </div>
                             </div>
-                            {/* The product delete */}
-                            <div className="modal fade allmodalcolgate" id="delete">
-                                <div className="modal-dialog">
-                                    <div className="modal-content">
-                                        {/* Modal Header */}
-                                        <div className="modal-header">
-                                            <h4 className="modal-title title_modalheader">Delete Product</h4>
-                                            <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
-                                        </div>
-                                        {/* Modal body */}
-                                        <div className="modal-body filtercustome">
-                                            <h1 className="delete_product_list">Are you sure you want to delete</h1>
-                                        </div>
-                                        {/* Modal footer */}
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>Yes</button>
-                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>No</button>
+                        </div>
+                    </div>
+
+                    {/* The product delete */}
+                    <div className="modal fade allmodalcolgate" id="delete">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                {/* Modal Header */}
+                                <div className="modal-header">
+                                    <h4 className="modal-title title_modalheader">Delete Product</h4>
+                                    <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
+                                </div>
+                                {/* The product delete */}
+                                <div className="modal fade allmodalcolgate" id="delete">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            {/* Modal Header */}
+                                            <div className="modal-header">
+                                                <h4 className="modal-title title_modalheader">Delete Product</h4>
+                                                <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
+                                            </div>
+                                            {/* Modal body */}
+                                            <div className="modal-body filtercustome">
+                                                <h1 className="delete_product_list">Are you sure you want to delete</h1>
+                                            </div>
+                                            {/* Modal footer */}
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>Yes</button>
+                                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>No</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* Modal footer */}
-                            <div className="modal-footer productlist_footer">
-                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>DELETE</button>
-                                <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>CANCEL</button>
+                                {/* Modal footer */}
+                                <div className="modal-footer productlist_footer">
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.deleteProductById.bind(this)}>DELETE</button>
+                                    <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>CANCEL</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
-
-
 
 
         )

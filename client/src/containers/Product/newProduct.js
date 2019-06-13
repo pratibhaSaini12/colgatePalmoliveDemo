@@ -31,15 +31,25 @@ class NewProduct extends Component {
             workflow_state: '',
             main_image: '',
             asset_id: 99999,
-            image: ''
-
+            image: '',
+            brand: 'Colgate',
+            product_completion: '',
+            additional_image: '',
+            pdfData: [],
+            pdfFileArray:[],
+            selectPdf:''
         }
     }
 
 
     componentDidMount() {
-        axios.get("api/readpdf").then(function (response) {
-            console.log('resposne from api readpdf ==', response);
+        let self = this;
+        axios.get("api/fetchfile").then(function (response) {
+            console.log('resposne from api fetchfile==', response.data)
+            self.setState({
+                pdfFileArray:response.data
+            })
+            console.log('vjhdvbhuvb',self.state.pdfFileArray);
         }).catch(function (error) {
 
         })
@@ -54,12 +64,23 @@ class NewProduct extends Component {
             [e.target.name]: e.target.value,
         })
     }
-
+    handleChange(e) {
+        var val = e.target.value
+        console.log(val);
+        let self = this
+        self.setState({
+            selectPdf: val
+        })
+    }
     createNewProduct() {
         console.log("state on save====", this.state);
         let state = this.state;
+        var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
+        console.log('completeArray--',completeArray,completeArray[3])
+         var percent=this.calculateComlpleteness(completeArray);
+ 
         let createProduct = {
-            product_id: state.product_id,
+          //  product_id: state.product_id,
             product_name: state.product_name,
             upc: state.upc,
             category: state.category,
@@ -77,8 +98,15 @@ class NewProduct extends Component {
             material: state.material,
             style: state.style,
             main_image: '',
-            workflow_state: state.workflow_state
+            workflow_state: state.workflow_state,
+            brand: state.brand,
+            product_completion: percent,
+            additional_image: ''
         }
+
+        console.log('createProduct---',percent)
+
+
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.product) {
@@ -93,6 +121,7 @@ class NewProduct extends Component {
     //handeling image upload
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
+        console.log("ev========", ev.target.name)
         let self = this
         var idCardBase64
         var assetBodyData
@@ -105,7 +134,7 @@ class NewProduct extends Component {
                 assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
                 console.log("===assetBodyData====", assetBodyData)
                 self.setState({
-                    image: assetBodyData.data
+                    image: assetBodyData.dataproduct_id
                 })
                 axios.post("/api/upload/image", assetBodyData).then((res) => {
                     console.log("error in response", res)
@@ -126,82 +155,99 @@ class NewProduct extends Component {
             console.log("fileSizeExceedMessage=======")
         }
     }
-
+    handleUploadAttachmentAdditional(ev) {
+        console.log("ev========additional_image", ev.target.name)
+        console.log("ev========additional_image", ev)
+        let self = this
+        var idCardBase64
+        var assetBodyData
+        ev.preventDefault()
+        var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            self.getBase64(self.uploadInputAdditional.files[0], (result) => {
+                var base64 = result.split(",");
+                idCardBase64 = base64[1]
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputAdditional.files[0].name, mimetype: self.uploadInputAdditional.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                console.log("===assetBodyData====additional_image", assetBodyData)
+                self.setState({
+                    additional_image: assetBodyData.data
+                })
+                axios.post("/api/upload/additional_image", assetBodyData).then((res) => {
+                    console.log("error in response additional_image", res)
+                    if (res.data) {
+                        console.log("res in additional_image", res)
+                        return
+                    } else {
+                        console.log("error in responseadditional_image", res)
+                        return
+                    }
+                }).catch((err) => {
+                    console.log("errorrrrrrrrrrrrrr in additional_image uploading", err)
+                    return
+                })
+            });
+        }
+        else {
+            console.log("fileSizeExceedMessage=======additional_image")
+        }
+    }
 
     /*Upload PDF files 
     Author: Shashnak Saxena
     Date: June 12th 2019
     */
-    UploadPDF(ev) {
-		let self = this
-		var idCardBase64
-		var assetBodyData
-		ev.preventDefault()
-        var FileSize = self.uploadInputFile.files[0].size / 1024 / 1024;
-        axios.get("/api/readpdf",assetBodyData).then((res)=>{
-            console.log("error in response",res)
-            if(res.data){
-               
-             //   alert(res.data.length);
-               
-//   var Box =    '<ul className="nav nav-tabs datetab" id="myTab" role="tablist">'
-//                 var box2;
-//                 for (var i = 0; i < res.data.length; i++)  
-//                 { 
-//                     box2 =     +'<li className="nav-item"><a className="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">En</a></li>'
-//                 } 
-//           +'</ul>';
-
-var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel"> <ul class="nav nav-tabs datetab" id="myTab" role="tablist"> <li class="nav-item"><a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">TR</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">CZ</a></li> <li class="nav-item"><a class="nav-link" id="download-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">GR</a></li> </ul> <div class="tab-content custome_content under_tabs" id="myTabContent"> <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab"> <div class="row"> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Hills™ Science Plan™ MATURE ADULT CAT FOOD with CHICKEN"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="BESLEME TALİMATLARI"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Bu mamayı ilk defa mı kullanıyorsunuz?"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="İÇİNDEKİLER"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value="Avrupa daüretilmiştir. *Kalite, tutarlılık ve lezzet için %100 Garanti, yoksa paranız iade"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> <div class="col-md-6"> <div class="form-group"><label>Ques</label> <input class="form-control" type="text" name="text1" value=""></div> </div> <div class="col-md-6"> <div class="form-group"><label>Answer</label><input class="form-control" type="text" name="text1"></div> </div> </div> </div> <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div> </div></div>';
-
-            document.getElementById("pdfData").innerHTML = Box;
-
-
-
-
-
-              //  $(".pdfData").html(JSON.stringify(res.data)); 
-                console.log("res in uploading",res)
-                return 
+    UploadPDF() {
+        var self = this;
+        var assetBodyData = '{ pdfName :'+this.state.selectPdf+'}';
+        console.log('hgvhbhbhhbvbh'+assetBodyData);
+        axios.post("/api/readpdf",{pdfName:this.state.selectPdf}).then((res) => {
+            console.log("error in response", res)
+            if (res.data) {
+                self.setState({
+                    pdfData: res.data
+                })
+                console.log("res in uploading", res)
+                return
             } else {
-                $(".pdfData").html('Can not read the file !!'); 
-                console.log("error in response",res)
-                return						
+                $(".pdfData").html('Can not read the file !!');
+                console.log("error in response", res)
+                return
             }
-        }).catch((err)=>{
-            console.log("errorrrrrrrrrrrrrr in uploading",err)
+        }).catch((err) => {
+            console.log("errorrrrrrrrrrrrrr in uploading", err)
             return
         })
+        
 
 
 
-		//if (FileSize <= 5) {
-            // self.getBase64(self.uploadInputFile.files[0], (result) => {
-			// 	var base64 = result.split(",");
-			// 	idCardBase64 = base64[1]
-			// 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-            //     console.log("===assetBodyData====",assetBodyData)
-            //     self.setState({
-            //         image: assetBodyData.data
-            //     })
-            //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
-            //         console.log("error in response",res)
-            //         if(res.data){
-			// 			console.log("res in uploading",res)
-			// 			return 
-            //         } else {
-			// 			console.log("error in response",res)
-			// 			return						
-            //         }
-            //     }).catch((err)=>{
-			// 		console.log("errorrrrrrrrrrrrrr in uploading",err)
-			// 		return
-            //     })
-			// });
-		//}
-		// else {
-		// 	console.log("fileSizeExceedMessage=======")
-		// }
+        //if (FileSize <= 5) {
+        // self.getBase64(self.uploadInputFile.files[0], (result) => {
+        // 	var base64 = result.split(",");
+        // 	idCardBase64 = base64[1]
+        // 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+        //     console.log("===assetBodyData====",assetBodyData)
+        //     self.setState({
+        //         image: assetBodyData.data
+        //     })
+        //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
+        //         console.log("error in response",res)
+        //         if(res.data){
+        // 			console.log("res in uploading",res)
+        // 			return 
+        //         } else {
+        // 			console.log("error in response",res)
+        // 			return						
+        //         }
+        //     }).catch((err)=>{
+        // 		console.log("errorrrrrrrrrrrrrr in uploading",err)
+        // 		return
+        //     })
+        // });
+        //}
+        // else {
+        // 	console.log("fileSizeExceedMessage=======")
+        // }
     }
 
     //Method to get Bas64 of file
@@ -214,15 +260,52 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
         reader.onerror = function (error) {
         };
     }
+    resize(){
+        var textArray = document.getElementsByClassName('textarea');
+            for(var i=0;i<textArray.length;i++){
+                textArray[i].style.height = 'auto';
+                textArray[i].style.height = textArray[i].scrollHeight+'px';
+            }
+    }
+
+    calculateComlpleteness(completeArray){
+        let count = 0
+        let percent = 0
+        let percentUnit = 20
+        completeArray.map(list=>{
+            
+            if(list!=="") {
+                count++
+            } 
+        })
+        percent = percentUnit*count
+    
+        return percent;
+    }
 
     render() {
         console.log("statessss in newProduct", this.state)
         let img = this.state.image
+        var state = this.state
+        let addImge = this.state.additional_image
+        let { pdfData,pdfFileArray,selectPdf} = this.state
         let image = ''
+        let additionalImage = ''
         if (img !== '') {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
-        return (
+       
+       var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
+       console.log('completeArray--',completeArray,completeArray[3])
+        var percent=this.calculateComlpleteness(completeArray);
+
+
+       console.log('product_completion===', percent)
+        if (addImge !== '') {
+            additionalImage = "data:" + addImge.mimetype + ";base64," + addImge.data
+        }
+ return (
+           
             <div>
                 {/* <div className="preloader">
                     <div className="loader">
@@ -232,7 +315,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                 </div> */}
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"product"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside">
                             <div className="row">
@@ -257,14 +340,17 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Upload Image</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Upload PDF</a>
+                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Pack Flats</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
+                                            <a className="nav-link" data-toggle="tab" href="#productQuality" role="tab" aria-controls="productQuality">Product Quality</a>
                                         </li>
+                                        {/* <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
+                                        </li> */}
                                     </ul>
                                 </div>
                                 <div className="col-md-9">
@@ -273,12 +359,12 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                             <form>
                                                 <ul>
                                                     <li className="row">
-                                                        <div className="col-md-11">
+                                                        {/* <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Product ID</label>
                                                                 <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                         <div className="col-md-1">
                                                             {/* <div className="rightpartedit_delete">
           <center>
@@ -309,7 +395,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>UPC</label>
+                                                                <label>SKU</label>
                                                                 <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -338,7 +424,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -353,7 +439,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
           </div>*/}
                                                         </div>
                                                     </li>
-                                                    <li className="row">
+                                                    {/* <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Link</label>
@@ -368,9 +454,9 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
           
            
           </center>
-          </div>*/}
+          </div>
                                                         </div>
-                                                    </li>
+                                                    </li> */}
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -386,6 +472,23 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                         <div className="col-md-1">
                                                         </div>
                                                     </li>
+
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Brand</label>
+                                                                <div className="form-group">
+                                                                    <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                        <option value={"Colgate"}>Colgate</option>
+                                                                        <option value={"Palmolive"}>Palmolive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -405,9 +508,9 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Cost</label>
+                                                                <label>Price ($)</label>
                                                                 <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -416,7 +519,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Base Wholesale Price</label>
+                                                                <label>Formatted Base Wholesale Price ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -426,7 +529,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted MSRP</label>
+                                                                <label>Formatted MSRP ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -436,7 +539,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Retail Price</label>
+                                                                <label>Formatted Retail Price ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -465,7 +568,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -538,7 +641,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -593,13 +696,25 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                                <div className="form-group">
+                                                <div className="form-group">    
                                                     <label>Upload Image</label>
                                                     <div className="form-group">
-                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e)=>this.handleUploadAttachment(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''}
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* additional image */}
+                                                <div className="form-group">
+                                                    <label>Additional Image Upload</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputAdditional = ref }} onChange={this.handleUploadAttachmentAdditional.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload Additioanl Files</a>
+                                                        {additionalImage !== '' && additionalImage !== undefined ?
+                                                            <img src={additionalImage} height="50px" width="50px" className="digital_img" />
                                                             : ''}
                                                     </div>
                                                 </div>
@@ -607,19 +722,95 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                         </div>
 
 
-                                    {/* Panel for pdf upload in specification panel*/}
-                                    <div className="tab-pane" id="uploadPDF" role="tabpanel">
-                                        <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
-                                            <div className="form-group">
-                                                <label>Upload PDF</label>
+                                        {/* Panel for pdf upload in specification panel*/}
+                                        <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Pack Flats</label>
                                                     <div className="form-group">
-                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} onChange={this.UploadPDF.bind(this)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
-                                                        {image !== '' && image !== undefined ?
-                                                            <img src={image} height="50px" width="50px" className="digital_img" />
-                                                            : ''}
-
-                                                            <div id="pdfData"></div>
+                                                        
+                                                        <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} >
+                                                        <option value="">Select File</option>
+                                                            {
+                                                                pdfFileArray.length > 0 ? pdfFileArray.map(function(key,index){
+                                                                    return (<option value={key}>{key}</option>)
+                                                                }) : ''
+                                                            
+                                                            }
+                                                        </select>
+                                                        <a onClick={(e) => this.UploadPDF()} className="create-new-link uploadfile">Fetch Data</a>
+                                                            <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
+                                                                <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
+                                                            {
+                                                                pdfData.length > 0 ? pdfData.map(function(key,index){
+                                                                    return <li class="nav-item">
+                                                                            <a className={index==0 ? 'nav-link active':'nav-link'} id="contact-tab" data-toggle="tab" href={`#contact${index}`} role="tab" aria-controls="contact" aria-selected="true">{key.lang}</a>
+                                                                        </li>
+                                                                }) : ''
+                                                            }
+                                                            </ul>
+                                                            <div class="tab-content custome_content under_tabs" id="myTabContent">
+                                                            {
+                                                            pdfData.length > 0 ? pdfData.map(function(key,index){
+                                                            return <div className={index==0 ? 'tab-pane fade show active':'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                         {key.ques1}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <textarea class="textarea" style={{height:'100%',width:'100%'}} >{key.ans1}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        {key.ques2}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea class="textarea" style={{height:'100%',width:'100%'}} >{key.ans2}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        {key.ques3}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea  class="textarea" style={{height:'100%',width:'100%'}} >{key.ans3}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        {key.ques4}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea  class="textarea" style={{height:'100%',width:'100%'}} >{key.ans4}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        {key.ques5}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea class="textarea" style={{height:'100%',width:'100%'}} >{key.ans5}</textarea>
+                                                                        </div>
+                                                                </div>
+                                                                </div> 
+                                                            </div> }) : ''
+                                                            }
+                                                            
+                                                            </div>
+                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -632,9 +823,9 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                 <div className="form-group">
                                                     <label>Workflow state</label>
                                                     <div className="form-group">
-                                                 
-                                                        <select id="pref-perpage" onChange={(e)=>this.change(e)} name="workflow_state" className="form-control"
-                                                        value={this.state.workflow_state ===''? '': this.state.workflow_state}>
+
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
                                                             <option value={"In Review"}>In Review</option>
                                                             <option value={"In Publish"}>In Publish</option>
                                                             <option value={"Published"}>Published</option>
@@ -643,6 +834,20 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div className="tab-pane" id="productQuality" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Product Completeness (%) Product Name, Sku, Cateogry, Brand,Price</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" value={percent} readonly />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className="tab-pane filtercustome tabsectionform  custome_listfile" id="settings3" role="tabpanel">
                                             <ul className="nav nav-tabs datetab" id="myTab" role="tablist">
 
@@ -656,18 +861,12 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                 <li className="nav-item">
                                                     <a className="nav-link" id="download-tab" data-toggle="tab" href="#download" role="tab" aria-controls="download" aria-selected="false">Us</a>
                                                 </li>
-                                           
+
                                             </ul>
                                             <div className="tab-content custome_content under_tabs" id="myTabContent">
 
                                                 <div className="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                                <div className="row">
-                                                <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label>text</label>
-                                                                <input className="form-control" type="text" name="text1"  />
-                                                            </div>
-                                                        </div>
+                                                    <div className="row">
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label>text</label>
@@ -710,8 +909,14 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
                                                                 <input className="form-control" type="text" name="text1" />
                                                             </div>
                                                         </div>
-                                                </div>
-                                                
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label>text</label>
+                                                                <input className="form-control" type="text" name="text1" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                                 <div className="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">sadsadd2</div>
                                             </div>
@@ -722,7 +927,7 @@ var Box = '<div class="tab-pane filtercustome tabsectionform custome_listfile ac
 
 
 
-                                    
+
                                 </div>
                             </div>
                         </div>

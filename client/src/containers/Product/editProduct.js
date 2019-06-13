@@ -28,7 +28,9 @@ class EditProduct extends Component {
             style: '',
             workflow_state: '',
             main_image: '',
-            Loading: false
+            Loading: false,
+            brand: '',
+            product_completion: ''
         }
     }
 
@@ -56,8 +58,17 @@ class EditProduct extends Component {
                 style: product.style,
                 main_image: product.main_image,
                 workflow_state: product.workflow_state,
-                Loading: false
+                Loading: false,
+                product_completion: product.product_completion,
+                brand: product.brand
+
+
             })
+            var completeArray=[product.brand,product.product_name,product.cost,product.category,product.upc]
+            console.log('completeArray--',completeArray,completeArray[3])
+             var percent=this.calculateComlpleteness(completeArray);
+             this.setState({product_completion:percent})
+
         } catch (e) { console.log("errr", e) }
     }
     change(e) {
@@ -70,6 +81,9 @@ class EditProduct extends Component {
     updateProduct() {
         console.log("state on update====", this.state);
         let state = this.state;
+        var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
+        console.log('completeArray--',completeArray,completeArray[3])
+         var percent=this.calculateComlpleteness(completeArray);
         let updateProductByID = {
             product_id: state.product_id,
             product_name: state.product_name,
@@ -89,9 +103,14 @@ class EditProduct extends Component {
             material: state.material,
             style: state.style,
             main_image: state.main_image,
-            workflow_state: state.workflow_state
+            workflow_state: state.workflow_state,
+            product_completion: state.product_completion,
+            brand: state.brand,
+            product_completion: percent
+
         }
-        //change update API
+      
+    
         axios.post("/api/updateProductByID", updateProductByID).then(function (response) {
             console.log('resposne from updateProductByID=========', response.data)
             if (response.data.product) {
@@ -103,6 +122,20 @@ class EditProduct extends Component {
         })
     }
 
+    calculateComlpleteness(completeArray){
+        let count = 0
+        let percent = 0
+        let percentUnit = 20
+        completeArray.map(list=>{
+            
+            if(list!=="") {
+                count++
+            } 
+        })
+        percent = percentUnit*count
+    
+        return percent;
+    }
 
 
     render() {
@@ -111,6 +144,10 @@ class EditProduct extends Component {
         let { product } = this.state
         // let image = "data:"+img.mimetype+";base64,"+img.data
         console.log("product==========", product)
+        var completeArray=[this.state.brand,this.state.product_name,this.state.cost,this.state.category,this.state.upc]
+        console.log('completeArray--',completeArray,completeArray[3])
+         var percent=this.calculateComlpleteness(completeArray);
+        console.log("######### user ",percent)
         return (
             <div>
                 {/* <div className="preloader">
@@ -121,14 +158,14 @@ class EditProduct extends Component {
                 </div> */}
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"product"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside">
                             <div className="row">
                                 <div className="col-md-12 top_part20">
                                     <h2 className="page-title float-left">Edit Product</h2>
                                     <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={(e)=>this.updateProduct(this)}>Update</button>
+                                        <button type="button" className="btn btn-primary" onClick={(e) => this.updateProduct(this)}>Update</button>
                                         <button type="button" className="btn btn-outline-primary">NEXT</button>
                                     </div>
                                 </div>
@@ -143,10 +180,16 @@ class EditProduct extends Component {
                                             <a className="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Pricing</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Digital Asset</a>
+                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Upload Image</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Status</a>
+                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Pack Flats</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#productQuality" role="tab" aria-controls="productQuality">Product Quality</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -156,12 +199,12 @@ class EditProduct extends Component {
                                             <form>
                                                 <ul>
                                                     <li className="row">
-                                                        <div className="col-md-11">
+                                                        {/* <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Product ID</label>
                                                                 <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                         <div className="col-md-1">
                                                             {/* <div class="rightpartedit_delete">
           <center>
@@ -192,7 +235,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>UPC</label>
+                                                                <label>SKU</label>
                                                                 <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -269,6 +312,23 @@ class EditProduct extends Component {
                                                         <div className="col-md-1">
                                                         </div>
                                                     </li>
+
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Brand</label>
+                                                                <div className="form-group">
+                                                                    <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                        <option value={"Colgate"}>Colgate</option>
+                                                                        <option value={"Palmolive"}>Palmolive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -288,7 +348,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Cost($)</label>
+                                                                <label>Price ($)</label>
                                                                 <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
                                                                 {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
@@ -299,7 +359,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Base Wholesale Price($)</label>
+                                                                <label>Formatted Base Wholesale Price ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -309,7 +369,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted MSRP($)</label>
+                                                                <label>Formatted MSRP ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -319,7 +379,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Retail Price($)</label>
+                                                                <label>Formatted Retail Price ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -329,6 +389,73 @@ class EditProduct extends Component {
                                                 </ul>
                                             </form>
                                         </div>
+
+                                        <div className="tab-pane" id="settings" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Upload Image</label>
+                                                    <div className="form-group">
+                                                        {/* <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
+                                                        {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''} */}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        {/* Panel for pdf upload in specification panel*/}
+                                        <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Pack Flats</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
+                                                        {/* {image !== '' && image !== undefined ?
+                                                            <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''} */}
+
+                                                        <div id="pdfData"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div className="tab-pane" id="settings2" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Workflow state</label>
+                                                    <div className="form-group">
+
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                            value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
+                                                            <option value={"In Review"}>In Review</option>
+                                                            <option value={"In Publish"}>In Publish</option>
+                                                            <option value={"Published"}>Published</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="tab-pane" id="productQuality" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Product Completeness</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control"  value={percent} readonly />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className="tab-pane filtercustome tabsectionform" id="messages" role="tabpanel">
                                             <form>
                                                 <ul>

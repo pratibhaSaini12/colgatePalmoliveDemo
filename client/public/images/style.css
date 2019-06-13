@@ -3183,6 +3183,7 @@ top: 150px;}
 .leg-div .leg-detail-1 {margin-bottom:5px;}
 .leg-div .leg-detail-1 span{ background-color:#7cb5ec; }
 .leg-div .leg-detail-2 span{ background-color:#434348;}
+.leg-div .leg-detail-3 span {background-color: rgb(144,237,125)}
 
 .tab-pane .table-view .table tr td:last-child{    width: auto;}
 .video .card-title, .video .card-text{
@@ -3433,8 +3434,6 @@ background-color: #6e5f90;
   width: 100%;
 }
 
-
-  
 
 #login_logo {
       padding: 25px 0;

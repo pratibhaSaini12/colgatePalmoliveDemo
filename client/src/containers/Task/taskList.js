@@ -3,8 +3,11 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
+import Pagination from "react-js-pagination";
+import ReactLoading from 'react-loading'
 import axios from "axios";
 import moment from "moment"
+import ReactLoading from 'react-loading'
 
 
 class TaskList extends Component {
@@ -15,7 +18,9 @@ class TaskList extends Component {
             taskList: [],
             filteredList: [],
             listToFilter: [],
-
+            Loading: false,
+            pageactive: 1,
+            dataPerPage: 5,            
         }
     }
 
@@ -24,7 +29,9 @@ class TaskList extends Component {
         //console.log('props on pageeee====', this.props.location.state._data)
         //var filterBy = this.props.location ? this.props.location.state._data : ''
         let self = this
+        self.setState({ Loading: true })
         var taskFilterData = []
+        self.setState({Loading: true})
         axios.get("/api/getAllTasks").then(function (response) {
             console.log("getAllTasks list ", response.data);
             if (response.data) {
@@ -41,12 +48,15 @@ class TaskList extends Component {
                         taskList: response.data.tasks,
                         filteredList: response.data.tasks,
                         listToFilter: response.data.tasks,
+                        stateUpdate: true,
+                        Loading: false
                     })
                 // }
 
             }
 
         }).catch(function (error) {
+            self.setState({ Loading: false })
             console.log("error  login is ", error);
         })
     }
@@ -67,6 +77,7 @@ class TaskList extends Component {
     }
 
     filterSearch(event) {
+        this.setState({ stateUpdate: true })
         console.log('state on filtersearcch===', this.state)
         var newList = this.state.listToFilter
         var searchString = event.target.value
@@ -90,14 +101,41 @@ class TaskList extends Component {
 
         this.setState({
             filteredList: newFilteredList,
-            listToFilter: this.state.listToFilter
+            listToFilter: this.state.listToFilter,
+            stateUpdate: false
         })
         console.log("valueeeee", filteredList)
     }
 
-    render() {
-        const { filteredList } = this.state;
+        // method for change active page pagination
+        changeactive(page) {
+            this.setState({
+                pageactive: page
+            })
+        }
+    
+        //method for change page number in pagination
+        handlePageChange(pageNumber) {
+            let self = this
+            console.log("valueeeee====", pageNumber)
+            self.setState({
+                pageactive: pageNumber
+            })
+        }
+    
+        handleChange(e) {
+            var val = e.target.value
+            let self = this
+            self.setState({
+                dataPerPage: Number(val)
+            })
+        }
 
+    render() {
+        console.log("porpssssssss in taskList", this.props)
+        const { filteredList } = this.state;
+        let {dataPerPage} = this.state
+        var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>
                 {/* <div className="preloader">
@@ -106,9 +144,14 @@ class TaskList extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"Task"}/>
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
@@ -200,6 +243,12 @@ class TaskList extends Component {
                                     <button className="primary-button float-right">
                                         <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
                                     </button>
+                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
+                                        <option value="5">5 per page</option>
+                                        <option value="10">10 per page</option>
+                                        <option value="25">25 per page</option>
+                                        <option value="100">All</option>
+                                    </select>
                                 </div>
 
                             </div>
@@ -342,9 +391,9 @@ class TaskList extends Component {
                                     </thead>
                                     <tbody>
                                         {
-                                            filteredList.length > 0 ? filteredList.map((key, index) => {
-                                                return <tr>
-                                                    <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
+                                            list.length > 0 ? list.map((key, index) => {
+                                                return <tr key={index}>
+                                                    <td><Link to={{ pathname: '/viewTask', state: { _data: key } }}>{key.task_id}</Link></td>
                                                     <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
                                                     <td>{key.subject}</td>
                                                     <td>{key.status}</td>
@@ -378,7 +427,18 @@ class TaskList extends Component {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="pagination pull-right my-1 float-right">
+                                <Pagination
+                                    hideFirstLastPages
+                                    activePage={this.state.pageactive}
+                                    itemsCountPerPage={dataPerPage}
+                                    totalItemsCount={filteredList.length}
+                                    pageRangeDisplayed={4}
+                                    onChange={this.handlePageChange.bind(this)}
+                                    prevPageText='Prev'
+                                    nextPageText='Next'
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

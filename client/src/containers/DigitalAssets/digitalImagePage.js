@@ -67,7 +67,7 @@ class DigitalImagePage extends Component {
 
 
                     <Header />
-                    <Aside />
+                    <Aside active={"digital"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="counting-action-section">
@@ -170,7 +170,7 @@ class DigitalImagePage extends Component {
                                                                     <td>{asset.asset_id}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>UPC</td>
+                                                                    <td>SKU</td>
                                                                     <td>{asset.upc}</td>
                                                                 </tr>
                                                                 <tr>

@@ -91,7 +91,8 @@ async function listFiles(auth) {
 
       drive.files.get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' },
         async function (err, res) {
-          await res.data
+          if(res!==undefined) {
+            res.data
             .on('end', () => {
               console.log('Done');
             })
@@ -99,6 +100,8 @@ async function listFiles(auth) {
               console.log('Error', err);
             })
             .pipe(dest);
+          } 
+         
         });
     })
   })
@@ -226,8 +229,8 @@ async function listFiles(auth) {
 
 cron.schedule('*/1 * * * *', () => {
   console.log('running a task every two minutes');
-   getImage()
+  getImage()
 });
-// getImage();
+//getImage();
 
 // module.exports={getImage}
