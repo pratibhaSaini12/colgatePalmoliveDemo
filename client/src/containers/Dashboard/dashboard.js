@@ -612,7 +612,9 @@ class Dashboard extends Component {
                                                                             <ImageContainer src="11.png" alt="title" />
                                                                         </td> */}
                                                                         {/* <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td> */}
-                                                                        <td>{key.product_id !== undefined ? key.product_id :''}</td>
+                                                                      
+                                                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id !== undefined ? key.product_id :''}</Link></td>
+                                                                        
                                                                        
                                                                         <td>{key.product_name !==undefined ? key.product_name :'' }</td>
                                                                         <td>{key.brand !== undefined ? key.brand: '' }</td>
@@ -631,7 +633,9 @@ class Dashboard extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-6 d-flex">
+                                    
+
+         <div className="col-lg-6 d-flex">
                                         <div className="card dashboard_section">
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
@@ -642,13 +646,40 @@ class Dashboard extends Component {
                                                         <thead>
                                                             <tr>
                                                                 <th>Date</th>
+                                                                <th>From</th>
                                                                 <th>Subject</th>
-                                                                <th>Status</th>
-                                                                <th>Priority</th>
-                                                                <th>Assigned By</th>
+                                                                <th>Description</th>
+                                                                
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                          <tr>
+                                                            <td>19/06/11</td>
+                                                            <td>Richard</td>
+                                                            <td>Price Mismatch</td>
+                                                            <td>Please see pricing for sku # 245TUY</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/12</td>
+                                                            <td>Grace</td>
+                                                            <td>Image update</td>
+                                                            <td>Please change the picture of sku #767TB</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/13</td>
+                                                            <td>David</td>
+                                                            <td>Recently added products</td>
+                                                            <td>Please provide the list of all products added last month</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/13</td>
+                                                            <td>Steve</td>
+                                                            <td>Inactive Products</td>
+                                                            <td>Please send me a list of all the inactive products</td>
+                                                            </tr>
+                                                                
+                                                        </tbody>
+                                                        {/* <tbody>
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
@@ -659,7 +690,7 @@ class Dashboard extends Component {
                                                                         <td>{key.assignedBy}</td>
                                                                     </tr>
                                                                 }) : ''}
-                                                        </tbody>
+                                                        </tbody> */}
                                                     </table>
                                                 </div>
                                             </div>
