@@ -61,7 +61,7 @@ class Header extends React.Component {
                 <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark curser_auto" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
                   <div className="notify" />
                 </a> </li>
-                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span className="adminsection">Jessica Jones <br />
+                <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span className="adminsection">Rakesh Kumar <br />
                   <b>admin</b></span>
                   <ImageContainer src="profile.png" alt="user" className="profile-pic" />
                   <i className="fas fa-caret-down all_iconsize caretdrop" /></a>

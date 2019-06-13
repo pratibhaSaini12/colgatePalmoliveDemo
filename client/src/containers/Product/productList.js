@@ -60,7 +60,10 @@ class ProductList extends Component {
             searchValue3: '',
             pageactive: 1,
             dataPerPage: 5,
-            additionalPictures: []
+            additionalPictures: [],
+            batchHidden:true ,
+
+
         }
     }
 
@@ -639,6 +642,7 @@ class ProductList extends Component {
                     //listToFilter: response.data.products,
                     // stateUpdate: true,
                     // Loading: false
+                    // batchHidden:true 
                 })
             }
 
@@ -676,6 +680,22 @@ class ProductList extends Component {
         } catch (e) { console.log("erro", e) }
 
     }
+
+    batchUpdateIcon () {
+        let domBatch  = document.getElementsByClassName('filtercustome')[0]
+        console.log("batch####",domBatch)
+        if(domBatch.style.visibility === 'visible') {
+         
+               this.setState({batchHidden:true})
+
+        } else {
+            this.setState({batchHidden:false})
+        }
+       
+
+    }
+
+
 
     render() {
         console.log("porps in productlist", this.props)
@@ -728,7 +748,7 @@ class ProductList extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ display: 'none' }}>
+                                    <div id="filter-panel" className="filter-panel filtercustome" style={{'visibility':`${this.state.batchHidden===true?'hidden':'visible'}`}}>
                                         <div className="panel panel-default">
                                             <div className="panel-body">
                                                 <form>
@@ -805,7 +825,7 @@ class ProductList extends Component {
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter" onClick={(e)=>{this.batchUpdateIcon(e)}} >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -989,7 +1009,7 @@ class ProductList extends Component {
                                 {/* Modal Header */}
                                 <div className="modal-header">
                                     <h4 className="modal-title title_modalheader col-md-7">Grid Configuration</h4>
-                                    <div className="filtercustome col-md-4">
+                                    <div className="filtercustome col-md-4  batchU" >
                                         <li className="nav-item dropdown Select_Language">
                                             <a className="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Language</a>
                                             <div className="dropdown-menu" aria-labelledby="dropdown09">
