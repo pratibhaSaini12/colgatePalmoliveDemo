@@ -683,19 +683,19 @@ class ProductList extends Component {
 
     }
 
-    batchUpdateIcon () {
-        let domBatch  = document.getElementsByClassName('filtercustome')[0]
-        console.log("batch####",domBatch)
-        if(domBatch.style.visibility === 'visible') {
+    // batchUpdateIcon () {
+    //     let domBatch  = document.getElementsByClassName('filtercustome')[0]
+    //     console.log("batch####",domBatch)
+    //     if(domBatch.style.visibility === 'visible') {
          
-               this.setState({batchHidden:true})
+    //            this.setState({batchHidden:true})
 
-        } else {
-            this.setState({batchHidden:false})
-        }
+    //     } else {
+    //         this.setState({batchHidden:false})
+    //     }
        
 
-    }
+    // }
 
 
 
