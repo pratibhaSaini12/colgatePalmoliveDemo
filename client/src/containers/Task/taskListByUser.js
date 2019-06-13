@@ -94,8 +94,8 @@ class TaskPageByUserID extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
-                    <div className="page-wrapper channel">
+                    <Aside active={"Task"}/>
+                    <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
                                 <div className="row">

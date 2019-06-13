@@ -126,7 +126,44 @@ class Search extends React.Component {
                     <Aside />
                     <div className="page-wrapper">
                     <div className="container-fluid r-aside custome_container">
+                    <div className="table-responsive martop_25">
+                    
+                        <h2 className="page-title">Product Search</h2>
+        
+                    <table className="table dashboard_table data_table_30 martop_25">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Upc</th>
+                                <th>Category</th>
+                                <th>Link</th>
+                                <th>Product Status</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                filteredProductList.length > 0 ? filteredProductList.map((key, index) => {
+                                    return <tr>
+                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td>
+                                        <td>{key.product_name}</td>
+                                        <td>{key.upc}</td>
+                                        <td>{key.category}</td>
+                                        <td>{key.link}</td>
+                                        <td>{key.product_status}</td>
+                                        <td>{key.cost}</td>
+                                    </tr>
+                                }) : 'No record found'}
+                        </tbody>
+                    </table>
+                </div>
                 <div className="table-responsive martop_25">
+                
+                
+            <h2 className="page-title">Task Search</h2>
+          
+          
                     <table className="table dashboard_table data_table_30">
                         <thead>
                             <tr>
@@ -153,42 +190,14 @@ class Search extends React.Component {
                                         <td>{key.assignedTo}</td>
                                         <td>{key.related_to}</td>
                                     </tr>
-                                }) : ''}
+                                }) : 'No record found'}
                         </tbody>
                     </table>
                 </div>
 
 
 
-                <div className="table-responsive">
-                    <table className="table dashboard_table data_table_30">
-                        <thead>
-                            <tr>
-                                <th>Product ID</th>
-                                <th>Product Name</th>
-                                <th>Upc</th>
-                                <th>Category</th>
-                                <th>Link</th>
-                                <th>Product Status</th>
-                                <th>Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                filteredProductList.length > 0 ? filteredProductList.map((key, index) => {
-                                    return <tr>
-                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td>
-                                        <td>{key.product_name}</td>
-                                        <td>{key.upc}</td>
-                                        <td>{key.category}</td>
-                                        <td>{key.link}</td>
-                                        <td>{key.product_status}</td>
-                                        <td>{key.cost}</td>
-                                    </tr>
-                                }) : ''}
-                        </tbody>
-                    </table>
-                </div>
+                
             </div>
             </div>
             </div>
