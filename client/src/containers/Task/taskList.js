@@ -43,13 +43,13 @@ class TaskList extends Component {
                 //     })
                 // }
                 // else {
-                    self.setState({
-                        taskList: response.data.tasks,
-                        filteredList: response.data.tasks,
-                        listToFilter: response.data.tasks,
-                        stateUpdate: true,
-                        Loading: false
-                    })
+                self.setState({
+                    taskList: response.data.tasks,
+                    filteredList: response.data.tasks,
+                    listToFilter: response.data.tasks,
+                    stateUpdate: true,
+                    Loading: false
+                })
                 // }
 
             }
@@ -106,34 +106,34 @@ class TaskList extends Component {
         console.log("valueeeee", filteredList)
     }
 
-        // method for change active page pagination
-        changeactive(page) {
-            this.setState({
-                pageactive: page
-            })
-        }
-    
-        //method for change page number in pagination
-        handlePageChange(pageNumber) {
-            let self = this
-            console.log("valueeeee====", pageNumber)
-            self.setState({
-                pageactive: pageNumber
-            })
-        }
-    
-        handleChange(e) {
-            var val = e.target.value
-            let self = this
-            self.setState({
-                dataPerPage: Number(val)
-            })
-        }
+    // method for change active page pagination
+    changeactive(page) {
+        this.setState({
+            pageactive: page
+        })
+    }
+
+    //method for change page number in pagination
+    handlePageChange(pageNumber) {
+        let self = this
+        console.log("valueeeee====", pageNumber)
+        self.setState({
+            pageactive: pageNumber
+        })
+    }
+
+    handleChange(e) {
+        var val = e.target.value
+        let self = this
+        self.setState({
+            dataPerPage: Number(val)
+        })
+    }
 
     render() {
         console.log("porpssssssss in taskList", this.props)
         const { filteredList } = this.state;
-        let {dataPerPage} = this.state
+        let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>

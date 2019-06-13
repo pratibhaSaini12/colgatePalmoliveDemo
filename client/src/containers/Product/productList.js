@@ -792,7 +792,7 @@ class ProductList extends Component {
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
-                                        <option value="-1">All</option>
+                                        <option value="100">All</option>
                                     </select>
                                     </div>
                                     </div>
