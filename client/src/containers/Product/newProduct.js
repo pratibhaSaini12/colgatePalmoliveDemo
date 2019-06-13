@@ -56,6 +56,10 @@ class NewProduct extends Component {
     createNewProduct() {
         console.log("state on save====", this.state);
         let state = this.state;
+        var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
+        console.log('completeArray--',completeArray,completeArray[3])
+         var percent=this.calculateComlpleteness(completeArray);
+ 
         let createProduct = {
             product_id: state.product_id,
             product_name: state.product_name,
@@ -77,8 +81,12 @@ class NewProduct extends Component {
             main_image: '',
             workflow_state: state.workflow_state,
             brand: state.brand,
-            product_completion: state.product_completion
+            product_completion: percent
         }
+
+        console.log('createProduct---',percent)
+
+
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.product) {
@@ -758,7 +766,7 @@ class NewProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Product Completeness</label>
                                                     <div className="form-group">
-                                                        <input className="form-control" readonly />
+                                                        <input className="form-control" value={percent} readonly />
 
 
                                                     </div>
