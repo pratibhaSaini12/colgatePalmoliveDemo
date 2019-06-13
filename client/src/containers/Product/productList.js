@@ -60,6 +60,7 @@ class ProductList extends Component {
             searchValue3: '',
             pageactive: 1,
             dataPerPage: 5,
+            additionalPictures: []
         }
     }
 
@@ -116,6 +117,39 @@ class ProductList extends Component {
             })
         } catch (err) {
             console.log("error in image fetching", err)
+        }
+
+        //getting additional images
+        let additionalImage = []
+        try {
+            axios.get("/api/get-additional-image").then((res) => {
+                if (res.status === 200) {
+                    let data = res.data.data[0].imageData
+                    data = JSON.parse(data)
+                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
+                    console.log("additional-image found===========", image)
+                    // convert values into object
+                    if (res.data.data.length) {
+                        res.data.data.map((imageString) => {
+                            let imageJsonData = JSON.parse(imageString.imageData)
+                            additionalImage.push({
+                                data: imageJsonData.data,
+                                id: imageJsonData.data.id,
+                                image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
+                            })
+                        })
+                        console.log("imageData=============", additionalImage)
+                    }
+                    self.setState({
+                        additionalPictures: additionalImage,
+                    })
+
+                } else {
+                    console.log("error in additional image fetching response", res)
+                }
+            })
+        } catch (err) {
+            console.log("error in additional image fetching", err)
         }
     }
 
@@ -223,10 +257,10 @@ class ProductList extends Component {
     componentDidUpdate() {
         if (this.state.stateUpdate === true) {
             let self = this
-            let { filteredList, pictures } = self.state
+            let { filteredList, pictures, additionalPictures } = self.state
             let newProductsWithImage = []
             // check length of pictures
-            if (pictures.length > 0 && filteredList.length > 0) {
+            if (pictures.length > 0 && filteredList.length > 0 || additionalPictures.length > 0) {
                 filteredList.map((prodct) => {
 
                     console.log("id in product", prodct.product_id)
@@ -238,6 +272,11 @@ class ProductList extends Component {
                         link: prodct.link,
                         long_description: prodct.long_description,
                         main_image: _.filter(pictures, (pic) => {
+                            if (prodct.product_id === Number(pic.id)) {
+                                return pic.image
+                            }
+                        }),
+                        additional_image : _.filter(additionalPictures, (pic) => {
                             if (prodct.product_id === Number(pic.id)) {
                                 return pic.image
                             }

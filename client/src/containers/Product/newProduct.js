@@ -33,7 +33,8 @@ class NewProduct extends Component {
             asset_id: 99999,
             image: '',
             brand: 'Colgate',
-            product_completion: ''
+            product_completion: '',
+            additional_image: '',
 
         }
     }
@@ -81,7 +82,8 @@ class NewProduct extends Component {
             main_image: '',
             workflow_state: state.workflow_state,
             brand: state.brand,
-            product_completion: percent
+            product_completion: percent,
+            additional_image: ''
         }
 
         console.log('createProduct---',percent)
@@ -101,6 +103,7 @@ class NewProduct extends Component {
     //handeling image upload
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
+        console.log("ev========", ev.target.name)
         let self = this
         var idCardBase64
         var assetBodyData
@@ -135,6 +138,42 @@ class NewProduct extends Component {
         }
     }
 
+    handleUploadAttachmentAdditional(ev) {
+        console.log("ev========additional_image", ev.target.name)
+        console.log("ev========additional_image", ev)
+        let self = this
+        var idCardBase64
+        var assetBodyData
+        ev.preventDefault()
+        var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            self.getBase64(self.uploadInputAdditional.files[0], (result) => {
+                var base64 = result.split(",");
+                idCardBase64 = base64[1]
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputAdditional.files[0].name, mimetype: self.uploadInputAdditional.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                console.log("===assetBodyData====additional_image", assetBodyData)
+                self.setState({
+                    additional_image: assetBodyData.data
+                })
+                axios.post("/api/upload/additional_image", assetBodyData).then((res) => {
+                    console.log("error in response additional_image", res)
+                    if (res.data) {
+                        console.log("res in additional_image", res)
+                        return
+                    } else {
+                        console.log("error in responseadditional_image", res)
+                        return
+                    }
+                }).catch((err) => {
+                    console.log("errorrrrrrrrrrrrrr in additional_image uploading", err)
+                    return
+                })
+            });
+        }
+        else {
+            console.log("fileSizeExceedMessage=======additional_image")
+        }
+    }
 
     /*Upload PDF files 
     Author: Shashnak Saxena
@@ -307,7 +346,9 @@ class NewProduct extends Component {
         console.log("statessss in newProduct", this.state)
         let img = this.state.image
         var state = this.state
+        let addImge = this.state.additional_image
         let image = ''
+        let additionalImage = ''
         if (img !== '') {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
@@ -318,6 +359,9 @@ class NewProduct extends Component {
 
 
        console.log('product_completion===', percent)
+        if (addImge !== '') {
+            additionalImage = "data:" + addImge.mimetype + ";base64," + addImge.data
+        }
 
         return (
             <div>
@@ -717,6 +761,18 @@ class NewProduct extends Component {
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
+                                                            : ''}
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* additional image */}
+                                                <div className="form-group">
+                                                    <label>Additional Image Upload</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputAdditional = ref }} onChange={this.handleUploadAttachmentAdditional.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload Additioanl Files</a>
+                                                        {additionalImage !== '' && additionalImage !== undefined ?
+                                                            <img src={additionalImage} height="50px" width="50px" className="digital_img" />
                                                             : ''}
                                                     </div>
                                                 </div>

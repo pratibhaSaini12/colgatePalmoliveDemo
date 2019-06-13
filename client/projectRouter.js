@@ -16,6 +16,7 @@ import NewDigitalAsset from "./src/containers/DigitalAssets/newDigitalAsset"
 import ProductCompare from "./src/containers/Product/productCompare"
 import ProductDetails from "./src/containers/Product/productDetails"
 import NewTask from "./src/containers/Task/createNewTask"
+import TaskPageByUserID from "./src/containers/Task/taskListByUser"
 import UploadImage from "./src/containers/uploadImage"
 import TaskList from "./src/containers/Task/taskList"
 import EditTask from "./src/containers/Task/editTask"
@@ -46,7 +47,7 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/editTask' component={EditTask} />
 					<Route exact path='/search' component={Search} />
 					<Route exact path='/digitalImagePage' component={DigitalImagePage} />
-					<Route exact path='/editdigitalImage' component={EditDigitalImage} />
+					<Route exact path='/viewTask' component={TaskPageByUserID} />
 
 
 				</Switch>

@@ -7,6 +7,7 @@ import Pagination from "react-js-pagination";
 import ReactLoading from 'react-loading'
 import axios from "axios";
 import moment from "moment"
+import ReactLoading from 'react-loading'
 
 
 class TaskList extends Component {
@@ -19,7 +20,7 @@ class TaskList extends Component {
             listToFilter: [],
             Loading: false,
             pageactive: 1,
-            dataPerPage: 5,
+            dataPerPage: 5,            
         }
     }
 
@@ -30,6 +31,7 @@ class TaskList extends Component {
         let self = this
         self.setState({ Loading: true })
         var taskFilterData = []
+        self.setState({Loading: true})
         axios.get("/api/getAllTasks").then(function (response) {
             console.log("getAllTasks list ", response.data);
             if (response.data) {
@@ -143,8 +145,7 @@ class TaskList extends Component {
                     </div>
                 </div> */}
                 {
-                    this.state.Loading === true &&
-                    <div className="loader-react">
+                    this.state.Loading === true && <div className="loader-react">
                         <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
@@ -392,7 +393,7 @@ class TaskList extends Component {
                                         {
                                             list.length > 0 ? list.map((key, index) => {
                                                 return <tr key={index}>
-                                                    <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
+                                                    <td><Link to={{ pathname: '/viewTask', state: { _data: key } }}>{key.task_id}</Link></td>
                                                     <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
                                                     <td>{key.subject}</td>
                                                     <td>{key.status}</td>

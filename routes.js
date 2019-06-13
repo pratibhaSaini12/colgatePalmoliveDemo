@@ -66,7 +66,8 @@ module.exports = (app) => {
 // CRON JOBS
  //app.post('/api/listFiles',cronController.listFiles);  /*  CRON for fetching data from Google Drive*/
 
-  
-
+ app.post('/api/upload/additional_image',uploadImageController.additionalImage);
+ app.get('/api/get-additional-image',uploadImageController.getImages);
+ 
 
 };

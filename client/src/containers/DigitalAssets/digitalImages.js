@@ -120,6 +120,7 @@ class DigitalImages extends Component {
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
+        console.log("self.uploadInput.files[0]=============",self.uploadInput.files[0])
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
             self.getBase64(self.uploadInput.files[0], (result) => {

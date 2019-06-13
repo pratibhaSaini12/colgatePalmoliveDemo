@@ -1,28 +1,83 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
-import { Link } from "react-router-dom"
+import Footer from '../Footer/index';
 import ImageContainer from "../../components/imageContainer"
+import DatePicker from "react-datepicker"
+import moment from "moment"
+import UserModal from "./userModal"
+import ReactLoading from 'react-loading'
 import axios from "axios";
 
+import "react-datepicker/dist/react-datepicker.css";
+import { TaskPage } from "twilio/lib/rest/autopilot/v1/assistant/task";
 
-class TaskList extends Component {
+class TaskPageByUserID extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            taskList: [],
-           
+            DueDate: moment(),
+            userModalShow: false,
+            UserList: [],
+            ProductList: [],
+            UserList: [],
+            Loading : false,
+            sortedUserList: [],
+            showTable: false,
+            UserName: '',
+            assignedTo: {},
+            subject: '',
+            priority: 'Low',
+            status: 'Open',
+            assignedBy: '',
+            related_to: '',
+            task_id: ''
         }
     }
 
+    componentWillMount() {
+        let self = this
+        self.setState({Loading : true})
+        if( self.props.location.state !== undefined && this.props.location.state._data !== undefined) {
+            let product = self.props.location.state._data
+            self.setState({
+                DueDate: product.due_date!==null ? moment(product.due_date):'',
+                assignedTo: product.assignedTo,
+                subject: product.subject,
+                priority: product.priority,
+                status: product.status,
+                assignedBy: product.assignedBy,
+                related_to: product.related_to,
+                task_id: product.task_id,
+                Loading : false
+            })
 
-   componentWillMount(){
+        }
+    }
 
-   }
+    handleChangeDate(date) {
+        this.setState({
+            DueDate: date
+        })
+    }
 
     render() {
-        
+        console.log('state on render----', this.state)
+        const style = this.state.showTable ? {} : { display: "none" }
+        let { DueDate, assignedTo,subject,priority,status,assignedBy,related_to,task_id} = this.state
+        let product = this.props.location.state._data
+        console.log("due date",DueDate)
+    //    let DueDate = moment(product.due_date)
+    //    let assignedTo= product.assignedTo
+    //    let subject= product.subject
+    //    let priority= product.priority
+    //    let status= product.status
+    //    let assignedBy= product.assignedBy
+    //    let related_to= product.related_to
+    //    let task_id= product.task_id
+            
 
         return (
             <div>
@@ -32,320 +87,143 @@ class TaskList extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
-                    <div className="page-wrapper">
+                    <div className="page-wrapper channel">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <h2 className="page-title">Products</h2>
+                                        <h2 className="page-title">Task Information</h2>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ display: 'none' }}>
-                                        <div className="panel panel-default">
-                                            <div className="panel-body">
-                                                <form>
-                                                    <div className="row custom_row">
-                                                        <div className="col-md-8">
-                                                            <div className="row">
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value={0}>Brand</option>
-                                                                            <option value="Colgate Total TP">Colgate Total TP</option>
-                                                                            <option value="Colgate 360 Bat TB">Colgate 360 Bat TB</option>
-                                                                            <option value="Colgate 360 Man TB">Colgate 360 Man TB</option>
-                                                                            <option value="Colgate Max Fresh TP">Colgate Max Fresh TP</option>
-                                                                            <option value="Colgate Optic White TP">Colgate Optic White TP</option>
-                                                                            <option value="Palmolive Essential Clean HD">Palmolive Essential Clean HD</option>
-                                                                            <option value="Palmolive Antibacterial Ultra HD">Palmolive Antibacterial Ultra HD</option>
-                                                                            <option value="Palmolive Sensorial Ultra HD">Palmolive Sensorial Ultra HD</option>
-                                                                            <option value="Palmolive Soft Touch Ultra HD">Palmolive Soft Touch Ultra HD</option>
-                                                                            <option value="Palmolive Pure + Ultra HD">Palmolive Pure + Ultra HD</option>
-                                                                            <option value="Palmolive Ultra HD">Palmolive Ultra HD</option>
-                                                                            <option value="Palmolive Oxy Plus Ultra HD">Palmolive Oxy Plus Ultra HD</option>
-                                                                            <option value="Palmolive Eco+ AD">Palmolive Eco+ AD</option>
-                                                                            <option value="Palmolive BS">Palmolive BS</option>
-                                                                            <option value="Palmolive Aquarium LHW">Palmolive Aquarium LHW</option>
-                                                                            <option value="Palmolive Shave Prep">Palmolive Shave Prep</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value>Category</option>
-                                                                            <option value="Toothpaste">Toothpaste</option>
-                                                                            <option value="Bar Soap">Bar Soap</option>
-                                                                            <option value="Liquid Hand Wash">Liquid Hand Wash</option>
-                                                                            <option value="Shave Prep">Shave Prep</option>
-                                                                            <option value="Shower Gel">Shower Gel</option>
-                                                                            <option value="Manual TB">Manual TB</option>
-                                                                            <option value="Battery TB">Battery TB</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value>Collection</option>
-                                                                            <option value="Oral Health">Oral Health</option>
-                                                                            <option value="Foaming">Foaming </option>
-                                                                            <option value="Maxfresh">Maxfresh</option>
-                                                                            <option value="Strong Teeth">Strong Teeth</option>
-                                                                            <option value="Naturals">Naturals</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <div className="form-group">
-                                                                <input className="form-control search_filter" type="text" name="search" placeholder="Search Products" />
-                                                                <i className="ti-search filtersearch" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                            <div className="card mytask filtercustome">
+                                <div className="col-md-5 align-self-center">
+                                    <form className="row">
+                                        <div className="form-group col-md-12">
+                                            <label>Due Date</label>
+                                            <input value={DueDate === '' ? "Invalid Date" : DueDate} readOnly />
+                                            {/* <DatePicker className="form-control"
+                                                // selected={DueDate}
+                                                onChange={(e)=>this.handleChangeDate(this)}
+                                            /> */}
+                                        </div>
+                                        {/* <div className="form-group col-md-12">
+                                            <label>Assign To<span className="aestrick">*</span></label>
+                                            <div className="buttonInside">
+                                                <input required type="text" id="assignedTo" name="assignedTo" onChange={(e) => this.getUser(e)} value={this.state.User} />
+                                                <button type="button" onClick={this.getData.bind(this)}></button>
                                             </div>
+                                        </div> */}
+                                        <div className="form-group col-md-11">
+                                            <label>Assigned To</label>
+                                            <input className="form-control" type="text" name placeholder="Assigned To" value={assignedTo} />
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* card row start ---------------------------------------------------------------------*/}
-                            <div className="table-view fullpageview">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="filter float-right">
-                                            <div className="float-right col-md-12">
-                                                <button className="primary-button float-right">
-                                                    <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
-                                                </button>
-                                                <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
-                                                <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
-                                                <a href="javscript:void(0)" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                                <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
-                                                <div className="selected-actions">
-                                                    <div className="option-box drop-option-link">
-                                                        <div className="nav-item dropdown dropcolgate">
-                                                            <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
-                                                                <div className="dot-icon">
-                                                                    {/* <img src="img/icons/option-all.png" />src="img/icons/option-all.png" */}
-                                                                    <ImageContainer src="icons/option-all.png" />
-                                                                </div>
-                                                            </a>
-                                                            <div className="dropdown-menu drop_20">
-                                                                <div className="counting-action-section">
-                                                                    <div className="selections">
-                                                                        <div className="group-selection">
-                                                                            <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
-                                                                        </div>
-                                                                        <div className="group-action">
-                                                                            <div className="option-box delete"><a href="#">Delete</a></div>
-                                                                            <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                                                            <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
-                                                                            <div className="option-box import"><a href="javscript:void(0)">Product Import</a></div>
-                                                                            <div className="option-box export"><a href="javscript:void(0)">Export Template</a></div>
-                                                                            <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                                Batch Update
-                                  </div>
-                                                                            <div className="option-box compare"><a href="compair.html">Compare Products</a></div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div className="search_icon col-md-1" data-toggle="modal" data-target="#search_list"><i className="ti-search" /></div>
+                                        <div className="form-group col-md-12">
+                                            <label>Subject</label>
+                                            <input className="form-control" type="text" name="subject" placeholder="Subject" value={subject} />
                                         </div>
-                                        <table id="example" className="table tabtable">
-                                            <thead>
-                                                <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
-                                                    <th scope="col" />
-                                                    <th scope="col">Product ID</th>
-                                                    <th scope="col">Product Name</th>
-                                                    <th scope="col">SKU Number</th>
-                                                    <th scope="col">Workflow State</th>
-                                                    <th scope="col">Color (s)</th>
-                                                    <th scope="col">Brand</th>
-                                                    <th scope="col">Sub-Brand</th>
-                                                    <th />
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><input type="checkbox" name="" /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html">
-                                                        <ImageContainer src="1.png" /> </a></div></td>
-                                                    <td>102918</td>
-                                                    <td className="product-name"><a href="detailpage.html">PALMOLIVE NATURALS CAMELLIA OIL &amp; ALMOND</a></td>
-                                                    <td>22453331</td>
-                                                    <td>New Product</td>
-                                                    <td>Green</td>
-                                                    <td>Palmolive</td>
-                                                    <td>Palmolive</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html">
-                                                        <ImageContainer src="2.png" />
-                                                    </a></div></td>
-                                                    <td>102929</td>
-                                                    <td className="product-name"><a href="detailpage.html">PALMOLIVE AROMA MOMENTS</a></td>
-                                                    <td>22453232</td>
-                                                    <td>New Product</td>
-                                                    <td>Green</td>
-                                                    <td>Palmolive</td>
-                                                    <td>Palmolive</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
-                                                            <ImageContainer src="icons/edit.png" /> </a>
-                                                            <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
-                                                                <ImageContainer src="icons/delete.png" />
-                                                            </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html">
-                                                        <ImageContainer src="3.png" /> </a></div></td>
-                                                    <td>106545</td>
-                                                    <td className="product-name"><a href="detailpage.html">PALMOLIVE GOURMET CHOCOLATE PASSION</a></td>
-                                                    <td>22453331</td>
-                                                    <td>New Product</td>
-                                                    <td>Brown</td>
-                                                    <td>Palmolive</td>
-                                                    <td>Palmolive</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
-                                                        </a>
-                                                            <ImageContainer src="icons/edit.png" />
-                                                            <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
-                                                                <ImageContainer src="icons/delete.png" />
-                                                            </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html"> <ImageContainer src="4.png" />  </a></div></td>
-                                                    <td>102918</td>
-                                                    <td className="product-name"><a href="detailpage.html">PALMOLIVE NATURALS CAMELLIA OIL &amp; ALMOND</a></td>
-                                                    <td>2562311</td>
-                                                    <td>New Product</td>
-                                                    <td>Pink</td>
-                                                    <td>Palmolive</td>
-                                                    <td>Palmolive</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" name /></td>
-                                                    <td><div className="image-thumb"><a href="detailpage.html"> <img src="img/6.png" /> </a></div></td>
-                                                    <td>102912</td>
-                                                    <td className="product-name"><a href="detailpage.html"> colgate-essentials</a></td>
-                                                    <td>13121114</td>
-                                                    <td>New Product</td>
-                                                    <td>Blue</td>
-                                                    <td>Colgate</td>
-                                                    <td>Colgate</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div className="pagebottompart">
-                                            <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p>
-                                            <div className="col-md-2 pull-right">
-                                                <ul className="pagination">
-                                                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                                                    <li className="page-item active"><a className="page-link" href="#">2</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                                                </ul>
-                                            </div>
+                                        <div className="form-group col-md-12">
+                                            <label>Priority</label>
+                                            <select id="pref-perpage" className="form-control" name="priority" value={priority} >
+                                                <option value={"Low"}>Low</option>
+                                                <option value={"High"}>High</option>
+                                                <option value={"Medium"}>Medium</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="table-responsive">
-                                                    <table className="table dashboard_table notification">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Date</th>
-                                                                <th>Subject</th>
-                                                                <th>Status</th>
-                                                                <th>Priority</th>
-                                                                <th>Assigned By</th>
-                                                                <th>Assigned To</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {
-                                                                this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
-                                                                    return <tr>
-                                                                        <td>{key.due_date}</td>
-                                                                        <td>{key.subject}</td>
-                                                                        <td>{key.status}</td>
-                                                                        <td>{key.priority}</td>
-                                                                        <td>{key.assignedBy}</td>
-                                                                        <td>{key.assignedTo}</td>
-                                                                    </tr>
-                                                                }) : ''}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                            {/* The product delete */}
-                            <div className="modal fade allmodalcolgate" id="delete">
-                                <div className="modal-dialog">
-                                    <div className="modal-content">
-                                        {/* Modal Header */}
-                                        <div className="modal-header">
-                                            <h4 className="modal-title title_modalheader">Delete Product</h4>
-                                            <button type="button" className="close" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>×</button>
+                                        <div className="form-group col-md-12">
+                                            <label>Status</label>
+                                            <select id="pref-perpage" className="form-control" name="status" value={status} >
+                                                <option value={"Open"}>Open</option>
+                                                <option value={"Closed"}>Closed</option>
+                                                <option value={"Pending"}>Pending</option>
+                                            </select>
                                         </div>
-                                        {/* Modal body */}
-                                        <div className="modal-body filtercustome">
-                                            <h1 className="delete_product_list">Are you sure you want to delete</h1>
-                                        </div>
-                                        {/* Modal footer */}
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary removeproduct" data-dismiss="modal" onClick={(e)=>this.deleteProductById()}>Yes</button>
-                                            <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={(e)=>this.setState({deleteProductId: ''})}>No</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        <div className="form-group col-md-12">
+                                            <label>Related To</label>
+                                            <select id="pref-perpage" className="form-control" name="related_to" value={related_to} >
+                                                {
+                                                    this.state.ProductList.length ? this.state.ProductList.map((product, index) => {
+                                                        return <option value={product.product_name}>{product.product_name}</option>
 
+
+                                                    }) : ''
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                        {/* <div className="allmodalcolgate col-md-12">
+                                            <button type="button" className="btn btn-primary" onClick={this.createNewTask.bind(this)}>Save</button>
+                                            <button type="button" className="btn btn-outline-primary">Cancel</button>
+                                        </div> */}
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    {/* The Modal */}
+
+                    {/* <div className="modal fade allmodalcolgate" id="search_list">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header search_header">
+                                    <h4 className="modal-title title_modalheader">Search User</h4>
+                                    <button type="button" className="close" data-dismiss="modal">×</button>
+                                </div>
+                                <div className="modal-body filtercustome">
+                                    <div className="search_user_section">
+                                        <form>
+                                            <div className="form-group filtercustome">
+                                                <div className="row">
+                                                    <label htmlFor="inputPassword" className="col-form-label col-sm-4">User Name</label>
+                                                    <div className="col-sm-8">
+                                                        <input className="form-control" type="text" name="search" placeholder="Colget" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <center>
+                                        <button type="button" className="btn btn-primary" >Go</button>
+                                        <button type="button" className="btn btn-outline-primary">Cancel</button>
+                                    </center>
+                                    <table className="table record-table" style={style}>
+                                        <thead>
+                                            <th>User Name</th>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                this.state.sortedUserList.length ? this.state.sortedUserList.map((user, index) => {
+                                                    return <tr onClick={() => this.handleDoubleClickItem(user)} key={index} data-dismiss="modal">
+                                                        <td>{user.Name + " " + user.LastName}</td>
+                                                    </tr>
+                                                }) : <tr><td>No User Record Found</td></tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
                 </div>
+
+                {/* <UserModal checkModal={this.state.userModalShow} modalClose={this.status} modalProps={this.state.UserList} quickCreateUserProps={this.getUserName.bind(this)}
+                /> */}
             </div>
-
-
 
         )
     }
 }
 
 
-export default TaskList;
+export default TaskPageByUserID;
