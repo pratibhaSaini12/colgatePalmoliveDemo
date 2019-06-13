@@ -576,7 +576,7 @@ class DigitalImages extends Component {
                                 </div> */}
                                 <div className="row">
                                     <div className="col-md-6">
-                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" />
+                                    <input className="content-search" type="text" name="search" onChange={(e) => this.filterSearch(e)} placeholder="Filter Records" />
                                     </div>
                                     <div className="col-md-4">
                                     <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
