@@ -59,7 +59,7 @@ class ProductList extends Component {
             searchValue2: '',
             searchValue3: '',
             pageactive: 1,
-            dataPerPage: 5,
+            dataPerPage: 100,
             additionalPictures: []
         }
     }
@@ -272,12 +272,12 @@ class ProductList extends Component {
                         link: prodct.link,
                         long_description: prodct.long_description,
                         main_image: _.filter(pictures, (pic) => {
-                            if (prodct.product_id === Number(pic.id)) {
+                            if (prodct.upc === pic.id) {
                                 return pic.image
                             }
                         }),
                         additional_image : _.filter(additionalPictures, (pic) => {
-                            if (prodct.product_id === Number(pic.id)) {
+                            if (prodct.upc === pic.id) {
                                 return pic.image
                             }
                         }),
@@ -783,20 +783,10 @@ class ProductList extends Component {
 
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
-                                    <div className="row">
-                                    <div className="col-md-6">
-                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
-                                    </div>
-                                    <div className="col-md-4">
-                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm autowidth" >
-                                        <option value="5">5 per page</option>
-                                        <option value="10">10 per page</option>
-                                        <option value="25">25 per page</option>
-                                        <option value="100">All</option>
-                                    </select>
-                                    </div>
-                                    </div>
+                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />                                                                                             
                                 </div>
+                                
+
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
                                         <button className="primary-button float-right">
@@ -847,7 +837,7 @@ class ProductList extends Component {
 
 
                                     </div>
-                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
+                                    <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>

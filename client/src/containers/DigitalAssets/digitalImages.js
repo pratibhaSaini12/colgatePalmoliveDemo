@@ -31,6 +31,9 @@ class DigitalImages extends Component {
             selectedProducytId: [],
             pageactive: 1,
             dataPerPage: 100,
+            allAssets : true,
+            imagesForList: "All",
+            productImageList: []
         }
     }
 
@@ -68,34 +71,42 @@ class DigitalImages extends Component {
         // let assetData = []
         try {
             await this.getAssetList()
-            //     await axios.post("/api/get-asset").then((res) => {
-            //         console.log("image found===========", res)
-            //         if (res.status === 200) {
-            //             // let data = res.data.data[0].assetData
-            //             // data = JSON.parse(data)
-            //             // let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-            //             // convert values into object
-            //             if (res.data.data.length) {
-            //                 res.data.data.map((assetString) => {
-            //                     let assetJsonData = JSON.parse(assetString.assetData)
-            //                     assetData.push({
-            //                         data: assetJsonData.data,
-            //                         id: assetJsonData.data.id,
-            //                         image: "data:" + assetJsonData.data.mimetype + ";base64," + assetJsonData.data.data
-            //                     })
-            //                 })
-            //                 console.log("assetData=============", assetData)
-            //             }
-            //             self.setState({
-            //                 pictures: assetData,
-            //                 Loading: false
-            //             })
 
-            //         } else {
-            //             self.setState({Loading: false})
-            //             console.log("error in image fetching response", res)
-            //         }
-            //     })
+            let imageData = []
+            try {
+                axios.post("/api/get-images").then((res) => {
+                    if (res.status === 200) {
+                        let data = res.data.data[0].imageData
+                        data = JSON.parse(data)
+                        let image = "data:" + data.data.mimetype + ";base64," + data.data.data
+                        console.log("image found===========", image)
+                        // convert values into object
+                        if (res.data.data.length) {
+                            res.data.data.map((imageString) => {
+                                let imageJsonData = JSON.parse(imageString.imageData)
+                                imageData.push({
+                                    data: imageJsonData.data,
+                                    id: imageJsonData.data.id,
+                                    image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data,
+                                    created_at: imageJsonData.data.created_at !== undefined ? imageJsonData.data.created : undefined,
+                                    fileSize : imageJsonData.data.fileSize !== undefined ? imageJsonData.data.fileSize : undefined,
+                                    fileName : imageJsonData.data.fileName !== undefined ? imageJsonData.data.fileName : undefined,
+                                    mimetype: imageJsonData.data.mimetype !== undefined ? imageJsonData.data.mimetype : undefined
+                                })
+                            })
+                            console.log("imageData=============", imageData)
+                        }
+                        self.setState({
+                            productImageList: imageData,
+                        })
+
+                    } else {
+                        console.log("error in image fetching response", res)
+                    }
+                })
+            } catch (err) {
+                console.log("error in image fetching", err)
+            }
         } catch (err) {
             self.setState({ Loading: false })
             console.log("error in will mount catch", err)
@@ -129,7 +140,7 @@ class DigitalImages extends Component {
                 var base64 = result.split(",");
                 idCardBase64 = base64[1]
 
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
                 console.log("===assetBodyData====", assetBodyData)
                 self.setState({
                     image: assetBodyData.data,
@@ -420,6 +431,11 @@ class DigitalImages extends Component {
         } catch (e) { console.log("error", e) }
 
     }
+    chnageImages (e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
 
 
       /**
@@ -455,7 +471,7 @@ class DigitalImages extends Component {
     render() {
         console.log("states in digitalImage", this.state)
         let { filteredList } = this.state
-        const { assetList, existAsset } = this.state;
+        const { assetList, existAsset, productImageList } = this.state;
         let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         let img = this.state.image
@@ -554,10 +570,22 @@ class DigitalImages extends Component {
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="row mar_bt_30">
-                                <div className="col-md-4">
-                                    <input class="content-search" type="text" name="search" onChange={(e) => this.filterSearch(e)} placeholder="Filter Records" />
-
-                                </div>
+                                {/* <div className="col-md-4">
+                                    <input class="content-search" type="text" name="search" placeholder="Filter Records" />
+                                 
+                                </div> */}
+                                <div className="row">
+                                    <div className="col-md-6">
+                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" />
+                                    </div>
+                                    <div className="col-md-4">
+                                    <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
+                                        <option value="All">All</option>
+                                        <option value="Assets">Assets</option>
+                                        <option value="Product">Product</option>
+                                    </select>
+                                    </div>
+                                    </div>
                                 <div className="filter float-right col-md-8">
                                     <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images form google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
@@ -768,6 +796,40 @@ class DigitalImages extends Component {
                                 }
 
                             </div>
+                                {/* product images */}
+                            <div className="row digitalImage">
+                                {this.state.imagesForList === "All" && productImageList.length > 0 && productImageList !== undefined ?
+                                    productImageList.map((asset, index) => {
+                                        return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
+                                            <div className="card document_list">
+                                                <div className="card-body text-center">
+                                                    <span className="digitalImageIco">
+                                                        <ImageContainer src="icons/img.png" />
+                                                    </span>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <p className="img"><img className="img-fluid" src={asset.image} /></p>
+                                                    <div className="card-info">
+                                                        <h4 className="card-title">{asset.fileName !== undefined ? asset.fileName : ''}</h4>
+                                                        <p className="card-text">{asset.created_at!== undefined ? asset.created_at : ''}</p>
+                                                        <p className="card-text">{asset.fileSize!== undefined ? asset.fileSize : ''}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="card-hover" id={`card-hover${index}`}>
+                                                    <div className="card-link-options">
+                                                        <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                        {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    })
+                                    : <div></div>
+                                }
+
+                            </div>
+
+
                         </div>
                         <div className="pagination pull-right my-1 float-right">
                                 <Pagination

@@ -3705,12 +3705,14 @@ to {
     margin-top: 11px;
     background: #fbfbfb;
     padding: 4px;}
-.uploadfile {background: #9c9b9b;
-    padding: 6px 18px;
+.uploadfile {    background: #554b6c;
+    padding: 8px 18px;
     color: #fff !important;
     display: inline-block;
     font-size: 13px;
-	border-radius: 2px;}
+    border-radius: 2px;
+    min-width: 184px;
+    text-align: center;}
 	.martop_25 { margin-top: 25px;}
 	.search-box { width: 100%;}
 #reactgooglegraph-2 { position: absolute;
@@ -3766,3 +3768,9 @@ to {
 		letter-spacing: 6px;
 		font-weight: 100;}
 		.sidebartoggler {display:none}
+	.error_img{color: #554b6c;
+		font-size: 14px;
+		margin: 0 0 5px 0;
+		display: block;
+		font-weight: 600;}
+		.img_uploadmain {margin: 20px 0;}

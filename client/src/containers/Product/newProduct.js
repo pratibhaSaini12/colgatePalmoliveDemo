@@ -4,6 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
+import { Link } from "react-router-dom"
 //import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
@@ -37,8 +38,8 @@ class NewProduct extends Component {
             additional_image: '',
             pdfData: [],
             pdfFileArray:[],
-            selectPdf:''
-          
+            selectPdf:'',
+            errorSpan : 'SKU number is required to upload Image'
         }
     }
 
@@ -60,7 +61,6 @@ class NewProduct extends Component {
     change(e) {
         console.log("e.target.value", e.target.value)
         console.log("e.target.name", e.target.name)
-        this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
         })
@@ -123,53 +123,54 @@ class NewProduct extends Component {
     //handeling image upload
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
-        console.log("ev========", ev.target.name)
         let self = this
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
-        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-        if (FileSize <= 5) {
-            self.getBase64(self.uploadInput.files[0], (result) => {
-                var base64 = result.split(",");
-                idCardBase64 = base64[1]
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-                console.log("===assetBodyData====", assetBodyData)
-                self.setState({
-                    image: assetBodyData.data
-                })
-                axios.post("/api/upload/image", assetBodyData).then((res) => {
-                    console.log("error in response", res)
-                    if (res.data) {
-                        console.log("res in uploading", res)
-                        return
-                    } else {
+        if(self.state.upc !== '') {
+            var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+            if (FileSize <= 5) {
+                self.getBase64(self.uploadInput.files[0], (result) => {
+                    var base64 = result.split(",");
+                    idCardBase64 = base64[1]
+                    assetBodyData = AssetJsonModel._getJsonDataFromAsset({ created_at : '', fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.upc })
+                    console.log("===assetBodyData====", assetBodyData)
+                    self.setState({
+                        image: assetBodyData.data
+                    })
+                    axios.post("/api/upload/image", assetBodyData).then((res) => {
                         console.log("error in response", res)
+                        if (res.data) {
+                            console.log("res in uploading", res)
+                            return
+                        } else {
+                            console.log("error in response", res)
+                            return
+                        }
+                    }).catch((err) => {
+                        console.log("errorrrrrrrrrrrrrr in uploading", err)
                         return
-                    }
-                }).catch((err) => {
-                    console.log("errorrrrrrrrrrrrrr in uploading", err)
-                    return
-                })
-            });
-        }
-        else {
-            console.log("fileSizeExceedMessage=======")
+                    })
+                });
+            }
+            else {
+                console.log("fileSizeExceedMessage=======")
+            }
         }
     }
     handleUploadAttachmentAdditional(ev) {
-        console.log("ev========additional_image", ev.target.name)
         console.log("ev========additional_image", ev)
         let self = this
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
-        var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
+        if(self.state.upc !== '') {
+            var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
             self.getBase64(self.uploadInputAdditional.files[0], (result) => {
                 var base64 = result.split(",");
                 idCardBase64 = base64[1]
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputAdditional.files[0].name, mimetype: self.uploadInputAdditional.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ created_at : '', fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInputAdditional.files[0].name, mimetype: self.uploadInputAdditional.files[0].type, id: self.state.sku })
                 console.log("===assetBodyData====additional_image", assetBodyData)
                 self.setState({
                     additional_image: assetBodyData.data
@@ -192,6 +193,8 @@ class NewProduct extends Component {
         else {
             console.log("fileSizeExceedMessage=======additional_image")
         }
+        }
+        
     }
 
     /*Upload PDF files 
@@ -325,7 +328,7 @@ class NewProduct extends Component {
                                     <h2 className="page-title float-left">Create New Product</h2>
                                     <div className="float-right allmodalcolgate">
                                         <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
-                                        <button type="button" className="btn btn-outline-primary">NEXT</button>
+                                        <button type="button" className="btn btn-outline-primary"> <Link to="/productlist">CANCEL</Link></button>
                                     </div>
                                 </div>
                             </div>
@@ -700,17 +703,18 @@ class NewProduct extends Component {
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                             <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">    
                                                     <label>Upload Image</label>
-                                                    <div className="form-group">
-                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e)=>this.handleUploadAttachment(this)} style={{ display: 'none' }} />
+                                                    <div className="form-group img_uploadmain">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e)=>this.handleUploadAttachment(e)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
                                                             : ''}
                                                     </div>
                                                 </div>
-                                                
+                                                <hr></hr>
                                                 {/* additional image */}
                                                 <div className="form-group">
                                                     <label>Additional Image Upload</label>

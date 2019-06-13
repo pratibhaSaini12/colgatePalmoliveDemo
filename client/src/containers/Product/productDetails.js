@@ -122,7 +122,6 @@ class ProductDetail extends Component {
                                                     {product.product_id}</h2>
                                                 <h4 className="productname">{product.product_name}</h4>
                                                 <p className="date-time">{product.updated_at? moment(product.updated_at).format('MM/DD/YYYY'):'' } </p>
-                                                <button className="primary-button" style={{ marginLeft: 0 }}><a href="javascript:void(0)">6 variants Available</a></button>
                                             </div>
                                             <div className="col-md-1">
                                                 <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -169,14 +168,6 @@ class ProductDetail extends Component {
                                                                 <tr>
                                                                     <td>Category</td>
                                                                     <td>{product.category}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Link</td>
-                                                                    <td>{product.link}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Product Line</td>
-                                                                    <td>{product.product_line}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Product Status </td>
