@@ -4,6 +4,7 @@ var datetime = require('node-datetime');
 const fs = require('fs');
 const image2base64 = require('image-to-base64');
 const AssetJsonModel = require('./client/src/ObjectJsonModel/assetStateToJson')
+const GetCronConntroller = require('./CRON/cronController');
 const path = require('path')
 
 function loadAssets (){
@@ -123,13 +124,27 @@ module.exports = {
     },
 
     createAssetThroughDriv(req, res) {
+        //Get from Google Drive CRON
         let result = []
         try {
             const googleFolder = path.resolve(__dirname, './CRON/googleImage/');
-            console.log("googleFolder=======",googleFolder)
+            let DelQuery =  "DELETE FROM assets WHERE `is_drive` = '1'"
+            con.query(DelQuery, function (err, resu) {
+                if (err)
+                {
+                    console.log(err)
+                  }
+                  else
+                  {
+                      console.log('shashank');
+                      console.log(resu);
+                  }
+                });
+            
+
             fs.readdirSync(googleFolder).forEach((file) => {
-              console.log("file====", file);
-              let filePath = googleFolder + "\\" + file
+              let filePath = googleFolder + "/" + file;
+              console.log(filePath);
               image2base64(filePath) // you can also to use url
                 .then(
                   (response) => {
@@ -140,30 +155,33 @@ module.exports = {
                     imageFileData.push({
                       imageData: dataToStore
                     })
+
                     imageFileData = JSON.stringify(imageFileData)
 
                     let type = file.split(".")[0] !== undefined ? file.split(".")[1] : 'jpg'
-                    let asset_type = "image/" + type
-                    let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "')"
-                    // let que = `INSERT INTO assets ('asset_id',asset_name','asset_data','asset_type' ) VALUES (100,'${}', '${}', '${}')`
-                    con.query(que, function (err, resu) {
+                    let asset_type = "image/" + type 
+                  
+                         // process.exit();
+                          
+                    //SELECT `asset_id` from assets where `is_drive` = '1' ;
+                  //  " + response + "
+                    let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type`,`is_drive` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "','1')"
+                       let Query =  con.query(que, function (err, resu) {
+                           console.log('INSERT');
+                           console.log(resu);
                       if (err)
-                      {console.log(err) }
+                      {
+                          console.log(err)
+                        }
                       else {
                           fs.writeFile('assetFilesJson.json', imageFileData,(err) => {
                             if (err) 
                             {console.log(err) }
                             result.push(resu)
-                            // file deletion
-                            // fs.unlink(filePath, (err) => {
-                            //   if (err) throw err;
-                            //   console.log(filePath +' was deleted');
-                            // });
                           })
                       }
                   })
-                    
-                  }
+                }
                 )
                 .catch(
                   (error) => {
@@ -171,6 +189,15 @@ module.exports = {
                   }
                 )
             })
+
+
+
+
+
+
+
+
+
             console.log("result=========",result)
             return res.status(200).json({
                 asset: result
