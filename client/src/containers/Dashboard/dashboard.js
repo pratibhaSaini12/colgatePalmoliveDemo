@@ -346,6 +346,21 @@ class Dashboard extends Component {
     //     })
 
     // }
+    latestWorkflowList (list) {
+        let tempList = []
+        list.sort(function(a, b) {
+            a = new Date(a.updated_at);
+            b = new Date(b.updated_at);
+            return a>b ? -1 : a<b ? 1 : 0;
+        });
+        console.log("filtred Array######",list)
+        if(list.length<10) {
+            return list
+        } else {
+            tempList  = list.slice(0,10)
+            return tempList
+        }
+            }
 
     render() {
         const { openTask, updateProduct } = this.state;
@@ -353,6 +368,10 @@ class Dashboard extends Component {
         console.log("props in dashbpard", this.props)
         var current_Date = new Date().toString()
         console.log('current_Date---',current_Date)
+        console.log("this.state.workflow_task", this.state.workflow_task);
+        let workFlowdata = this.state.workflow_task
+        let renderWorkFlowList =  this.latestWorkflowList(workFlowdata);
+        console.log("renderWorkFlowList",renderWorkFlowList)
         return (
             <div>
                 {/* <div className="preloader">
@@ -566,7 +585,7 @@ class Dashboard extends Component {
                                                         <tbody>
 
                                                             {
-                                                                this.state.workflow_task.length > 0 ? this.state.workflow_task.map((key, index) => {
+                                                               renderWorkFlowList.length > 0 ? renderWorkFlowList.map((key, index) => {
                                                                     return <tr>
                                                                         <td>
                                                                             <ImageContainer src="11.png" alt="title" />
@@ -605,7 +624,7 @@ class Dashboard extends Component {
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
-                                                                        <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
+                                                                        <td>{key.due_date ? moment(key.due_date).format('MM/DD/YYYYY') : ''}</td>
                                                                         <td>{key.subject}</td>
                                                                         <td>{key.status}</td>
                                                                         <td>{key.priority}</td>
