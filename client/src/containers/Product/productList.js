@@ -651,7 +651,14 @@ class ProductList extends Component {
     }
 
     selectAttrebute(index) {
-        this.state.selectedArray.push(index);
+        var flag = true;
+        this.state.selectedArray.map((key) => {
+            if(key.key == index.key){
+                flag = false;
+            }
+        }) 
+        if(flag)
+            this.state.selectedArray.push(index);
     }
 
     /**

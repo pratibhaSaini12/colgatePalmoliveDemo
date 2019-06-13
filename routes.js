@@ -57,7 +57,8 @@ module.exports = (app) => {
   app.get('/api/get-asset',assetController.getAssets);
   app.post('/api/upload/asset',assetController.upploadAsset);
   app.get('/api/getAssetFromDrive',assetController.createAssetThroughDriv);
-  app.get('/api/readpdf',productController.readPDf);
+  app.post('/api/readpdf',productController.readPDf);
+  app.get('/api/fetchfile',productController.fetchFile);
   app.post('/api/batchUpdate',productController.batchUpdate);
 
   app.post('/api/searchFilterByValues',productController.searchFilterByValues);
