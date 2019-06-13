@@ -580,9 +580,9 @@ class DigitalImages extends Component {
                                     </div>
                                     <div className="col-md-4">
                                     <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
-                                        <option value="All">All</option>
-                                        <option value="Assets">Assets</option>
-                                        <option value="Product">Product</option>
+                                        <option value="All">All Assets</option>
+                                        <option value="Product">Product Assets</option>
+                                        <option value="Assets">Other Assets</option>
                                     </select>
                                     </div>
                                     </div>
@@ -764,7 +764,8 @@ class DigitalImages extends Component {
                             </div>
                             <div id="row-view">
                             <div className="row digitalImage">
-                                {list.length > 0 && list !== undefined ?
+                                { this.state.imagesForList === "All" || this.state.imagesForList === "Assets"
+                                && list.length > 0 && list !== undefined ?
                                     list.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card document_list">
@@ -798,7 +799,7 @@ class DigitalImages extends Component {
                             </div>
                                 {/* product images */}
                             <div className="row digitalImage">
-                                {this.state.imagesForList === "All" && productImageList.length > 0 && productImageList !== undefined ?
+                                {this.state.imagesForList === "All" || this.state.imagesForList === "Product" && productImageList.length > 0 && productImageList !== undefined ?
                                     productImageList.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card document_list">
