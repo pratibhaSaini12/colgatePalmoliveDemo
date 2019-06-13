@@ -321,6 +321,7 @@ class EditProduct extends Component {
                                                                     <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
                                                                         <option value={"Colgate"}>Colgate</option>
                                                                         <option value={"Palmolive"}>Palmolive</option>
+                                                                        <option value={"Hills"}>Hills</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
