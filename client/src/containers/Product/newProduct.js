@@ -134,7 +134,7 @@ class NewProduct extends Component {
                 assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
                 console.log("===assetBodyData====", assetBodyData)
                 self.setState({
-                    image: assetBodyData.dataproduct_id
+                    image: assetBodyData.data
                 })
                 axios.post("/api/upload/image", assetBodyData).then((res) => {
                     console.log("error in response", res)

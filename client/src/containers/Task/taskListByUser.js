@@ -109,7 +109,7 @@ class TaskPageByUserID extends Component {
                                     <form className="row">
                                         <div className="form-group col-md-12">
                                             <label>Due Date</label>
-                                            <input value={DueDate === '' ? "Invalid Date" : DueDate} readOnly />
+                                            <input className="form-control" value={DueDate === '' ? "Invalid Date" : DueDate} readOnly />
                                             {/* <DatePicker className="form-control"
                                                 // selected={DueDate}
                                                 onChange={(e)=>this.handleChangeDate(this)}

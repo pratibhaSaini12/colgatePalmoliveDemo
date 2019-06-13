@@ -241,36 +241,23 @@ class ProductDetail extends Component {
                                                         <table className="compair_section">
                                                             <tbody><tr>
                                                                 <td width="20%">Main Image</td>
-                                                                <td width="30%">
-                                                                    <ImageContainer src="1.jpg" />
-                                                                    {/* <img src="img/1.jpg" alt /> */}
+                                                                <td width="30%">                                                                    
+                                                                {product.main_image !==undefined && product.main_image !== null &&product.main_image !==''
+                                                                        && product.main_image.length > 0
+                                                                        ?
+                                                                        <img src={product.main_image[0].image} />
+                                                                    : '' }
                                                                 </td>
                                                             </tr>
                                                                 <tr>
-                                                                    <td>Lifestyle Images</td>
-                                                                    <td><span><ImageContainer src="11.png" />
-                                                                        {/* <img src="img/11.png" alt /> */}
-                                                                    </span> <span>
-                                                                            <ImageContainer src="12.png" />
-                                                                            {/* <img src="img/12.png" alt /> */}
-                                                                        </span> <span>
-                                                                            <ImageContainer src="4.png" />
-                                                                            {/* <img src="img/4.png" alt /> */}
-                                                                        </span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Main Style Image</td>
-                                                                    <td>
-                                                                        <ImageContainer src="1.png" />
-                                                                        {/* <img src="img/1.jpg" alt /> */}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Product Videos</td>
-                                                                    <td>
-                                                                        <ImageContainer src="14.png" />
-
-                                                                        {/* <img src="img/14.png" alt /> */}
+                                                                    <td>Additional Image</td>
+                                                                    <td><span>
+                                                                        {product.additional_image !==undefined && product.additional_image !== null &&product.additional_image !==''
+                                                                        && product.additional_image.length > 0
+                                                                        ?
+                                                                        <img src={product.additional_image[0].image} />
+                                                                    : '' }
+                                                                    </span> 
                                                                     </td>
                                                                 </tr>
                                                             </tbody></table>
