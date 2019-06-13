@@ -219,13 +219,13 @@ module.exports = {
 
             console.log("result=========",result)
             return res.status(200).json({
-                asset: assets,
+               // asset: assets,
                 error: null
             })
         } catch (e) {
             console.log("error in readFiles try", e);
             res.status(200).json({
-                asset: assets,
+              //  asset: assets,
                 error: e
             })
         }
