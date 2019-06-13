@@ -270,6 +270,7 @@ class DigitalImages extends Component {
 
 
     }
+    
     /**
      * Method for select Product and handle  
      * @param {e,index,key}

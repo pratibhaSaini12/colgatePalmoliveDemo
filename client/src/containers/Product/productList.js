@@ -566,7 +566,8 @@ class ProductList extends Component {
 
         console.log('batchUpdate----', batchUpdate)
         axios.post("api/batchUpdate", batchUpdate).then(function (response) {
-            console.log('resposne from api==', product)
+            window.location.href = "/productList"
+            // console.log('resposne from api==', product)
             if (response.data.task) {
                 window.location.href = "/productList"
             }

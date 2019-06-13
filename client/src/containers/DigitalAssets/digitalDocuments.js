@@ -19,34 +19,6 @@ class DigitalDocument extends Component {
   }
 
 
-    /**
-     * Method for handle card view 
-     */
-    cardView(e) {
-      console.log('console.log')
-      try {
-          let tableView = document.getElementsByClassName('tabtable')[0];
-          let cardView = document.getElementById('row-view')
-          console.log("ZZZZZZZ", tableView, cardView)
-          tableView.style.display = 'none';
-          cardView.style.display = 'block'
-      } catch (e) { console.log("erro", e) }
-
-
-
-  }
-
-
-  openListView() {
-      try {
-          let tableView = document.getElementsByClassName('tabtable')[0];
-          let cardView = document.getElementById('row-view')
-          tableView.style.display = 'block';
-          cardView.style.display = 'none'
-          console.log('xx', tableView, cardView);
-      } catch (e) { console.log('hello', e) }
-  }
-
 
   render() {
     const { list } = this.state;
@@ -150,8 +122,7 @@ class DigitalDocument extends Component {
                       <button className="primary-button float-right">
                           <a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a>
                         </button>
-                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
+                        <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a> <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                         <div className="selected-actions">
                           <div className="option-box drop-option-link">
                             <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -185,11 +156,11 @@ class DigitalDocument extends Component {
                   
                     </div>
               </div>
-              <div className="table-view tabtable">
+              <div className="table-view">
                 <div className="row">
                   <div className="col-md-12">
                 
-                    <table id="example" className="table">
+                    <table id="example" className="table tabtable">
                       <thead>
                         <tr className="starting">
                           <th scope="col"><input type="checkbox" onclick="checkAll(this)" /></th>
@@ -309,7 +280,6 @@ class DigitalDocument extends Component {
                   </div>
                 </div>
               </div>
-              <div id="row-view">
               <div className="row">
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
@@ -519,7 +489,7 @@ class DigitalDocument extends Component {
               </div>
             </div>
           </div>
-</div>
+
         </div>
       </div>
     )
