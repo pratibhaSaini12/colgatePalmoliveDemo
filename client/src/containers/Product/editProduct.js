@@ -64,6 +64,11 @@ class EditProduct extends Component {
 
 
             })
+            var completeArray=[product.product_id,product.product_name,product.cost,product.category,product.upc]
+            console.log('completeArray--',completeArray,completeArray[3])
+             var percent=this.calculateComlpleteness(completeArray);
+             this.setState({product_completion:percent})
+
         } catch (e) { console.log("errr", e) }
     }
     change(e) {
@@ -76,6 +81,9 @@ class EditProduct extends Component {
     updateProduct() {
         console.log("state on update====", this.state);
         let state = this.state;
+        var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
+        console.log('completeArray--',completeArray,completeArray[3])
+         var percent=this.calculateComlpleteness(completeArray);
         let updateProductByID = {
             product_id: state.product_id,
             product_name: state.product_name,
@@ -97,8 +105,13 @@ class EditProduct extends Component {
             main_image: state.main_image,
             workflow_state: state.workflow_state,
             product_completion: state.product_completion,
-            brand: state.brand
+            brand: state.brand,
+            product_completion: percent
+
         }
+        console.log("updateProductByID",updateProductByID) 
+    
+        return 0;
         //change update API
         axios.post("/api/updateProductByID", updateProductByID).then(function (response) {
             console.log('resposne from updateProductByID=========', response.data)
@@ -111,6 +124,20 @@ class EditProduct extends Component {
         })
     }
 
+    calculateComlpleteness(completeArray){
+        let count = 0
+        let percent = 0
+        let percentUnit = 20
+        completeArray.map(list=>{
+            
+            if(list!=="") {
+                count++
+            } 
+        })
+        percent = percentUnit*count
+    
+        return percent;
+    }
 
 
     render() {
@@ -119,6 +146,10 @@ class EditProduct extends Component {
         let { product } = this.state
         // let image = "data:"+img.mimetype+";base64,"+img.data
         console.log("product==========", product)
+        var completeArray=[this.state.product_id,this.state.product_name,this.state.cost,this.state.category,this.state.upc]
+        console.log('completeArray--',completeArray,completeArray[3])
+         var percent=this.calculateComlpleteness(completeArray);
+        console.log("######### user ",percent)
         return (
             <div>
                 {/* <div className="preloader">
@@ -419,7 +450,7 @@ class EditProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Product Completeness</label>
                                                     <div className="form-group">
-                                                        <input className="form-control"  value={this.state.product_completion} readonly />
+                                                        <input className="form-control"  value={percent} readonly />
 
 
                                                     </div>
