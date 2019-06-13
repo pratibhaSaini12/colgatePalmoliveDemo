@@ -764,8 +764,7 @@ class DigitalImages extends Component {
                             </div>
                             <div id="row-view">
                             <div className="row digitalImage">
-                                { this.state.imagesForList === "All" || this.state.imagesForList === "Assets"
-                                && list.length > 0 && list !== undefined ?
+                                { list.length > 0 && list !== undefined ?
                                     list.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card document_list">
@@ -799,7 +798,7 @@ class DigitalImages extends Component {
                             </div>
                                 {/* product images */}
                             <div className="row digitalImage">
-                                {this.state.imagesForList === "All" || this.state.imagesForList === "Product" && productImageList.length > 0 && productImageList !== undefined ?
+                                {productImageList.length > 0 && productImageList !== undefined ?
                                     productImageList.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card document_list">
