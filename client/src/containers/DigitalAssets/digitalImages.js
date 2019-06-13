@@ -30,7 +30,7 @@ class DigitalImages extends Component {
             countItems: 0,
             selectedProducytId: [],
             pageactive: 1,
-            dataPerPage: 100,
+            dataPerPage: 10,
             allAssets : true,
             imagesForList: "All",
             productImageList: []

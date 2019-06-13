@@ -19,7 +19,7 @@ class TaskList extends Component {
             listToFilter: [],
             Loading: false,
             pageactive: 1,
-            dataPerPage: 100,            
+            dataPerPage: 10,            
         }
     }
 
