@@ -23,6 +23,7 @@ import EditTask from "./src/containers/Task/editTask"
 import Search from "./src/containers/Dashboard/globalSearch"
 import DigitalImagePage from "./src/containers/DigitalAssets/digitalImagePage"
 import EditDigitalImage from "./src/containers/DigitalAssets/editdigitalImage"
+import ComingSoon from "./src/containers/Task/comingSoon"
 
 const history = createHistory()
 
@@ -48,6 +49,7 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/search' component={Search} />
 					<Route exact path='/digitalImagePage' component={DigitalImagePage} />
 					<Route exact path='/viewTask' component={TaskPageByUserID} />
+					<Route exact path='/comingSoon' component={ComingSoon} />
 
 
 				</Switch>

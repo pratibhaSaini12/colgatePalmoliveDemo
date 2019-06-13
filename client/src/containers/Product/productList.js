@@ -685,12 +685,10 @@ class ProductList extends Component {
             console.log("found============")
             let status = this.props.location.state._complete
             if (status === "complete") {
-                data = filteredList.filter((dat) => dat.product_status === "Active")
+                data = filteredList.filter((dat) => dat.product_completion === "100")
             } else if (status === "incomplete") {
-                data = filteredList.filter((dat) => dat.product_status === "Inactive")
-            } else {
-                data = filteredList.filter((dat) => dat.product_status === "")
-            }
+                data = filteredList.filter((dat) => dat.product_completion !== "100")
+            } 
 
             console.log("data============", data)
             product = data

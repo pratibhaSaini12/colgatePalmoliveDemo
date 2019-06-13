@@ -223,7 +223,7 @@ class Dashboard extends Component {
 
             console.log('response from getProductCompletion===', response)
             if (response.data) {
-                let completeIncomplete = response.data.product[0].complete + response.data.product[0].incomplete
+                let completeIncomplete = response.data.product[0].complete
                 let othercompleteIncomplete = 100 - completeIncomplete
                 
                 Highcharts.chart('container', {
@@ -259,21 +259,17 @@ class Dashboard extends Component {
                         data: [
                             {
                                 name: 'Complete',
-                                y: response.data.product[0] ? response.data.product[0].complete : 0,
+                                y: completeIncomplete ? completeIncomplete : 0,
                                 selected: true
                             }, {
                                 name: 'Incomplete',
-                                y: response.data.product[0] ? response.data.product[0].incomplete : 0
-                            },
-                            {
-                                name: 'Others',
-                                y: othercompleteIncomplete
+                                y: othercompleteIncomplete ? othercompleteIncomplete : 0
                             }
                         ]
                     }]
                 });
                 self.setState({
-                    completeIncomplete: response.data.product[0],
+                    completeIncomplete: completeIncomplete,
                     Loading: false,
                     othercompleteIncomplete: othercompleteIncomplete
                 })
@@ -481,17 +477,17 @@ class Dashboard extends Component {
                                             <div className="leg-div">
                                                 <div className="leg-detail-1"><span />
                                                     {/* <Link to={{ pathname: '/productlist', state: { _data: "complete" } }}> */}
-                                                        Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%
+                                                        Complete:{this.state.completeIncomplete ? this.state.completeIncomplete : 0}%
                                                     {/* </Link> */}
                                                 </div>
                                                 <div className="leg-detail-2"><span />
                                                     {/* <Link to={{ pathname: '/productlist', state: { _data: "incomplete" } }}> */}
-                                                        Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%
+                                                        Incomplete: {this.state.othercompleteIncomplete ? this.state.othercompleteIncomplete : 0}%
                                                     {/* </Link> */}
                                                 </div>
-                                                {this.state.othercompleteIncomplete > 0 ?
+                                                {/* {this.state.othercompleteIncomplete > 0 ?
                                                     <div className="leg-detail-3"><span />Other: {this.state.othercompleteIncomplete}%</div>
-                                                    : ''}
+                                                    : ''} */}
                                             </div>
                                         </div>
                                     </div>

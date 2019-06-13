@@ -156,7 +156,7 @@ module.exports = {
 
     getProductCompletion(req, res) {
         console.log('###############', req.body)
-        con.query("select 100_per/total*100 as 100_per from( select count(1) as total, sum(if(product_completion='100' and product_status='active',1,0)) as 100_per from product) t", function (err, result) {
+        con.query("select 100_per/total*100 as complete from( select count(1) as total, sum(if(product_completion='100' and product_status='active',1,0)) as 100_per from product) t", function (err, result) {
             console.log('response from bulk delete by id====', result)
             if (err)
                 throw err;
