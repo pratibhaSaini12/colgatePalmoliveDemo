@@ -59,7 +59,7 @@ class ProductList extends Component {
             searchValue2: '',
             searchValue3: '',
             pageactive: 1,
-            dataPerPage: 5,
+            dataPerPage: 100,
             additionalPictures: [],
             batchHidden:true ,
 
