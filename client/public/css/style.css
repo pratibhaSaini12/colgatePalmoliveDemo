@@ -3754,3 +3754,15 @@ to {
 	font-size: 12px;
 	font-weight: 100;
 	cursor: pointer;}
+	.comingsoonpage h1 {position: absolute;
+		font-size: 45px;
+		color: #000;
+		left: 0;
+		right: 0;
+		transform: translate(-50%,-50%);
+		top: 50%;
+		left: 50%;
+		text-transform: uppercase;
+		letter-spacing: 6px;
+		font-weight: 100;}
+		.sidebartoggler {display:none}
