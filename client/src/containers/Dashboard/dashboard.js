@@ -610,13 +610,40 @@ class Dashboard extends Component {
                                                         <thead>
                                                             <tr>
                                                                 <th>Date</th>
+                                                                <th>From</th>
                                                                 <th>Subject</th>
-                                                                <th>Status</th>
-                                                                <th>Priority</th>
-                                                                <th>Assigned By</th>
+                                                                <th>Descripition</th>
+                                                                
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                          <tr>
+                                                            <td>19/06/11</td>
+                                                            <td>Richard</td>
+                                                            <td>Price Mismatch</td>
+                                                            <td>Please see pricing for sku # 245TUY</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/12</td>
+                                                            <td>Grace</td>
+                                                            <td>Image update</td>
+                                                            <td>Please change the picture of sku #767TB</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/13</td>
+                                                            <td>David</td>
+                                                            <td>Recently added products</td>
+                                                            <td>Please provide the list of all products added last month</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/13</td>
+                                                            <td>Steve</td>
+                                                            <td>Inactive Products</td>
+                                                            <td>Please send me a list of all the inactive products</td>
+                                                            </tr>
+                                                                
+                                                        </tbody>
+                                                        {/* <tbody>
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
@@ -627,7 +654,7 @@ class Dashboard extends Component {
                                                                         <td>{key.assignedBy}</td>
                                                                     </tr>
                                                                 }) : ''}
-                                                        </tbody>
+                                                        </tbody> */}
                                                     </table>
                                                 </div>
                                             </div>

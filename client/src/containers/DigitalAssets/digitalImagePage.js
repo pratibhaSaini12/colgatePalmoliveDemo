@@ -129,7 +129,6 @@ class DigitalImagePage extends Component {
                                                     {asset.asset_id}</h2>
                                                 <h4 className="assetname">{asset.asset_name}</h4>
                                                 <p className="date-time">{asset.created_at}</p>
-                                                <button className="primary-button" style={{ marginLeft: 0 }}><a href="javascript:void(0)">6 variants Available</a></button>
                                             </div>
                                             <div className="col-md-1">
                                                 <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

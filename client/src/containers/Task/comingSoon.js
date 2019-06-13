@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Header from '../Header/index';
+import Aside from '../SideBar/index';
 import Footer from '../Footer/index';
 import { Link } from "react-router-dom"
 class ComingSoon extends Component {
@@ -23,15 +24,19 @@ class ComingSoon extends Component {
 		console.log(list);
 		return (
 			<div>
-                <Header/>
-                <h1>Comming Soon</h1>
-                <h1>Comming Soon</h1>
-
-                <h1>Comming Soon</h1>
-                <h1>Comming Soon</h1>
-
-                <Footer/>
+                   <div id="main-wrapper">
+<Header />
+<Aside active={"dashboard"} />
+<div className="container-fluid r-aside custome_container">
+            <div className="comingsoonpage">
+                <center>
+            <h1>Coming Soon...</h1>
+            </center>
             </div>
+    </div>
+            </div>
+            </div>
+            
 		)
 	}
 }
