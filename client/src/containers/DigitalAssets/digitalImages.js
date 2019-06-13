@@ -574,11 +574,12 @@ class DigitalImages extends Component {
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" />
                                  
                                 </div> */}
+                                <div className="col-md-4">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-md-9">
                                     <input className="content-search" type="text" name="search" onChange={(e) => this.filterSearch(e)} placeholder="Filter Records" />
                                     </div>
-                                    <div className="col-md-4">
+                                    <div className="col-md-3">
                                     <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
                                         <option value="All">All Assets</option>
                                         <option value="Product">Product Assets</option>
@@ -586,8 +587,9 @@ class DigitalImages extends Component {
                                     </select>
                                     </div>
                                     </div>
+                                    </div>
                                 <div className="filter float-right col-md-8">
-                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images form google</button>
+                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images from google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
                                     
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
