@@ -63,20 +63,20 @@ module.exports = {
             brand='${req.body.brand}',
             product_completion='${req.body.product_completion}'           
             where product_id=${req.body.product_id}`;
-            console.log('query code ',queryForSql)
+            console.log('query code ', queryForSql)
             // process.exit(0)
             con.query(queryForSql, function (err, result) {
-            // console.log('response from update====', result)
-            if (err)
-                throw err;
-            else {
+                // console.log('response from update====', result)
+                if (err)
+                    throw err;
+                else {
 
-                return res.status(200).json({
-                    product: result
-                })
-            }
-        })
-        } catch(e) { console.log('errorn', e)}
+                    return res.status(200).json({
+                        product: result
+                    })
+                }
+            })
+        } catch (e) { console.log('errorn', e) }
     },
 
     //Delete product by ID
@@ -125,7 +125,7 @@ module.exports = {
     //Create Product
     createProduct(req, res) {
         console.log('data ===', req.body)
-        con.query("INSERT INTO product (`product_id`, `product_name`, `upc`, `category`,`link`,`product_line`,`product_status`,`cost`,`wholesale_price`,`msrp`,`retail_price`,`medium_description`,`long_description`,`tags`,`warnings`,`material`,`style`,`main_image`,workflow_state,`brand`,`product_completion`) VALUES ('" + req.body.product_id + "', '" + req.body.product_name + "', '" + req.body.upc + "', '" + req.body.category + "','" + req.body.link + "','" + req.body.product_line + "','" + req.body.product_status + "','" + req.body.cost + "','" + req.body.wholesale_price + "','" + req.body.msrp + "','" + req.body.retail_price + "','" + req.body.medium_description + "','" + req.body.long_description + "','" + req.body.tags + "','" + req.body.warnings + "','" + req.body.material + "','" + req.body.style + "','" + req.body.main_image + "','" + req.body.workflow_state + "','"+req.body.brand+"','"+req.body.product_completion+"')", function (err, result) {
+        con.query("INSERT INTO product (`product_name`, `upc`, `category`,`link`,`product_line`,`product_status`,`cost`,`wholesale_price`,`msrp`,`retail_price`,`medium_description`,`long_description`,`tags`,`warnings`,`material`,`style`,`main_image`,workflow_state,`brand`,`product_completion`) VALUES ('" + req.body.product_name + "', '" + req.body.upc + "', '" + req.body.category + "','" + req.body.link + "','" + req.body.product_line + "','" + req.body.product_status + "','" + req.body.cost + "','" + req.body.wholesale_price + "','" + req.body.msrp + "','" + req.body.retail_price + "','" + req.body.medium_description + "','" + req.body.long_description + "','" + req.body.tags + "','" + req.body.warnings + "','" + req.body.material + "','" + req.body.style + "','" + req.body.main_image + "','" + req.body.workflow_state + "','" + req.body.brand + "','" + req.body.product_completion + "')", function (err, result) {
             console.log('response from create Product====', result)
             if (err)
                 throw err;
@@ -152,7 +152,7 @@ module.exports = {
         })
     },
 
-    
+
 
     getProductCompletion(req, res) {
         console.log('###############', req.body)
@@ -360,13 +360,9 @@ module.exports = {
     },
 
     searchFilterByValues(req, res) {
-        console.log('11111111111111111111',req.body
-        
-        )
-        console.log("SELECT * FROM `product` where category=? AND product_status=? ", [req.body.searchValue1,req.body.searchValue2])
 
-        con.query("SELECT * FROM `product` where category=? AND product_status=? ", [req.body.searchValue1,req.body.searchValue2],function (err, result) {
-                console.log('response from DB====', result)
+        con.query("SELECT * FROM `product` where category=? AND product_status=? ,brand=?", [req.body.searchValue1, req.body.searchValue2, req.body.searchValue3], function (err, result) {
+            console.log('response from DB====', result)
             if (err)
                 throw err;
             else {

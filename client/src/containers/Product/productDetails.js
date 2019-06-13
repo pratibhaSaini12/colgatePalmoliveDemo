@@ -208,7 +208,7 @@ class ProductDetail extends Component {
                                                     <div className="card-body">
                                                         <table>
                                                             <tbody><tr>
-                                                                <td width="20%">Cost</td>
+                                                                <td width="20%">Price ($)</td>
                                                                 <td width="80%">{product.cost}</td>
                                                             </tr>
                                                                 <tr>

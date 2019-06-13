@@ -61,7 +61,7 @@ class NewProduct extends Component {
          var percent=this.calculateComlpleteness(completeArray);
  
         let createProduct = {
-            product_id: state.product_id,
+          //  product_id: state.product_id,
             product_name: state.product_name,
             upc: state.upc,
             category: state.category,
@@ -113,7 +113,7 @@ class NewProduct extends Component {
                 assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
                 console.log("===assetBodyData====", assetBodyData)
                 self.setState({
-                    image: assetBodyData.data
+                    image: assetBodyData.dataproduct_id
                 })
                 axios.post("/api/upload/image", assetBodyData).then((res) => {
                     console.log("error in response", res)
@@ -312,7 +312,7 @@ class NewProduct extends Component {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
        
-       var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
+       var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
        console.log('completeArray--',completeArray,completeArray[3])
         var percent=this.calculateComlpleteness(completeArray);
 
@@ -373,12 +373,12 @@ class NewProduct extends Component {
                                             <form>
                                                 <ul>
                                                     <li className="row">
-                                                        <div className="col-md-11">
+                                                        {/* <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Product ID</label>
                                                                 <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                         <div className="col-md-1">
                                                             {/* <div className="rightpartedit_delete">
           <center>
@@ -764,7 +764,7 @@ class NewProduct extends Component {
                                         <div className="tab-pane" id="productQuality" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
                                                 <div className="form-group">
-                                                    <label>Product Completeness</label>
+                                                    <label>Product Completeness (%) Product Name, Sku, Cateogry, Brand,Price</label>
                                                     <div className="form-group">
                                                         <input className="form-control" value={percent} readonly />
 

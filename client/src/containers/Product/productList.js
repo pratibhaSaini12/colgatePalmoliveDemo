@@ -57,6 +57,7 @@ class ProductList extends Component {
             bulkDelete: [],
             searchValue1: '',
             searchValue2: '',
+            searchValue3: '',
             pageactive: 1,
             dataPerPage: 5,
         }
@@ -575,12 +576,14 @@ class ProductList extends Component {
 
         var searchValue1 = this.state.searchValue1
         var searchValue2 = e.target.value
+        var searchValue3 = this.state.searchValue3
 
         console.log('searchValue1--', searchValue1)
         console.log('searchValue2', searchValue2)
         var data = {
             searchValue1: this.state.searchValue1,
-            searchValue2: e.target.value
+            searchValue2: e.target.value,
+            searchValue3: this.state.searchValue3
         }
 
         let self = this
@@ -687,6 +690,16 @@ class ProductList extends Component {
                                                     <div className="row custom_row">
                                                         <div className="col-md-8">
                                                             <div className="row">
+                                                                <div className="col-md-4">
+                                                                    <div className="form-group">
+                                                                        <select id="pref-perpage" className="form-control" name="searchValue3" onChange={e => this.change(e)}>
+                                                                            <option value={0}>Brand</option>
+                                                                            <option value={"Colgate"}>Toothpastes</option>
+                                                                            <option value={"Palmolive"}>Palmolive</option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                                 <div className="col-md-4">
                                                                     <div className="form-group">
                                                                         <select id="pref-perpage" className="form-control" name="searchValue1" onChange={e => this.change(e)}>
