@@ -60,7 +60,7 @@ class ProductDetail extends Component {
 
 
                     <Header />
-                    <Aside />
+                    <Aside active={"product"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="counting-action-section">

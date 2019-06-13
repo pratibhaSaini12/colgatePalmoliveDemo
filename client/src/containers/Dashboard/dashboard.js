@@ -389,7 +389,7 @@ class Dashboard extends Component {
 
 
                     <Header />
-                    <Aside />
+                    <Aside active={"dashboard"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">

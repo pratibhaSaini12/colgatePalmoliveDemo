@@ -87,7 +87,7 @@ class EditDigitalImage extends Component {
                 </div> */}
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"digital"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside">
                             <div className="row">

@@ -160,7 +160,7 @@ class EditProduct extends Component {
                 </div> */}
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"product"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside">
                             <div className="row">

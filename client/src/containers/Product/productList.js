@@ -671,7 +671,7 @@ class ProductList extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"product"} />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
@@ -738,7 +738,19 @@ class ProductList extends Component {
 
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
+                                    <div className="row">
+                                    <div className="col-md-6">
                                     <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
+                                    </div>
+                                    <div className="col-md-4">
+                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm autowidth" >
+                                        <option value="5">5 per page</option>
+                                        <option value="10">10 per page</option>
+                                        <option value="25">25 per page</option>
+                                        <option value="-1">All</option>
+                                    </select>
+                                    </div>
+                                    </div>
                                 </div>
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">

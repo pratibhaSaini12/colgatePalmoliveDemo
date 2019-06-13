@@ -150,7 +150,7 @@ class TaskList extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside />
+                    <Aside active={"Task"}/>
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
