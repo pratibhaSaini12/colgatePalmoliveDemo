@@ -504,7 +504,7 @@ class DigitalImages extends Component {
                                  
                                 </div>
                                 <div className="filter float-right col-md-8">
-                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images form google</button>
+                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images form google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
                                     
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
@@ -746,7 +746,7 @@ class DigitalImages extends Component {
                                             </div>
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
-                                                <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
+                                                <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadbtn">Upload Files</a>
                                                 {/* <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" />
                                                 <label htmlFor="imageUpload">Select images</label> */}
                                             </div>

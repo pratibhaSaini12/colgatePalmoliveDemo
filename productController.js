@@ -2,7 +2,7 @@ var con = require('./config.js')
 var md5 = require('md5');
 var datetime = require('node-datetime');
 const PDFExtract = require('pdf.js-extract').PDFExtract;
-
+const fs = require('fs');
 module.exports = {
 
     //get all the available products
@@ -182,8 +182,8 @@ module.exports = {
         })
     },
     readPDf(req, res) {
-        console.log('--- aa gya---');
-        var pdf_path = "./file/pdf1.pdf";
+        console.log('--- aa gya---',req.body);
+        var pdf_path = "./file/"+req.body.pdfName;
         const pdfExtract = new PDFExtract();
         const options = {}; /* see below */
         const codinateArray = [
@@ -341,7 +341,19 @@ module.exports = {
         });
 
     },
-
+    fetchFile(req,res){
+        var fileName = [];
+        const testFolder = './file/';
+        fs.readdir(testFolder, (err, files) => {
+            files.forEach(file => {
+                console.log(file.split('.'));
+                if(file.split('.')[1]=='pdf')
+                    fileName.push(file);
+            });
+            res.send(fileName);
+        }); 
+          
+    },
     batchUpdate(req, res) {
         console.log('###################', req.body.id)
         con.query(
@@ -361,7 +373,7 @@ module.exports = {
 
     searchFilterByValues(req, res) {
 
-        con.query("SELECT * FROM `product` where category=? AND product_status=? ,brand=?", [req.body.searchValue1, req.body.searchValue2, req.body.searchValue3], function (err, result) {
+        con.query("SELECT * FROM `product` where category=? AND product_status=? AND brand=?", [req.body.searchValue1, req.body.searchValue2, req.body.searchValue3], function (err, result) {
             console.log('response from DB====', result)
             if (err)
                 throw err;

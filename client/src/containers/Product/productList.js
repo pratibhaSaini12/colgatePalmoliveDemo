@@ -651,7 +651,14 @@ class ProductList extends Component {
     }
 
     selectAttrebute(index) {
-        this.state.selectedArray.push(index);
+        var flag = true;
+        this.state.selectedArray.map((key) => {
+            if(key.key == index.key){
+                flag = false;
+            }
+        }) 
+        if(flag)
+            this.state.selectedArray.push(index);
     }
 
     /**
@@ -733,7 +740,7 @@ class ProductList extends Component {
                                                                     <div className="form-group">
                                                                         <select id="pref-perpage" className="form-control" name="searchValue3" onChange={e => this.change(e)}>
                                                                             <option value={0}>Brand</option>
-                                                                            <option value={"Colgate"}>Toothpastes</option>
+                                                                            <option value={"Colgate"}>Colgate</option>
                                                                             <option value={"Palmolive"}>Palmolive</option>
 
                                                                         </select>

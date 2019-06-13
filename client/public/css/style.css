@@ -3744,3 +3744,13 @@ to {
 		padding: 0;}
 .curser_auto { cursor: auto;}
 .autowidth { width:100% !important;}		
+.uploadbtn{padding: 10px;
+	display: block;
+	background: #554b6c;
+	width: 104px;
+	text-align: center;
+	margin: 14px 0;
+	color: #fff !important;
+	font-size: 12px;
+	font-weight: 100;
+	cursor: pointer;}
