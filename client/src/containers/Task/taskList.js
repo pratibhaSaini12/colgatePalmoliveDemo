@@ -7,7 +7,6 @@ import Pagination from "react-js-pagination";
 import ReactLoading from 'react-loading'
 import axios from "axios";
 import moment from "moment"
-import ReactLoading from 'react-loading'
 
 
 class TaskList extends Component {

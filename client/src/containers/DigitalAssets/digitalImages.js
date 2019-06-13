@@ -369,6 +369,37 @@ class DigitalImages extends Component {
 
     }
 
+
+      /**
+     * Method for handle card view 
+     */
+    cardView(e) {
+        console.log('console.log')
+        try {
+            let tableView = document.getElementsByClassName('tabtable')[0];
+            let cardView = document.getElementById('row-view')
+            console.log("ZZZZZZZ", tableView, cardView)
+            tableView.style.display = 'none';
+            cardView.style.display = 'block'
+        } catch (e) { console.log("erro", e) }
+
+
+
+    }
+
+
+    openListView() {
+        try {
+            let tableView = document.getElementsByClassName('tabtable')[0];
+            let cardView = document.getElementById('row-view')
+            tableView.style.display = 'block';
+            cardView.style.display = 'none'
+            console.log('xx', tableView, cardView);
+        } catch (e) { console.log('hello', e) }
+    }
+
+
+
     render() {
         console.log("states in digitalImage", this.state)
         const { assetList, existAsset } = this.state;
@@ -476,8 +507,8 @@ class DigitalImages extends Component {
                                 <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images form google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
                                     
-                                    <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
-                                    <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a>
+                                    <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                     <div className="selected-actions">
                                         <div className="option-box drop-option-link">
@@ -516,13 +547,13 @@ class DigitalImages extends Component {
 
                                 </div>
                             </div>
-                            <div className="table-view digitalImage">
+                            <div className="table-view digitalImage tabtable">
                                 <div className="row">
 
 
                                     <div className="col-md-12">
 
-                                        <table id="example" className="table tabtable">
+                                        <table id="example" className="table">
                                             <thead>
                                                 <tr className="starting">
                                                     <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
@@ -648,6 +679,7 @@ class DigitalImages extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <div id="row-view">
                             <div className="row digitalImage">
                                 {assetList.length > 0 && assetList !== undefined ?
                                     assetList.map((asset, index) => {
@@ -753,6 +785,7 @@ class DigitalImages extends Component {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         )
     }
