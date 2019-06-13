@@ -31,14 +31,16 @@ class NewProduct extends Component {
             workflow_state: '',
             main_image: '',
             asset_id: 99999,
-            image: ''
+            image: '',
+            brand: 'Colgate',
+            product_completion: ''
 
         }
     }
 
 
     componentDidMount() {
-     
+
     }
 
 
@@ -73,7 +75,9 @@ class NewProduct extends Component {
             material: state.material,
             style: state.style,
             main_image: '',
-            workflow_state: state.workflow_state
+            workflow_state: state.workflow_state,
+            brand: state.brand,
+            product_completion: product_completion
         }
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
@@ -138,83 +142,83 @@ class NewProduct extends Component {
             console.log("error in response", res)
             if (res.data) {
 
-               
-              var box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">'+
+
+                var box = '<div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">' +
                     '<ul class="nav nav-tabs datetab" id="myTab" role="tablist">';
-                            for (var i = 0; i < res.data.length; i++) { 
-                                var classActive = '';
-                                if(i==0)
-                                    classActive = 'active';
-                                box = box+'<li class="nav-item">'+
-                                    '<a class="nav-link '+classActive+'" id="contact-tab" data-toggle="tab" href="#contact'+i+'" role="tab" aria-controls="contact" aria-selected="true">'+res.data[i].lang+'</a>'+
-                                '</li>';
-                            }
-                   
-                     box = box+'</ul>'+
+                for (var i = 0; i < res.data.length; i++) {
+                    var classActive = '';
+                    if (i == 0)
+                        classActive = 'active';
+                    box = box + '<li class="nav-item">' +
+                        '<a class="nav-link ' + classActive + '" id="contact-tab" data-toggle="tab" href="#contact' + i + '" role="tab" aria-controls="contact" aria-selected="true">' + res.data[i].lang + '</a>' +
+                        '</li>';
+                }
+
+                box = box + '</ul>' +
                     '<div class="tab-content custome_content under_tabs" id="myTabContent">';
-                     for (var i = 0; i < res.data.length; i++) {  
-                        var classActive = '';
-                            if(i==0)
-                                classActive = 'show active';
-                        box = box+ '<div class="tab-pane fade '+classActive+'" id="contact'+i+'" role="tabpanel" aria-labelledby="contact-tab">'+
-                            '<div class="row">'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ques1
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ans1
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ques2
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ans2
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ques3
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ans3
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ques4
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ans4
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ques5
-                                    +'</div>'+
-                                '</div>'+
-                                '<div class="col-md-6">'+
-                                    '<div class="form-group">'+
-                                        res.data[i].ans5
-                                    +'</div>'+
-                                '</div>'+
-                            '</div>'+ 
+                for (var i = 0; i < res.data.length; i++) {
+                    var classActive = '';
+                    if (i == 0)
+                        classActive = 'show active';
+                    box = box + '<div class="tab-pane fade ' + classActive + '" id="contact' + i + '" role="tabpanel" aria-labelledby="contact-tab">' +
+                        '<div class="row">' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ques1
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ans1
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ques2
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ans2
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ques3
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ans3
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ques4
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ans4
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ques5
+                        + '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div class="form-group">' +
+                        res.data[i].ans5
+                        + '</div>' +
+                        '</div>' +
+                        '</div>' +
                         '</div>';
-                    }
+                }
 
 
-                   box = box+  '</div>'+
-                '</div>';
+                box = box + '</div>' +
+                    '</div>';
                 document.getElementById("pdfData").innerHTML = box;
 
 
@@ -279,10 +283,17 @@ class NewProduct extends Component {
     render() {
         console.log("statessss in newProduct", this.state)
         let img = this.state.image
+        var state = this.state
         let image = ''
         if (img !== '') {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
+       
+       
+
+
+     //   console.log('product_completion===', product_completion)
+
         return (
             <div>
                 {/* <div className="preloader">
@@ -318,14 +329,17 @@ class NewProduct extends Component {
                                             <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Upload Image</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Upload PDF</a>
+                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Pack Flats</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
+                                            <a className="nav-link" data-toggle="tab" href="#productQuality" role="tab" aria-controls="productQuality">Product Quality</a>
                                         </li>
+                                        {/* <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
+                                        </li> */}
                                     </ul>
                                 </div>
                                 <div className="col-md-9">
@@ -399,7 +413,7 @@ class NewProduct extends Component {
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -414,7 +428,7 @@ class NewProduct extends Component {
           </div>*/}
                                                         </div>
                                                     </li>
-                                                    <li className="row">
+                                                    {/* <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Link</label>
@@ -429,9 +443,9 @@ class NewProduct extends Component {
           
            
           </center>
-          </div>*/}
+          </div>
                                                         </div>
-                                                    </li>
+                                                    </li> */}
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -447,6 +461,23 @@ class NewProduct extends Component {
                                                         <div className="col-md-1">
                                                         </div>
                                                     </li>
+
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Brand</label>
+                                                                <div className="form-group">
+                                                                    <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                        <option value={"Colgate"}>Colgate</option>
+                                                                        <option value={"Palmolive"}>Palmolive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -466,9 +497,9 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Cost</label>
+                                                                <label>Price ($)</label>
                                                                 <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -477,7 +508,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Base Wholesale Price</label>
+                                                                <label>Formatted Base Wholesale Price ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -487,7 +518,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted MSRP</label>
+                                                                <label>Formatted MSRP ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -497,7 +528,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Formatted Retail Price</label>
+                                                                <label>Formatted Retail Price ($)</label>
                                                                 <input className="form-control pricedate_form" type="text" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -526,7 +557,7 @@ class NewProduct extends Component {
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -599,7 +630,7 @@ class NewProduct extends Component {
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    <p className="value_ofcategory">Value inherited from parent product</p>
+                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -672,7 +703,7 @@ class NewProduct extends Component {
                                         <div className="tab-pane" id="uploadPDF" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
                                                 <div className="form-group">
-                                                    <label>Upload PDF</label>
+                                                    <label>Pack Flats</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInputFile = ref }} onChange={this.UploadPDF.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInputFile.click()} className="create-new-link uploadfile">Upload Files</a>
@@ -704,6 +735,20 @@ class NewProduct extends Component {
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div className="tab-pane" id="productQuality" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Product Completeness</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" readonly />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className="tab-pane filtercustome tabsectionform  custome_listfile" id="settings3" role="tabpanel">
                                             <ul className="nav nav-tabs datetab" id="myTab" role="tablist">
 
@@ -831,7 +876,7 @@ class NewProduct extends Component {
                     </div>
                 </div>
             </div>
-        ) 
+        )
     }
 }
 
