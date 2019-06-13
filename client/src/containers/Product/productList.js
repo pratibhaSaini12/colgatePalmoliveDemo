@@ -901,7 +901,7 @@ class ProductList extends Component {
                                                             <h5 className="mb-0">
                                                                 <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
                                                                     Class Attributes
-                              </a>
+                                                                </a>
                                                             </h5>
                                                         </div>
                                                         <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
@@ -918,8 +918,8 @@ class ProductList extends Component {
                                                             <h5 className="mb-0">
                                                                 <a role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
                                                                     Formatters
-                              </a>
-                                                            </h5>
+                                                                 </a>
+                                                              </h5>
                                                         </div>
                                                         <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
                                                             <ul>

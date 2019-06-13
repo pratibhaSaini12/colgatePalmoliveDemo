@@ -25,7 +25,9 @@ class DigitalImages extends Component {
             listToFilter: '',
             assetList: [],
             existAsset: '',
-            deleteAssetId:''
+            deleteAssetId:'',
+            countItems: 0,
+            selectedProducytId: [],
         }
     }
 
@@ -266,6 +268,103 @@ class DigitalImages extends Component {
         // }
 
 
+    }
+    /**
+     * Method for select Product and handle  
+     * @param {e,index,key}
+     */
+    handleIcon(e, index, key) {
+        try {
+            let counter = this.state.countItems
+            if (counter < 0) {
+                counter = 0
+            }
+            let selectedProdeuctIds = this.state.selectedProducytId
+            let domIcon = document.getElementById(`activebtn${index}`)
+            if (domIcon.style.display === '' || domIcon.style.display === 'none') {
+                counter = counter + 1
+                selectedProdeuctIds.push(key)
+                document.getElementById(`activebtn${index}`).style.display = 'block'
+                document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
+            } else {
+                counter = counter - 1
+                // document.getElementById(`activebtn${index}`).style.display = 'none'
+            }
+
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+
+
+        }
+        catch (e) { console.log("err", e) }
+
+
+    }
+
+    /**
+     * Method for Handel deSlect product 
+     * @param(e,index,key) 
+     * 
+     * */
+    handledeSelect(e, index, key) {
+        try {
+            let counter = this.state.countItems
+            let selectedProdeuctIds = this.state.selectedProducytId
+            counter = counter - 1
+            if (counter < 0) {
+                counter = 0
+            }
+            let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
+            document.getElementById(`activebtn${index}`).style.display = 'none'
+            selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
+            this.setState({ countItems: counter })
+
+        } catch (e) { console.log("error ", e) }
+
+    }
+
+    /****
+     * Method for select all Product
+     * @param{}
+     ***/
+    selectAllProduct(e) {
+        let allproduct = this.state.filteredList
+        if (allproduct.length > 0) {
+            allproduct.map((key, index) => {
+                this.handleIcon(e, index, key)
+                this.setState({ countItems: allproduct.length })
+            })
+        }
+
+    }
+    
+    /**Method for hide and show menu option s */
+    showhideSpan() {
+        let spanSho = document.getElementsByClassName('counting-action-section')[1]
+        try {
+            if (this.state.countItems > 0) {
+                spanSho.style.display = 'block'
+            } else {
+                spanSho.style.display = 'none'
+            }
+        } catch (e) { }
+
+    }
+
+    /**
+     * 
+     * @param {event,index,key} 
+     */
+    clearAllProduct(e) {
+        try {
+
+            let allproduct = this.state.filteredList
+            if (allproduct.length > 0) {
+                allproduct.map((key, index) => {
+                    this.handledeSelect(e, index, key)
+                    this.setState({ countItems: 0 })
+                })
+            }
+        } catch (e) { console.log("error", e) }
 
     }
 
@@ -274,6 +373,7 @@ class DigitalImages extends Component {
         const { assetList, existAsset } = this.state;
         let img = this.state.image
         let image = ''
+        this.showhideSpan()
         if (img !== '') {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
@@ -372,7 +472,7 @@ class DigitalImages extends Component {
                                  
                                 </div>
                                 <div className="filter float-right col-md-8">
-                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload"></i>get images form google</button>
+                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images form google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
                                     
                                     <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
@@ -382,15 +482,15 @@ class DigitalImages extends Component {
                                         <div className="option-box drop-option-link">
                                             <div className="nav-item dropdown dropcolgate">
                                                 <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
+                                                    <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
                                                     <div className="dot-icon"><ImageContainer src="icons/option-all.png" /></div>
                                                 </a>
                                                 <div className="dropdown-menu drop_20">
                                                     <div className="counting-action-section">
                                                         <div className="selections">
                                                             <div className="group-selection">
-                                                                <div className="option-box select-all"><a onClick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                                                <div className="option-box clear-all"><a onClick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                                                <div className="option-box select-all"><a  href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                <div className="option-box clear-all"><a onClick={(e)=>{this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
                                                             </div>
                                                             <div className="group-action">
                                                                 <div className="option-box delete"><a href>Delete</a></div>
@@ -556,7 +656,7 @@ class DigitalImages extends Component {
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={"data:" + asset.asset_type + ";base64," + asset.asset_data} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
@@ -564,12 +664,12 @@ class DigitalImages extends Component {
                                                         <p className="card-text">2832 x 4256  |  2.74 MB</p>
                                                     </div>
                                                 </div>
-                                                <div className="card-hover">
+                                                <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link>
                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.asset_id })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
                                         </div>
