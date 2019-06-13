@@ -281,20 +281,17 @@ class NewProduct extends Component {
     }
 
     calculateComlpleteness(completeArray){
-        var item=completeArray.length
-        var percent=0;
-        if(item==0)
-        percent=0;
-        else if(item==1)
-        percent=20;
-        else if(item==2)
-        percent=40;
-        else  if(item==3)
-        percent=60;
-        else if(item==4)
-        percent=80;
-        else  if(item==5)
-        percent=100;
+        let count = 0
+        let percent = 0
+        let percentUnit = 20
+        completeArray.map(list=>{
+            
+            if(list!=="") {
+                count++
+            } 
+        })
+        percent = percentUnit*count
+    
         return percent;
     }
 
@@ -308,7 +305,7 @@ class NewProduct extends Component {
         }
        
        var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
-       console.log('completeArray--',completeArray)
+       console.log('completeArray--',completeArray,completeArray[3])
         var percent=this.calculateComlpleteness(completeArray);
 
 
