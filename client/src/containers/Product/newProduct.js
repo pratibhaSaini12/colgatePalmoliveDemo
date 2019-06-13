@@ -77,7 +77,7 @@ class NewProduct extends Component {
             main_image: '',
             workflow_state: state.workflow_state,
             brand: state.brand,
-            product_completion: product_completion
+            product_completion: state.product_completion
         }
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
@@ -280,6 +280,24 @@ class NewProduct extends Component {
         };
     }
 
+    calculateComlpleteness(completeArray){
+        var item=completeArray.length
+        var percent=0;
+        if(item==0)
+        percent=0;
+        else if(item==1)
+        percent=20;
+        else if(item==2)
+        percent=40;
+        else  if(item==3)
+        percent=60;
+        else if(item==4)
+        percent=80;
+        else  if(item==5)
+        percent=100;
+        return percent;
+    }
+
     render() {
         console.log("statessss in newProduct", this.state)
         let img = this.state.image
@@ -289,10 +307,12 @@ class NewProduct extends Component {
             image = "data:" + img.mimetype + ";base64," + img.data
         }
        
-       
+       var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
+       console.log('completeArray--',completeArray)
+        var percent=this.calculateComlpleteness(completeArray);
 
 
-     //   console.log('product_completion===', product_completion)
+       console.log('product_completion===', percent)
 
         return (
             <div>

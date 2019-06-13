@@ -4,6 +4,8 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
+import moment from "moment"
+
 class ProductDetail extends Component {
 
     constructor(props) {
@@ -119,7 +121,7 @@ class ProductDetail extends Component {
                                                 <h2 className="page-title productid approved"><i className="fas fa-check-circle" />
                                                     {product.product_id}</h2>
                                                 <h4 className="productname">{product.product_name}</h4>
-                                                <p className="date-time">May 8, 2019, 6:05:33 PM </p>
+                                                <p className="date-time">{product.updated_at? moment(product.updated_at).format('MM/DD/YYYY'):'' } </p>
                                                 <button className="primary-button" style={{ marginLeft: 0 }}><a href="javascript:void(0)">6 variants Available</a></button>
                                             </div>
                                             <div className="col-md-1">
@@ -180,6 +182,15 @@ class ProductDetail extends Component {
                                                                     <td>Product Status </td>
                                                                     <td>{product.product_status}</td>
                                                                 </tr>
+
+                                                                <tr>
+                                                                    <td>Brand </td>
+                                                                    <td>{product.brand}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Product Completeness </td>
+                                                                    <td>{product.product_completion}</td>
+                                                                </tr>
                                                             </tbody></table>
                                                     </div>
                                                 </div>
@@ -202,15 +213,15 @@ class ProductDetail extends Component {
                                                             </tr>
                                                                 <tr>
                                                                     <td>Formatted Base Wholesale Price </td>
-                                                                    <td>102918</td>
+                                                                    <td>{product.wholesale_price}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Formatted MSRP</td>
-                                                                    <td>143287212918</td>
+                                                                    <td>{product.msrp}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Formatted Retail Price</td>
-                                                                    <td>Luggage</td>
+                                                                    <td>{product.retail_price}</td>
                                                                 </tr>
                                                             </tbody></table>
                                                     </div>
