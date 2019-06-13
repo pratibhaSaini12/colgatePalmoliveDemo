@@ -404,7 +404,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>UPC</label>
+                                                                <label>SKU</label>
                                                                 <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -705,7 +705,7 @@ class NewProduct extends Component {
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                                <div className="form-group">
+                                                <div className="form-group">    
                                                     <label>Upload Image</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />

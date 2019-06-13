@@ -4,6 +4,7 @@ import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import Pagination from "react-js-pagination";
+import ReactLoading from 'react-loading'
 import axios from "axios";
 import moment from "moment"
 
@@ -16,6 +17,7 @@ class TaskList extends Component {
             taskList: [],
             filteredList: [],
             listToFilter: [],
+            Loading: false,
             pageactive: 1,
             dataPerPage: 5,
         }
@@ -26,6 +28,7 @@ class TaskList extends Component {
         //console.log('props on pageeee====', this.props.location.state._data)
         //var filterBy = this.props.location ? this.props.location.state._data : ''
         let self = this
+        self.setState({ Loading: true })
         var taskFilterData = []
         axios.get("/api/getAllTasks").then(function (response) {
             console.log("getAllTasks list ", response.data);
@@ -43,12 +46,15 @@ class TaskList extends Component {
                         taskList: response.data.tasks,
                         filteredList: response.data.tasks,
                         listToFilter: response.data.tasks,
+                        stateUpdate: true,
+                        Loading: false
                     })
                 // }
 
             }
 
         }).catch(function (error) {
+            self.setState({ Loading: false })
             console.log("error  login is ", error);
         })
     }
@@ -69,6 +75,7 @@ class TaskList extends Component {
     }
 
     filterSearch(event) {
+        this.setState({ stateUpdate: true })
         console.log('state on filtersearcch===', this.state)
         var newList = this.state.listToFilter
         var searchString = event.target.value
@@ -92,7 +99,8 @@ class TaskList extends Component {
 
         this.setState({
             filteredList: newFilteredList,
-            listToFilter: this.state.listToFilter
+            listToFilter: this.state.listToFilter,
+            stateUpdate: false
         })
         console.log("valueeeee", filteredList)
     }
@@ -134,6 +142,12 @@ class TaskList extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true &&
+                    <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
@@ -232,7 +246,7 @@ class TaskList extends Component {
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
-                                        {/* <option value="-1">All</option> */}
+                                        <option value="100">All</option>
                                     </select>
                                 </div>
 

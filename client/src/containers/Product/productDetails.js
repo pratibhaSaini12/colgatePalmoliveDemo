@@ -163,7 +163,7 @@ class ProductDetail extends Component {
                                                                     <td>{product.product_id}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>UPC</td>
+                                                                    <td>SKU</td>
                                                                     <td>{product.upc}</td>
                                                                 </tr>
                                                                 <tr>

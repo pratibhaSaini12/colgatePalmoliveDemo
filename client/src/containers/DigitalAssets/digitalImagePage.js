@@ -170,7 +170,7 @@ class DigitalImagePage extends Component {
                                                                     <td>{asset.asset_id}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>UPC</td>
+                                                                    <td>SKU</td>
                                                                     <td>{asset.upc}</td>
                                                                 </tr>
                                                                 <tr>

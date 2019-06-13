@@ -21,9 +21,6 @@ class Header extends React.Component {
       this.setState({
         [e.target.name]: e.target.value,
       })
-      if (this.state.searchValue == '') {
-        return;
-      }
     } 
     catch(e) {  }
   }

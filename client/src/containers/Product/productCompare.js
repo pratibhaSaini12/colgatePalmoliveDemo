@@ -117,7 +117,7 @@ class ProductCompare extends Component {
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.product_id : ''}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>UPC</td>
+                                                                <td>SKU</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.upc : ''}</td>
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.upc : ''}</td>
                                                             </tr>
