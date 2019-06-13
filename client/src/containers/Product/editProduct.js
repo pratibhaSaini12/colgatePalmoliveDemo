@@ -64,7 +64,7 @@ class EditProduct extends Component {
 
 
             })
-            var completeArray=[product.product_id,product.product_name,product.cost,product.category,product.upc]
+            var completeArray=[product.brand,product.product_name,product.cost,product.category,product.upc]
             console.log('completeArray--',completeArray,completeArray[3])
              var percent=this.calculateComlpleteness(completeArray);
              this.setState({product_completion:percent})
@@ -81,7 +81,7 @@ class EditProduct extends Component {
     updateProduct() {
         console.log("state on update====", this.state);
         let state = this.state;
-        var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
+        var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
         console.log('completeArray--',completeArray,completeArray[3])
          var percent=this.calculateComlpleteness(completeArray);
         let updateProductByID = {
@@ -109,10 +109,8 @@ class EditProduct extends Component {
             product_completion: percent
 
         }
-        console.log("updateProductByID",updateProductByID) 
+      
     
-        return 0;
-        //change update API
         axios.post("/api/updateProductByID", updateProductByID).then(function (response) {
             console.log('resposne from updateProductByID=========', response.data)
             if (response.data.product) {
@@ -146,7 +144,7 @@ class EditProduct extends Component {
         let { product } = this.state
         // let image = "data:"+img.mimetype+";base64,"+img.data
         console.log("product==========", product)
-        var completeArray=[this.state.product_id,this.state.product_name,this.state.cost,this.state.category,this.state.upc]
+        var completeArray=[this.state.brand,this.state.product_name,this.state.cost,this.state.category,this.state.upc]
         console.log('completeArray--',completeArray,completeArray[3])
          var percent=this.calculateComlpleteness(completeArray);
         console.log("######### user ",percent)
@@ -201,12 +199,12 @@ class EditProduct extends Component {
                                             <form>
                                                 <ul>
                                                     <li className="row">
-                                                        <div className="col-md-11">
+                                                        {/* <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Product ID</label>
                                                                 <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                         <div className="col-md-1">
                                                             {/* <div class="rightpartedit_delete">
           <center>

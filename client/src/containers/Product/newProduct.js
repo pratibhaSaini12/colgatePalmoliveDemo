@@ -57,7 +57,7 @@ class NewProduct extends Component {
     createNewProduct() {
         console.log("state on save====", this.state);
         let state = this.state;
-        var completeArray=[state.product_id,state.product_name,state.cost,state.category,state.upc]
+        var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
         console.log('completeArray--',completeArray,completeArray[3])
          var percent=this.calculateComlpleteness(completeArray);
  
