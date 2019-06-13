@@ -373,7 +373,7 @@ module.exports = {
 
     searchFilterByValues(req, res) {
 
-        con.query("SELECT * FROM `product` where category=? AND product_status=? ,brand=?", [req.body.searchValue1, req.body.searchValue2, req.body.searchValue3], function (err, result) {
+        con.query("SELECT * FROM `product` where category=? AND product_status=? AND brand=?", [req.body.searchValue1, req.body.searchValue2, req.body.searchValue3], function (err, result) {
             console.log('response from DB====', result)
             if (err)
                 throw err;

@@ -838,7 +838,7 @@ class NewProduct extends Component {
                                         <div className="tab-pane" id="productQuality" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
                                                 <div className="form-group">
-                                                    <label>Product Completeness (%) Product Name, Sku, Cateogry, Brand,Price</label>
+                                                    <label>Product Completeness (%) - Product Name, Sku, Cateogry, Brand,Price</label>
                                                     <div className="form-group">
                                                         <input className="form-control" value={percent} readonly />
 
