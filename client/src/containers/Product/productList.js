@@ -740,7 +740,7 @@ class ProductList extends Component {
                                                                     <div className="form-group">
                                                                         <select id="pref-perpage" className="form-control" name="searchValue3" onChange={e => this.change(e)}>
                                                                             <option value={0}>Brand</option>
-                                                                            <option value={"Colgate"}>Toothpastes</option>
+                                                                            <option value={"Colgate"}>Colgate</option>
                                                                             <option value={"Palmolive"}>Palmolive</option>
 
                                                                         </select>
