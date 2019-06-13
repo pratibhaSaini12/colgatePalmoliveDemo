@@ -143,7 +143,6 @@ module.exports = {
     },
 
     createAssetThroughDriv(req, res) {
-<<<<<<< HEAD
         //Get from Google Drive CRON
         let result = []
         try {
@@ -219,40 +218,6 @@ module.exports = {
 
 
             console.log("result=========",result)
-=======
-        let assets = []
-        try {
-            const googleFolder = path.resolve(__dirname, './CRON/googleImage/');
-            console.log("googleFolder=======", googleFolder)
-            fs.readdir(googleFolder, (err, file) => {
-                // if(file.includes("jpeg") && file.includes("png") && file.includes("jpg")){
-                console.log("inside")
-                // }
-                if (err) {
-                    console.log("err line 135", err)
-                }
-                for (var i = 0; i <= file.length; i++) {
-                    console.log("insiade", i)
-                    let filePath = googleFolder + "\\" + file[i]
-                    console.log("filePath==============", filePath)
-                    if (file[i].includes("jpeg") || file[i].includes("jpg") || file[i].includes("png")) {
-                        base64Img.base64(filePath, function (err, data) {
-                            if (err) {
-                                console.log("err======", i, err)
-                            }
-                            console.log("base64Img", i)
-                            // console.log("dat============",data)
-                            assets.push({
-                                asset_name: file[i].split(".")[0] !== undefined ? file[i].split(".")[0] : 'not found',
-                                asset_data: data,
-                            })
-                            console.log("assets==========", assets)
-                        })
-                    }
-
-                }
-            });
->>>>>>> 157cd64cfa880f103a1387b139711d3db289b3f3
             return res.status(200).json({
                 asset: assets,
                 error: null
