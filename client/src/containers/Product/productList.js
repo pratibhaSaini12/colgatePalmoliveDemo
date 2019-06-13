@@ -950,7 +950,7 @@ class ProductList extends Component {
                                                             {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
                                                                 <img src={key.main_image[0].image} alt="" />
                                                                 :
-                                                                ''
+                                                                <ImageContainer src="1.png" />
                                                             }
 
                                                             {/* <img src={base64data ? 'data:' + "image/png" + ';base64,' + base64data : ""} alt="" /> */}
