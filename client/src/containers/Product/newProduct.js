@@ -5,6 +5,7 @@ import Aside from '../SideBar/index';
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
 import { Link } from "react-router-dom"
+import ReactLoading from 'react-loading'
 //import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
@@ -39,21 +40,24 @@ class NewProduct extends Component {
             pdfData: [],
             pdfFileArray:[],
             selectPdf:'',
-            errorSpan : 'SKU number is required to upload Image'
+            errorSpan : 'SKU number is required to upload Image',
+            Loading:  false
         }
     }
 
 
     componentDidMount() {
         let self = this;
+        self.setState({Loading : true})
         axios.get("api/fetchfile").then(function (response) {
             console.log('resposne from api fetchfile==', response.data)
             self.setState({
-                pdfFileArray:response.data
+                pdfFileArray:response.data,
+                Loading : false
             })
             console.log('vjhdvbhuvb',self.state.pdfFileArray);
         }).catch(function (error) {
-
+            self.setState({Loading : false})
         })
     }
 
@@ -76,6 +80,7 @@ class NewProduct extends Component {
     createNewProduct() {
         console.log("state on save====", this.state);
         let state = this.state;
+        this.setState({Loading : true})
         var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
         console.log('completeArray--',completeArray,completeArray[3])
          var percent=this.calculateComlpleteness(completeArray);
@@ -114,9 +119,9 @@ class NewProduct extends Component {
             if (response.data.product) {
                 window.location.href = "/productList"
             }
-
+            this.setState({Loading : false})
         }).catch(function (error) {
-
+            this.setState({Loading : false})
         })
     }
 
@@ -318,6 +323,12 @@ class NewProduct extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true &&
+                    <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
                     <Header />
                     <Aside active={"product"} />
@@ -483,7 +494,7 @@ class NewProduct extends Component {
                                                             <div className="form-group">
                                                                 <label>Brand</label>
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.product_status === '' ? '' : this.state.product_status} className="form-control">
+                                                                    <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.brand} className="form-control">
                                                                         <option value={"Colgate"}>Colgate</option>
                                                                         <option value={"Palmolive"}>Palmolive</option>
                                                                         <option value={"Hills"}>Hills</option>

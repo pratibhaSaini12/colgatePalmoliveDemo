@@ -96,8 +96,6 @@ class ProductList extends Component {
                 if (res.status === 200) {
                     let data = res.data.data[0].imageData
                     data = JSON.parse(data)
-                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                    console.log("image found===========", image)
                     // convert values into object
                     if (res.data.data.length) {
                         res.data.data.map((imageString) => {
@@ -108,7 +106,6 @@ class ProductList extends Component {
                                 image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
                             })
                         })
-                        console.log("imageData=============", imageData)
                     }
                     self.setState({
                         pictures: imageData,
@@ -129,8 +126,6 @@ class ProductList extends Component {
                 if (res.status === 200) {
                     let data = res.data.data[0].imageData
                     data = JSON.parse(data)
-                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                    console.log("additional-image found===========", image)
                     // convert values into object
                     if (res.data.data.length) {
                         res.data.data.map((imageString) => {
@@ -141,7 +136,6 @@ class ProductList extends Component {
                                 image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
                             })
                         })
-                        console.log("imageData=============", additionalImage)
                     }
                     self.setState({
                         additionalPictures: additionalImage,
@@ -265,10 +259,6 @@ class ProductList extends Component {
             // check length of pictures
             if (pictures.length > 0 && filteredList.length > 0 || additionalPictures.length > 0) {
                 filteredList.map((prodct) => {
-
-                    console.log("id in product", prodct.product_id)
-                    console.log("id in product", additionalPictures)
-
                     // console.log("id in picture", Number(pic.id))
                     newProductsWithImage.push({
                         category: prodct.category,
@@ -300,7 +290,8 @@ class ProductList extends Component {
                         updated_at: prodct.updated_at,
                         warnings: prodct.warnings,
                         wholesale_price: prodct.wholesale_price,
-                        workflow_state: prodct.workflow_state
+                        workflow_state: prodct.workflow_state,
+                        product_completion: prodct.product_completion
 
                     })
                 })
