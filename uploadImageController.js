@@ -21,54 +21,26 @@ function loadadditionalImage () {
 }
 function upploadImage(req, res, err){
     console.log("req in upload image===========",req.body)
-    try{
-        // to load
-        let imageFileData = loadImages()
-        console.log("imageFileData from JSON===========",imageFileData)
-        let dataToStore = JSON.stringify(req.body)
-        console.log("dataToStore in json===========",dataToStore)
-        //to save 
-        imageFileData.push({
-            imageData : dataToStore
-        })
-        console.log("imageFileData Updated===========",imageFileData)
-        imageFileData = JSON.stringify(imageFileData)
-        fs.writeFileSync('imagesFiles.json',imageFileData)
-        return res.status(200).json({
-            data: res
-        })
-    }catch(e){
-        console.log("error in uploading",e)
-        return res.status(200).json({
-            data: null
-        })
-    }
+    console.log("req in upload image===========",req.files.file)
+    var imageFile = req.files.file;
+    imageFile.mv(`file/product/main-image/${req.body.filename}`, function(err) {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.json({file: `/product/main-image/${req.body.filename}`});
+    });
   
 }
 function additionalImage (req, res, err){
-    console.log("req in additionalImage image===========",req.body)
-    try{
-        // to load
-        let imageFileData = loadadditionalImage()
-        console.log("additionalImage from JSON===========",imageFileData)
-        let dataToStore = JSON.stringify(req.body)
-        console.log("additionalImage in json===========",dataToStore)
-        //to save 
-        imageFileData.push({
-            imageData : dataToStore
-        })
-        console.log("additionalImage Updated===========",imageFileData)
-        imageFileData = JSON.stringify(imageFileData)
-        fs.writeFileSync('additionalImage.json',imageFileData)
-        return res.status(200).json({
-            data: res
-        })
-    }catch(e){
-        console.log("error in uploading",e)
-        return res.status(200).json({
-            data: null
-        })
-    }
+    console.log("req in upload image===========",req.body)
+    console.log("req in upload image===========",req.files.file)
+    var imageFile = req.files.file;
+    imageFile.mv(`file/product/additional/${req.body.filename}`, function(err) {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.json({file: `/product/additional/${req.body.filename}`});
+    });
 }
 function getImages(req, res, err){
     try{
