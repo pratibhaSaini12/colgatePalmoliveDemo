@@ -22,6 +22,12 @@ function loadadditionalImage () {
 function upploadImage(req, res, err){
     console.log("req in upload image===========",req.body)
     console.log("req in upload image===========",req.files.file)
+    if (!fs.existsSync('file/product/')){
+        fs.mkdirSync('file/product/');
+    }
+    if (!fs.existsSync('file/product/main-image/')){
+        fs.mkdirSync('file/product/main-image/');
+    }
     var imageFile = req.files.file;
     imageFile.mv(`file/product/main-image/${req.body.filename}`, function(err) {
         if (err) {
@@ -34,6 +40,12 @@ function upploadImage(req, res, err){
 function additionalImage (req, res, err){
     console.log("req in upload image===========",req.body)
     console.log("req in upload image===========",req.files.file)
+    if (!fs.existsSync('file/product/')){
+        fs.mkdirSync('file/product/');
+    }
+    if (!fs.existsSync('file/product/additional/')){
+        fs.mkdirSync('file/product/additional/');
+    }
     var imageFile = req.files.file;
     imageFile.mv(`file/product/additional/${req.body.filename}`, function(err) {
         if (err) {
