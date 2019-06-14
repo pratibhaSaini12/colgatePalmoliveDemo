@@ -45,15 +45,27 @@ class Aside extends Component {
                    <a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"><i className="sprite_icon digital" /><span className="hide-menu">Digital Assets</span></a>
                   <ul aria-expanded="false" className="collapse">
                     <li className={this.props.active ===true ? "active" : ''}><Link to={"/digitalImages"}>Images</Link></li>
+                    <li className={this.props.active ===true ? "active" : ''}><Link to={"/digitalVideo"}>Videos</Link></li>
                     <li className={this.props.active ===true ? "active" : ''}><Link to={"/digitalDocuments"}>Documents</Link></li>
-                  </ul>
+                   </ul>
                 </li>
                 <li className={this.props.active ==="Task" ? "active" : ''}>
                   <Link to={"/taskList"} className="has-arrow waves-effect waves-dark" aria-expanded="false">
-                    <i className="sprite_icon dashboard" />
-                    <span className="hide-menu">Task </span>
+                    <i className="sprite_icon more_icon" />
+                    <span className="hide-menu">More </span>
                   </Link>
+                <ul aria-expanded="false" class="collapse">
+                <li><Link to="/channels">Channels</Link></li>
+                <li><Link to="/comingSoon">Catalogs</Link></li>
+                <li><Link to="/comingSoon">Imports</Link></li>
+                <li><Link to="/taskList">Task</Link></li>
+                <li><Link to="/comingSoon">Workflow</Link></li>
+                </ul>
                 </li>
+
+            
+
+
               </ul>
             </nav>
             {/* End Sidebar navigation */}

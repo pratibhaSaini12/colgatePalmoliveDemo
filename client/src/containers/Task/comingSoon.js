@@ -26,7 +26,7 @@ class ComingSoon extends Component {
 			<div>
                    <div id="main-wrapper">
 <Header />
-<Aside active={"dashboard"} />
+<Aside active={"Task"} />
 <div className="container-fluid r-aside custome_container">
             <div className="comingsoonpage">
                 <center>

@@ -29,6 +29,7 @@ import Channels from "./src/containers/StaticPages/channels"
 import DigitalVideos from "./src/containers/StaticPages/digitalVideos"
 import Import from "./src/containers/StaticPages/imports"
 import Workflow from "./src/containers/StaticPages/workflow"
+import ChannelData from "./src/containers/StaticPages/channelData"
 
 const history = createHistory()
 
@@ -60,6 +61,7 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/digitalVideo' component={DigitalVideos} />
 					<Route exact path='/imports' component={Import} />
 					<Route exact path='/workflow' component={Workflow} />
+					<Route exact path='/channelData' component={ChannelData} />
 
 
 
