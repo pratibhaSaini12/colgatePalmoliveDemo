@@ -8,6 +8,7 @@ import Pagination from "react-js-pagination";
 import ReactLoading from 'react-loading'
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
+import {Alert} from 'react-bootstrap'
 class DigitalImages extends Component {
     constructor(props) {
         super(props)
@@ -32,7 +33,8 @@ class DigitalImages extends Component {
             dataPerPage: 10,
             allAssets : true,
             imagesForList: "All",
-            productImageList: []
+            productImageList: [],
+            successMessage:'',
         }
     }
     getAssetList() {
@@ -67,6 +69,12 @@ class DigitalImages extends Component {
     componentWillMount() {
         this.getAssetList();
     }
+
+
+    componentWillReceiveProps(nextProps) {
+        console.log("new props ",nextProps)
+    }
+
     change(e) {
         console.log("e.target.value", e.target.value)
         console.log("e.target.name", e.target.name)
@@ -85,17 +93,26 @@ class DigitalImages extends Component {
         ev.preventDefault()
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
-           self.setState({
-                asset_data:self.uploadInput.files[0],
-                image:URL.createObjectURL(self.uploadInput.files[0])
-            })
-<<<<<<< Updated upstream
-        }
-        else {
+            const data = new FormData();
+            data.append('file',self.uploadInput.files[0]);
+            axios.post("/api/compareassets",data).then(function (response) {
+                console.log('response'+response.data);
+                
+                 if(response.data.error !== undefined){
+                    self.setState({
+                        asset_data:self.uploadInput.files[0],
+                        image:URL.createObjectURL(self.uploadInput.files[0]),
+                        existAsset:response.data.key
+                     })
+                 }else{
+                    self.setState({
+                        asset_data:self.uploadInput.files[0],
+                        image:URL.createObjectURL(self.uploadInput.files[0]),
+                     })
+                 }
+            })     
+         }
             
-=======
->>>>>>> Stashed changes
-        }
     }
 
     filterSearch(event) {
@@ -155,11 +172,14 @@ class DigitalImages extends Component {
 
     async getImageFromDrive() {
         try {
-            let self = this
+            let self = this;
+            self.setState({ Loading: true });
             await axios.get("/api/getAssetFromDrive").then(function (response) {
                 console.log('resposne from /api/getAssetFromDrive==', response)
                 if (response.status === 200) {
-                    self.setState({ Loading: false })
+                    //$("#successGoogle").show();
+                   self.setState({ Loading: false ,successMessage:'image fetched successfully !!'})
+                    setTimeout(()=>{self.setState({successMessage:''})},1500)
                 }
             }).catch(function (error) {
                 self.setState({ Loading: false })
@@ -358,7 +378,9 @@ class DigitalImages extends Component {
 
 
     render() {
-        console.log("states in digitalImage", this.state)
+
+
+        console.log("states in digitalImage", this.state.successMessage)
         let { filteredList } = this.state
         const { assetList, existAsset, productImageList ,image } = this.state;
         let { dataPerPage } = this.state
@@ -379,6 +401,8 @@ class DigitalImages extends Component {
                         <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
+
+               
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
@@ -396,6 +420,9 @@ class DigitalImages extends Component {
                                 </div>
                             </div>
                             <div className="row">
+                            {
+                                    this.state.successMessage===''?'':<Alert color="danger">{this.state.successMessage}</Alert>
+                            }
                                 <div className="col-md-12">
                                     <div id="filter-panel" className="filter-panel filtercustome" style={{ display: 'none' }}>
                                         <div className="panel panel-default">
@@ -666,7 +693,7 @@ class DigitalImages extends Component {
                                             <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div> */}
                                         {existAsset !== '' ?
-                                            <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
+                                            <span>Asset already Exist </span>
                                             : ''}
                                         <div className="avatar-upload">
 
@@ -674,8 +701,20 @@ class DigitalImages extends Component {
                                                 <div id="imagePreview">
                                                     {image !== '' && image !== undefined ?
                                                         <img src={image} className="digital_img Assets" />
-                                                        : ''} </div>
+                                                        : ''} 
+                                                </div>
+                                                
                                             </div>
+                                            {
+                                                existAsset !== '' && existAsset !== undefined ?
+                                                <div className="avatar-preview">
+                                                    <div id="imagePreview">
+                                                            <img src={existAsset.path} className="digital_img Assets" />
+                                                    </div>
+                                                </div>
+                                                : ''
+                                            }  
+                                            
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                 <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
@@ -720,6 +759,7 @@ class DigitalImages extends Component {
 
                     </div>
                 </div>
+
             </div>
             </div>
         )
