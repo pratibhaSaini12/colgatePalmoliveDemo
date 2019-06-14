@@ -269,12 +269,12 @@ class NewProduct extends Component {
         reader.onerror = function (error) {
         };
     }
-    resize() {
-        var textArray = document.getElementsByClassName('textarea');
-        for (var i = 0; i < textArray.length; i++) {
-            textArray[i].style.height = 'auto';
-            textArray[i].style.height = textArray[i].scrollHeight + 'px';
-        }
+    resize(){
+        var textArray = document.getElementsByClassName('textarea custome_text');
+            for(var i=0;i<textArray.length;i++){
+                textArray[i].style.height = 'auto';
+                textArray[i].style.height = textArray[i].scrollHeight+'px';
+            }
     }
 
     calculateComlpleteness(completeArray) {
@@ -742,9 +742,9 @@ class NewProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Pack Flats</label>
                                                     <div className="form-group">
-
-                                                        <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} >
-                                                            <option value="">Select File</option>
+                                                        
+                                                        <select className="form-control onselect" name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} >
+                                                        <option value="">Select File</option>
                                                             {
                                                                 pdfFileArray.length > 0 ? pdfFileArray.map(function (key, index) {
                                                                     return (<option value={key}>{key}</option>)
@@ -764,65 +764,64 @@ class NewProduct extends Component {
                                                                 }
                                                             </ul>
                                                             <div class="tab-content custome_content under_tabs" id="myTabContent">
-                                                                {
-                                                                    pdfData.length > 0 ? pdfData.map(function (key, index) {
-                                                                        return <div className={index == 0 ? 'tab-pane fade show active' : 'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
-                                                                            <div class="row">
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        {key.ques1}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea" style={{ height: '100%', width: '100%' }} >{key.ans1}</textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        {key.ques2}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea" style={{ height: '100%', width: '100%' }} >{key.ans2}</textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        {key.ques3}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea" style={{ height: '100%', width: '100%' }} >{key.ans3}</textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        {key.ques4}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea" style={{ height: '100%', width: '100%' }} >{key.ans4}</textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        {key.ques5}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea" style={{ height: '100%', width: '100%' }} >{key.ans5}</textarea>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                            {
+                                                            pdfData.length > 0 ? pdfData.map(function(key,index){
+                                                            return <div className={index==0 ? 'tab-pane fade show active':'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group all_list_details">
+                                                                         {key.ques1}
                                                                         </div>
-                                                                    }) : ''
-                                                                }
-
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <textarea class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans1}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group all_list_details">
+                                                                        {key.ques2}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans2}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group all_list_details">
+                                                                        {key.ques3}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea  class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans3}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group all_list_details">
+                                                                        {key.ques4}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea  class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans4}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group all_list_details">
+                                                                        {key.ques5}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                        <textarea class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans5}</textarea>
+                                                                        </div>
+                                                                </div>
+                                                                </div> 
+                                                            </div> }) : ''
+                                                            }
+                                                            
                                                             </div>
                                                         </div>
 

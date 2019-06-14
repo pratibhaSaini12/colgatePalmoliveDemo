@@ -867,7 +867,7 @@ class ProductList extends Component {
                                     {
                                         list.length > 0 ? list.map((key, index) => {
                                             return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
-                                                <div className="card">
+                                                <div className="card custome_img">
                                                     <div className="card-body text-center">
                                                         <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                             <ImageContainer src="icons/check.png" />
