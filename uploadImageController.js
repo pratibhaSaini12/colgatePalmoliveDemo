@@ -20,38 +20,35 @@ function loadadditionalImage () {
     }
 }
 function upploadImage(req, res, err){
-    console.log("req in upload image===========",req.body)
-    console.log("req in upload image===========",req.files.file)
-    if (!fs.existsSync('file/product/')){
-        fs.mkdirSync('file/product/');
+    
+    if (!fs.existsSync('client/public/asset/product/')){
+        fs.mkdirSync('client/public/asset/product/');
     }
-    if (!fs.existsSync('file/product/main-image/')){
-        fs.mkdirSync('file/product/main-image/');
+    if (!fs.existsSync('client/public/asset/product//main-image/')){
+        fs.mkdirSync('client/public/asset/product/main-image/');
     }
     var imageFile = req.files.file;
-    imageFile.mv(`file/product/main-image/${req.body.filename}`, function(err) {
+    imageFile.mv(`client/public/asset/product/main-image/${req.body.filename}`, function(err) {
         if (err) {
             return res.status(500).send(err);
         }
-        res.json({file: `/product/main-image/${req.body.filename}`});
+        res.json({file: `public/asset/product/main-image/${req.body.filename}`});
     });
   
 }
 function additionalImage (req, res, err){
-    console.log("req in upload image===========",req.body)
-    console.log("req in upload image===========",req.files.file)
-    if (!fs.existsSync('file/product/')){
-        fs.mkdirSync('file/product/');
+    if (!fs.existsSync('client/public/asset/product/')){
+        fs.mkdirSync('client/public/asset/product/');
     }
-    if (!fs.existsSync('file/product/additional/')){
-        fs.mkdirSync('file/product/additional/');
+    if (!fs.existsSync('client/public/asset/product/additional/')){
+        fs.mkdirSync('client/public/asset/product/additional/');
     }
     var imageFile = req.files.file;
-    imageFile.mv(`file/product/additional/${req.body.filename}`, function(err) {
+    imageFile.mv(`client/public/asset/product/additional/${req.body.filename}`, function(err) {
         if (err) {
             return res.status(500).send(err);
         }
-        res.json({file: `/product/additional/${req.body.filename}`});
+        res.json({file: `/public/asset/product/additional/${req.body.filename}`});
     });
 }
 function getImages(req, res, err){

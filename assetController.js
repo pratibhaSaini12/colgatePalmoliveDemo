@@ -82,17 +82,61 @@ module.exports = {
 
     //Create new Asset 
     createNewAsset(req, res) {
-        con.query("INSERT INTO assets (`asset_name`,`asset_data`,`asset_type` ) VALUES ('" + req.body.asset_name + "', '" + req.body.asset_data + "', '" + req.body.asset_type + "')", function (err, result) {
-            console.log('response from create Product====', result)
-            if (err)
-                throw err;
-            else {
 
-                return res.status(200).json({
-                    asset: result
-                })
+        if (!fs.existsSync('client/public/asset/digital-Image/')){
+            fs.mkdirSync('client/public/asset/digital-Image/');
+        }
+        var imageFile = req.files.file;
+        console.log('imageFile---------',imageFile);
+        imageFile.mv(`client/public/asset/digital-Image/${imageFile.name}`, function(err) {
+            if (err) {
+                return res.status(500).send(err);
             }
-        })
+            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "')", function (err, result) {
+                console.log('response from create Product====', result)
+                if(err)
+                    return err;
+                else {
+                    return res.status(200).json({
+                        asset: result
+                    })
+                }
+            })
+        });
+    },
+    
+    compareAssets(req,res){
+        var imageFile = req.files.file;
+        var base64data = imageFile.data.toString('base64');
+        var dataDuplicate;    
+        con.query("Select * from assets",function(err, result){
+                if(err)
+                    throw err;
+                var flag = true;
+                result.map((key)=>{
+                        if(key.path){
+                            var bitmap = fs.readFileSync('client'+key.path);
+                            var base64dataLocal = Buffer(bitmap).toString('base64');
+                            if(base64dataLocal==base64data){
+                                flag = false;
+                                dataDuplicate = key;
+                            }
+                        }
+                    }
+                )
+                if(flag){
+                    return res.send({
+                        'success': ''
+                    })
+                }else{
+                    return res.send({
+                        'error': '',
+                        'key':dataDuplicate
+                    })
+                }
+                
+            }
+        )
     },
 
     getAssetList(req, res) {

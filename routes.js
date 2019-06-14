@@ -69,6 +69,7 @@ module.exports = (app) => {
 
  app.post('/api/upload/additional_image',uploadImageController.additionalImage);
  app.get('/api/get-additional-image',uploadImageController.getImages);
+ app.post('/api/compareassets',assetController.compareAssets);
  
 
 };

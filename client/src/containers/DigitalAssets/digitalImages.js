@@ -10,7 +10,6 @@ import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
 import {Alert} from 'react-bootstrap'
 class DigitalImages extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -38,9 +37,11 @@ class DigitalImages extends Component {
             successMessage:'',
         }
     }
-
     getAssetList() {
         let self = this
+            self.setState({
+                Loading:true
+            })
         try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
@@ -49,7 +50,6 @@ class DigitalImages extends Component {
                         assetList: response.data.assets,
                         filteredList: response.data.assets,
                         listToFilter: response.data.assets,
-                        // stateUpdate: true,
                         Loading: false
                     })
                     return
@@ -66,54 +66,10 @@ class DigitalImages extends Component {
             return
         }
     }
-    async componentWillMount() {
-        //getting images from JSONfile
-        let self = this
-        self.setState({ Loading: true })
-        // let assetData = []
-        try {
-            await this.getAssetList()
-
-            let imageData = []
-            try {
-                axios.post("/api/get-images").then((res) => {
-                    if (res.status === 200) {
-                        let data = res.data.data[0].imageData
-                        data = JSON.parse(data)
-                        let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                        console.log("image found===========", image)
-                        // convert values into object
-                        if (res.data.data.length) {
-                            res.data.data.map((imageString) => {
-                                let imageJsonData = JSON.parse(imageString.imageData)
-                                imageData.push({
-                                    data: imageJsonData.data,
-                                    id: imageJsonData.data.id,
-                                    image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data,
-                                    created_at: imageJsonData.data.created_at !== undefined ? imageJsonData.data.created : undefined,
-                                    fileSize : imageJsonData.data.fileSize !== undefined ? imageJsonData.data.fileSize : undefined,
-                                    fileName : imageJsonData.data.fileName !== undefined ? imageJsonData.data.fileName : undefined,
-                                    mimetype: imageJsonData.data.mimetype !== undefined ? imageJsonData.data.mimetype : undefined
-                                })
-                            })
-                            console.log("imageData=============", imageData)
-                        }
-                        self.setState({
-                            productImageList: imageData,
-                        })
-
-                    } else {
-                        console.log("error in image fetching response", res)
-                    }
-                })
-            } catch (err) {
-                console.log("error in image fetching", err)
-            }
-        } catch (err) {
-            self.setState({ Loading: false })
-            console.log("error in will mount catch", err)
-        }
+    componentWillMount() {
+        this.getAssetList();
     }
+
 
     componentWillReceiveProps(nextProps) {
         console.log("new props ",nextProps)
@@ -127,7 +83,6 @@ class DigitalImages extends Component {
             [e.target.name]: e.target.value
         })
     }
-
     //handeling image upload
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
@@ -138,46 +93,29 @@ class DigitalImages extends Component {
         ev.preventDefault()
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
-            self.getBase64(self.uploadInput.files[0], (result) => {
-                var base64 = result.split(",");
-                idCardBase64 = base64[1]
-
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
-                console.log("===assetBodyData====", assetBodyData)
-                self.setState({
-                    image: assetBodyData.data,
-                })
-                //compare image here
-                let duplicateAsset = assetList.filter((asset) => asset.asset_data === idCardBase64)
-                if (duplicateAsset.length === 0) {
-                    console.log("new image found")
+            const data = new FormData();
+            data.append('file',self.uploadInput.files[0]);
+            axios.post("/api/compareassets",data).then(function (response) {
+                console.log('response'+response.data);
+                
+                 if(response.data.error !== undefined){
                     self.setState({
-                        asset_data: idCardBase64,
-                        asset_type: self.uploadInput.files[0].type
-                    })
-                } else {
-                    console.log("Image already exist", duplicateAsset[0])
-                    self.setState({ existAsset: duplicateAsset[0] })
-                }
-                // axios.post("/api/upload/asset", assetBodyData).then((res) => {
-                //     console.log("error in response", res)
-                //     if (res.data) {
-                //         console.log("res in uploading", res)
-                //         return
-                //     } else {
-                //         console.log("error in response", res)
-                //         return
-                //     }
-                // }).catch((err) => {
-                //     console.log("errorrrrrrrrrrrrrr in uploading", err)
-                //     return
-                // })
-
-            });
+                        asset_data:self.uploadInput.files[0],
+                        image:URL.createObjectURL(self.uploadInput.files[0]),
+                        existAsset:response.data.key
+                     })
+                 }else{
+                    self.setState({
+                        asset_data:self.uploadInput.files[0],
+                        image:URL.createObjectURL(self.uploadInput.files[0]),
+                     })
+                 }
+            })
         }
         else {
-            console.log("fileSizeExceedMessage=======")
+            
         }
+            
     }
 
     filterSearch(event) {
@@ -185,9 +123,6 @@ class DigitalImages extends Component {
         console.log('state on filtersearcch===', this.state)
         var newList = this.state.listToFilter
         var searchString = event.target.value
-
-        console.log('product to be search---', searchString)
-
         var newFilteredList = newList.filter(function (searchResult) {
             if (
                 ((typeof searchResult.asset_name != "undefined" && searchResult.asset_name != null && searchResult.asset_name !== "") && searchResult.asset_name.toLowerCase().includes(searchString.toLowerCase()))
@@ -201,17 +136,6 @@ class DigitalImages extends Component {
             listToFilter: this.state.listToFilter,
             stateUpdate: false
         })
-    }
-
-    //Method to get Bas64 of file
-    getBase64(file, cb) {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-        };
     }
 
     clearState() {
@@ -229,15 +153,11 @@ class DigitalImages extends Component {
         self.setState({ Loading: true })
         console.log("state on save====", this.state);
         let state = self.state;
-        let assetObj = {
-            asset_id: state.asset_id,
-            asset_name: state.asset_name,
-            _assetImageId: state.asset_id,
-            asset_data: state.asset_data,
-            asset_type: state.asset_type
-        }
-        console.log("assetObj on submit", assetObj)
-        await axios.post("/api/createNewAsset", assetObj).then(function (response) {
+        const data = new FormData();
+        data.append('file',state.asset_data);
+        data.append('time',(new Date()).getTime());
+        data.append('user','Text');
+        await axios.post("/api/createNewAsset",data).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.asset) {
                 self.getAssetList()
@@ -293,22 +213,6 @@ class DigitalImages extends Component {
                 console.log("error in delete product", error)
             })
         }
-
-        // else if (self.state.bulkDelete) {
-        //     console.log('bulk delete===', self.state.bulkDelete)
-        //     var id = self.state.bulkDelete
-        //     axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
-        //         console.log('resposne from api==', product)
-        //         if (response.data.product) {
-        //             self.setState({ bulkDelete: '', Loading: false })
-        //             window.location.href = "/productList"
-        //         }
-
-        //     }).catch(function (error) {
-        //         this.setState({ bulkDelete: '', Loading: false })
-        //     })
-        // }
-
 
     }
     
@@ -478,15 +382,11 @@ class DigitalImages extends Component {
 
         console.log("states in digitalImage", this.state.successMessage)
         let { filteredList } = this.state
-        const { assetList, existAsset, productImageList } = this.state;
+        const { assetList, existAsset, productImageList ,image } = this.state;
         let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
-        let img = this.state.image
-        let image = ''
-        this.showhideSpan()
-        if (img !== '') {
-            image = "data:" + img.mimetype + ";base64," + img.data
-        }
+       
+       
         console.log(assetList);
         return (
             <div>
@@ -657,108 +557,32 @@ class DigitalImages extends Component {
                                                     <th scope="col" />
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
-                                                    <th scope="col">Details</th>
+                                                    <th scope="col">Size</th>
                                                     <th scope="col">Created At</th>
                                                     <th />
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">Palmolive-Camellia....jpg</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">widelogos_dubius.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">widelogos_dubius.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
+                                                {list.length > 0 && list !== undefined ?
+                                                    list.map((asset, index) => {
+                                                       return <tr key={index}>
+                                                            <td><input type="checkbox" /></td>
+                                                            <td>
+                                                                <div className="image-thumb">
+                                                                    <img className="img-fluid" src={asset.path} />
+                                                                </div>
+                                                            </td>
+                                                            <td className="productlist_name">{asset.asset_name}</td>
+                                                            <td>{asset.asset_type}</td>
+                                                            <td>2832 x 4256  |  2.74 MB</td>
+                                                            <td>{asset.created_at}</td>
+                                                            <td><div className="row-hover">
+                                                                <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                                </a></div>
+                                                            </div></td>
+                                                        </tr>
+                                                    }) : ''}
+                                                
                                             </tbody>
                                         </table>
                                         <div className="pagebottompart">
@@ -787,7 +611,7 @@ class DigitalImages extends Component {
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
                                                     <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
-                                                    <p className="img"><img className="img-fluid" src={"data:" + asset.asset_type + ";base64," + asset.asset_data} /></p>
+                                                    <p className="img"><img className="img-fluid" src={asset.path} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
                                                         <p className="card-text">{asset.created_at}</p>
@@ -810,7 +634,7 @@ class DigitalImages extends Component {
                                 }
 
                             </div>
-                                {/* product images */}
+                            {/* product images */}
                             <div className="row digitalImage">
                                 {productImageList.length > 0 && productImageList !== undefined ?
                                     productImageList.map((asset, index) => {
@@ -879,7 +703,7 @@ class DigitalImages extends Component {
                                             <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
                                         {existAsset !== '' ?
-                                            <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
+                                            <span>Asset already Exist </span>
                                             : ''}
                                         <div className="avatar-upload">
 
@@ -887,8 +711,20 @@ class DigitalImages extends Component {
                                                 <div id="imagePreview">
                                                     {image !== '' && image !== undefined ?
                                                         <img src={image} className="digital_img Assets" />
-                                                        : ''} </div>
+                                                        : ''} 
+                                                </div>
+                                                
                                             </div>
+                                            {
+                                                existAsset !== '' && existAsset !== undefined ?
+                                                <div className="avatar-preview">
+                                                    <div id="imagePreview">
+                                                            <img src={existAsset.path} className="digital_img Assets" />
+                                                    </div>
+                                                </div>
+                                                : ''
+                                            }  
+                                            
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                 <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
@@ -897,7 +733,8 @@ class DigitalImages extends Component {
                                             </div>
                                         </div>
                                         <p><span className="label label-danger label-rounded">NOTE!</span> Attached images thumbnail is supported in latest firefox chrome,
-                    Opera,Safari and Internet Explore 10 only</p>
+                                            Opera,Safari and Internet Explore 10 only
+                                        </p>
                                     </form>
                                 </div>
                                 {/* Modal footer */}

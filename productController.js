@@ -9,7 +9,7 @@ module.exports = {
     getAllProducts(req, res) {
         console.log('inside controller')
 
-        con.query("SELECT * FROM `product` ", function (err, result) {
+        con.query("SELECT * FROM `product` ORDER BY created_at desc", function (err, result) {
             //     console.log('response from DB====', result)
             if (err)
                 throw err;
