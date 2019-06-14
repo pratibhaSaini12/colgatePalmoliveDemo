@@ -8,6 +8,7 @@ import Pagination from "react-js-pagination";
 import ReactLoading from 'react-loading'
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
+import {Alert} from 'react-bootstrap'
 class DigitalImages extends Component {
     constructor(props) {
         super(props)
@@ -32,7 +33,8 @@ class DigitalImages extends Component {
             dataPerPage: 10,
             allAssets : true,
             imagesForList: "All",
-            productImageList: []
+            productImageList: [],
+            successMessage:'',
         }
     }
     getAssetList() {
@@ -67,6 +69,12 @@ class DigitalImages extends Component {
     componentWillMount() {
         this.getAssetList();
     }
+
+
+    componentWillReceiveProps(nextProps) {
+        console.log("new props ",nextProps)
+    }
+
     change(e) {
         console.log("e.target.value", e.target.value)
         console.log("e.target.name", e.target.name)
@@ -167,11 +175,14 @@ class DigitalImages extends Component {
 
     async getImageFromDrive() {
         try {
-            let self = this
+            let self = this;
+            self.setState({ Loading: true });
             await axios.get("/api/getAssetFromDrive").then(function (response) {
                 console.log('resposne from /api/getAssetFromDrive==', response)
                 if (response.status === 200) {
-                    self.setState({ Loading: false })
+                    //$("#successGoogle").show();
+                   self.setState({ Loading: false ,successMessage:'image fetched successfully !!'})
+                    setTimeout(()=>{self.setState({successMessage:''})},1500)
                 }
             }).catch(function (error) {
                 self.setState({ Loading: false })
@@ -367,7 +378,9 @@ class DigitalImages extends Component {
 
 
     render() {
-        console.log("states in digitalImage", this.state)
+
+
+        console.log("states in digitalImage", this.state.successMessage)
         let { filteredList } = this.state
         const { assetList, existAsset, productImageList ,image } = this.state;
         let { dataPerPage } = this.state
@@ -388,6 +401,8 @@ class DigitalImages extends Component {
                         <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
                     </div>
                 }
+
+               
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
@@ -405,6 +420,9 @@ class DigitalImages extends Component {
                                 </div>
                             </div>
                             <div className="row">
+                            {
+                                    this.state.successMessage===''?'':<Alert color="danger">{this.state.successMessage}</Alert>
+                            }
                                 <div className="col-md-12">
                                     <div id="filter-panel" className="filter-panel filtercustome" style={{ display: 'none' }}>
                                         <div className="panel panel-default">
@@ -750,6 +768,7 @@ class DigitalImages extends Component {
 
                     </div>
                 </div>
+
             </div>
             </div>
         )

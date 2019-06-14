@@ -191,20 +191,19 @@ module.exports = {
         let result = []
         try {
             const googleFolder = path.resolve(__dirname, './CRON/googleImage/');
-            let DelQuery =  "DELETE FROM assets WHERE `is_drive` = '1'"
-            con.query(DelQuery, function (err, resu) {
-                if (err)
-                {
-                    console.log(err)
-                  }
-                  else
-                  {
-                      console.log('shashank');
-                      console.log(resu);
-                  }
-                });
+            // let DelQuery =  "DELETE FROM assets WHERE `is_drive` = '1'"
+            // con.query(DelQuery, function (err, resu) {
+            //     if (err)
+            //     {
+            //         console.log(err)
+            //       }
+            //       else
+            //       {
+            //           console.log('shashank');
+            //           console.log(resu);
+            //       }
+            //     });
             
-
             fs.readdirSync(googleFolder).forEach((file) => {
               let filePath = googleFolder + "/" + file;
               console.log(filePath);
@@ -253,23 +252,15 @@ module.exports = {
                 )
             })
 
-
-
-
-
-
-
-
-
             console.log("result=========",result)
             return res.status(200).json({
-                asset: assets,
+              //  asset: assets,
                 error: null
             })
         } catch (e) {
             console.log("error in readFiles try", e);
             res.status(200).json({
-                asset: assets,
+             //   asset: assets,
                 error: e
             })
         }
