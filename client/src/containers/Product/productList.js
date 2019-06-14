@@ -215,20 +215,10 @@ class ProductList extends Component {
                 ((typeof searchResult.category != "undefined" && searchResult.category != null && searchResult.category !== "") && searchResult.category.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.product_name != "undefined" && searchResult.product_name != null && searchResult.product_name !== "") && searchResult.product_name.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.link != "undefined" && searchResult.link != null && searchResult.link !== "") && searchResult.link.toLowerCase().includes(searchString.toLowerCase())) ||
-                ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toString().includes(searchString))
+                ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toString().includes(searchString))||
+                ((typeof searchResult.category != "undefined" && searchResult.category != null && searchResult.category !== "") && searchResult.category.toLowerCase().includes(searchString.toLowerCase())) ||
+                ((typeof searchResult.cost != "undefined" && searchResult.cost != null && searchResult.cost !== "") && searchResult.cost.toString().includes(searchString))
 
-
-                // ((typeof e.Phone != "undefined" && e.Phone != null && e.Phone !== "") && e.Phone.toString().includes(val))
-
-                //     ||
-
-                //     ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toLowerCase().includes(searchString.toLowerCase()))||
-                //     ((typeof searchResult.cost != "undefined" && searchResult.cost != null && searchResult.cost !== "") && searchResult.cost.toLowerCase().includes(searchString.toLowerCase()))||
-                //    ((typeof searchResult.long_description != "undefined" && searchResult.long_description != null && searchResult.long_description !== "") && searchResult.long_description.toLowerCase().includes(searchString.toLowerCase()))||
-                //     ((typeof searchResult.material != "undefined" && searchResult.material != null && searchResult.material !== "") && searchResult.material.toLowerCase().includes(searchString.toLowerCase()))||
-                //     ((typeof searchResult.medium_description != "undefined" && searchResult.medium_description != null && searchResult.medium_description !== "") && searchResult.medium_description.toLowerCase().includes(searchString.toLowerCase()))||
-                //     ((typeof searchResult.msrp != "undefined" && searchResult.msrp != null && searchResult.msrp !== "") && searchResult.msrp.toLowerCase().includes(searchString.toLowerCase()))||
-                //     ((typeof searchResult.style != "undefined" && searchResult.style != null && searchResult.style !== "") && searchResult.style.toLowerCase().includes(searchString.toLowerCase()))
             ) {
                 return searchResult
             }
@@ -821,7 +811,7 @@ class ProductList extends Component {
                                                 <tr className="starting">
                                                     <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
                                                     <th scope="col" />
-                                                    <th scope="col">Product ID</th>
+                                                    <th scope="col">SKU</th>
                                                     {selectedArray.map((keyinner, indexinner) => {
                                                         return (<th scope="col">{keyinner.value}</th>);
 
