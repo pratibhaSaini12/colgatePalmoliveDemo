@@ -252,56 +252,7 @@ class ProductList extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.stateUpdate === true) {
-            let self = this
-            let { filteredList, pictures, additionalPictures } = self.state
-            let newProductsWithImage = []
-            // check length of pictures
-            if (pictures.length > 0 && filteredList.length > 0 || additionalPictures.length > 0) {
-                filteredList.map((prodct) => {
-                    // console.log("id in picture", Number(pic.id))
-                    newProductsWithImage.push({
-                        category: prodct.category,
-                        cost: prodct.cost,
-                        created_at: prodct.created_at,
-                        link: prodct.link,
-                        long_description: prodct.long_description,
-                        main_image: _.filter(pictures, (pic) => {
-                            if (prodct.upc === pic.id) {
-                                return pic.image
-                            }
-                        }),
-                        additional_image : _.filter(additionalPictures, (pic) => {
-                            if (prodct.upc === pic.id) {
-                                return pic.image
-                            }
-                        }),
-                        material: prodct.material,
-                        medium_description: prodct.medium_description,
-                        msrp: prodct.msrp,
-                        product_id: prodct.product_id,
-                        product_line: prodct.product_line,
-                        product_name: prodct.product_name,
-                        product_status: prodct.product_status,
-                        retail_price: prodct.retail_price,
-                        style: prodct.style,
-                        tags: prodct.tags,
-                        upc: prodct.upc,
-                        updated_at: prodct.updated_at,
-                        warnings: prodct.warnings,
-                        wholesale_price: prodct.wholesale_price,
-                        workflow_state: prodct.workflow_state,
-                        product_completion: prodct.product_completion
 
-                    })
-                })
-                self.setState({
-                    product: newProductsWithImage,
-                    filteredList: newProductsWithImage,
-                    stateUpdate: false
-                })
-            }
-        }
     }
 
     handleChange(e) {
@@ -939,7 +890,7 @@ class ProductList extends Component {
 
                                                         <p className="img">
                                                             {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
-                                                                <img src={key.main_image[0].image} alt="" />
+                                                                <img src={key.main_image} alt="" />
                                                                 :
                                                                 <ImageContainer src="1.png" />
                                                             }
