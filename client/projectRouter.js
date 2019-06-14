@@ -24,6 +24,11 @@ import Search from "./src/containers/Dashboard/globalSearch"
 import DigitalImagePage from "./src/containers/DigitalAssets/digitalImagePage"
 import EditDigitalImage from "./src/containers/DigitalAssets/editdigitalImage"
 import ComingSoon from "./src/containers/Task/comingSoon"
+import ManageCollections from "./src/containers/StaticPages/manageCollections"
+import Channels from "./src/containers/StaticPages/channels"
+import DigitalVideos from "./src/containers/StaticPages/digitalVideos"
+import Import from "./src/containers/StaticPages/imports"
+import Workflow from "./src/containers/StaticPages/workflow"
 
 const history = createHistory()
 
@@ -50,6 +55,12 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/digitalImagePage' component={DigitalImagePage} />
 					<Route exact path='/viewTask' component={TaskPageByUserID} />
 					<Route exact path='/comingSoon' component={ComingSoon} />
+					<Route exact path='/manageCollections' component={ManageCollections} />
+					<Route exact path='/channels' component={Channels} />
+					<Route exact path='/digitalVideo' component={DigitalVideos} />
+					<Route exact path='/imports' component={Import} />
+					<Route exact path='/workflow' component={Workflow} />
+
 
 
 				</Switch>
