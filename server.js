@@ -31,10 +31,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // require('./passport')(passport); // pass passport for configuration
 
-app.use(express.static(path.join(__dirname, 'file')));
+app.use(express.static(path.join(__dirname, '')));
 
 app.engine('html', ejs.renderFile);
-app.set('client', path.join(__dirname, '/client'));
+app.set('client', path.join(__dirname, '/file'));
 app.set('view engine', 'html');
 app.use(cookieParser());
 // app.use(cors())
