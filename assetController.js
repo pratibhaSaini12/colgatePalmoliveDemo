@@ -147,20 +147,19 @@ module.exports = {
         let result = []
         try {
             const googleFolder = path.resolve(__dirname, './CRON/googleImage/');
-            let DelQuery =  "DELETE FROM assets WHERE `is_drive` = '1'"
-            con.query(DelQuery, function (err, resu) {
-                if (err)
-                {
-                    console.log(err)
-                  }
-                  else
-                  {
-                      console.log('shashank');
-                      console.log(resu);
-                  }
-                });
+            // let DelQuery =  "DELETE FROM assets WHERE `is_drive` = '1'"
+            // con.query(DelQuery, function (err, resu) {
+            //     if (err)
+            //     {
+            //         console.log(err)
+            //       }
+            //       else
+            //       {
+            //           console.log('shashank');
+            //           console.log(resu);
+            //       }
+            //     });
             
-
             fs.readdirSync(googleFolder).forEach((file) => {
               let filePath = googleFolder + "/" + file;
               console.log(filePath);

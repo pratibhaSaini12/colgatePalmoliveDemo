@@ -253,11 +253,13 @@ class DigitalImages extends Component {
 
     async getImageFromDrive() {
         try {
-            let self = this
+            let self = this;
+            self.setState({ Loading: true });
             await axios.get("/api/getAssetFromDrive").then(function (response) {
                 console.log('resposne from /api/getAssetFromDrive==', response)
                 if (response.status === 200) {
-                    self.setState({ Loading: false })
+                    //$("#successGoogle").show();
+                   self.setState({ Loading: false })
                 }
             }).catch(function (error) {
                 self.setState({ Loading: false })
@@ -919,6 +921,7 @@ class DigitalImages extends Component {
 
                     </div>
                 </div>
+
             </div>
             </div>
         )
