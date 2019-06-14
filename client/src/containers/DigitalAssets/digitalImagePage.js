@@ -119,9 +119,9 @@ class DigitalImagePage extends Component {
                                         <div className="row">
                                             <div className="col-md-2">
                                                 <div className="thumb">
-                                                    {asset.asset_data !== null && asset.asset_data !== undefined?
-                                                        <img src={"data:" + asset.asset_type + ";base64," + asset.asset_data} />
-                                                        : <ImageContainer src="1.jpg" />}
+                                                    {asset.path !== null && asset.path !== undefined?
+                                                        <img src={asset.path} />
+                                                        : '' }
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
