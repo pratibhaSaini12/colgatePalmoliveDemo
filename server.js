@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // require('./passport')(passport); // pass passport for configuration
 
+app.use(express.static(path.join(__dirname, 'file')));
+
 app.engine('html', ejs.renderFile);
 app.set('client', path.join(__dirname, '/client'));
 app.set('view engine', 'html');
