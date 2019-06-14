@@ -85,14 +85,29 @@ class DigitalImages extends Component {
         ev.preventDefault()
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
-           self.setState({
-                asset_data:self.uploadInput.files[0],
-                image:URL.createObjectURL(self.uploadInput.files[0])
+            const data = new FormData();
+            data.append('file',self.uploadInput.files[0]);
+            axios.post("/api/compareassets",data).then(function (response) {
+                console.log('response'+response.data);
+                
+                 if(response.data.error !== undefined){
+                    self.setState({
+                        asset_data:self.uploadInput.files[0],
+                        image:URL.createObjectURL(self.uploadInput.files[0]),
+                        existAsset:response.data.key
+                     })
+                 }else{
+                    self.setState({
+                        asset_data:self.uploadInput.files[0],
+                        image:URL.createObjectURL(self.uploadInput.files[0]),
+                     })
+                 }
             })
         }
         else {
             
         }
+            
     }
 
     filterSearch(event) {
@@ -670,7 +685,7 @@ class DigitalImages extends Component {
                                             <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
                                         {existAsset !== '' ?
-                                            <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
+                                            <span>Asset already Exist </span>
                                             : ''}
                                         <div className="avatar-upload">
 
@@ -678,8 +693,20 @@ class DigitalImages extends Component {
                                                 <div id="imagePreview">
                                                     {image !== '' && image !== undefined ?
                                                         <img src={image} className="digital_img Assets" />
-                                                        : ''} </div>
+                                                        : ''} 
+                                                </div>
+                                                
                                             </div>
+                                            {
+                                                existAsset !== '' && existAsset !== undefined ?
+                                                <div className="avatar-preview">
+                                                    <div id="imagePreview">
+                                                            <img src={existAsset.path} className="digital_img Assets" />
+                                                    </div>
+                                                </div>
+                                                : ''
+                                            }  
+                                            
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                 <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
