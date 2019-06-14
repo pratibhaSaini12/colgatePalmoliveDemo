@@ -57,8 +57,6 @@ class ProductDetail extends Component {
                     </div>
                 </div> */}
                 <div id="main-wrapper">
-
-
                     <Header />
                     <Aside active={"product"} />
                     <div className="page-wrapper">
@@ -75,12 +73,12 @@ class ProductDetail extends Component {
                                             <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <ImageContainer src="icons/option-all.png" />
                                             </a>
-                                                <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
+                                                <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                             </div>
                                         </div>
                                         <div className="option-box delete float-right"><a href>Delete</a></div>
                                         <div className="option-box download float-right"><a href="javscript:void(0)">Download</a></div>
-                                        <div className="option-box move-folder float-right"><a href="javscript:void(0)">Move to folder</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -112,9 +110,9 @@ class ProductDetail extends Component {
                                         <div className="row">
                                             <div className="col-md-2">
                                                 <div className="thumb">
-                                                    {product.main_image !== null && product.main_image !== undefined && product.main_image.length > 0?
-                                                        <img src={product.main_image[0].image} />
-                                                        : <ImageContainer src="1.jpg" />}
+                                                    {
+                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} />  : ''
+                                                    }
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
@@ -128,7 +126,8 @@ class ProductDetail extends Component {
                                                     <ImageContainer src="icons/option-all.png" />
                                                     {/* <img src="img/icons/option-all.png" /> */}
                                                 </a>
-                                                    <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
+                                                    <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,7 +145,7 @@ class ProductDetail extends Component {
                                                             <div className="heading">
                                                                 <i className="fas fa-chevron-right" />
                                                                 General
-                              </div>
+                                                            </div>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -179,6 +178,10 @@ class ProductDetail extends Component {
                                                                     <td>{product.brand}</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>Style </td>
+                                                                    <td>{product.style}</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>Product Completeness </td>
                                                                     <td>{product.product_completion}</td>
                                                                 </tr>
@@ -203,15 +206,15 @@ class ProductDetail extends Component {
                                                                 <td width="80%">{product.cost}</td>
                                                             </tr>
                                                                 <tr>
-                                                                    <td>Formatted Base Wholesale Price </td>
+                                                                    <td>Formatted Base Wholesale Price ($) </td>
                                                                     <td>{product.wholesale_price}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Formatted MSRP</td>
+                                                                    <td>Formatted MSRP ($)</td>
                                                                     <td>{product.msrp}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Formatted Retail Price</td>
+                                                                    <td>Formatted Retail Price ($)</td>
                                                                     <td>{product.retail_price}</td>
                                                                 </tr>
                                                             </tbody></table>
@@ -234,9 +237,9 @@ class ProductDetail extends Component {
                                                                 <td width="20%">Main Image</td>
                                                                 <td width="30%">                                                                    
                                                                 {product.main_image !==undefined && product.main_image !== null &&product.main_image !==''
-                                                                        && product.main_image.length > 0
+                                                                        
                                                                         ?
-                                                                        <img src={product.main_image[0].image} />
+                                                                        <img src={product.main_image} />
                                                                     : '' }
                                                                 </td>
                                                             </tr>
@@ -244,9 +247,9 @@ class ProductDetail extends Component {
                                                                     <td>Additional Image</td>
                                                                     <td><span>
                                                                         {product.additional_image !==undefined && product.additional_image !== null &&product.additional_image !==''
-                                                                        && product.additional_image.length > 0
+                                                                        
                                                                         ?
-                                                                        <img src={product.additional_image[0].image} />
+                                                                        <img src={product.additional_image} />
                                                                     : '' }
                                                                     </span> 
                                                                     </td>

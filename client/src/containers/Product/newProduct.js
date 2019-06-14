@@ -6,7 +6,6 @@ import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
 import { Link } from "react-router-dom"
 import ReactLoading from 'react-loading'
-//import { boxShadow } from "html2canvas/dist/types/css/property-descriptors/box-shadow";
 
 class NewProduct extends Component {
 
@@ -30,7 +29,7 @@ class NewProduct extends Component {
             warnings: '',
             material: '',
             style: '',
-            workflow_state: '',
+            workflow_state: 'In Review',
             main_image: '',
             asset_id: 99999,
             image: '',
@@ -38,26 +37,28 @@ class NewProduct extends Component {
             product_completion: '',
             additional_image: '',
             pdfData: [],
-            pdfFileArray:[],
-            selectPdf:'',
-            errorSpan : 'SKU number is required to upload Image',
-            Loading:  false
+            pdfFileArray: [],
+            selectPdf: '',
+            errorSpan: 'SKU number is required to upload Image',
+            Loading: false
         }
+
     }
 
 
     componentDidMount() {
         let self = this;
-        self.setState({Loading : true})
+        self.setState({ Loading: true })
         axios.get("api/fetchfile").then(function (response) {
             console.log('resposne from api fetchfile==', response.data)
             self.setState({
-                pdfFileArray:response.data,
-                Loading : false
+                pdfFileArray: response.data,
+                Loading: false
             })
-            console.log('vjhdvbhuvb',self.state.pdfFileArray);
+            console.log('vjhdvbhuvb', self.state.pdfFileArray);
         }).catch(function (error) {
-            self.setState({Loading : false})
+            self.setState({ Loading: false })
+
         })
     }
 
@@ -78,15 +79,15 @@ class NewProduct extends Component {
         })
     }
     createNewProduct() {
+
         console.log("state on save====", this.state);
         let state = this.state;
-        this.setState({Loading : true})
-        var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
-        console.log('completeArray--',completeArray,completeArray[3])
-         var percent=this.calculateComlpleteness(completeArray);
- 
+        var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
+        console.log('completeArray--', completeArray, completeArray[3])
+        var percent = this.calculateComlpleteness(completeArray);
+
         let createProduct = {
-          //  product_id: state.product_id,
+            //  product_id: state.product_id,
             product_name: state.product_name,
             upc: state.upc,
             category: state.category,
@@ -103,60 +104,58 @@ class NewProduct extends Component {
             warnings: state.warnings,
             material: state.material,
             style: state.style,
-            main_image: '',
+            main_image: state.main_image,
             workflow_state: state.workflow_state,
             brand: state.brand,
             product_completion: percent,
-            additional_image: '',
-            pdfFileArray:state.pdfFileArray
+            additional_image: state.additional_image,
+            pdfFileArray: state.pdfFileArray
         }
 
-        console.log('createProduct---',percent)
-
+        console.log('createProduct---', percent)
 
         axios.post("api/createProduct", createProduct).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.product) {
                 window.location.href = "/productList"
             }
-            this.setState({Loading : false})
+            this.setState({ Loading: false })
         }).catch(function (error) {
-            this.setState({Loading : false})
+            this.setState({ Loading: false })
         })
+
     }
 
     //handeling image upload
     handleUploadAttachment(ev) {
         console.log("ev========", ev)
         let self = this
-        var idCardBase64
-        var assetBodyData
         ev.preventDefault()
-        if(self.state.upc !== '') {
+        if (self.state.upc !== '') {
             var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
             if (FileSize <= 5) {
-                self.getBase64(self.uploadInput.files[0], (result) => {
-                    var base64 = result.split(",");
-                    idCardBase64 = base64[1]
-                    assetBodyData = AssetJsonModel._getJsonDataFromAsset({ created_at : '', fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.upc })
-                    console.log("===assetBodyData====", assetBodyData)
-                    self.setState({
-                        image: assetBodyData.data
-                    })
-                    axios.post("/api/upload/image", assetBodyData).then((res) => {
-                        console.log("error in response", res)
-                        if (res.data) {
-                            console.log("res in uploading", res)
-                            return
-                        } else {
-                            console.log("error in response", res)
-                            return
-                        }
-                    }).catch((err) => {
-                        console.log("errorrrrrrrrrrrrrr in uploading", err)
+                var file = this.uploadInput.files[0];
+                const data = new FormData();
+                data.append('file', file);
+                data.append('filename', file.name);
+                axios.post("/api/upload/image", data).then((res) => {
+                    console.log("error in response", res)
+                    if (res.data) {
+                        console.log("res in uploading", res)
+                        self.setState({
+                            image: res.data.file,
+                            main_image: res.data.file
+                        })
                         return
-                    })
-                });
+                    } else {
+                        console.log("error in response", res)
+                        return
+                    }
+                }).catch((err) => {
+                    console.log("errorrrrrrrrrrrrrr in uploading", err)
+                    return
+                })
+
             }
             else {
                 console.log("fileSizeExceedMessage=======")
@@ -164,26 +163,23 @@ class NewProduct extends Component {
         }
     }
     handleUploadAttachmentAdditional(ev) {
-        console.log("ev========additional_image", ev)
+        console.log("ev========", ev)
         let self = this
-        var idCardBase64
-        var assetBodyData
         ev.preventDefault()
-        if(self.state.upc !== '') {
+        if (self.state.upc !== '') {
             var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
-        if (FileSize <= 5) {
-            self.getBase64(self.uploadInputAdditional.files[0], (result) => {
-                var base64 = result.split(",");
-                idCardBase64 = base64[1]
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ created_at : '', fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInputAdditional.files[0].name, mimetype: self.uploadInputAdditional.files[0].type, id: self.state.sku })
-                console.log("===assetBodyData====additional_image", assetBodyData)
-                self.setState({
-                    additional_image: assetBodyData.data
-                })
-                axios.post("/api/upload/additional_image", assetBodyData).then((res) => {
+            if (FileSize <= 5) {
+                var file = this.uploadInputAdditional.files[0];
+                const data = new FormData();
+                data.append('file', file);
+                data.append('filename', file.name);
+                axios.post("/api/upload/additional_image", data).then((res) => {
                     console.log("error in response additional_image", res)
                     if (res.data) {
-                        console.log("res in additional_image", res)
+                        self.setState({
+                            additionalImage: res.data.file,
+                            additional_image: res.data.file
+                        })
                         return
                     } else {
                         console.log("error in responseadditional_image", res)
@@ -193,13 +189,12 @@ class NewProduct extends Component {
                     console.log("errorrrrrrrrrrrrrr in additional_image uploading", err)
                     return
                 })
-            });
+            }
+            else {
+                console.log("fileSizeExceedMessage=======additional_image")
+            }
         }
-        else {
-            console.log("fileSizeExceedMessage=======additional_image")
-        }
-        }
-        
+
     }
 
     /*Upload PDF files 
@@ -208,13 +203,17 @@ class NewProduct extends Component {
     */
     UploadPDF() {
         var self = this;
-        var assetBodyData = '{ pdfName :'+this.state.selectPdf+'}';
-        console.log('hgvhbhbhhbvbh'+assetBodyData);
-        axios.post("/api/readpdf",{pdfName:this.state.selectPdf}).then((res) => {
+        var assetBodyData = '{ pdfName :' + this.state.selectPdf + '}';
+        console.log('hgvhbhbhhbvbh' + assetBodyData);
+        self.setState({
+            Loading: true
+        })
+        axios.post("/api/readpdf", { pdfName: this.state.selectPdf }).then((res) => {
             console.log("error in response", res)
             if (res.data) {
                 self.setState({
-                    pdfData: res.data
+                    pdfData: res.data,
+                    Loading: false
                 })
                 console.log("res in uploading", res)
                 return
@@ -227,7 +226,7 @@ class NewProduct extends Component {
             console.log("errorrrrrrrrrrrrrr in uploading", err)
             return
         })
-        
+
 
 
 
@@ -278,18 +277,18 @@ class NewProduct extends Component {
             }
     }
 
-    calculateComlpleteness(completeArray){
+    calculateComlpleteness(completeArray) {
         let count = 0
         let percent = 0
         let percentUnit = 20
-        completeArray.map(list=>{
-            
-            if(list!=="") {
+        completeArray.map(list => {
+
+            if (list !== "") {
                 count++
-            } 
+            }
         })
-        percent = percentUnit*count
-    
+        percent = percentUnit * count
+
         return percent;
     }
 
@@ -298,31 +297,23 @@ class NewProduct extends Component {
         let img = this.state.image
         var state = this.state
         let addImge = this.state.additional_image
-        let { pdfData,pdfFileArray,selectPdf} = this.state
-        let image = ''
-        let additionalImage = ''
-        if (img !== '') {
-            image = "data:" + img.mimetype + ";base64," + img.data
-        }
-       
-       var completeArray=[state.brand,state.product_name,state.cost,state.category,state.upc]
-       console.log('completeArray--',completeArray,completeArray[3])
-        var percent=this.calculateComlpleteness(completeArray);
+        let { pdfData, pdfFileArray, selectPdf } = this.state
+        let image = img;
+        let additionalImage = this.state.additional_image
 
 
-       console.log('product_completion===', percent)
-        if (addImge !== '') {
-            additionalImage = "data:" + addImge.mimetype + ";base64," + addImge.data
-        }
- return (
-           
+        var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
+        console.log('completeArray--', completeArray, completeArray[3])
+        var percent = this.calculateComlpleteness(completeArray);
+        return (
+
             <div>
                 {/* <div className="preloader">
-                    <div className="loader">
-                        <div className="loader__figure" />
-                        <p className="loader__label">Please Wait..</p>
-                    </div>
-                </div> */}
+                <div className="loader">
+                    <div className="loader__figure" />
+                    <p className="loader__label">Please Wait..</p>
+                </div>
+            </div> */}
                 {
                     this.state.Loading === true &&
                     <div className="loader-react">
@@ -365,8 +356,8 @@ class NewProduct extends Component {
                                             <a className="nav-link" data-toggle="tab" href="#productQuality" role="tab" aria-controls="productQuality">Product Quality</a>
                                         </li>
                                         {/* <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
-                                        </li> */}
+                                        <a className="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-controls="settings2">Language</a>
+                                    </li> */}
                                     </ul>
                                 </div>
                                 <div className="col-md-9">
@@ -376,18 +367,18 @@ class NewProduct extends Component {
                                                 <ul>
                                                     <li className="row">
                                                         {/* <div className="col-md-11">
-                                                            <div className="form-group">
-                                                                <label>Product ID</label>
-                                                                <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
-                                                            </div>
-                                                        </div> */}
+                                                        <div className="form-group">
+                                                            <label>Product ID</label>
+                                                            <input className="form-control" type="text" name="product_id" value={this.state.product_id} onChange={e => this.change(e)} />
+                                                        </div>
+                                                    </div> */}
                                                         <div className="col-md-1">
                                                             {/* <div className="rightpartedit_delete">
-          <center>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-           
-          </center>
-          </div> */}
+        <center>
+        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+        
+        </center>
+        </div> */}
                                                         </div>
                                                     </li>
                                                     <li className="row">
@@ -399,13 +390,13 @@ class NewProduct extends Component {
                                                         </div>
                                                         <div className="col-md-1">
                                                             {/*<div className="rightpartedit_delete">
-          <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-          
-           
-          </center>
-          </div>*/}
+        <center>
+        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
+        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+        
+        
+        </center>
+        </div>*/}
                                                         </div>
                                                     </li>
                                                     <li className="row">
@@ -417,13 +408,13 @@ class NewProduct extends Component {
                                                         </div>
                                                         <div className="col-md-1">
                                                             {/*<div className="rightpartedit_delete">
-          <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-          
-           
-          </center>
-          </div>*/}
+        <center>
+        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
+        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+        
+        
+        </center>
+        </div>*/}
                                                         </div>
                                                     </li>
                                                     <li className="row">
@@ -446,33 +437,33 @@ class NewProduct extends Component {
                                                         </div>
                                                         <div className="col-md-1">
                                                             {/*<div className="rightpartedit_delete">
-          <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-          
-           
-          </center>
-          </div>*/}
+        <center>
+        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
+        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+        
+        
+        </center>
+        </div>*/}
                                                         </div>
                                                     </li>
                                                     {/* <li className="row">
-                                                        <div className="col-md-11">
-                                                            <div className="form-group">
-                                                                <label>Link</label>
-                                                                <input className="form-control" type="text" name="link" value={this.state.link} onChange={e => this.change(e)} />
-                                                            </div>
+                                                    <div className="col-md-11">
+                                                        <div className="form-group">
+                                                            <label>Link</label>
+                                                            <input className="form-control" type="text" name="link" value={this.state.link} onChange={e => this.change(e)} />
                                                         </div>
-                                                        <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-          <center>
-            <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-      		<a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-          
-           
-          </center>
-          </div>
-                                                        </div>
-                                                    </li> */}
+                                                    </div>
+                                                    <div className="col-md-1">
+                                                        {/*<div className="rightpartedit_delete">
+        <center>
+        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
+        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
+        
+        
+        </center>
+        </div>
+                                                    </div>
+                                                </li> */}
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -492,20 +483,24 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Brand</label>
+                                                                {/* <label>Brand</label> */}
                                                                 <div className="form-group">
-                                                                    <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.brand} className="form-control">
-                                                                        <option value={"Colgate"}>Colgate</option>
-                                                                        <option value={"Palmolive"}>Palmolive</option>
-                                                                        <option value={"Hills"}>Hills</option>
+                                                                    <label>Brand</label>
+                                                                    <div className="form-group">
+                                                                        <select id="pref-perpage" name="brand" onChange={(e) => this.change(e)} value={this.state.brand} className="form-control">
+                                                                            <option value={"Colgate"}>Colgate</option>
+                                                                            <option value={"Palmolive"}>Palmolive</option>
+                                                                            <option value={"Hills"}>Hills</option>
 
-                                                                    </select>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div className="col-md-1">
+                                                            <div className="col-md-1">
+                                                            </div>
                                                         </div>
                                                     </li>
+
 
                                                     <li className="row">
                                                         <div className="col-md-11">
@@ -714,12 +709,12 @@ class NewProduct extends Component {
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                             <span className="error_img">{this.state.errorSpan}</span>
-                                                <div className="form-group">    
+                                                <span className="error_img">{this.state.errorSpan}</span>
+                                                <div className="form-group">
                                                     <label>Upload Image</label>
                                                     <div className="form-group img_uploadmain">
-                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e)=>this.handleUploadAttachment(e)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
                                                             : ''}
@@ -731,7 +726,7 @@ class NewProduct extends Component {
                                                     <label>Additional Image Upload</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInputAdditional = ref }} onChange={this.handleUploadAttachmentAdditional.bind(this)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload Additioanl Files</a>
+                                                        <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload</a>
                                                         {additionalImage !== '' && additionalImage !== undefined ?
                                                             <img src={additionalImage} height="50px" width="50px" className="digital_img" />
                                                             : ''}
@@ -751,22 +746,22 @@ class NewProduct extends Component {
                                                         <select className="form-control onselect" name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} >
                                                         <option value="">Select File</option>
                                                             {
-                                                                pdfFileArray.length > 0 ? pdfFileArray.map(function(key,index){
+                                                                pdfFileArray.length > 0 ? pdfFileArray.map(function (key, index) {
                                                                     return (<option value={key}>{key}</option>)
                                                                 }) : ''
-                                                            
+
                                                             }
                                                         </select>
-                                                        <a onClick={(e) => this.UploadPDF()} className="create-new-link uploadfile">Fetch Data</a>
-                                                            <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
-                                                                <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
-                                                            {
-                                                                pdfData.length > 0 ? pdfData.map(function(key,index){
-                                                                    return <li class="nav-item">
-                                                                            <a className={index==0 ? 'nav-link active':'nav-link'} id="contact-tab" data-toggle="tab" href={`#contact${index}`} role="tab" aria-controls="contact" aria-selected="true">{key.lang}</a>
+                                                        <a onClick={(e) => this.UploadPDF()} className="create-new-link uploadfile delete">Fetch Data</a>
+                                                        <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
+                                                            <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
+                                                                {
+                                                                    pdfData.length > 0 ? pdfData.map(function (key, index) {
+                                                                        return <li class="nav-item">
+                                                                            <a className={index == 0 ? 'nav-link active' : 'nav-link'} id="contact-tab" data-toggle="tab" href={`#contact${index}`} role="tab" aria-controls="contact" aria-selected="true">{key.lang}</a>
                                                                         </li>
-                                                                }) : ''
-                                                            }
+                                                                    }) : ''
+                                                                }
                                                             </ul>
                                                             <div class="tab-content custome_content under_tabs" id="myTabContent">
                                                             {
@@ -829,7 +824,7 @@ class NewProduct extends Component {
                                                             
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -981,7 +976,7 @@ class NewProduct extends Component {
                                             </div>
                                         </div>
                                         <p><span className="label label-danger label-rounded">NOTE!</span> Attached images thumbnail is supported in latest firefox chrome,
-                    Opera,Safari and Internet Explore 10 only</p>
+                Opera,Safari and Internet Explore 10 only</p>
                                     </form>
                                 </div>
                                 {/* Modal footer */}

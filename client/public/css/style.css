@@ -1861,6 +1861,9 @@ Preloader
 	height: 157px;
 	position: relative;
 	border: 2px solid #eaeaea;
+	width:45%;
+	float: left;
+	padding:0 18px 0 5px;
 }
 .avatar-upload .avatar-preview > div {
 	width: 100%;
@@ -1881,7 +1884,7 @@ Preloader
 .filtercustome p {
 	margin-top: 5px;
 	font-size: 12px;
-	color: #aaafb5;
+	color: #aaafb5; width: 100%;
 }
 .allmodalcolgate .modal-footer {
 	border-radius: 0;
@@ -2183,7 +2186,9 @@ button.primary-button:hover .icon.plus {
 	margin-bottom: 30px;
 }
 .card .card-body img {
+	width:100%;
 }
+
 .text-center {
 	text-align: center!important;
 }
@@ -3787,3 +3792,21 @@ to {
 		font-size: 13px;}
 		.all_list_details {font-size: 13px;
 			color: #6f6f6f;}
+		.custom_row span {margin-top: 7px;
+			display: block;
+			font-size: 17px;
+		    color: #929191;
+	font-weight: 400;
+}
+		.delete { cursor: pointer;}
+		.custome_img.card .card-body img {
+			width: 100%;
+			height: 100%;
+		}
+		.custome_img.card .card-body p.img {    height: 200px;
+			margin: auto;
+			width: auto;}
+.avatar-edit .create-new-link { cursor: pointer}
+.avatar-edit .create-new-link:hover{ color: #eb4260 !important;}
+.avatar-edit {width: 100%;
+    display: inline-block;}	

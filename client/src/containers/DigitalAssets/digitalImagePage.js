@@ -82,12 +82,12 @@ class DigitalImagePage extends Component {
                                             <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <ImageContainer src="icons/option-all.png" />
                                             </a>
-                                                <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
+                                                <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                             </div>
                                         </div>
                                         <div className="option-box delete float-right"><a href>Delete</a></div>
                                         <div className="option-box download float-right"><a href="javscript:void(0)">Download</a></div>
-                                        <div className="option-box move-folder float-right"><a href="javscript:void(0)">Move to folder</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ class DigitalImagePage extends Component {
                                         <div className="breadcrumb">
                                             <ul>
                                                 <li>
-                                                    <a href="#">asset &gt;&gt; </a>
+                                                    <Link to="/digitalImages"> Asset &gt;&gt; </Link>
                                                 </li>
                                                 <li>  {asset.asset_id}</li>
                                             </ul>
@@ -119,9 +119,9 @@ class DigitalImagePage extends Component {
                                         <div className="row">
                                             <div className="col-md-2">
                                                 <div className="thumb">
-                                                    {asset.asset_data !== null && asset.asset_data !== undefined?
-                                                        <img src={"data:" + asset.asset_type + ";base64," + asset.asset_data} />
-                                                        : <ImageContainer src="1.jpg" />}
+                                                    {asset.path !== null && asset.path !== undefined?
+                                                        <img src={asset.path} />
+                                                        : '' }
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
@@ -135,7 +135,8 @@ class DigitalImagePage extends Component {
                                                     <ImageContainer src="icons/option-all.png" />
                                                     {/* <img src="img/icons/option-all.png" /> */}
                                                 </a>
-                                                    <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
+                                                    <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -139,11 +139,12 @@ class DigitalDocument extends Component {
                                     <div className="group-action">
                                       <div className="option-box delete"><a href>Delete</a></div>
                                       <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                      <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
                                     </div>
                                   </div>
                                 </div>
-                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> </div>
+                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
+                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                </div>
                             </div>
                           </div>
                         </div>
