@@ -229,7 +229,7 @@ async function listFiles(auth) {
 
 cron.schedule('*/1 * * * *', () => {
   console.log('running a task every two minutes');
- // getImage()
+  getImage()
 });
 //getImage();
 
