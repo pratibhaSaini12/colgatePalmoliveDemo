@@ -97,7 +97,7 @@ class DigitalImagePage extends Component {
                                         <div className="breadcrumb">
                                             <ul>
                                                 <li>
-                                                    <a href="#">asset &gt;&gt; </a>
+                                                    <Link to="/digitalImages"> Asset &gt;&gt; </Link>
                                                 </li>
                                                 <li>  {asset.asset_id}</li>
                                             </ul>
