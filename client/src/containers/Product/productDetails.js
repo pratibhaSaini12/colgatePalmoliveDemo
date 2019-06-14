@@ -179,6 +179,10 @@ class ProductDetail extends Component {
                                                                     <td>{product.brand}</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>Style </td>
+                                                                    <td>{product.style}</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>Product Completeness </td>
                                                                     <td>{product.product_completion}</td>
                                                                 </tr>
@@ -203,15 +207,15 @@ class ProductDetail extends Component {
                                                                 <td width="80%">{product.cost}</td>
                                                             </tr>
                                                                 <tr>
-                                                                    <td>Formatted Base Wholesale Price </td>
+                                                                    <td>Formatted Base Wholesale Price ($) </td>
                                                                     <td>{product.wholesale_price}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Formatted MSRP</td>
+                                                                    <td>Formatted MSRP ($)</td>
                                                                     <td>{product.msrp}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Formatted Retail Price</td>
+                                                                    <td>Formatted Retail Price ($)</td>
                                                                     <td>{product.retail_price}</td>
                                                                 </tr>
                                                             </tbody></table>

@@ -28,13 +28,10 @@ class ProductList extends Component {
             batchKey: 'product_name',
             batchValue: '',
             selectedArray: [
-                { key: 'product_line', value: 'Product Line' },
                 { key: 'product_name', value: 'Product Name' },
                 { key: 'category', value: 'Category' },
-                { key: 'cost', value: 'Cost' }],
+                { key: 'cost', value: 'Price' }],
             attrebuteArray: [
-                { key: 'category', value: 'Category' },
-                { key: 'cost', value: 'Cost' },
                 { key: 'created_at', value: 'Created At' },
                 { key: 'long_description', value: 'Long Description' },
                 //  { key: 'main_image', value: 'main_image' },
@@ -42,13 +39,11 @@ class ProductList extends Component {
                 { key: 'medium_description', value: 'Medium Description' },
                 { key: 'msrp', value: 'Msrp' },
                 { key: 'product_id', value: 'Product Id' },
-                { key: 'product_line', value: 'Product Line' },
-                { key: 'product_name', value: 'Product Name' },
                 { key: 'product_status', value: 'Product Status' },
                 { key: 'retail_price', value: 'Retail Price' },
                 { key: 'style', value: 'Style' },
                 { key: 'tags', value: 'Tags' },
-                { key: 'upc', value: 'Upc' },
+                { key: 'upc', value: 'Sku' },
                 { key: 'updated_at', value: 'Updated At' },
                 { key: 'warnings', value: 'Warnings' },
                 { key: 'wholesale_price', value: 'Wholesale Price' },
@@ -61,7 +56,7 @@ class ProductList extends Component {
             pageactive: 1,
             dataPerPage: 10,
             additionalPictures: [],
-            batchHidden:true ,
+            batchHidden: true,
 
 
         }
@@ -203,9 +198,10 @@ class ProductList extends Component {
             console.log('bulk delete===', self.state.bulkDelete)
             var id = self.state.bulkDelete
             axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
-                console.log('resposne from api==', product)
+                console.log('resposne from api==', response)
+               // window.location.href = "/productList"
                 if (response.data.product) {
-                    self.setState({ bulkDelete: '', Loading: false })
+                    // self.setState({ bulkDelete: '', Loading: false })
                     window.location.href = "/productList"
                 }
 
@@ -281,7 +277,7 @@ class ProductList extends Component {
                                 return pic.image
                             }
                         }),
-                        additional_image : _.filter(additionalPictures, (pic) => {
+                        additional_image: _.filter(additionalPictures, (pic) => {
                             if (prodct.upc === pic.id) {
                                 return pic.image
                             }
@@ -428,26 +424,21 @@ class ProductList extends Component {
 
         data.map(data => {
             json = {
-                "Category": `${data.category}`,
-                "Cost": data.cost,
-                "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),
-                "Link": data.link,
-                "Product Decription": data.long_description,
-                "Material": data.material,
-                "Medium Description": data.medium_description,
-                "MSRP": data.msrp,
                 "Product Id": data.product_id,
-                "product Line ": data.product_line,
                 "Product Name": data.product_name,
+                "SKU": data.upc,
+                "Category": `${data.category}`,
                 "Product Status": data.product_status,
-                "Retail Price": data.retail_price,
+                "Brand":data.brand,
                 "Style": data.style,
-                "Tags": data.tags,
-                "UPC": data.upc,
-                "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY'),
-                "Warnings": data.warnings,
-                "Wholesale Price": data.wholesale_price,
-                "Workflow State": data.workflow_state
+                "Price ($)": data.cost,
+                "Formatted Base Wholesale Price ($)":data.wholesale_price,
+                "Formatted MSRP ($)":data.msrp,
+                "Formatted Retail Price ($)":data.retail_price,
+                "Workflow State":data.workflow_state,
+                "Product Quality":data.product_completion,               
+                "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),               
+                "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY')
             }
             tempData.push(json)
         })
@@ -553,6 +544,14 @@ class ProductList extends Component {
         })
     }
 
+    changeSearchValue3(e){
+        this.setState({
+           searchValue3: e.target.value,
+        //    searchValue1:'',
+        //    searchValue2:''
+        })
+    }
+
     batchUpdate() {
         console.log('state on batch update----', this.state)
         var state = this.state
@@ -573,7 +572,7 @@ class ProductList extends Component {
         axios.post("api/batchUpdate", batchUpdate).then(function (response) {
             window.location.href = "/productList"
             // console.log('resposne from api==', product)
-            if (response.data.task) {
+            if (response.data.product) {
                 window.location.href = "/productList"
             }
 
@@ -660,11 +659,11 @@ class ProductList extends Component {
     selectAttrebute(index) {
         var flag = true;
         this.state.selectedArray.map((key) => {
-            if(key.key == index.key){
+            if (key.key == index.key) {
                 flag = false;
             }
-        }) 
-        if(flag)
+        })
+        if (flag)
             this.state.selectedArray.push(index);
     }
 
@@ -687,13 +686,13 @@ class ProductList extends Component {
     //     let domBatch  = document.getElementsByClassName('filtercustome')[0]
     //     console.log("batch####",domBatch)
     //     if(domBatch.style.visibility === 'visible') {
-         
+
     //            this.setState({batchHidden:true})
 
     //     } else {
     //         this.setState({batchHidden:false})
     //     }
-       
+
 
     // }
 
@@ -711,7 +710,7 @@ class ProductList extends Component {
                 data = filteredList.filter((dat) => dat.product_completion === "100")
             } else if (status === "incomplete") {
                 data = filteredList.filter((dat) => dat.product_completion !== "100")
-            } 
+            }
 
             console.log("data============", data)
             product = data
@@ -750,7 +749,7 @@ class ProductList extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{'visibility':`${this.state.batchHidden===true?'hidden':'visible'}`}}>
+                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ 'display': 'none' }}>
                                         <div className="panel panel-default">
                                             <div className="panel-body">
                                                 <form>
@@ -759,10 +758,11 @@ class ProductList extends Component {
                                                             <div className="row">
                                                                 <div className="col-md-4">
                                                                     <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control" name="searchValue3" onChange={e => this.change(e)}>
+                                                                        <select id="pref-perpage" className="form-control" name="searchValue3" onChange={e => this.changeSearchValue3(e)}>
                                                                             <option value={0}>Brand</option>
                                                                             <option value={"Colgate"}>Colgate</option>
                                                                             <option value={"Palmolive"}>Palmolive</option>
+                                                                            <option value={"Hills"}>Hills</option>
 
                                                                         </select>
                                                                     </div>
@@ -805,9 +805,9 @@ class ProductList extends Component {
 
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
-                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />                                                                                             
+                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
                                 </div>
-                                
+
 
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
@@ -817,7 +817,7 @@ class ProductList extends Component {
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter" onClick={(e)=>{this.batchUpdateIcon(e)}} >filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter"  >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -836,9 +836,9 @@ class ProductList extends Component {
                                                                     <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}><i className="ti-trash"></i>Delete</a></div>
 
                                                                     <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
-                                                                    <div className="option-box move-folder"><a href="javscript:void(0)"><i className="ti-folder"></i>Move to Folder</a></div>
+                                                                    {/* <div className="option-box move-folder"><a href="javscript:void(0)"><i className="ti-folder"></i>Move to Folder</a></div>
                                                                     <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
-                                                                    <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div>
+                                                                    <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div> */}
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
@@ -847,9 +847,9 @@ class ProductList extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="ti-check" />Approve</a>
-                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="ti-close" />Reject</a>
-                                                        <a className="dropdown-item" href="javascript:void(0);"><i className="fas fa-upload" />Publish</a>
+                                                        <a className="dropdown-item" ><i className="ti-check" />Approve</a>
+                                                        <a className="dropdown-item" ><i className="ti-close" />Reject</a>
+                                                        <a className="dropdown-item" ><i className="fas fa-upload" />Publish</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1110,9 +1110,7 @@ class ProductList extends Component {
                                             <label>Labels</label>
                                             <select id="pref-perpage" class="form-control" name="batchKey" onChange={e => this.change(e)}>
                                                 <option value="product_name">Product Name</option>
-                                                <option value="link">Link</option>
-                                                <option value="upc">UPC</option>
-                                                <option value="category">Category</option>
+                                                <option value="Style">Style</option>
                                             </select>
                                         </div>
                                         <div className="form-group">
@@ -1138,7 +1136,7 @@ class ProductList extends Component {
                             <div className="modal-content">
                                 {/* Modal Header */}
                                 <div className="modal-header">
-                                    <h4 className="modal-title title_modalheader">Delete Product</h4>
+                                    <h4 className="modal-title title_modalheader">Are you sure you want to delete?</h4>
                                     <button type="button" className="close" data-dismiss="modal" onClick={(e) => this.setState({ deleteProductId: '' })}>×</button>
                                 </div>
                                 {/* The product delete */}
