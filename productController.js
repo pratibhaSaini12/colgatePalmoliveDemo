@@ -9,7 +9,7 @@ module.exports = {
     getAllProducts(req, res) {
         console.log('inside controller')
 
-        con.query("SELECT * FROM `product` ", function (err, result) {
+        con.query("SELECT * FROM `product` ORDER BY created_at desc", function (err, result) {
             //     console.log('response from DB====', result)
             if (err)
                 throw err;
@@ -125,7 +125,7 @@ module.exports = {
     //Create Product
     createProduct(req, res) {
         console.log('data ===', req.body)
-        con.query("INSERT INTO product (`product_name`, `upc`, `category`,`link`,`product_line`,`product_status`,`cost`,`wholesale_price`,`msrp`,`retail_price`,`medium_description`,`long_description`,`tags`,`warnings`,`material`,`style`,`main_image`,workflow_state,`brand`,`product_completion`,`pack_flats`) VALUES ('" + req.body.product_name + "', '" + req.body.upc + "', '" + req.body.category + "','" + req.body.link + "','" + req.body.product_line + "','" + req.body.product_status + "','" + req.body.cost + "','" + req.body.wholesale_price + "','" + req.body.msrp + "','" + req.body.retail_price + "','" + req.body.medium_description + "','" + req.body.long_description + "','" + req.body.tags + "','" + req.body.warnings + "','" + req.body.material + "','" + req.body.style + "','" + req.body.main_image + "','" + req.body.workflow_state + "','" + req.body.brand + "','" + req.body.product_completion + "','" + req.body.pdfFileArray + "')", function (err, result) {
+        con.query("INSERT INTO product (`product_name`, `upc`, `category`,`link`,`product_line`,`product_status`,`cost`,`wholesale_price`,`msrp`,`retail_price`,`medium_description`,`long_description`,`tags`,`warnings`,`material`,`style`,`main_image`,workflow_state,`brand`,`product_completion`,`pack_flats`,`additional_image`) VALUES ('" + req.body.product_name + "', '" + req.body.upc + "', '" + req.body.category + "','" + req.body.link + "','" + req.body.product_line + "','" + req.body.product_status + "','" + req.body.cost + "','" + req.body.wholesale_price + "','" + req.body.msrp + "','" + req.body.retail_price + "','" + req.body.medium_description + "','" + req.body.long_description + "','" + req.body.tags + "','" + req.body.warnings + "','" + req.body.material + "','" + req.body.style + "','" + req.body.main_image + "','" + req.body.workflow_state + "','" + req.body.brand + "','" + req.body.product_completion + "','" + req.body.pdfFileArray + "','" + req.body.additional_image + "')", function (err, result) {
             console.log('response from create Product====', result)
             if (err)
                 throw err;

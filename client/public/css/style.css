@@ -2183,7 +2183,9 @@ button.primary-button:hover .icon.plus {
 	margin-bottom: 30px;
 }
 .card .card-body img {
+	width:100%;
 }
+
 .text-center {
 	text-align: center!important;
 }

@@ -32,21 +32,15 @@ class ProductList extends Component {
                 { key: 'category', value: 'Category' },
                 { key: 'cost', value: 'Price' }],
             attrebuteArray: [
-                { key: 'created_at', value: 'Created At' },
-                { key: 'long_description', value: 'Long Description' },
-                //  { key: 'main_image', value: 'main_image' },
-                { key: 'material', value: 'Material' },
-                { key: 'medium_description', value: 'Medium Description' },
-                { key: 'msrp', value: 'Msrp' },
+                { key: 'created_at', value: 'Created Date' },
+                { key: 'msrp', value: 'Formatted MSRP ($)' },
                 { key: 'product_id', value: 'Product Id' },
                 { key: 'product_status', value: 'Product Status' },
-                { key: 'retail_price', value: 'Retail Price' },
+                { key: 'retail_price', value: 'Formatted Retail Price ($)' },
                 { key: 'style', value: 'Style' },
-                { key: 'tags', value: 'Tags' },
                 { key: 'upc', value: 'Sku' },
-                { key: 'updated_at', value: 'Updated At' },
-                { key: 'warnings', value: 'Warnings' },
-                { key: 'wholesale_price', value: 'Wholesale Price' },
+                { key: 'updated_at', value: 'Updated Date' },
+                { key: 'wholesale_price', value: 'Formatted Base Wholesale Price ($)' },
                 { key: 'workflow_state', value: 'Workflow State' },
             ],
             bulkDelete: [],
@@ -91,8 +85,6 @@ class ProductList extends Component {
                 if (res.status === 200) {
                     let data = res.data.data[0].imageData
                     data = JSON.parse(data)
-                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                    console.log("image found===========", image)
                     // convert values into object
                     if (res.data.data.length) {
                         res.data.data.map((imageString) => {
@@ -103,7 +95,6 @@ class ProductList extends Component {
                                 image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
                             })
                         })
-                        console.log("imageData=============", imageData)
                     }
                     self.setState({
                         pictures: imageData,
@@ -124,8 +115,6 @@ class ProductList extends Component {
                 if (res.status === 200) {
                     let data = res.data.data[0].imageData
                     data = JSON.parse(data)
-                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                    console.log("additional-image found===========", image)
                     // convert values into object
                     if (res.data.data.length) {
                         res.data.data.map((imageString) => {
@@ -136,7 +125,6 @@ class ProductList extends Component {
                                 image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
                             })
                         })
-                        console.log("imageData=============", additionalImage)
                     }
                     self.setState({
                         additionalPictures: additionalImage,
@@ -199,7 +187,7 @@ class ProductList extends Component {
             var id = self.state.bulkDelete
             axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
                 console.log('resposne from api==', response)
-               // window.location.href = "/productList"
+                // window.location.href = "/productList"
                 if (response.data.product) {
                     // self.setState({ bulkDelete: '', Loading: false })
                     window.location.href = "/productList"
@@ -254,59 +242,7 @@ class ProductList extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.stateUpdate === true) {
-            let self = this
-            let { filteredList, pictures, additionalPictures } = self.state
-            let newProductsWithImage = []
-            // check length of pictures
-            if (pictures.length > 0 && filteredList.length > 0 || additionalPictures.length > 0) {
-                filteredList.map((prodct) => {
 
-                    console.log("id in product", prodct.product_id)
-                    console.log("id in product", additionalPictures)
-
-                    // console.log("id in picture", Number(pic.id))
-                    newProductsWithImage.push({
-                        category: prodct.category,
-                        cost: prodct.cost,
-                        created_at: prodct.created_at,
-                        link: prodct.link,
-                        long_description: prodct.long_description,
-                        main_image: _.filter(pictures, (pic) => {
-                            if (prodct.upc === pic.id) {
-                                return pic.image
-                            }
-                        }),
-                        additional_image: _.filter(additionalPictures, (pic) => {
-                            if (prodct.upc === pic.id) {
-                                return pic.image
-                            }
-                        }),
-                        material: prodct.material,
-                        medium_description: prodct.medium_description,
-                        msrp: prodct.msrp,
-                        product_id: prodct.product_id,
-                        product_line: prodct.product_line,
-                        product_name: prodct.product_name,
-                        product_status: prodct.product_status,
-                        retail_price: prodct.retail_price,
-                        style: prodct.style,
-                        tags: prodct.tags,
-                        upc: prodct.upc,
-                        updated_at: prodct.updated_at,
-                        warnings: prodct.warnings,
-                        wholesale_price: prodct.wholesale_price,
-                        workflow_state: prodct.workflow_state
-
-                    })
-                })
-                self.setState({
-                    product: newProductsWithImage,
-                    filteredList: newProductsWithImage,
-                    stateUpdate: false
-                })
-            }
-        }
     }
 
     handleChange(e) {
@@ -429,15 +365,15 @@ class ProductList extends Component {
                 "SKU": data.upc,
                 "Category": `${data.category}`,
                 "Product Status": data.product_status,
-                "Brand":data.brand,
+                "Brand": data.brand,
                 "Style": data.style,
                 "Price ($)": data.cost,
-                "Formatted Base Wholesale Price ($)":data.wholesale_price,
-                "Formatted MSRP ($)":data.msrp,
-                "Formatted Retail Price ($)":data.retail_price,
-                "Workflow State":data.workflow_state,
-                "Product Quality":data.product_completion,               
-                "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),               
+                "Formatted Base Wholesale Price ($)": data.wholesale_price,
+                "Formatted MSRP ($)": data.msrp,
+                "Formatted Retail Price ($)": data.retail_price,
+                "Workflow State": data.workflow_state,
+                "Product Quality": data.product_completion,
+                "Created Date": moment(new Date(data.created_at)).format('MM/DD/YYYY'),
                 "Update Date ": moment(new Date(data.updated_at)).format('MM/DD/YYYY')
             }
             tempData.push(json)
@@ -544,11 +480,11 @@ class ProductList extends Component {
         })
     }
 
-    changeSearchValue3(e){
+    changeSearchValue3(e) {
         this.setState({
-           searchValue3: e.target.value,
-        //    searchValue1:'',
-        //    searchValue2:''
+            searchValue3: e.target.value,
+            //    searchValue1:'',
+            //    searchValue2:''
         })
     }
 
@@ -659,6 +595,7 @@ class ProductList extends Component {
     selectAttrebute(index) {
         var flag = true;
         this.state.selectedArray.map((key) => {
+            console.log('key----',key)
             if (key.key == index.key) {
                 flag = false;
             }
@@ -908,7 +845,8 @@ class ProductList extends Component {
                                                             })
                                                             }
                                                             <td><div className="row-hover">
-                                                                <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                                <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link> 
+                                                                 <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}> <ImageContainer src="icons/delete.png" />
                                                                 </a></div>
                                                             </div></td>
                                                         </tr>
@@ -948,7 +886,7 @@ class ProductList extends Component {
 
                                                         <p className="img">
                                                             {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
-                                                                <img src={key.main_image[0].image} alt="" />
+                                                                <img src={key.main_image} alt="" />
                                                                 :
                                                                 <ImageContainer src="1.png" />
                                                             }

@@ -238,9 +238,9 @@ class ProductDetail extends Component {
                                                                 <td width="20%">Main Image</td>
                                                                 <td width="30%">                                                                    
                                                                 {product.main_image !==undefined && product.main_image !== null &&product.main_image !==''
-                                                                        && product.main_image.length > 0
+                                                                        
                                                                         ?
-                                                                        <img src={product.main_image[0].image} />
+                                                                        <img src={product.main_image} />
                                                                     : '' }
                                                                 </td>
                                                             </tr>
@@ -248,9 +248,9 @@ class ProductDetail extends Component {
                                                                     <td>Additional Image</td>
                                                                     <td><span>
                                                                         {product.additional_image !==undefined && product.additional_image !== null &&product.additional_image !==''
-                                                                        && product.additional_image.length > 0
+                                                                        
                                                                         ?
-                                                                        <img src={product.additional_image[0].image} />
+                                                                        <img src={product.additional_image} />
                                                                     : '' }
                                                                     </span> 
                                                                     </td>

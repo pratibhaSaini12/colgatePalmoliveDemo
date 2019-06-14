@@ -132,8 +132,18 @@ class TaskList extends Component {
 
     render() {
         console.log("porpssssssss in taskList", this.props)
-        const { filteredList } = this.state;
+        let { filteredList } = this.state;
         let { dataPerPage } = this.state
+        let data
+
+        if (this.props.location.state !== undefined) {
+            console.log("found============")
+            let assignedTo = this.props.location.state._assignedTo
+            data = filteredList.filter((dat) => dat.assignedTo === assignedTo)
+
+            console.log("data============", data)
+            filteredList = data
+        }
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>
