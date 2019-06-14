@@ -78,8 +78,6 @@ class DigitalImages extends Component {
                     if (res.status === 200) {
                         let data = res.data.data[0].imageData
                         data = JSON.parse(data)
-                        let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                        console.log("image found===========", image)
                         // convert values into object
                         if (res.data.data.length) {
                             res.data.data.map((imageString) => {
@@ -94,7 +92,6 @@ class DigitalImages extends Component {
                                     mimetype: imageJsonData.data.mimetype !== undefined ? imageJsonData.data.mimetype : undefined
                                 })
                             })
-                            console.log("imageData=============", imageData)
                         }
                         self.setState({
                             productImageList: imageData,
@@ -271,40 +268,27 @@ class DigitalImages extends Component {
     }
 
     async deleteProductById() {
-        console.log('delete asset by id', this.state)
-        let self = this
-        // self.setState({ Loading: true })
-        console.log("this.stateeeeee", this.state)
-        if (self.state.deleteAssetId) {
-            await axios.post("/api/deleteAssetByID", { id: this.state.deleteAssetId }).then(function (response) {
-                console.log('resposne from Delete api==', response)
-                if (response.data.asset) {
+        try{
+            console.log('delete asset by id', this.state.deleteAssetId)
+            let self = this
+            // self.setState({ Loading: true })
+            console.log("this.stateeeeee", self.state)
+            if (self.state.deleteAssetId) {
+                await axios.post("/api/deleteAssetByID", { id: self.state.deleteAssetId }).then(function (response) {
+                    console.log('resposne from Delete api==', response)
+                    if (response.data.asset) {
+                        self.setState({ deleteAssetId: '', Loading: false })
+                        window.location.href = "/digitalImages"
+                    }
+    
+                }).catch(function (error) {
                     self.setState({ deleteAssetId: '', Loading: false })
-                    window.location.href = "/digitalImages"
-                }
-
-            }).catch(function (error) {
-                this.setState({ deleteAssetId: '', Loading: false })
-                console.log("error in delete product", error)
-            })
+                    console.log("error in delete product", error)
+                })
+            }
+        }catch(e){
+            
         }
-
-        // else if (self.state.bulkDelete) {
-        //     console.log('bulk delete===', self.state.bulkDelete)
-        //     var id = self.state.bulkDelete
-        //     axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
-        //         console.log('resposne from api==', product)
-        //         if (response.data.product) {
-        //             self.setState({ bulkDelete: '', Loading: false })
-        //             window.location.href = "/productList"
-        //         }
-
-        //     }).catch(function (error) {
-        //         this.setState({ bulkDelete: '', Loading: false })
-        //     })
-        // }
-
-
     }
     
     /**
@@ -896,6 +880,7 @@ class DigitalImages extends Component {
                             </div>
                         </div>
                     </div>
+
                     {/* The product delete */}
                     <div className="modal fade allmodalcolgate" id="delete">
                         <div className="modal-dialog">
