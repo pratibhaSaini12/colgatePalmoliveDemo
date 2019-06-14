@@ -125,7 +125,7 @@ module.exports = {
     //Create Product
     createProduct(req, res) {
         console.log('data ===', req.body)
-        con.query("INSERT INTO product (`product_name`, `upc`, `category`,`link`,`product_line`,`product_status`,`cost`,`wholesale_price`,`msrp`,`retail_price`,`medium_description`,`long_description`,`tags`,`warnings`,`material`,`style`,`main_image`,workflow_state,`brand`,`product_completion`) VALUES ('" + req.body.product_name + "', '" + req.body.upc + "', '" + req.body.category + "','" + req.body.link + "','" + req.body.product_line + "','" + req.body.product_status + "','" + req.body.cost + "','" + req.body.wholesale_price + "','" + req.body.msrp + "','" + req.body.retail_price + "','" + req.body.medium_description + "','" + req.body.long_description + "','" + req.body.tags + "','" + req.body.warnings + "','" + req.body.material + "','" + req.body.style + "','" + req.body.main_image + "','" + req.body.workflow_state + "','" + req.body.brand + "','" + req.body.product_completion + "')", function (err, result) {
+        con.query("INSERT INTO product (`product_name`, `upc`, `category`,`link`,`product_line`,`product_status`,`cost`,`wholesale_price`,`msrp`,`retail_price`,`medium_description`,`long_description`,`tags`,`warnings`,`material`,`style`,`main_image`,workflow_state,`brand`,`product_completion`,`pack_flats`) VALUES ('" + req.body.product_name + "', '" + req.body.upc + "', '" + req.body.category + "','" + req.body.link + "','" + req.body.product_line + "','" + req.body.product_status + "','" + req.body.cost + "','" + req.body.wholesale_price + "','" + req.body.msrp + "','" + req.body.retail_price + "','" + req.body.medium_description + "','" + req.body.long_description + "','" + req.body.tags + "','" + req.body.warnings + "','" + req.body.material + "','" + req.body.style + "','" + req.body.main_image + "','" + req.body.workflow_state + "','" + req.body.brand + "','" + req.body.product_completion + "','" + req.body.pdfFileArray + "')", function (err, result) {
             console.log('response from create Product====', result)
             if (err)
                 throw err;
@@ -156,7 +156,7 @@ module.exports = {
 
     getProductCompletion(req, res) {
         console.log('###############', req.body)
-        con.query("select 100_per/total*100 as 100_per from( select count(1) as total, sum(if(product_completion='100' and product_status='active',1,0)) as 100_per from product) t", function (err, result) {
+        con.query("select 100_per/total*100 as complete from( select count(1) as total, sum(if(product_completion='100' and product_status='active',1,0)) as 100_per from product) t", function (err, result) {
             console.log('response from bulk delete by id====', result)
             if (err)
                 throw err;
@@ -182,8 +182,8 @@ module.exports = {
         })
     },
     readPDf(req, res) {
-        console.log('--- aa gya---',req.body);
-        var pdf_path = "./file/"+req.body.pdfName;
+        console.log('--- aa gya---', req.body);
+        var pdf_path = "./file/" + req.body.pdfName;
         const pdfExtract = new PDFExtract();
         const options = {}; /* see below */
         const codinateArray = [
@@ -341,18 +341,18 @@ module.exports = {
         });
 
     },
-    fetchFile(req,res){
+    fetchFile(req, res) {
         var fileName = [];
         const testFolder = './file/';
         fs.readdir(testFolder, (err, files) => {
             files.forEach(file => {
                 console.log(file.split('.'));
-                if(file.split('.')[1]=='pdf')
+                if (file.split('.')[1] == 'pdf')
                     fileName.push(file);
             });
             res.send(fileName);
-        }); 
-          
+        });
+
     },
     batchUpdate(req, res) {
         console.log('###################', req.body.id)

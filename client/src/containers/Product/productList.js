@@ -59,8 +59,11 @@ class ProductList extends Component {
             searchValue2: '',
             searchValue3: '',
             pageactive: 1,
-            dataPerPage: 5,
-            additionalPictures: []
+            dataPerPage: 10,
+            additionalPictures: [],
+            batchHidden:true ,
+
+
         }
     }
 
@@ -93,8 +96,6 @@ class ProductList extends Component {
                 if (res.status === 200) {
                     let data = res.data.data[0].imageData
                     data = JSON.parse(data)
-                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                    console.log("image found===========", image)
                     // convert values into object
                     if (res.data.data.length) {
                         res.data.data.map((imageString) => {
@@ -105,7 +106,6 @@ class ProductList extends Component {
                                 image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
                             })
                         })
-                        console.log("imageData=============", imageData)
                     }
                     self.setState({
                         pictures: imageData,
@@ -126,8 +126,6 @@ class ProductList extends Component {
                 if (res.status === 200) {
                     let data = res.data.data[0].imageData
                     data = JSON.parse(data)
-                    let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-                    console.log("additional-image found===========", image)
                     // convert values into object
                     if (res.data.data.length) {
                         res.data.data.map((imageString) => {
@@ -138,7 +136,6 @@ class ProductList extends Component {
                                 image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data
                             })
                         })
-                        console.log("imageData=============", additionalImage)
                     }
                     self.setState({
                         additionalPictures: additionalImage,
@@ -262,8 +259,6 @@ class ProductList extends Component {
             // check length of pictures
             if (pictures.length > 0 && filteredList.length > 0 || additionalPictures.length > 0) {
                 filteredList.map((prodct) => {
-
-                    console.log("id in product", prodct.product_id)
                     // console.log("id in picture", Number(pic.id))
                     newProductsWithImage.push({
                         category: prodct.category,
@@ -272,12 +267,12 @@ class ProductList extends Component {
                         link: prodct.link,
                         long_description: prodct.long_description,
                         main_image: _.filter(pictures, (pic) => {
-                            if (prodct.product_id === Number(pic.id)) {
+                            if (prodct.upc === pic.id) {
                                 return pic.image
                             }
                         }),
                         additional_image : _.filter(additionalPictures, (pic) => {
-                            if (prodct.product_id === Number(pic.id)) {
+                            if (prodct.upc === pic.id) {
                                 return pic.image
                             }
                         }),
@@ -295,7 +290,8 @@ class ProductList extends Component {
                         updated_at: prodct.updated_at,
                         warnings: prodct.warnings,
                         wholesale_price: prodct.wholesale_price,
-                        workflow_state: prodct.workflow_state
+                        workflow_state: prodct.workflow_state,
+                        product_completion: prodct.product_completion
 
                     })
                 })
@@ -566,7 +562,8 @@ class ProductList extends Component {
 
         console.log('batchUpdate----', batchUpdate)
         axios.post("api/batchUpdate", batchUpdate).then(function (response) {
-            console.log('resposne from api==', product)
+            window.location.href = "/productList"
+            // console.log('resposne from api==', product)
             if (response.data.task) {
                 window.location.href = "/productList"
             }
@@ -638,6 +635,7 @@ class ProductList extends Component {
                     //listToFilter: response.data.products,
                     // stateUpdate: true,
                     // Loading: false
+                    // batchHidden:true 
                 })
             }
 
@@ -676,6 +674,22 @@ class ProductList extends Component {
 
     }
 
+    // batchUpdateIcon () {
+    //     let domBatch  = document.getElementsByClassName('filtercustome')[0]
+    //     console.log("batch####",domBatch)
+    //     if(domBatch.style.visibility === 'visible') {
+         
+    //            this.setState({batchHidden:true})
+
+    //     } else {
+    //         this.setState({batchHidden:false})
+    //     }
+       
+
+    // }
+
+
+
     render() {
         console.log("porps in productlist", this.props)
         console.log("states in productlist", this.state)
@@ -685,12 +699,10 @@ class ProductList extends Component {
             console.log("found============")
             let status = this.props.location.state._complete
             if (status === "complete") {
-                data = filteredList.filter((dat) => dat.product_status === "Active")
+                data = filteredList.filter((dat) => dat.product_completion === "100")
             } else if (status === "incomplete") {
-                data = filteredList.filter((dat) => dat.product_status === "Inactive")
-            } else {
-                data = filteredList.filter((dat) => dat.product_status === "")
-            }
+                data = filteredList.filter((dat) => dat.product_completion !== "100")
+            } 
 
             console.log("data============", data)
             product = data
@@ -729,7 +741,7 @@ class ProductList extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ display: 'none' }}>
+                                    <div id="filter-panel" className="filter-panel filtercustome" style={{'visibility':`${this.state.batchHidden===true?'hidden':'visible'}`}}>
                                         <div className="panel panel-default">
                                             <div className="panel-body">
                                                 <form>
@@ -784,20 +796,10 @@ class ProductList extends Component {
 
                             <div className="row mar_bt_30">
                                 <div className="col-md-6">
-                                    <div className="row">
-                                    <div className="col-md-6">
-                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
-                                    </div>
-                                    <div className="col-md-4">
-                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm autowidth" >
-                                        <option value="5">5 per page</option>
-                                        <option value="10">10 per page</option>
-                                        <option value="25">25 per page</option>
-                                        <option value="-1">All</option>
-                                    </select>
-                                    </div>
-                                    </div>
+                                    <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />                                                                                             
                                 </div>
+                                
+
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
                                         <button className="primary-button float-right">
@@ -806,7 +808,7 @@ class ProductList extends Component {
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter" onClick={(e)=>{this.batchUpdateIcon(e)}} >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -848,7 +850,7 @@ class ProductList extends Component {
 
 
                                     </div>
-                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
+                                    <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
@@ -939,7 +941,7 @@ class ProductList extends Component {
                                                             {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
                                                                 <img src={key.main_image[0].image} alt="" />
                                                                 :
-                                                                <ImageContainer src="5.png" alt="" />
+                                                                <ImageContainer src="1.png" />
                                                             }
 
                                                             {/* <img src={base64data ? 'data:' + "image/png" + ';base64,' + base64data : ""} alt="" /> */}
@@ -990,7 +992,7 @@ class ProductList extends Component {
                                 {/* Modal Header */}
                                 <div className="modal-header">
                                     <h4 className="modal-title title_modalheader col-md-7">Grid Configuration</h4>
-                                    <div className="filtercustome col-md-4">
+                                    <div className="filtercustome col-md-4  batchU" >
                                         <li className="nav-item dropdown Select_Language">
                                             <a className="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Language</a>
                                             <div className="dropdown-menu" aria-labelledby="dropdown09">

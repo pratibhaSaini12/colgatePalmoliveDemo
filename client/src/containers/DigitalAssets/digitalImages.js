@@ -4,6 +4,7 @@ import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
+import Pagination from "react-js-pagination";
 import ReactLoading from 'react-loading'
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
@@ -25,9 +26,14 @@ class DigitalImages extends Component {
             listToFilter: '',
             assetList: [],
             existAsset: '',
-            deleteAssetId:'',
+            deleteAssetId: '',
             countItems: 0,
             selectedProducytId: [],
+            pageactive: 1,
+            dataPerPage: 10,
+            allAssets : true,
+            imagesForList: "All",
+            productImageList: []
         }
     }
 
@@ -65,34 +71,42 @@ class DigitalImages extends Component {
         // let assetData = []
         try {
             await this.getAssetList()
-            //     await axios.post("/api/get-asset").then((res) => {
-            //         console.log("image found===========", res)
-            //         if (res.status === 200) {
-            //             // let data = res.data.data[0].assetData
-            //             // data = JSON.parse(data)
-            //             // let image = "data:" + data.data.mimetype + ";base64," + data.data.data
-            //             // convert values into object
-            //             if (res.data.data.length) {
-            //                 res.data.data.map((assetString) => {
-            //                     let assetJsonData = JSON.parse(assetString.assetData)
-            //                     assetData.push({
-            //                         data: assetJsonData.data,
-            //                         id: assetJsonData.data.id,
-            //                         image: "data:" + assetJsonData.data.mimetype + ";base64," + assetJsonData.data.data
-            //                     })
-            //                 })
-            //                 console.log("assetData=============", assetData)
-            //             }
-            //             self.setState({
-            //                 pictures: assetData,
-            //                 Loading: false
-            //             })
 
-            //         } else {
-            //             self.setState({Loading: false})
-            //             console.log("error in image fetching response", res)
-            //         }
-            //     })
+            let imageData = []
+            try {
+                axios.post("/api/get-images").then((res) => {
+                    if (res.status === 200) {
+                        let data = res.data.data[0].imageData
+                        data = JSON.parse(data)
+                        let image = "data:" + data.data.mimetype + ";base64," + data.data.data
+                        console.log("image found===========", image)
+                        // convert values into object
+                        if (res.data.data.length) {
+                            res.data.data.map((imageString) => {
+                                let imageJsonData = JSON.parse(imageString.imageData)
+                                imageData.push({
+                                    data: imageJsonData.data,
+                                    id: imageJsonData.data.id,
+                                    image: "data:" + imageJsonData.data.mimetype + ";base64," + imageJsonData.data.data,
+                                    created_at: imageJsonData.data.created_at !== undefined ? imageJsonData.data.created : undefined,
+                                    fileSize : imageJsonData.data.fileSize !== undefined ? imageJsonData.data.fileSize : undefined,
+                                    fileName : imageJsonData.data.fileName !== undefined ? imageJsonData.data.fileName : undefined,
+                                    mimetype: imageJsonData.data.mimetype !== undefined ? imageJsonData.data.mimetype : undefined
+                                })
+                            })
+                            console.log("imageData=============", imageData)
+                        }
+                        self.setState({
+                            productImageList: imageData,
+                        })
+
+                    } else {
+                        console.log("error in image fetching response", res)
+                    }
+                })
+            } catch (err) {
+                console.log("error in image fetching", err)
+            }
         } catch (err) {
             self.setState({ Loading: false })
             console.log("error in will mount catch", err)
@@ -120,14 +134,13 @@ class DigitalImages extends Component {
         var idCardBase64
         var assetBodyData
         ev.preventDefault()
-        console.log("self.uploadInput.files[0]=============",self.uploadInput.files[0])
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
             self.getBase64(self.uploadInput.files[0], (result) => {
                 var base64 = result.split(",");
                 idCardBase64 = base64[1]
 
-                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
+                assetBodyData = AssetJsonModel._getJsonDataFromAsset({ fileSize: FileSize, base64: idCardBase64, fileName: self.uploadInput.files[0].name, mimetype: self.uploadInput.files[0].type, id: this.state.asset_id })
                 console.log("===assetBodyData====", assetBodyData)
                 self.setState({
                     image: assetBodyData.data,
@@ -163,6 +176,29 @@ class DigitalImages extends Component {
         else {
             console.log("fileSizeExceedMessage=======")
         }
+    }
+
+    filterSearch(event) {
+        this.setState({ stateUpdate: true })
+        console.log('state on filtersearcch===', this.state)
+        var newList = this.state.listToFilter
+        var searchString = event.target.value
+
+        console.log('product to be search---', searchString)
+
+        var newFilteredList = newList.filter(function (searchResult) {
+            if (
+                ((typeof searchResult.asset_name != "undefined" && searchResult.asset_name != null && searchResult.asset_name !== "") && searchResult.asset_name.toLowerCase().includes(searchString.toLowerCase()))
+            ) {
+                return searchResult
+            }
+        })
+
+        this.setState({
+            filteredList: newFilteredList,
+            listToFilter: this.state.listToFilter,
+            stateUpdate: false
+        })
     }
 
     //Method to get Bas64 of file
@@ -230,7 +266,7 @@ class DigitalImages extends Component {
             // window.location.href = "/digitalImages"
         } catch (e) {
             console.log("not wokreddd===========")
-         }
+        }
 
     }
 
@@ -270,6 +306,7 @@ class DigitalImages extends Component {
 
 
     }
+    
     /**
      * Method for select Product and handle  
      * @param {e,index,key}
@@ -299,6 +336,32 @@ class DigitalImages extends Component {
         catch (e) { console.log("err", e) }
 
 
+    }
+
+    handleChange(e) {
+        var val = e.target.value
+        let self = this
+
+        self.setState({
+            dataPerPage: Number(val)
+        })
+    }
+
+
+    // method for change active page pagination
+    changeactive(page) {
+        this.setState({
+            pageactive: page
+        })
+    }
+
+    //method for change page number in pagination
+    handlePageChange(pageNumber) {
+        let self = this
+        console.log("valueeeee====", pageNumber)
+        self.setState({
+            pageactive: pageNumber
+        })
     }
 
     /**
@@ -337,7 +400,7 @@ class DigitalImages extends Component {
         }
 
     }
-    
+
     /**Method for hide and show menu option s */
     showhideSpan() {
         let spanSho = document.getElementsByClassName('counting-action-section')[1]
@@ -367,6 +430,11 @@ class DigitalImages extends Component {
             }
         } catch (e) { console.log("error", e) }
 
+    }
+    chnageImages (e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
 
@@ -402,7 +470,10 @@ class DigitalImages extends Component {
 
     render() {
         console.log("states in digitalImage", this.state)
-        const { assetList, existAsset } = this.state;
+        let { filteredList } = this.state
+        const { assetList, existAsset, productImageList } = this.state;
+        let { dataPerPage } = this.state
+        var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         let img = this.state.image
         let image = ''
         this.showhideSpan()
@@ -425,7 +496,7 @@ class DigitalImages extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                  <Aside active={"digital"} />
+                    <Aside />
                     <div className="page-wrapper">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
@@ -499,12 +570,26 @@ class DigitalImages extends Component {
                             </div>
                             {/* card row start ---------------------------------------------------------------------*/}
                             <div className="row mar_bt_30">
-                                <div className="col-md-4">
+                                {/* <div className="col-md-4">
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" />
                                  
-                                </div>
+                                </div> */}
+                                <div className="col-md-4">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                    <input className="content-search" type="text" name="search" onChange={(e) => this.filterSearch(e)} placeholder="Filter Records" />
+                                    </div>
+                                    <div className="col-md-3">
+                                    <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
+                                        <option value="All">All Assets</option>
+                                        <option value="Product">Product Assets</option>
+                                        <option value="Assets">Other Assets</option>
+                                    </select>
+                                    </div>
+                                    </div>
+                                    </div>
                                 <div className="filter float-right col-md-8">
-                                <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images form google</button>
+                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images from google</button>
                                     <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
                                     
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
@@ -521,8 +606,8 @@ class DigitalImages extends Component {
                                                     <div className="counting-action-section">
                                                         <div className="selections">
                                                             <div className="group-selection">
-                                                                <div className="option-box select-all"><a  href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
-                                                                <div className="option-box clear-all"><a onClick={(e)=>{this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
+                                                                <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                <div className="option-box clear-all"><a onClick={(e) => { this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
                                                             </div>
                                                             <div className="group-action">
                                                                 <div className="option-box delete"><a href>Delete</a></div>
@@ -538,11 +623,11 @@ class DigitalImages extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <select name="example_length" aria-controls="example" class="form-control form-control-sm">
+                                    <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
-                                        <option value="-1">All</option>
+                                        <option value="100">All</option>
                                     </select>
 
                                 </div>
@@ -665,7 +750,7 @@ class DigitalImages extends Component {
                                             </tbody>
                                         </table>
                                         <div className="pagebottompart">
-                                            <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p>
+                                            {/* <p className="float-left col-md-10 dataTables">Showing 1 to 5 of 8 entries</p>
                                             <div className="col-md-2 pull-right">
                                                 <ul className="pagination">
                                                     <li className="page-item"><a className="page-link" href="#">Previous</a></li>
@@ -674,15 +759,15 @@ class DigitalImages extends Component {
                                                     <li className="page-item"><a className="page-link" href="#">3</a></li>
                                                     <li className="page-item"><a className="page-link" href="#">Next</a></li>
                                                 </ul>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="row-view">
                             <div className="row digitalImage">
-                                {assetList.length > 0 && assetList !== undefined ?
-                                    assetList.map((asset, index) => {
+                                { list.length > 0 && list !== undefined ?
+                                    list.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                             <div className="card document_list">
                                                 <div className="card-body text-center">
@@ -700,8 +785,42 @@ class DigitalImages extends Component {
                                                 <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
-                                                        {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
+                                                        <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link>
                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.asset_id })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    })
+                                    : <div></div>
+                                }
+
+                            </div>
+                                {/* product images */}
+                            <div className="row digitalImage">
+                                {productImageList.length > 0 && productImageList !== undefined ?
+                                    productImageList.map((asset, index) => {
+                                        return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
+                                            <div className="card document_list">
+                                                <div className="card-body text-center">
+                                                    <span className="digitalImageIco">
+                                                        <ImageContainer src="icons/img.png" />
+                                                    </span>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <p className="img"><img className="img-fluid" src={asset.image} /></p>
+                                                    <div className="card-info">
+                                                        <h4 className="card-title">{asset.fileName !== undefined ? asset.fileName : ''}</h4>
+                                                        <p className="card-text">{asset.created_at!== undefined ? asset.created_at : ''}</p>
+                                                        <p className="card-text">{asset.fileSize!== undefined ? asset.fileSize : ''}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="card-hover" id={`card-hover${index}`}>
+                                                    <div className="card-link-options">
+                                                        <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                        {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
+                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
                                                         </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
@@ -711,7 +830,21 @@ class DigitalImages extends Component {
                                 }
 
                             </div>
+
+
                         </div>
+                        <div className="pagination pull-right my-1 float-right">
+                                <Pagination
+                                    hideFirstLastPages
+                                    activePage={this.state.pageactive}
+                                    itemsCountPerPage={dataPerPage}
+                                    totalItemsCount={filteredList.length}
+                                    pageRangeDisplayed={4}
+                                    onChange={this.handlePageChange.bind(this)}
+                                    prevPageText='Prev'
+                                    nextPageText='Next'
+                                />
+                            </div>
                     </div>
                     {/* The Modal */}
                     <div className="modal fade allmodalcolgate" id="colgate">
@@ -731,7 +864,7 @@ class DigitalImages extends Component {
                                         </div> */}
                                         <div className="form-group">
                                             <label>Asset Name</label>
-                                            <input className="form-control" type="text" name="asset_name"  value={this.state.asset_name} onChange={e => this.change(e)} />
+                                            <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
                                         </div>
                                         {existAsset !== '' ?
                                             <span>Asset already Exist <Link to={{ pathname: '/digitalImagePage', state: { _data: existAsset } }}>See here</Link></span>
@@ -746,7 +879,7 @@ class DigitalImages extends Component {
                                             </div>
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
-                                                <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadbtn">Upload Files</a>
+                                                <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
                                                 {/* <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" />
                                                 <label htmlFor="imageUpload">Select images</label> */}
                                             </div>
@@ -783,6 +916,7 @@ class DigitalImages extends Component {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

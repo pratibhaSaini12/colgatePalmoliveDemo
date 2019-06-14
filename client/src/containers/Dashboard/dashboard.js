@@ -29,7 +29,11 @@ class Dashboard extends Component {
             Loading: false,
             workflow_task: [],
             filterdata: '',
-            othercompleteIncomplete: 0
+            othercompleteIncomplete: 0,
+            product: [],
+            filteredList: [],
+            listToFilter: [],
+            stateUpdate: true,
 
         }
     }
@@ -215,6 +219,26 @@ class Dashboard extends Component {
                     openTask: response.data.openTasks
                 })
             }
+
+            axios.get("/api/getAllProducts").then(function (response) {
+                console.log("product list ", response.data);
+                if (response.data) {
+                    self.setState({
+                        product: response.data.products,
+                        filteredList: response.data.products,
+                        listToFilter: response.data.products,
+                        stateUpdate: true,
+                        Loading: false
+                    })
+                }
+    
+            }).catch(function (error) {
+                self.setState({ Loading: false })
+                console.log("error  login is ", error);
+            })
+
+
+
         }).catch(function (error) {
 
         })
@@ -223,7 +247,7 @@ class Dashboard extends Component {
 
             console.log('response from getProductCompletion===', response)
             if (response.data) {
-                let completeIncomplete = response.data.product[0].complete + response.data.product[0].incomplete
+                let completeIncomplete = response.data.product[0].complete
                 let othercompleteIncomplete = 100 - completeIncomplete
                 
                 Highcharts.chart('container', {
@@ -259,21 +283,17 @@ class Dashboard extends Component {
                         data: [
                             {
                                 name: 'Complete',
-                                y: response.data.product[0] ? response.data.product[0].complete : 0,
+                                y: completeIncomplete ? completeIncomplete : 0,
                                 selected: true
                             }, {
                                 name: 'Incomplete',
-                                y: response.data.product[0] ? response.data.product[0].incomplete : 0
-                            },
-                            {
-                                name: 'Others',
-                                y: othercompleteIncomplete
+                                y: othercompleteIncomplete ? othercompleteIncomplete : 0
                             }
                         ]
                     }]
                 });
                 self.setState({
-                    completeIncomplete: response.data.product[0],
+                    completeIncomplete: completeIncomplete,
                     Loading: false,
                     othercompleteIncomplete: othercompleteIncomplete
                 })
@@ -363,14 +383,14 @@ class Dashboard extends Component {
             }
 
     render() {
-        const { openTask, updateProduct } = this.state;
+        const { openTask, updateProduct,product } = this.state;
         console.log("states in dashbpard", this.state)
         console.log("props in dashbpard", this.props)
         var current_Date = new Date().toString()
         console.log('current_Date---',current_Date)
         console.log("this.state.workflow_task", this.state.workflow_task);
         let workFlowdata = this.state.workflow_task
-        let renderWorkFlowList =  this.latestWorkflowList(workFlowdata);
+        let renderWorkFlowList =  this.latestWorkflowList(product);
         console.log("renderWorkFlowList",renderWorkFlowList)
         return (
             <div>
@@ -481,17 +501,17 @@ class Dashboard extends Component {
                                             <div className="leg-div">
                                                 <div className="leg-detail-1"><span />
                                                     {/* <Link to={{ pathname: '/productlist', state: { _data: "complete" } }}> */}
-                                                        Complete:{this.state.completeIncomplete ? this.state.completeIncomplete.complete : 0}%
+                                                        Complete:{this.state.completeIncomplete ? this.state.completeIncomplete : 0}%
                                                     {/* </Link> */}
                                                 </div>
                                                 <div className="leg-detail-2"><span />
                                                     {/* <Link to={{ pathname: '/productlist', state: { _data: "incomplete" } }}> */}
-                                                        Incomplete: {this.state.completeIncomplete ? this.state.completeIncomplete.incomplete : 0}%
+                                                        Incomplete: {this.state.othercompleteIncomplete ? this.state.othercompleteIncomplete : 0}%
                                                     {/* </Link> */}
                                                 </div>
-                                                {this.state.othercompleteIncomplete > 0 ?
+                                                {/* {this.state.othercompleteIncomplete > 0 ?
                                                     <div className="leg-detail-3"><span />Other: {this.state.othercompleteIncomplete}%</div>
-                                                    : ''}
+                                                    : ''} */}
                                             </div>
                                         </div>
                                     </div>
@@ -568,18 +588,19 @@ class Dashboard extends Component {
                                         <div className="card dashboard_section">
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
-                                                    <h5>My Workflow Tasks</h5>
+                                                    <h5>Recently Added Product</h5>
                                                     <p>As of {moment(current_Date).format('MM/DD/YYYY')}</p>
                                                 </div>
                                                 <div className="table-responsive">
                                                     <table className="table dashboard_table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Images</th>
-                                                                <th>ID</th>
-                                                                <th>Name</th>
-                                                                <th>Task</th>
-                                                                <th>Workflow State</th>
+                                                                <th>Product ID</th>
+                                                                <th>Product Name</th>
+                                                                <th>Brand</th>
+                                                                <th>Category</th>
+                                                                <th>Completeness</th>
+                                                                <th>Workflow Stage</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -587,13 +608,22 @@ class Dashboard extends Component {
                                                             {
                                                                renderWorkFlowList.length > 0 ? renderWorkFlowList.map((key, index) => {
                                                                     return <tr>
-                                                                        <td>
+                                                                        {/* <td>
                                                                             <ImageContainer src="11.png" alt="title" />
-                                                                        </td>
-                                                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td>
-                                                                        <td>{key.product_name}</td>
-                                                                        <td>{key.subject}</td>
-                                                                        <td><span className="label label-comman">{key.workflow_state}</span></td>
+                                                                        </td> */}
+                                                                        {/* <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td> */}
+                                                                      
+                                                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id !== undefined ? key.product_id :''}</Link></td>
+                                                                        
+                                                                       
+                                                                        <td>{key.product_name !==undefined ? key.product_name :'' }</td>
+                                                                        <td>{key.brand !== undefined ? key.brand: '' }</td>
+                                                                        <td>{key.category!==undefined?key.category:''}</td>
+                                                                        <td>{key.product_completion !== undefined ? key.product_completion:''}</td>
+                                                                        <td>{key.workflow_state !== undefined ? key.workflow_state:''}</td>
+
+
+                                                                        {/* <td><span className="label label-comman">{key.workflow_state}</span></td> */}
                                                                     </tr>
                                                                 }) : ''}
 
@@ -603,7 +633,9 @@ class Dashboard extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-6 d-flex">
+                                    
+
+         <div className="col-lg-6 d-flex">
                                         <div className="card dashboard_section">
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
@@ -614,13 +646,40 @@ class Dashboard extends Component {
                                                         <thead>
                                                             <tr>
                                                                 <th>Date</th>
+                                                                <th>From</th>
                                                                 <th>Subject</th>
-                                                                <th>Status</th>
-                                                                <th>Priority</th>
-                                                                <th>Assigned By</th>
+                                                                <th>Description</th>
+                                                                
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                          <tr>
+                                                            <td>19/06/11</td>
+                                                            <td>Richard</td>
+                                                            <td>Price Mismatch</td>
+                                                            <td>Please see pricing for sku # 245TUY</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/12</td>
+                                                            <td>Grace</td>
+                                                            <td>Image update</td>
+                                                            <td>Please change the picture of sku #767TB</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/13</td>
+                                                            <td>David</td>
+                                                            <td>Recently added products</td>
+                                                            <td>Please provide the list of all products added last month</td>
+                                                            </tr>
+                                                            <tr>
+                                                            <td>19/06/13</td>
+                                                            <td>Steve</td>
+                                                            <td>Inactive Products</td>
+                                                            <td>Please send me a list of all the inactive products</td>
+                                                            </tr>
+                                                                
+                                                        </tbody>
+                                                        {/* <tbody>
                                                             {
                                                                 this.state.taskList.length > 0 ? this.state.taskList.map((key, index) => {
                                                                     return <tr>
@@ -631,7 +690,7 @@ class Dashboard extends Component {
                                                                         <td>{key.assignedBy}</td>
                                                                     </tr>
                                                                 }) : ''}
-                                                        </tbody>
+                                                        </tbody> */}
                                                     </table>
                                                 </div>
                                             </div>

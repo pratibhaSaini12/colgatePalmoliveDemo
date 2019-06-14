@@ -19,7 +19,7 @@ class TaskList extends Component {
             listToFilter: [],
             Loading: false,
             pageactive: 1,
-            dataPerPage: 5,            
+            dataPerPage: 10,            
         }
     }
 
@@ -43,13 +43,13 @@ class TaskList extends Component {
                 //     })
                 // }
                 // else {
-                    self.setState({
-                        taskList: response.data.tasks,
-                        filteredList: response.data.tasks,
-                        listToFilter: response.data.tasks,
-                        stateUpdate: true,
-                        Loading: false
-                    })
+                self.setState({
+                    taskList: response.data.tasks,
+                    filteredList: response.data.tasks,
+                    listToFilter: response.data.tasks,
+                    stateUpdate: true,
+                    Loading: false
+                })
                 // }
 
             }
@@ -106,34 +106,44 @@ class TaskList extends Component {
         console.log("valueeeee", filteredList)
     }
 
-        // method for change active page pagination
-        changeactive(page) {
-            this.setState({
-                pageactive: page
-            })
-        }
-    
-        //method for change page number in pagination
-        handlePageChange(pageNumber) {
-            let self = this
-            console.log("valueeeee====", pageNumber)
-            self.setState({
-                pageactive: pageNumber
-            })
-        }
-    
-        handleChange(e) {
-            var val = e.target.value
-            let self = this
-            self.setState({
-                dataPerPage: Number(val)
-            })
-        }
+    // method for change active page pagination
+    changeactive(page) {
+        this.setState({
+            pageactive: page
+        })
+    }
+
+    //method for change page number in pagination
+    handlePageChange(pageNumber) {
+        let self = this
+        console.log("valueeeee====", pageNumber)
+        self.setState({
+            pageactive: pageNumber
+        })
+    }
+
+    handleChange(e) {
+        var val = e.target.value
+        let self = this
+        self.setState({
+            dataPerPage: Number(val)
+        })
+    }
 
     render() {
         console.log("porpssssssss in taskList", this.props)
-        const { filteredList } = this.state;
-        let {dataPerPage} = this.state
+        let { filteredList } = this.state;
+        let { dataPerPage } = this.state
+        let data
+
+        if (this.props.location.state !== undefined) {
+            console.log("found============")
+            let assignedTo = this.props.location.state._assignedTo
+            data = filteredList.filter((dat) => dat.assignedTo === assignedTo)
+
+            console.log("data============", data)
+            filteredList = data
+        }
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
         return (
             <div>
@@ -242,7 +252,7 @@ class TaskList extends Component {
                                     <button className="primary-button float-right">
                                         <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
                                     </button>
-                                    <select name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
+                                    <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>
                                         <option value="25">25 per page</option>
