@@ -86,7 +86,8 @@ class DigitalImages extends Component {
         var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
         if (FileSize <= 5) {
            self.setState({
-                asset_data:self.uploadInput.files[0]
+                asset_data:self.uploadInput.files[0],
+                image:URL.createObjectURL(self.uploadInput.files[0])
             })
         }
         else {
@@ -353,15 +354,11 @@ class DigitalImages extends Component {
     render() {
         console.log("states in digitalImage", this.state)
         let { filteredList } = this.state
-        const { assetList, existAsset, productImageList } = this.state;
+        const { assetList, existAsset, productImageList ,image } = this.state;
         let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
-        let img = this.state.image
-        let image = ''
-        this.showhideSpan()
-        if (img !== '') {
-            image = "data:" + img.mimetype + ";base64," + img.data
-        }
+       
+       
         console.log(assetList);
         return (
             <div>
