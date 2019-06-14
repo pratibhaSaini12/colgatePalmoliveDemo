@@ -3779,4 +3779,10 @@ to {
 		display: block;
 		font-weight: 600;}
 		.img_uploadmain {margin: 20px 0;}
+		.custom_row span {margin-top: 7px;
+			display: block;
+			font-size: 17px;
+		    color: #929191;
+	font-weight: 400;
+}
 		.delete { cursor: pointer;}

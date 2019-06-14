@@ -110,11 +110,8 @@ class DigitalImages extends Component {
                         image:URL.createObjectURL(self.uploadInput.files[0]),
                      })
                  }
-            })
-        }
-        else {
-            
-        }
+            })     
+         }
             
     }
 
@@ -196,24 +193,27 @@ class DigitalImages extends Component {
     }
 
     async deleteProductById() {
-        console.log('delete asset by id', this.state)
-        let self = this
-        // self.setState({ Loading: true })
-        console.log("this.stateeeeee", this.state)
-        if (self.state.deleteAssetId) {
-            await axios.post("/api/deleteAssetByID", { id: this.state.deleteAssetId }).then(function (response) {
-                console.log('resposne from Delete api==', response)
-                if (response.data.asset) {
+        try{
+            console.log('delete asset by id', this.state.deleteAssetId)
+            let self = this
+            // self.setState({ Loading: true })
+            console.log("this.stateeeeee", self.state)
+            if (self.state.deleteAssetId) {
+                await axios.post("/api/deleteAssetByID", { id: self.state.deleteAssetId }).then(function (response) {
+                    console.log('resposne from Delete api==', response)
+                    if (response.data.asset) {
+                        self.setState({ deleteAssetId: '', Loading: false })
+                        window.location.href = "/digitalImages"
+                    }
+    
+                }).catch(function (error) {
                     self.setState({ deleteAssetId: '', Loading: false })
-                    window.location.href = "/digitalImages"
-                }
-
-            }).catch(function (error) {
-                this.setState({ deleteAssetId: '', Loading: false })
-                console.log("error in delete product", error)
-            })
+                    console.log("error in delete product", error)
+                })
+            }
+        }catch(e){
+            
         }
-
     }
     
     /**
@@ -386,7 +386,7 @@ class DigitalImages extends Component {
         let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
        
-       
+        this.showhideSpan()
         console.log(assetList);
         return (
             <div>
@@ -429,8 +429,13 @@ class DigitalImages extends Component {
                                             <div className="panel-body">
                                                 <form>
                                                     <div className="row custom_row">
-                                                        <div className="col-md-8">
+                                                        <div className="col-md-12">
                                                             <div className="row">
+                                                            <div className="col-md-4">
+                                                                    <div className="form-group">
+                                                                        <span> Coming soon....</span>
+                                                                    </div>
+                                                                </div>
                                                                 <div className="col-md-4">
                                                                     <div className="form-group">
                                                                         <select id="pref-perpage" className="form-control">
@@ -439,9 +444,6 @@ class DigitalImages extends Component {
                                                                             <option value="JPEG">JPEG</option>
                                                                             <option value="TIFF">TIFF</option>
                                                                             <option value="SVG">SVG</option>
-                                                                            {/*                              <option value="7">7</option>
-                              <option value="8">8</option>
-                              <option value="9">9</option>*/}
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -455,24 +457,14 @@ class DigitalImages extends Component {
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value={0}>Status</option>
-                                                                            <option value="New">New</option>
-                                                                            <option value="In Approval">In Approval</option>
-                                                                            <option value="Approved">Approved</option>
-                                                                            <option value="Rejected">Rejected</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-4">
+                                                        {/* <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <input className="form-control search_filter" type="text" name="search" placeholder="Search by ID or Filename" />
-                                                                <i className="ti-search filtersearch" /> </div>
-                                                        </div>
+                                                                <i className="ti-search filtersearch" />
+                                                            </div>
+                                                        </div> */}
                                                     </div>
                                                 </form>
                                             </div>
@@ -524,13 +516,11 @@ class DigitalImages extends Component {
                                                             <div className="group-action">
                                                                 <div className="option-box delete"><a href>Delete</a></div>
                                                                 <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                                                <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
                                                     <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -621,7 +611,7 @@ class DigitalImages extends Component {
                                                 <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
-                                                        <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link>
+                                                        {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
                                                         <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.asset_id })}> <ImageContainer src="icons/delete.png" />
                                                         </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
@@ -698,10 +688,10 @@ class DigitalImages extends Component {
                                             <label>Asset Id</label>
                                             <input className="form-control" type="text" name="asset_id" placeholder={12345} value={this.state.asset_id} onChange={e => this.change(e)} />
                                         </div> */}
-                                        <div className="form-group">
+                                        {/* <div className="form-group">
                                             <label>Asset Name</label>
                                             <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
-                                        </div>
+                                        </div> */}
                                         {existAsset !== '' ?
                                             <span>Asset already Exist </span>
                                             : ''}
@@ -745,6 +735,7 @@ class DigitalImages extends Component {
                             </div>
                         </div>
                     </div>
+
                     {/* The product delete */}
                     <div className="modal fade allmodalcolgate" id="delete">
                         <div className="modal-dialog">

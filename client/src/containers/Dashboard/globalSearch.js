@@ -105,102 +105,108 @@ class Search extends React.Component {
 
     }
 
-        componentDidMount(){
-    console.log('inside filtersearch')
-            if (this.state.taskList.length && this.state.product.length) {
-                this.filterSearch();
-            }
-            else{
-                return;
-            }
+    componentDidMount() {
+        console.log('inside filtersearch')
+        if (this.state.taskList.length && this.state.product.length) {
+            this.filterSearch();
         }
+        else {
+            return;
+        }
+    }
 
     render() {
         console.log('state on render====', this.state)
-        const {filteredTaskList,filteredProductList}=this.state
+        const { filteredTaskList, filteredProductList } = this.state
 
         return (
             <div>
-                 <div id="main-wrapper">
+                <div id="main-wrapper">
                     <Header />
                     <Aside />
                     <div className="page-wrapper">
-                    <div className="container-fluid r-aside custome_container">
-                    <div className="table-responsive martop_25">
-                    
-                        <h2 className="page-title">Product Search</h2>
-        
-                    <table className="table dashboard_table data_table_30 martop_25">
-                        <thead>
-                            <tr>
-                                <th>Product ID</th>
-                                <th>Product Name</th>
-                                <th>Upc</th>
-                                <th>Category</th>
-                                <th>Link</th>
-                                <th>Product Status</th>
-                                <th>Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                filteredProductList.length > 0 ? filteredProductList.map((key, index) => {
-                                    return <tr>
-                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td>
-                                        <td>{key.product_name}</td>
-                                        <td>{key.upc}</td>
-                                        <td>{key.category}</td>
-                                        <td>{key.link}</td>
-                                        <td>{key.product_status}</td>
-                                        <td>{key.cost}</td>
-                                    </tr>
-                                }) : 'No record found'}
-                        </tbody>
-                    </table>
+                        <div className="container-fluid r-aside custome_container">
+                            <div className="table-responsive martop_25">
+                                <h2 className="page-title">
+                                    <b>Search Page</b>
+                                    <hr/>
+                                </h2>
+                            </div>
+                            <div className="table-responsive martop_25">
+
+                                <h2 className="page-title">Product Search</h2>
+
+                                <table className="table dashboard_table data_table_30 martop_25">
+                                    <thead>
+                                        <tr>
+                                            <th>Product ID</th>
+                                            <th>Product Name</th>
+                                            <th>Upc</th>
+                                            <th>Category</th>
+                                            <th>Link</th>
+                                            <th>Product Status</th>
+                                            <th>Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            filteredProductList.length > 0 ? filteredProductList.map((key, index) => {
+                                                return <tr>
+                                                    <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td>
+                                                    <td>{key.product_name}</td>
+                                                    <td>{key.upc}</td>
+                                                    <td>{key.category}</td>
+                                                    <td>{key.link}</td>
+                                                    <td>{key.product_status}</td>
+                                                    <td>{key.cost}</td>
+                                                </tr>
+                                            }) : 'No record found'}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="table-responsive martop_25">
+
+
+                                <h2 className="page-title">Task Search</h2>
+
+
+                                <table className="table dashboard_table data_table_30 martop_25">
+                                    <thead>
+                                        <tr>
+                                            <th>Task ID</th>
+                                            <th>Due Date</th>
+                                            <th>Subject</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Assigned By</th>
+                                            <th>Assigned To</th>
+                                            <th>Related To</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            filteredTaskList.length > 0 ? filteredTaskList.map((key, index) => {
+                                                return <tr>
+                                                    <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
+                                                    <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
+                                                    <td>{key.subject}</td>
+                                                    <td>{key.status}</td>
+                                                    <td>{key.priority}</td>
+                                                    <td>{key.assignedBy}</td>
+                                                    <td>{key.assignedTo}</td>
+                                                    <td>{key.related_to}</td>
+                                                </tr>
+                                            }) : 'No record found'}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
                 </div>
-                <div className="table-responsive martop_25">
-                
-                
-            <h2 className="page-title">Task Search</h2>
-          
-          
-                    <table className="table dashboard_table data_table_30 martop_25">
-                        <thead>
-                            <tr>
-                                <th>Task ID</th>
-                                <th>Due Date</th>
-                                <th>Subject</th>
-                                <th>Status</th>
-                                <th>Priority</th>
-                                <th>Assigned By</th>
-                                <th>Assigned To</th>
-                                <th>Related To</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                filteredTaskList.length > 0 ? filteredTaskList.map((key, index) => {
-                                    return <tr>
-                                        <td><Link to={{ pathname: '/editTask', state: { _data: key } }}>{key.task_id}</Link></td>
-                                        <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
-                                        <td>{key.subject}</td>
-                                        <td>{key.status}</td>
-                                        <td>{key.priority}</td>
-                                        <td>{key.assignedBy}</td>
-                                        <td>{key.assignedTo}</td>
-                                        <td>{key.related_to}</td>
-                                    </tr>
-                                }) : 'No record found'}
-                        </tbody>
-                    </table>
-                </div>
-
-
-
-                
-            </div>
-            </div>
-            </div>
             </div>
         )
     }

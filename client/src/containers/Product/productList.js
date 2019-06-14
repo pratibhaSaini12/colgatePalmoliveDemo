@@ -773,7 +773,6 @@ class ProductList extends Component {
                                                                     <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}><i className="ti-trash"></i>Delete</a></div>
 
                                                                     <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
-                                                                    {/* <div className="option-box move-folder"><a href="javscript:void(0)"><i className="ti-folder"></i>Move to Folder</a></div>
                                                                     <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
                                                                     <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div> */}
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
