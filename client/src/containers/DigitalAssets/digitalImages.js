@@ -645,108 +645,29 @@ class DigitalImages extends Component {
                                                     <th scope="col" />
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
-                                                    <th scope="col">Details</th>
+                                                    <th scope="col">Size</th>
                                                     <th scope="col">Created At</th>
                                                     <th />
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">Palmolive-Camellia....jpg</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">widelogos_dubius.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">widelogos_dubius.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input type="checkbox" /></td>
-                                                    <td><div className="image-thumb"> <ImageContainer src="1.png" /> </div></td>
-                                                    <td className="productlist_name">palmolive-aroma.png</td>
-                                                    <td>image</td>
-                                                    <td>2832 x 4256 2.74 MB</td>
-                                                    <td>4/25/19 6:49 pm</td>
-                                                    <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                        </a></div>
-                                                    </div></td>
-                                                </tr>
+                                                {list.length > 0 && list !== undefined ?
+                                                    list.map((asset, index) => {
+                                                       return <tr key={index}>
+                                                            <td><input type="checkbox" /></td>
+                                                            <td><div className="image-thumb">
+                                                                <ImageContainer src="1.png" /> </div></td>
+                                                            <td className="productlist_name">{asset.asset_name}</td>
+                                                            <td>{asset.asset_type}</td>
+                                                            <td>2832 x 4256  |  2.74 MB</td>
+                                                            <td>{asset.created_at}</td>
+                                                            <td><div className="row-hover">
+                                                                <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                                </a></div>
+                                                            </div></td>
+                                                        </tr>
+                                                    }) : ''}
+                                                
                                             </tbody>
                                         </table>
                                         <div className="pagebottompart">
