@@ -3779,3 +3779,4 @@ to {
 		display: block;
 		font-weight: 600;}
 		.img_uploadmain {margin: 20px 0;}
+		.delete { cursor: pointer;}
