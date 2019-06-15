@@ -79,6 +79,9 @@ class NewProduct extends Component {
     createNewProduct() {
         let state = this.state;
         let self = this
+        self.setState({
+            Loading:true
+        })
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         var percent = this.calculateComlpleteness(completeArray);
 
@@ -112,6 +115,9 @@ class NewProduct extends Component {
         axios.post("api/createProduct", createProduct).then(function (response) {
             self.setState({ flashMessageSuccess: "Product has been created successfully!" })
             setTimeout(function () {
+                self.setState({
+                    Loading:false
+                })
                 window.location.href = "/productList"
             }, 3000);
             // this.setState({ Loading: false })
@@ -125,6 +131,9 @@ class NewProduct extends Component {
     handleUploadAttachment(ev) {
         let self = this
         ev.preventDefault()
+        self.setState({
+            Loading: true
+        })
         if (self.state.upc !== '') {
             var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
             if (FileSize <= 5) {
@@ -136,13 +145,17 @@ class NewProduct extends Component {
                     if (res.data) {
                         self.setState({
                             image: res.data.file,
-                            main_image: res.data.file
+                            main_image: res.data.file,
+                            Loading: false
                         })
                         return
                     } else {
                         return
                     }
                 }).catch((err) => {
+                    self.setState({
+                        Loading: false
+                    })
                     return
                 })
 
@@ -155,6 +168,9 @@ class NewProduct extends Component {
     handleUploadAttachmentAdditional(ev) {
         let self = this
         ev.preventDefault()
+        self.setState({
+            Loading: true
+        })
         if (self.state.upc !== '') {
             var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
             if (FileSize <= 5) {
@@ -166,13 +182,17 @@ class NewProduct extends Component {
                     if (res.data) {
                         self.setState({
                             additionalImage: res.data.file,
-                            additional_image: res.data.file
+                            additional_image: res.data.file,
+                            Loading: false
                         })
                         return
                     } else {
                         return
                     }
                 }).catch((err) => {
+                    self.setState({
+                        Loading: false
+                    })
                     return
                 })
             }

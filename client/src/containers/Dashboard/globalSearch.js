@@ -141,11 +141,10 @@ class Search extends React.Component {
                                         <tr>
                                             <th>Product ID</th>
                                             <th>Product Name</th>
-                                            <th>Upc</th>
+                                            <th>Sku</th>
                                             <th>Category</th>
-                                            <th>Link</th>
                                             <th>Product Status</th>
-                                            <th>Cost</th>
+                                            <th>Price ($)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -156,7 +155,6 @@ class Search extends React.Component {
                                                     <td>{key.product_name}</td>
                                                     <td>{key.upc}</td>
                                                     <td>{key.category}</td>
-                                                    <td>{key.link}</td>
                                                     <td>{key.product_status}</td>
                                                     <td>{key.cost}</td>
                                                 </tr>

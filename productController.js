@@ -61,7 +61,8 @@ module.exports = {
             main_image='${req.body.main_image}',
             workflow_state='${req.body.workflow_state}',
             brand='${req.body.brand}',
-            product_completion='${req.body.product_completion}'           
+            product_completion='${req.body.product_completion}',
+            additional_image='${req.body.additional_image}'           
             where product_id=${req.body.product_id}`;
             console.log('query code ', queryForSql)
             // process.exit(0)
