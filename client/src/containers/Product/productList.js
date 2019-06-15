@@ -680,7 +680,7 @@ class ProductList extends Component {
 
     // }
     checkedAllList (e) {
-        if(e.target.checked) {
+       
             console.log("selected @@@@@@@@@@@")
             this.setState({selectedProducytId:[]})
             let tempSelectedList = []
@@ -693,18 +693,7 @@ class ProductList extends Component {
             :void 0
     
             this.setState({selectedProducytId:tempSelectedList})
-        } else {
-            let allProduct  = this.state.filteredList
-            let tempSelectedList = []
-            allProduct.length > 0   ? allProduct.map(list=>{
-                let domSelectElement  = document.getElementById(`listChecked${list.product_id}`)
-                tempSelectedList.push(list)
-                domSelectElement.checked=false
-            })
-            :void 0
-
-            this.setState({selectedProducytId:[]})
-        }
+      
        
     }
 
@@ -909,7 +898,7 @@ class ProductList extends Component {
                                         <table id="example" className="table ">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox"  onClick={(e)=>{this.checkedAllList(e)}} id="chkBoxAll"/></th>
+                                                    {/* <th scope="col"><input type="checkbox"  onClick={(e)=>{this.checkedAllList(e)}} id="chkBoxAll"/></th> */}
                                                     <th scope="col" />
                                                     <th scope="col">SKU</th>
                                                     {selectedArray.map((keyinner, indexinner) => {
