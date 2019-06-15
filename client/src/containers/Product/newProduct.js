@@ -296,11 +296,6 @@ class NewProduct extends Component {
                                         </div>
                                     </div>
 
-                                    {/* <h2 className="page-title float-left">Create New Product</h2>
-                                    <div className="float-right allmodalcolgate">
-                                        <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
-                                        <button type="button" className="btn btn-outline-primary"> <Link to="/productlist">CANCEL</Link></button>
-                                    </div> */}
                                 </div>
                             </div>
                             <div className="row">
@@ -808,7 +803,7 @@ class NewProduct extends Component {
                                                     <label>Workflow state</label>
                                                     <div className="form-group">
 
-                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control"
+                                                        <select id="pref-perpage" onChange={(e) => this.change(e)} name="workflow_state" className="form-control workflow"
                                                             value={this.state.workflow_state === '' ? '' : this.state.workflow_state}>
                                                             <option value={"In Review"}>In Review</option>
                                                             <option value={"In Publish"}>In Publish</option>

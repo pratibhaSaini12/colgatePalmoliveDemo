@@ -510,9 +510,8 @@ class DigitalImages extends Component {
                                     </div>
                                     </div>
                                 <div className="filter float-right col-md-8">
-                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images from google</button>
-                                    <button className="primary-button float-right" onClick={this.clearState.bind(this)}><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
-                                    
+                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
+                                    <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
@@ -524,7 +523,7 @@ class DigitalImages extends Component {
                                                     <div className="dot-icon"><ImageContainer src="icons/option-all.png" /></div>
                                                 </a>
                                                 <div className="dropdown-menu drop_20">
-                                                    <div className="counting-action-section">
+                                                    <div className="counting-action-section show">
                                                         <div className="selections">
                                                             <div className="group-selection">
                                                                 <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>

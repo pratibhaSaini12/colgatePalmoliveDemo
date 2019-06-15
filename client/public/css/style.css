@@ -1759,8 +1759,9 @@ Preloader
 	display: none;
 }
 .counting-action-section {
-	display: none;
+	display: none
 }
+.counting-action-section.show { display: block;}
 .custome_container {
 	padding: 4px 25px;
 }
@@ -2138,7 +2139,7 @@ h2.page-title {
 }
 /*buttons*/
 
-button.primary-button {
+.new-product.primary-button {
 	padding: 7px 15px;
 	background: #eb4260;
 	border: 1px solid #eb4260;
@@ -2149,10 +2150,10 @@ button.primary-button {
 	transition: background-color 0.9s ease;
 	margin-left: 10px;
 }
-button.primary-button a {
+.new-product.primary-button a {
 	color: #fff;
 }
-button.primary-button:hover {
+.new-product.primary-button:hover {
 	background: #554b6c;
 	border-color: #554b6c;
 }
@@ -2193,7 +2194,6 @@ button.primary-button:hover .icon.plus {
 	margin-bottom: 30px;
 }
 .card .card-body img {
-	width:100%;
 }
 
 .text-center {
@@ -3717,14 +3717,15 @@ to {
     margin-top: 11px;
     background: #fbfbfb;
     padding: 4px;}
-.uploadfile {    background: #554b6c;
+.uploadfile {background: #eb4260;
     padding: 8px 18px; cursor: pointer;
     color: #fff !important;
     display: inline-block;
     font-size: 13px;
     border-radius: 2px;
     min-width: 184px;
-    text-align: center;}
+	text-align: center;}
+	.uploadfile:hover{ background-color: #554b6c;border-color: #554b6c;}
 	.martop_25 { margin-top: 25px;}
 	.search-box { width: 100%;}
 #reactgooglegraph-2 { position: absolute;
@@ -3751,7 +3752,7 @@ to {
     margin-left: 10px;
 	text-transform: capitalize;}
 	.google_btn:hover {background: #3a2e55;}
-	.google_btn .ti-upload { margin-right: 5px;}
+	.google_btn .ti-download { margin-right: 5px;}
 	.digital_img.Assets {height: 153px;
 		width: 100%;
 		margin: 0;
@@ -3807,7 +3808,6 @@ to {
 }
 		.delete { cursor: pointer;}
 		.custome_img.card .card-body img {
-			width: 100%;
 			height: 100%;
 		}
 		.custome_img.card .card-body p.img {    height: 200px;
@@ -3815,5 +3815,5 @@ to {
 			width: auto;}
 .avatar-edit .create-new-link { cursor: pointer}
 .avatar-edit .create-new-link:hover{ color: #eb4260 !important;}
-.avatar-edit {width: 100%;
-    display: inline-block;}	
+.avatar-edit {width: 100%;display: inline-block;}	
+.filtercustome .form-control.workflow { width: 200px;}

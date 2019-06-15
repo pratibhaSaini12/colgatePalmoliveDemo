@@ -826,9 +826,9 @@ class ProductList extends Component {
 
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
-                                        <button className="primary-button float-right">
-                                            <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
-                                        </button>
+                                        
+                                            <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
+                                  
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>

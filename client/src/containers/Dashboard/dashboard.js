@@ -110,7 +110,7 @@ class Dashboard extends Component {
 
                     series: [
                         {
-                            name: "Browsers",
+                            name: "Bowsers",
                             colorByPoint: true,
                             data: [
                                 {
@@ -263,6 +263,9 @@ class Dashboard extends Component {
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
                             },
                             events: {
                                 click: function (event) {
@@ -640,6 +643,7 @@ class Dashboard extends Component {
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
                                                     <h5>My Notifications</h5>
+                                                    <p>&nbsp;</p>
                                                 </div>
                                                 <div className="table-responsive">
                                                     <table className="table dashboard_table notification">
