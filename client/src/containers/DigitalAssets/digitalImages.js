@@ -582,7 +582,7 @@ class DigitalImages extends Component {
                                                             <td className="productlist_name">{asset.asset_name}</td>
                                                             <td>{asset.asset_type}</td>
                                                             <td>{asset.size} MB</td>
-                                                            <td>{Moment(asset.created_at).format('d MMM')}</td>
+                                                            <td>{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</td>
                                                             <td><div className="row-hover">
                                                                 <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                                 </a></div>
