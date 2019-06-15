@@ -39,11 +39,14 @@ class DigitalImages extends Component {
             selectAssetIds:[]
         }
     }
-    getAssetList() {
+    getAssetList(isDrive) { 
         let self = this
             self.setState({
                 Loading:true
-            })
+            });
+            if(isDrive){
+                self.setState({ successMessage: 'image fetched successfully !!' })
+            }
         try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
@@ -54,6 +57,7 @@ class DigitalImages extends Component {
                         listToFilter: response.data.assets,
                         Loading: false
                     })
+                    
                     return
                     // document.getElementById("colgate").setAttribute("data-dismiss","modal")
                 }
@@ -185,25 +189,30 @@ class DigitalImages extends Component {
     }
 
     async getImageFromDrive() {
-        try {
-            let self = this;
-            self.setState({ Loading: true });
-            await axios.get("/api/getAssetFromDrive").then(function (response) {
-                console.log('resposne from /api/getAssetFromDrive==', response)
-                if (response.status === 200) {
-                    //$("#successGoogle").show();
-                   self.setState({ Loading: false ,successMessage:'image fetched successfully !!'})
-                    setTimeout(()=>{self.setState({successMessage:''})},1500)
-                }
-            }).catch(function (error) {
-                self.setState({ Loading: false })
-                console.log("error============/api/getAssetFromDrive", error)
-            })
-            // window.location.href = "/digitalImages"
-        } catch (e) {
-            console.log("not wokreddd===========")
+        if(sessionStorage.getItem('userData')!== null ) {
+            let tempData = JSON.parse(sessionStorage.getItem('userData'));
+            var fullName = tempData.userData.first_name+" "+tempData.userData.last_name
+            console.log("tempData is ",tempData.userData.first_name)
+            try {
+                let self = this;
+                self.setState({ Loading: true });
+                await axios.get("/api/uploadfilesfromgoogledrive?name="+fullName).then(function (response) {
+                    console.log('resposne from /api/getAssetFromDrive==', response)
+                    if (response.status === 200 && response.data.success) {
+                        //$("#successGoogle").show();
+                        setTimeout(() => {
+                            self.getAssetList(true);
+                        }, 1500);
+                    }
+                }).catch(function (error) {
+                    self.setState({ Loading: false })
+                    console.log("error============/api/getAssetFromDrive", error)
+                })
+                // window.location.href = "/digitalImages"
+            } catch (e) {
+                console.log("not wokreddd===========")
+            }
         }
-
     }
 
     async deleteProductById() {

@@ -2,27 +2,37 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const path = require('path')
-var cron = require('node-cron');
+var assetController = require('./../assetController.js');
+var con = require('./../config.js')
 const SCOPES = ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive.metadata.readonly'];
 
 
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = './token.json';
 
 
 // If modifying these scopes, delete token.json.
-const getImage = () => {
-
+ function  getImage(name , callback) {
   // Load client secrets from a local file.
   fs.exists('credentials.json', (isFind) => { console.log(isFind) })
   fs.readFile(path.resolve(__dirname, "credentials.json"), (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
-    authorize(JSON.parse(content), listFiles);
+    console.log("content >>>>", content)
+    authorize( JSON.parse(content), function (data) {
+      console.log("authorize data is  ",data);
+       listFiles(name,data,function(test){
+        console.log("list file result is ",test);
+        callback(test);
+      });
+    });
   });
 
+  // const content = fs.readFileSync(path.resolve(__dirname, "credentials.json"), 'utf8');
+  // console.log("content><><", content)
+  // authorize(JSON.parse(content), listFiles);
 }
 
 /**
@@ -32,16 +42,23 @@ const getImage = () => {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  const { client_secret, client_id, redirect_uris } = credentials.installed;
+  console.log("credentials.web is ", credentials.web)
+  const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
     client_id, client_secret, redirect_uris[0]);
 
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, (err, token) => {
+    console.log("tokenpath is >>>>", token)
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
     callback(oAuth2Client);
   });
+  /*const token = fs.readFileSync(TOKEN_PATH, 'utf8');
+  console.log('content<<<', token);
+  getAccessToken(oAuth2Client, callback);*/
+
+
 }
 
 /**
@@ -67,7 +84,7 @@ function getAccessToken(oAuth2Client, callback) {
       oAuth2Client.setCredentials(token);
       // Store the token to disk for later program executions
       fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
+        if (err) return console.error(err.message);
         console.log('Token stored to', TOKEN_PATH);
       });
       callback(oAuth2Client);
@@ -75,56 +92,119 @@ function getAccessToken(oAuth2Client, callback) {
   });
 }
 
+function compareFile(fileName, base64, callback) {
+  var dataDuplicate;
+  con.query("Select * from assets", function (err, result) {
+    if (err)
+      throw err;
+    var flag = true;
+    result.map((key) => {
+      if (key.path) {
+        var bitmap
+        try {
+          bitmap = fs.readFileSync('client' + key.path);
+          var base64dataLocal = Buffer(bitmap).toString('base64');
+          if (base64dataLocal == base64) {
+            flag = false;
+            dataDuplicate = key;
+          }
+        } catch (error) {
+          console.log("error is >>>")
+          callback(true);
+        }
+      }
+    }
+    )
+    if (flag) {
+      callback(true);
+    } else {
+      callback(false);
+    }
+
+  }
+  )
+}
+
 /**
  * Lists the names and IDs of up to 10 files.
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-async function listFiles(auth) {
+ function listFiles(name , auth, callback) {
   const drive = google.drive({ version: 'v3', auth });
   var fileId = '1h8alBKaKW7muNNG9T-9b79ButOVRMEHo';
+  var imagesMIME = 'image';
   // q="'{{FOLDER_ID}}' in parents"
   drive.files.list(q = "'{{FOLDER_ID}}' in parents").then(list => {
-    console.log('', list.data.files)
+    var i = 0;
     list.data.files.map(file => {
-      console.log('##id', file)
-      var dest = fs.createWriteStream(path.resolve(__dirname, './googleImage/' + file.name));
-
-      drive.files.get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' },
-        async function (err, res) {
-          if(res!==undefined) {
-            res.data
-            .on('end', () => {
-              console.log('Done');
-            })
-            .on('error', err => {
-              console.log('Error', err);
-            })
-            .pipe(dest);
-          } 
-         
-        });
+      i++;
+      if (file.mimeType.startsWith('image')) {
+        var isExist = fs.existsSync(path.resolve(__dirname, '../client/public/asset/digital-Image/' + file.name));
+        var dest = fs.createWriteStream(path.resolve(__dirname, '../client/public/asset/digital-Image/' + file.name));
+        drive.files.get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' },
+           function (err, res) {
+            if (res !== undefined) {
+              res.data
+                .on('end', () => {
+                  var data = { name: file.name, mimetype: file.mimeType };
+                  try {
+                    /*
+                    const file = fs.readFileSync(res.data._readableState.pipes.path);
+                    var base64 = Buffer.from(file).toString('base64')
+                    var isExist = compareFile(data.name, base64, function (data) {
+                      console.log("exist  is ", data);
+                    });*/
+                    //  console.log("fileSizeInBytes is ", base64)
+                    const stats = fs.statSync(res.data._readableState.pipes.path);
+                    const fileSizeInBytes = stats.size / (1024 * 1024);
+                    console.log(" file >>>> ", res.data._readableState.pipes.path, " is ", isExist);
+                    if (!isExist) {
+                      con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size` ,`created_by`) VALUES ('" + data.name + "', '" + "/public/asset/digital-Image/" + data.name + "', '" + data.mimetype + "','" + fileSizeInBytes + "','" + name + "')", function (err, result) {
+                      })
+                    }
+                    console.log('Done');
+                    console.log("list.data.files.length is ",list.data.files.length, "i is ",i)
+                    if (i == list.data.files.length) {
+                      console.log("exit from listfile");
+                      callback(true);
+                    }
+                  } catch (e) {
+                    //console.log("error is ", e);
+                  }
+                })
+                .on('error', err => {
+                  console.log('Error', err);
+                })
+                .pipe(dest);
+            }
+          });
+      }
     })
   })
-    .catch(err => console.log('eror', err))
+    .catch(err => {
+      console.log('eror', err.response.data);
+      console.log("exit from listfile with error ");
+      callback(false);
+    })
 
-  function download(fileId, name, done) {
-    const dest = fs.createWriteStream(name + '.csv');
-    drive.files.export({
-      fileId: fileId,
-      mimeType: 'text/csv'
-    }, {
-        responseType: 'stream'
-      }, function (err, response) {
-        if (err) return done(err);
-
-        response.data.on('error', err => {
-          done(err);
-        }).on('end', () => {
-          done();
-        })
-          .pipe(dest);
-      });
-  }
+  /* function download(fileId, name, done) {
+     const dest = fs.createWriteStream(name + '.csv');
+     drive.files.export({
+       fileId: fileId,
+       mimeType: 'text/csv'
+     }, {
+         responseType: 'stream'
+       }, function (err, response) {
+         if (err) return done(err);
+ 
+         response.data.on('error', err => {
+           done(err);
+         }).on('end', () => {
+           done();
+         })
+           .pipe(dest);
+       });
+   }*/
 
 
 }
@@ -150,7 +230,7 @@ async function listFiles(auth) {
 //               imageData: dataToStore
 //             })
 //             imageFileData = JSON.stringify(imageFileData)
-            
+
 
 //             console.log("hitting aPI+++++++++++++++++++++")
 
@@ -168,7 +248,7 @@ async function listFiles(auth) {
 //                   fs.writeFile('assetFilesJson.json', imageFileData,(err) => {
 //                     if (err) throw err;
 //                     console.log('Saved! in JSON', file);
-                    
+
 
 //                     // file deletion
 //                     // fs.unlink(filePath, (err) => {
@@ -196,8 +276,8 @@ async function listFiles(auth) {
 //             //   }).catch((error) => {
 //             //     console.log("error=========in cron AXIOS", error)
 //             //   })
-              
-            
+
+
 //           }
 //         )
 //         .catch(
@@ -227,10 +307,19 @@ async function listFiles(auth) {
 // }
 
 
-cron.schedule('*/1 * * * *', () => {
-  console.log('running a task every two minutes');
-  //getImage()
-});
+
+module.exports = {
+  getData(req, res) {
+    var name = req.query.name;
+    console.log("anme si ",name);
+   getImage(name , function(data){
+    return res.status(200).json({
+      success: data
+  })
+    });
+  }
+}
+//getImage();
 //getImage();
 
 // module.exports={getImage}
