@@ -41,7 +41,7 @@ class DigitalImagePage extends Component {
                 asset: this.props.location.state._data,
                 Loading: false
             })
-        } catch (e) { console.log("errr", errr) }
+        } catch (e) { console.log("errr", e) }
     }
 
 
@@ -167,6 +167,11 @@ class DigitalImagePage extends Component {
                                                                     <td>Size</td>
                                                                     <td>{Number.parseFloat(asset.size).toFixed(2)} MB</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td>Created By</td>
+                                                                    <td>{asset.created_by}</td>
+                                                                </tr>
+
                                                             </tbody></table>
                                                     </div>
                                                 </div>
