@@ -37,8 +37,7 @@ class Channels extends React.Component {
                   <div className="col-md-12">
                     <div className="filter float-right">
                       <div className="float-right">
-                     
-                        <button className="primary-button float-right"><a href="#"> <span className="icon plus" />NEW CHANNEL</a></button>
+                     <a className="new-product primary-button float-right" href="#"> <span className="icon plus" />NEW CHANNEL</a>
                         <select name="example_length" aria-controls="example" class="form-control form-control-sm floate"><option value="5">5 per page</option><option value="10">10 per page</option><option value="25">25 per page</option><option value="100">All</option></select>
                       </div>
                     </div>
@@ -55,7 +54,7 @@ class Channels extends React.Component {
                       <tbody>
                         <tr>
                           <td><input type="checkbox" name /></td>
-                          <td><div className="image-thumb"> <a href="data.html"> <ImageContainer src="franklin-red.png" /></a></div></td>
+                          <td><div className="image-thumb"> <Link to="/channelData"> <ImageContainer src="franklin-red.png" /></Link></div></td>
                           <td>Amazon</td>
                           <td>Export</td>
                           <td> Last Published a Month Ago</td>
@@ -69,14 +68,14 @@ class Channels extends React.Component {
                         </tr>
                         <tr>
                           <td><input type="checkbox" name /></td>
-                          <td><div className="image-thumb"><a href="data.html"> <ImageContainer src="franklin-red.png" /></a> </div></td>
+                          <td><div className="image-thumb"><Link to="/channelData"> <ImageContainer src="franklin-red.png" /></Link> </div></td>
                           <td>Franklin Sports</td>
                           <td>Export</td>
                           <td>Last Published a Month Ago</td>
                         </tr>
                         <tr>
                           <td><input type="checkbox" name /></td>
-                          <td><div className="image-thumb"> <a href="data.html"><ImageContainer src="custom.png" /> </a></div></td>
+                          <td><div className="image-thumb"> <Link to="/channelData"><ImageContainer src="custom.png" /> </Link></div></td>
                           <td>Custom Channel</td>
                           <td>Direct</td>
                           <td>Last Published a Month Ago</td>
