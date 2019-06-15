@@ -92,7 +92,8 @@ class DigitalImages extends Component {
         var idCardBase64
         var assetBodyData
         self.setState({
-            Loading:true
+            Loading:true,
+            existAsset:''
         })
         ev.preventDefault()
         var FileSize = self.uploadInput;
@@ -240,25 +241,35 @@ class DigitalImages extends Component {
                 counter = 0
             }
             let selectedProdeuctIds = this.state.selectedProducytId
-            
+            let selectAssetIds = this.state.selectAssetIds
             let domIcon = document.getElementById(`activebtn${index}`)
             if (domIcon.style.display === '' || domIcon.style.display === 'none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
+                selectAssetIds.push(key.asset_id)
                 document.getElementById(`activebtn${index}`).style.display = 'block'
+                document.getElementById(`asset-checkbox${index}`).checked = true;
                 document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
             } else {
                 counter = counter - 1
                 // document.getElementById(`activebtn${index}`).style.display = 'none'
             }
 
-            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds,selectAssetIds:selectAssetIds })
 
 
         }
         catch (e) { console.log("err", e) }
 
 
+    }
+
+    handleCheckbox(e,index,key){
+        if(document.getElementById(`asset-checkbox${index}`).checked){
+            this.handleIcon(e, index, key)
+        }else{
+            this.handledeSelect(e, index, key)
+        }
     }
 
     handleChange(e) {
@@ -296,14 +307,17 @@ class DigitalImages extends Component {
         try {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
+            let selectAssetIds = this.state.selectAssetIds
             counter = counter - 1
             if (counter < 0) {
                 counter = 0
             }
             let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
             document.getElementById(`activebtn${index}`).style.display = 'none'
+            document.getElementById(`asset-checkbox${index}`).checked = false;
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
-            this.setState({ countItems: counter })
+            selectAssetIds.splice(selectAssetIds.indexOf(key.asset_id),1)
+            this.setState({ countItems: counter,selectAssetIds:selectAssetIds })
 
         } catch (e) { console.log("error ", e) }
 
@@ -353,6 +367,7 @@ class DigitalImages extends Component {
                     this.handledeSelect(e, index, key)
                     this.setState({ countItems: 0 })
                 })
+                this.setState({ countItems: 0,selectAssetIds:[] })
             }
         } catch (e) { console.log("error", e) }
 
@@ -513,7 +528,7 @@ class DigitalImages extends Component {
                                     <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
                                     <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
+                                    <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                     <div className="selected-actions">
                                         <div className="option-box drop-option-link">
@@ -559,12 +574,12 @@ class DigitalImages extends Component {
                                         <table id="example" className="table">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
+                                                    <th scope="col"><input type="checkbox" onClick={(e) => { e.target.checked ? this.selectAllProduct(e) : this.clearAllProduct(e)}} /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Size</th>
-                                                    <th scope="col">Created At</th>
+                                                    <th scope="col">Created Date</th>
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -572,19 +587,23 @@ class DigitalImages extends Component {
                                                 {list.length > 0 && list !== undefined ?
                                                     list.map((asset, index) => {
                                                        return <tr key={index}>
-                                                            <td><input type="checkbox" /></td>
+                                                            <td><input id={`asset-checkbox${index}`} type="checkbox" onClick={(e) => { this.handleCheckbox(e, index, asset) }} /></td>
                                                             <td>
                                                                 <div className="image-thumb">
                                                                     <img className="img-fluid" src={asset.path} />
                                                                 </div>
                                                             </td>
+                                                            
                                                             <td className="productlist_name">{asset.asset_name}</td>
                                                             <td>{asset.asset_type}</td>
-                                                            <td>{asset.size} MB</td>
+                                                            <td>{Number.parseFloat(asset.size).toFixed(2)} MB</td>
                                                             <td>{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</td>
                                                             <td><div className="row-hover">
-                                                                <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                                </a></div>
+                                                                <div className="row-link-options"> <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> 
+                                                                        <ImageContainer src="icons/delete.png" />
+                                                                    </a>
+                                                                </div>
                                                             </div></td>
                                                         </tr>
                                                     }) : ''}
@@ -621,7 +640,7 @@ class DigitalImages extends Component {
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
                                                         <p className="card-text">{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</p>
-                                                        <p className="card-text">{asset.size} MB</p>
+                                                        <p className="card-text">{Number.parseFloat(asset.size).toFixed(2)} MB</p>
                                                     </div>
                                                 </div>
                                                 <div className="card-hover" id={`card-hover${index}`}>
