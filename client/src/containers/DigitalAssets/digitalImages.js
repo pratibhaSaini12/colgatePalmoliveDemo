@@ -526,7 +526,7 @@ class DigitalImages extends Component {
                                                     <div className="counting-action-section show">
                                                         <div className="selections">
                                                             <div className="group-selection">
-                                                                <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                <div className="option-box select-all"><a href="javscript:void(0);" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
                                                                 <div className="option-box clear-all"><a onClick={(e) => { this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
                                                             </div>
                                                             <div className="group-action">
@@ -611,12 +611,12 @@ class DigitalImages extends Component {
                                 { list.length > 0 && list !== undefined ?
                                     list.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
-                                            <div className="card document_list">
+                                            <div className="card card custome_img document_list document_list">
                                                 <div className="card-body text-center">
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={asset.path} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
@@ -628,8 +628,8 @@ class DigitalImages extends Component {
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <a className="icon delete-icon" href="javscript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
 
@@ -650,7 +650,7 @@ class DigitalImages extends Component {
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={asset.image} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.fileName !== undefined ? asset.fileName : ''}</h4>
@@ -662,8 +662,8 @@ class DigitalImages extends Component {
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <a className="icon delete-icon" href="javscript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
                                         </div>
