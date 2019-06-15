@@ -6,6 +6,8 @@ import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
 import { Link } from "react-router-dom"
 import ReactLoading from 'react-loading'
+import { Alert } from 'reactstrap';
+
 
 class NewProduct extends Component {
 
@@ -40,7 +42,8 @@ class NewProduct extends Component {
             pdfFileArray: [],
             selectPdf: '',
             errorSpan: 'SKU number is required to upload Image',
-            Loading: false
+            Loading: false,
+            flashMessageSuccess: ''
         }
 
     }
@@ -50,12 +53,10 @@ class NewProduct extends Component {
         let self = this;
         self.setState({ Loading: true })
         axios.get("api/fetchfile").then(function (response) {
-            console.log('resposne from api fetchfile==', response.data)
             self.setState({
                 pdfFileArray: response.data,
                 Loading: false
             })
-            console.log('vjhdvbhuvb', self.state.pdfFileArray);
         }).catch(function (error) {
             self.setState({ Loading: false })
 
@@ -64,26 +65,21 @@ class NewProduct extends Component {
 
 
     change(e) {
-        console.log("e.target.value", e.target.value)
-        console.log("e.target.name", e.target.name)
         this.setState({
             [e.target.name]: e.target.value,
         })
     }
     handleChange(e) {
         var val = e.target.value
-        console.log(val);
         let self = this
         self.setState({
             selectPdf: val
         })
     }
     createNewProduct() {
-
-        console.log("state on save====", this.state);
         let state = this.state;
+        let self = this
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
-        console.log('completeArray--', completeArray, completeArray[3])
         var percent = this.calculateComlpleteness(completeArray);
 
         let createProduct = {
@@ -112,14 +108,13 @@ class NewProduct extends Component {
             pdfFileArray: state.pdfFileArray
         }
 
-        console.log('createProduct---', percent)
 
         axios.post("api/createProduct", createProduct).then(function (response) {
-            console.log('resposne from api==', response)
-            if (response.data.product) {
+            self.setState({ flashMessageSuccess: "Product has been created successfully!" })
+            setTimeout(function () {
                 window.location.href = "/productList"
-            }
-            this.setState({ Loading: false })
+            }, 3000);
+            // this.setState({ Loading: false })
         }).catch(function (error) {
             this.setState({ Loading: false })
         })
@@ -128,7 +123,6 @@ class NewProduct extends Component {
 
     //handeling image upload
     handleUploadAttachment(ev) {
-        console.log("ev========", ev)
         let self = this
         ev.preventDefault()
         if (self.state.upc !== '') {
@@ -139,20 +133,16 @@ class NewProduct extends Component {
                 data.append('file', file);
                 data.append('filename', file.name);
                 axios.post("/api/upload/image", data).then((res) => {
-                    console.log("error in response", res)
                     if (res.data) {
-                        console.log("res in uploading", res)
                         self.setState({
                             image: res.data.file,
                             main_image: res.data.file
                         })
                         return
                     } else {
-                        console.log("error in response", res)
                         return
                     }
                 }).catch((err) => {
-                    console.log("errorrrrrrrrrrrrrr in uploading", err)
                     return
                 })
 
@@ -163,7 +153,6 @@ class NewProduct extends Component {
         }
     }
     handleUploadAttachmentAdditional(ev) {
-        console.log("ev========", ev)
         let self = this
         ev.preventDefault()
         if (self.state.upc !== '') {
@@ -174,7 +163,6 @@ class NewProduct extends Component {
                 data.append('file', file);
                 data.append('filename', file.name);
                 axios.post("/api/upload/additional_image", data).then((res) => {
-                    console.log("error in response additional_image", res)
                     if (res.data) {
                         self.setState({
                             additionalImage: res.data.file,
@@ -182,11 +170,9 @@ class NewProduct extends Component {
                         })
                         return
                     } else {
-                        console.log("error in responseadditional_image", res)
                         return
                     }
                 }).catch((err) => {
-                    console.log("errorrrrrrrrrrrrrr in additional_image uploading", err)
                     return
                 })
             }
@@ -204,22 +190,18 @@ class NewProduct extends Component {
     UploadPDF() {
         var self = this;
         var assetBodyData = '{ pdfName :' + this.state.selectPdf + '}';
-        console.log('hgvhbhbhhbvbh' + assetBodyData);
         self.setState({
             Loading: true
         })
         axios.post("/api/readpdf", { pdfName: this.state.selectPdf }).then((res) => {
-            console.log("error in response", res)
             if (res.data) {
                 self.setState({
                     pdfData: res.data,
                     Loading: false
                 })
-                console.log("res in uploading", res)
                 return
             } else {
                 $(".pdfData").html('Can not read the file !!');
-                console.log("error in response", res)
                 return
             }
         }).catch((err) => {
@@ -227,36 +209,6 @@ class NewProduct extends Component {
             return
         })
 
-
-
-
-        //if (FileSize <= 5) {
-        // self.getBase64(self.uploadInputFile.files[0], (result) => {
-        // 	var base64 = result.split(",");
-        // 	idCardBase64 = base64[1]
-        // 	assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: idCardBase64, fileName: self.uploadInputFile.files[0].name, mimetype: self.uploadInputFile.files[0].type, id: this.state.product_id === '' ? this.state.asset_id : this.state.product_id })
-        //     console.log("===assetBodyData====",assetBodyData)
-        //     self.setState({
-        //         image: assetBodyData.data
-        //     })
-        //     axios.post("/api/readpdf",assetBodyData).then((res)=>{
-        //         console.log("error in response",res)
-        //         if(res.data){
-        // 			console.log("res in uploading",res)
-        // 			return 
-        //         } else {
-        // 			console.log("error in response",res)
-        // 			return						
-        //         }
-        //     }).catch((err)=>{
-        // 		console.log("errorrrrrrrrrrrrrr in uploading",err)
-        // 		return
-        //     })
-        // });
-        //}
-        // else {
-        // 	console.log("fileSizeExceedMessage=======")
-        // }
     }
 
     //Method to get Bas64 of file
@@ -269,12 +221,12 @@ class NewProduct extends Component {
         reader.onerror = function (error) {
         };
     }
-    resize(){
+    resize() {
         var textArray = document.getElementsByClassName('textarea custome_text');
-            for(var i=0;i<textArray.length;i++){
-                textArray[i].style.height = 'auto';
-                textArray[i].style.height = textArray[i].scrollHeight+'px';
-            }
+        for (var i = 0; i < textArray.length; i++) {
+            textArray[i].style.height = 'auto';
+            textArray[i].style.height = textArray[i].scrollHeight + 'px';
+        }
     }
 
     calculateComlpleteness(completeArray) {
@@ -293,17 +245,17 @@ class NewProduct extends Component {
     }
 
     render() {
-        console.log("statessss in newProduct", this.state)
         let img = this.state.image
         var state = this.state
         let addImge = this.state.additional_image
         let { pdfData, pdfFileArray, selectPdf } = this.state
         let image = img;
         let additionalImage = this.state.additional_image
-
-
+        let flashSuceessMessageSpan = '';
+        if (this.state.flashMessageSuccess) {
+            flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
+        }
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
-        console.log('completeArray--', completeArray, completeArray[3])
         var percent = this.calculateComlpleteness(completeArray);
         return (
 
@@ -327,11 +279,28 @@ class NewProduct extends Component {
                         <div className="container-fluid r-aside">
                             <div className="row">
                                 <div className="col-md-12 top_part20">
-                                    <h2 className="page-title float-left">Create New Product</h2>
+                                    <div className="row">
+                                        <div className="col-md-3">
+                                            <h2 className="page-title float-left">Create Product</h2>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <center>
+                                                {flashSuceessMessageSpan}
+                                            </center>
+                                        </div>
+                                        <div className="col-md-3">
+                                            <div className="float-right allmodalcolgate">
+                                                <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
+                                                <button type="button" className="btn btn-outline-primary"> <Link to="/productlist">CANCEL</Link></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* <h2 className="page-title float-left">Create New Product</h2>
                                     <div className="float-right allmodalcolgate">
                                         <button type="button" className="btn btn-primary" onClick={(e) => this.createNewProduct(e)}>SAVE</button>
                                         <button type="button" className="btn btn-outline-primary"> <Link to="/productlist">CANCEL</Link></button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className="row">
@@ -522,7 +491,7 @@ class NewProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Price ($)</label>
-                                                                <input className="form-control" type="text" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
+                                                                <input className="form-control" type="number" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
                                                                 {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
@@ -533,7 +502,7 @@ class NewProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Formatted Base Wholesale Price ($)</label>
-                                                                <input className="form-control pricedate_form" type="text" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
+                                                                <input className="form-control pricedate_form" type="number" name="wholesale_price" value={this.state.wholesale_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -543,7 +512,7 @@ class NewProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Formatted MSRP ($)</label>
-                                                                <input className="form-control pricedate_form" type="text" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
+                                                                <input className="form-control pricedate_form" type="number" name="msrp" value={this.state.msrp} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -553,7 +522,7 @@ class NewProduct extends Component {
                                                         <div className="col-md-11">
                                                             <div className="form-group">
                                                                 <label>Formatted Retail Price ($)</label>
-                                                                <input className="form-control pricedate_form" type="text" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
+                                                                <input className="form-control pricedate_form" type="number" name="retail_price" value={this.state.retail_price} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -742,9 +711,9 @@ class NewProduct extends Component {
                                                 <div className="form-group">
                                                     <label>Pack Flats</label>
                                                     <div className="form-group">
-                                                        
+
                                                         <select className="form-control onselect" name="example_length" aria-controls="example" onChange={(e) => this.handleChange(e)} >
-                                                        <option value="">Select File</option>
+                                                            <option value="">Select File</option>
                                                             {
                                                                 pdfFileArray.length > 0 ? pdfFileArray.map(function (key, index) {
                                                                     return (<option value={key}>{key}</option>)
@@ -764,64 +733,65 @@ class NewProduct extends Component {
                                                                 }
                                                             </ul>
                                                             <div class="tab-content custome_content under_tabs" id="myTabContent">
-                                                            {
-                                                            pdfData.length > 0 ? pdfData.map(function(key,index){
-                                                            return <div className={index==0 ? 'tab-pane fade show active':'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group all_list_details">
-                                                                         {key.ques1}
+                                                                {
+                                                                    pdfData.length > 0 ? pdfData.map(function (key, index) {
+                                                                        return <div className={index == 0 ? 'tab-pane fade show active' : 'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group all_list_details">
+                                                                                        {key.ques1}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans1}</textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group all_list_details">
+                                                                                        {key.ques2}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans2}</textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group all_list_details">
+                                                                                        {key.ques3}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans3}</textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group all_list_details">
+                                                                                        {key.ques4}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans4}</textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group all_list_details">
+                                                                                        {key.ques5}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans5}</textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <textarea class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans1}</textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group all_list_details">
-                                                                        {key.ques2}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                        <textarea class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans2}</textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group all_list_details">
-                                                                        {key.ques3}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                        <textarea  class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans3}</textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group all_list_details">
-                                                                        {key.ques4}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                        <textarea  class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans4}</textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group all_list_details">
-                                                                        {key.ques5}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                        <textarea class="textarea custome_text" style={{height:'100%',width:'100%'}} >{key.ans5}</textarea>
-                                                                        </div>
-                                                                </div>
-                                                                </div> 
-                                                            </div> }) : ''
-                                                            }
-                                                            
+                                                                    }) : ''
+                                                                }
+
                                                             </div>
                                                         </div>
 
