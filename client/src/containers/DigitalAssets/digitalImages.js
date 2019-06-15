@@ -36,7 +36,8 @@ class DigitalImages extends Component {
             imagesForList: "All",
             productImageList: [],
             successMessage:'',
-            selectAssetIds:[]
+            selectAssetIds:[],
+            listview:false
         }
     }
     getAssetList(isDrive) { 
@@ -50,6 +51,7 @@ class DigitalImages extends Component {
         try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
+
                 if (response.data) {
                     self.setState({
                         assetList: response.data.assets,
@@ -153,34 +155,39 @@ class DigitalImages extends Component {
     clearState() {
         let self = this
         self.setState({
-            Loading: false,
             image:'',
             existAsset:'',
             asset_id: '',
             asset_name: '',
             uploadInput:''
-
         })
     }
 
     async submitAssets() {
         let self = this
         self.setState({ Loading: true })
+        this.clearState();
         console.log("state on save====", this.state);
         let state = self.state;
         const data = new FormData();
+    
         data.append('file',state.asset_data);
+        if(sessionStorage.getItem('userData') !== null ) {
+           let tempData = JSON.parse(sessionStorage.getItem('userData'))
+            console.log('------',tempData.userData.first_name);
+            data.append('username',tempData.userData.first_name);
+        }
         data.append('time',(new Date()).getTime());
-        data.append('user','Text');
         await axios.post("/api/createNewAsset",data).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.asset) {
-                self.getAssetList()
-                window.location.href = "/digitalImages"
+                self.getAssetList();
             } else {
                 self.setState({ Loading: false })
                 console.log("resposne eror submitAssets==", response)
             }
+            $('#colgate').modal('hide')
+            
 
         }).catch(function (error) {
             self.setState({ Loading: false })
@@ -386,38 +393,6 @@ class DigitalImages extends Component {
             [e.target.name]: e.target.value
         })
     }
-
-
-      /**
-     * Method for handle card view 
-     */
-    cardView(e) {
-        console.log('console.log')
-        try {
-            let tableView = document.getElementsByClassName('tabtable')[0];
-            let cardView = document.getElementById('row-view')
-            console.log("ZZZZZZZ", tableView, cardView)
-            tableView.style.display = 'none';
-            cardView.style.display = 'block'
-        } catch (e) { console.log("erro", e) }
-
-
-
-    }
-
-
-    openListView() {
-        try {
-            let tableView = document.getElementsByClassName('tabtable')[0];
-            let cardView = document.getElementById('row-view')
-            tableView.style.display = 'block';
-            cardView.style.display = 'none'
-            console.log('xx', tableView, cardView);
-        } catch (e) { console.log('hello', e) }
-    }
-
-
-
     render() {
 
 
@@ -536,8 +511,8 @@ class DigitalImages extends Component {
                                 <div className="filter float-right col-md-8">
                                     <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
                                     <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
-                                    <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                    <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
+                                    <a href="javscript:void(0);" onClick={(e)=>{this.setState({listview:true})}} className="filter-btn list-view paginationshow">filter</a>
+                                    <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e)=>{this.setState({listview:false})}} >filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                     <div className="selected-actions">
                                         <div className="option-box drop-option-link">
@@ -574,7 +549,7 @@ class DigitalImages extends Component {
 
                                 </div>
                             </div>
-                            <div className="table-view digitalImage tabtable">
+                            <div className="table-view digitalImage tabtable" style={this.state.listview ? {display:'block'}:{display:'none'}}>
                                 <div className="row">
 
 
@@ -584,7 +559,7 @@ class DigitalImages extends Component {
                                             <thead>
                                                 <tr className="starting">
                                                     <th scope="col"><input type="checkbox" onClick={(e) => { e.target.checked ? this.selectAllProduct(e) : this.clearAllProduct(e)}} /></th>
-                                                    <th scope="col" />
+                                                    <th scope="col">Image</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Size</th>
@@ -634,7 +609,7 @@ class DigitalImages extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div id="row-view">
+                            <div id="row-view" style={this.state.listview ? {display:'none'}:{display:'block'}}>
                             <div className="row digitalImage">
                                 { list.length > 0 && list !== undefined ?
                                     list.map((asset, index) => {
@@ -759,7 +734,6 @@ class DigitalImages extends Component {
                                         </div>
                                     </form>
                                 </div>
-                                {/* Modal footer */}
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-primary" onClick={this.submitAssets.bind(this)}>CREATE</button>
                                     <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={this.clearState.bind(this)}>CANCEL</button>

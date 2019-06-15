@@ -89,8 +89,8 @@ module.exports = {
             fs.mkdirSync('client/public/asset/digital-Image/');
         }
         var imageFile = req.files.file;
-        console.log('imageFile---------', imageFile);
-        imageFile.mv(`client/public/asset/digital-Image/${imageFile.name}`, function (err) {
+        console.log('imageFile---------',req.body);
+        imageFile.mv(`client/public/asset/digital-Image/${imageFile.name}`, function(err) {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -98,7 +98,7 @@ module.exports = {
             const fileSizeInBytes = stats.size;
             //Convert the file size to megabytes (optional)
             const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
-            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "')", function (err, result) {
+            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size`,`created_by` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "','" +req.body.username + "')", function (err, result) {
                 console.log('response from create Product====', result)
                 if (err)
                     return err;
@@ -156,24 +156,8 @@ module.exports = {
                         'key':dataDuplicate
                     })
                 }
-                
-                
-                
-            }
-            )
-            if (flag) {
-                return res.send({
-                    'success': ''
-                })
-            } else {
-                return res.send({
-                    'error': '',
-                    'key': dataDuplicate
-                })
-            }
-
-        },
-
+            })
+    },
     getAssetList(req, res) {
         con.query("SELECT * FROM `assets` order by asset_id DESC", function (err, result) {
             if (err)
