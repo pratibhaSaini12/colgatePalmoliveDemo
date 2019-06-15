@@ -5,6 +5,7 @@ import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import ReactLoading from 'react-loading'
+import Moment from 'moment';
 class DigitalImagePage extends Component {
 
     constructor(props) {
@@ -95,12 +96,6 @@ class DigitalImagePage extends Component {
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="breadcrumb">
-                                            <ul>
-                                                <li>
-                                                    <Link to="/digitalImages"> Asset &gt;&gt; </Link>
-                                                </li>
-                                                <li>  {asset.asset_id}</li>
-                                            </ul>
                                             <ul className="prevnext-btn">
                                                 <li className="btn-icon prev">
                                                     <a href="#">
@@ -125,10 +120,8 @@ class DigitalImagePage extends Component {
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
-                                                <h2 className="page-title assetid approved"><i className="fas fa-check-circle" />
-                                                    {asset.asset_id}</h2>
                                                 <h4 className="assetname">{asset.asset_name}</h4>
-                                                <p className="date-time">{asset.created_at}</p>
+                                                <p className="date-time">{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</p>
                                             </div>
                                             <div className="col-md-1">
                                                 <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -161,33 +154,18 @@ class DigitalImagePage extends Component {
                                                 <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                                                     <div className="card-body">
                                                         <table>
-                                                            <tbody><tr>
-                                                                <td width="20%">asset Name</td>
-                                                                <td width="80%">{asset.asset_name}</td>
-                                                            </tr>
+                                                            <tbody>
                                                                 <tr>
-                                                                    <td>asset ID</td>
-                                                                    <td>{asset.asset_id}</td>
+                                                                    <td width="20%">asset Name</td>
+                                                                    <td width="80%">{asset.asset_name}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>SKU</td>
-                                                                    <td>{asset.upc}</td>
+                                                                    <td>Type</td>
+                                                                    <td>{asset.asset_type}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Category</td>
-                                                                    <td>{asset.category}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Link</td>
-                                                                    <td>{asset.link}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>asset Line</td>
-                                                                    <td>{asset.asset_line}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>asset Status </td>
-                                                                    <td>{asset.asset_status}</td>
+                                                                    <td>Size</td>
+                                                                    <td>{asset.size} MB</td>
                                                                 </tr>
                                                             </tbody></table>
                                                     </div>
