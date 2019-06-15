@@ -3809,4 +3809,7 @@ to {
 .avatar-edit .create-new-link { cursor: pointer}
 .avatar-edit .create-new-link:hover{ color: #eb4260 !important;}
 .avatar-edit {width: 100%;
-    display: inline-block;}	
+	display: inline-block;}	
+	.newtask_edit {margin: 0 6px 0px;}
+	.newtask_edit a {color: #3f51b5;}
+	.newtask_edit a:hover{ color:#3f51b5 }

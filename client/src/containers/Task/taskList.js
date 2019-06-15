@@ -402,7 +402,10 @@ class TaskList extends Component {
                                         {
                                             list.length > 0 ? list.map((key, index) => {
                                                 return <tr key={index}>
-                                                    <td><Link to={{ pathname: '/viewTask', state: { _data: key } }}>{key.task_id}</Link></td>
+                                                    {/* <td>{key.task_id} */}
+                                                    <span className="newtask_edit"><Link to={{ pathname: '/editTask', state: { _data: key } }}>Edit</Link></span>
+                                                    <span className="newtask_edit"><Link to={{ pathname: '/viewTask', state: { _data: key } }}>View</Link></span>
+                                                    {/* </td> */}
                                                     <td>{key.due_date ? moment(key.due_date).format('YYYY/MM/DD') : ''}</td>
                                                     <td>{key.subject}</td>
                                                     <td>{key.status}</td>

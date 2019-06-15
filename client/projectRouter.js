@@ -20,6 +20,7 @@ import TaskPageByUserID from "./src/containers/Task/taskListByUser"
 import UploadImage from "./src/containers/uploadImage"
 import TaskList from "./src/containers/Task/taskList"
 import EditTask from "./src/containers/Task/editTask"
+import ViewTask from "./src/containers/Task/viewTask"
 import Search from "./src/containers/Dashboard/globalSearch"
 import DigitalImagePage from "./src/containers/DigitalAssets/digitalImagePage"
 import EditDigitalImage from "./src/containers/DigitalAssets/editdigitalImage"
@@ -54,7 +55,7 @@ export default class ProjectRouter extends React.Component {
 					<Route exact path='/editTask' component={EditTask} />
 					<Route exact path='/search' component={Search} />
 					<Route exact path='/digitalImagePage' component={DigitalImagePage} />
-					<Route exact path='/viewTask' component={TaskPageByUserID} />
+					<Route exact path='/viewTask' component={ViewTask} />
 					<Route exact path='/comingSoon' component={ComingSoon} />
 					<Route exact path='/manageCollections' component={ManageCollections} />
 					<Route exact path='/channels' component={Channels} />
