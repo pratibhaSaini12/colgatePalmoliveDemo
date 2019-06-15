@@ -152,7 +152,7 @@ class Login extends Component {
 						{/* Login Form */}
 						<form className="login_page">
 							<input type="text" id="login" className="fadeIn second" name="email" placeholder="Email" value={this.state.email} onChange={e => this.change(e)} />
-							<input type="text" id="password" className="fadeIn third" name="password" placeholder="Password" value={this.state.password} onChange={e => this.change(e)} />
+							<input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" value={this.state.password} onChange={e => this.change(e)} />
 							<input type="button" className="fadeIn fourth" defaultValue="Log In" onClick={this.getLoginData.bind(this)} />
 						</form>
 					</div>

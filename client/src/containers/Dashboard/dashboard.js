@@ -113,17 +113,17 @@ class Dashboard extends Component {
                             colorByPoint: true,
                             data: [
                                 {
-                                    name: task[0].assignedTo,
+                                    name:task[0].assignedTo,
                                     y: task[0].count,
                                     drilldown: null
                                 },
                                 {
-                                    name: task[1].assignedTo,
+                                    name:task[1].assignedTo,
                                     y: task[1].count,
                                     drilldown: null
                                 },
                                 {
-                                    name: task[2].assignedTo,
+                                    name:task[2].assignedTo,
                                     y: task[2].count,
                                     drilldown: null
                                 }

@@ -898,7 +898,7 @@ class ProductList extends Component {
                                         <table id="example" className="table ">
                                             <thead>
                                                 <tr className="starting">
-                                                    {/* <th scope="col"><input type="checkbox"  onClick={(e)=>{this.checkedAllList(e)}} id="chkBoxAll"/></th> */}
+                                                    <th scope="col">&nbsp;</th>
                                                     <th scope="col" />
                                                     <th scope="col">SKU</th>
                                                     {selectedArray.map((keyinner, indexinner) => {
