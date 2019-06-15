@@ -493,8 +493,8 @@ class DigitalImages extends Component {
                                     </div>
                                     </div>
                                 <div className="filter float-right col-md-8">
-                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images from google</button>
-                                    <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
+                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
+                                <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
                                     
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>

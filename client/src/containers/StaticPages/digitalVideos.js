@@ -31,7 +31,7 @@ class DigitalVideos extends React.Component {
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row ">
             <div className="col-md-12">
               <div id="filter-panel" className="filter-panel filtercustome" style={{display: 'none'}}>
                 <div className="panel panel-default">
@@ -98,11 +98,11 @@ class DigitalVideos extends React.Component {
           </div>
           {/* card row start ---------------------------------------------------------------------*/}
           <div className="table-view">
-            <div className="row">
+            <div className="row mar_bt_30">
               <div className="col-md-12">
                 <div className="filter float-right">
                   <div className="float-right col-md-12">
-                    <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button> 
+                   <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"><i className="ti-plus"></i> Upload Assets </a>
                     <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
                     <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> 
                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a> 
