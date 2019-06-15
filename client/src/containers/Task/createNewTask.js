@@ -9,7 +9,6 @@ import moment from "moment"
 import UserModal from "./userModal"
 import axios from "axios";
 import ReactLoading from 'react-loading'
-
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "react-loading";
 import ProductCompare from "../Product/productCompare";
@@ -24,7 +23,6 @@ class NewTask extends Component {
             userModalShow: false,
             UserList: [],
             ProductList: [],
-            UserList: [],
             sortedUserList: [],
             showTable: false,
             UserName: '',
@@ -36,7 +34,8 @@ class NewTask extends Component {
             related_to: {
                 
             },
-            Loading: false
+            Loading: false,
+            userNameFilter:[],
         }
     }
 
@@ -88,9 +87,30 @@ class NewTask extends Component {
         })
         this.setState({
             sortedUserList: sortedList,
-            showTable: true
+            showTable: true,
         })
     }
+
+//     userFilter(e){
+//         console.log("evenet ",event.target.value)
+//         let UserList  = this.state.UserList
+//         let filterUser = []
+//         console.log("user list",UserList)
+
+
+//         filterUser = UserList.filter(user=>{
+//             console.log("user",user,"assignTo",user.assignedTo)
+//            return  user.Name.toLowerCase().includes(e.target.value.toLowerCase())
+//         })
+//         console.log("valuessssss",filterUser)
+//         this.setState({userNameFilter:filterUser})
+//     }
+
+//     clickUser(e,name){
+//         var x = document.getElementsByName("Name")[0].tagName;
+//         document.getElementById("demo").innerHTML = x;
+// //this.state.assignedTo.Name
+//     }
 
     componentWillMount() {
         let self = this
@@ -140,12 +160,24 @@ class NewTask extends Component {
 
             console.log('userrrrrrrrrrrrrr-------', user)
             this.setState({
-                assignedTo: user,
+                assignedTo: user.Name,
+                sortedUserList: [],
+                showTable: false,
+                UserName: '',
 
             })
 
         } catch (e) { }
 
+    }
+
+    clearList(){
+        let sortedList = []
+         this.setState({
+            sortedUserList: sortedList ,
+            showTable: false,
+            UserName: '',
+         })   
     }
 
     createNewTask() {
@@ -177,7 +209,7 @@ class NewTask extends Component {
         axios.post("api/createNewTask", createTask).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.task) {
-                window.location.href = "/dashboard"
+                window.location.href = "/taskList"
             }
 
         }).catch(function (error) {
@@ -205,6 +237,7 @@ class NewTask extends Component {
     render() {
         console.log('state on render----', this.state)
         const style = this.state.showTable ? {} : { display: "none" }
+        let filterUserList =  this.state.userNameFilter
         return (
             <div>
                 {/* <div className="preloader">
@@ -288,7 +321,7 @@ class NewTask extends Component {
                                         </div>
                                         <div className="allmodalcolgate col-md-12">
                                             <button type="button" className="btn btn-primary" onClick={this.createNewTask.bind(this)}>Save</button>
-                                            <button type="button" className="btn btn-outline-primary"><Link to="/taskList">Cancel</Link></button>
+                                            <button type="button" className="btn btn-outline-primary" ><Link to="/taskList">Cancel</Link></button>
                                         </div>
                                     </form>
                                 </div>
@@ -303,7 +336,7 @@ class NewTask extends Component {
                             <div className="modal-content">
                                 <div className="modal-header search_header">
                                     <h4 className="modal-title title_modalheader">Search User</h4>
-                                    <button type="button" className="close" data-dismiss="modal">×</button>
+                                    <button type="button" className="close" data-dismiss="modal" onClick={this.clearList.bind(this)} >×</button>
                                 </div>
                                 <div className="modal-body filtercustome">
                                     <div className="search_user_section">
@@ -312,7 +345,14 @@ class NewTask extends Component {
                                                 <div className="row">
                                                     <label htmlFor="inputPassword" className="col-form-label col-sm-4">User Name</label>
                                                     <div className="col-sm-8">
-                                                        <input className="form-control" type="text" name="search" placeholder="Colget" />
+                                                        <input id= "user" className="form-control" type="text" name="search" />
+{/*                                                         
+                                                        { console.log("user name ",this.state.userNameFilter)}
+                                                        {
+                                                           
+                                                            filterUserList.length > 0 ? filterUserList.map(list=>(<p onClick={(e)=> this.clickUser(e,list.Name)} >{`${list.Name} ${list.LastName}`}</p>))
+                                                            :void 0
+                                                       }  */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -320,12 +360,9 @@ class NewTask extends Component {
                                     </div>
                                     <center>
                                         <button type="button" className="btn btn-primary" onClick={this.getList.bind(this)}>Go</button>
-                                        <button type="button" className="btn btn-outline-primary">Cancel</button>
+                                        <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={this.clearList.bind(this)}>Cancel</button>
                                     </center>
                                     <table className="table record-table" style={style}>
-                                        <thead>
-                                            <th>User Name</th>
-                                        </thead>
                                         <tbody>
                                             {
                                                 this.state.sortedUserList.length ? this.state.sortedUserList.map((user, index) => {
