@@ -9,6 +9,7 @@ import ReactLoading from 'react-loading'
 import AssetJsonModel from '../ObjectJsonModel/assetStateToJson'
 import axios from "axios";
 import {Alert} from 'react-bootstrap'
+import Moment from 'moment';
 class DigitalImages extends Component {
     constructor(props) {
         super(props)
@@ -35,13 +36,17 @@ class DigitalImages extends Component {
             imagesForList: "All",
             productImageList: [],
             successMessage:'',
+            selectAssetIds:[]
         }
     }
-    getAssetList() {
+    getAssetList(isDrive) { 
         let self = this
             self.setState({
                 Loading:true
-            })
+            });
+            if(isDrive){
+                self.setState({ successMessage: 'image fetched successfully !!' })
+            }
         try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
@@ -52,6 +57,7 @@ class DigitalImages extends Component {
                         listToFilter: response.data.assets,
                         Loading: false
                     })
+                    
                     return
                     // document.getElementById("colgate").setAttribute("data-dismiss","modal")
                 }
@@ -85,19 +91,21 @@ class DigitalImages extends Component {
     }
     //handeling image upload
     handleUploadAttachment(ev) {
-        console.log("ev========", ev)
         let self = this
         let { assetList } = self.state
         var idCardBase64
         var assetBodyData
+        self.setState({
+            Loading:true,
+            existAsset:''
+        })
         ev.preventDefault()
-        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-        if (FileSize <= 5) {
+        var FileSize = self.uploadInput;
+        if (FileSize !='') {
             const data = new FormData();
             data.append('file',self.uploadInput.files[0]);
             axios.post("/api/compareassets",data).then(function (response) {
                 console.log('response'+response.data);
-                
                  if(response.data.error !== undefined){
                     self.setState({
                         asset_data:self.uploadInput.files[0],
@@ -110,7 +118,14 @@ class DigitalImages extends Component {
                         image:URL.createObjectURL(self.uploadInput.files[0]),
                      })
                  }
+                 self.setState({
+                    Loading:false
+                })
             })     
+         }else{
+            self.setState({
+                Loading:false
+            })
          }
             
     }
@@ -139,9 +154,12 @@ class DigitalImages extends Component {
         let self = this
         self.setState({
             Loading: false,
+            image:'',
+            existAsset:'',
             asset_id: '',
             asset_name: '',
-            _assetImageId: ''
+            uploadInput:''
+
         })
     }
 
@@ -171,25 +189,30 @@ class DigitalImages extends Component {
     }
 
     async getImageFromDrive() {
-        try {
-            let self = this;
-            self.setState({ Loading: true });
-            await axios.get("/api/getAssetFromDrive").then(function (response) {
-                console.log('resposne from /api/getAssetFromDrive==', response)
-                if (response.status === 200) {
-                    //$("#successGoogle").show();
-                   self.setState({ Loading: false ,successMessage:'image fetched successfully !!'})
-                    setTimeout(()=>{self.setState({successMessage:''})},1500)
-                }
-            }).catch(function (error) {
-                self.setState({ Loading: false })
-                console.log("error============/api/getAssetFromDrive", error)
-            })
-            // window.location.href = "/digitalImages"
-        } catch (e) {
-            console.log("not wokreddd===========")
+        if(sessionStorage.getItem('userData')!== null ) {
+            let tempData = JSON.parse(sessionStorage.getItem('userData'));
+            var fullName = tempData.userData.first_name+" "+tempData.userData.last_name
+            console.log("tempData is ",tempData.userData.first_name)
+            try {
+                let self = this;
+                self.setState({ Loading: true });
+                await axios.get("/api/uploadfilesfromgoogledrive?name="+fullName).then(function (response) {
+                    console.log('resposne from /api/getAssetFromDrive==', response)
+                    if (response.status === 200 && response.data.success) {
+                        //$("#successGoogle").show();
+                        setTimeout(() => {
+                            self.getAssetList(true);
+                        }, 1500);
+                    }
+                }).catch(function (error) {
+                    self.setState({ Loading: false })
+                    console.log("error============/api/getAssetFromDrive", error)
+                })
+                // window.location.href = "/digitalImages"
+            } catch (e) {
+                console.log("not wokreddd===========")
+            }
         }
-
     }
 
     async deleteProductById() {
@@ -227,24 +250,35 @@ class DigitalImages extends Component {
                 counter = 0
             }
             let selectedProdeuctIds = this.state.selectedProducytId
+            let selectAssetIds = this.state.selectAssetIds
             let domIcon = document.getElementById(`activebtn${index}`)
             if (domIcon.style.display === '' || domIcon.style.display === 'none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
+                selectAssetIds.push(key.asset_id)
                 document.getElementById(`activebtn${index}`).style.display = 'block'
+                document.getElementById(`asset-checkbox${index}`).checked = true;
                 document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
             } else {
                 counter = counter - 1
                 // document.getElementById(`activebtn${index}`).style.display = 'none'
             }
 
-            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds,selectAssetIds:selectAssetIds })
 
 
         }
         catch (e) { console.log("err", e) }
 
 
+    }
+
+    handleCheckbox(e,index,key){
+        if(document.getElementById(`asset-checkbox${index}`).checked){
+            this.handleIcon(e, index, key)
+        }else{
+            this.handledeSelect(e, index, key)
+        }
     }
 
     handleChange(e) {
@@ -282,14 +316,17 @@ class DigitalImages extends Component {
         try {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
+            let selectAssetIds = this.state.selectAssetIds
             counter = counter - 1
             if (counter < 0) {
                 counter = 0
             }
             let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
             document.getElementById(`activebtn${index}`).style.display = 'none'
+            document.getElementById(`asset-checkbox${index}`).checked = false;
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
-            this.setState({ countItems: counter })
+            selectAssetIds.splice(selectAssetIds.indexOf(key.asset_id),1)
+            this.setState({ countItems: counter,selectAssetIds:selectAssetIds })
 
         } catch (e) { console.log("error ", e) }
 
@@ -301,27 +338,30 @@ class DigitalImages extends Component {
      ***/
     selectAllProduct(e) {
         let allproduct = this.state.filteredList
+        let selectAssetIds = [];
         if (allproduct.length > 0) {
             allproduct.map((key, index) => {
                 this.handleIcon(e, index, key)
-                this.setState({ countItems: allproduct.length })
+                selectAssetIds.push(key.asset_id);
             })
+            this.setState({ countItems: allproduct.length,selectAssetIds:selectAssetIds })
+            console.log('-------------',selectAssetIds);
         }
 
     }
 
     /**Method for hide and show menu option s */
-    showhideSpan() {
-        let spanSho = document.getElementsByClassName('counting-action-section')[1]
-        try {
-            if (this.state.countItems > 0) {
-                spanSho.style.display = 'block'
-            } else {
-                spanSho.style.display = 'none'
-            }
-        } catch (e) { }
+    // showhideSpan() {
+    //     let spanSho = document.getElementsByClassName('counting-action-section')[1]
+    //     try {
+    //         if (this.state.countItems > 0) {
+    //             spanSho.style.display = 'block'
+    //         } else {
+    //             spanSho.style.display = 'none'
+    //         }
+    //     } catch (e) { }
 
-    }
+    // }
 
     /**
      * 
@@ -336,6 +376,7 @@ class DigitalImages extends Component {
                     this.handledeSelect(e, index, key)
                     this.setState({ countItems: 0 })
                 })
+                this.setState({ countItems: 0,selectAssetIds:[] })
             }
         } catch (e) { console.log("error", e) }
 
@@ -386,7 +427,7 @@ class DigitalImages extends Component {
         let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
        
-        this.showhideSpan()
+        //this.showhideSpan()
         console.log(assetList);
         return (
             <div>
@@ -493,11 +534,10 @@ class DigitalImages extends Component {
                                     </div>
                                     </div>
                                 <div className="filter float-right col-md-8">
-                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-upload    "></i>get images from google</button>
-                                    <button className="primary-button float-right"><a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a></button>
-                                    
+                                    <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
+                                    <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
                                     <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
+                                    <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                     <div className="selected-actions">
                                         <div className="option-box drop-option-link">
@@ -507,20 +547,20 @@ class DigitalImages extends Component {
                                                     <div className="dot-icon"><ImageContainer src="icons/option-all.png" /></div>
                                                 </a>
                                                 <div className="dropdown-menu drop_20">
-                                                    <div className="counting-action-section">
+                                                    <div className="counting-action-section show">
                                                         <div className="selections">
                                                             <div className="group-selection">
-                                                                <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                <div className="option-box select-all"><a href="javscript:void(0);" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
                                                                 <div className="option-box clear-all"><a onClick={(e) => { this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
                                                             </div>
                                                             <div className="group-action">
-                                                                <div className="option-box delete"><a href>Delete</a></div>
+                                                                <div className="option-box delete" ><a data-toggle="modal" data-target="#delete" onClick={(e)=>this.setState({deleteAssetId:this.state.selectAssetIds})}>Delete</a></div>
                                                                 <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                                    {/* <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
+                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -543,12 +583,12 @@ class DigitalImages extends Component {
                                         <table id="example" className="table">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
+                                                    <th scope="col"><input type="checkbox" onClick={(e) => { e.target.checked ? this.selectAllProduct(e) : this.clearAllProduct(e)}} /></th>
                                                     <th scope="col" />
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Size</th>
-                                                    <th scope="col">Created At</th>
+                                                    <th scope="col">Created Date</th>
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -556,19 +596,23 @@ class DigitalImages extends Component {
                                                 {list.length > 0 && list !== undefined ?
                                                     list.map((asset, index) => {
                                                        return <tr key={index}>
-                                                            <td><input type="checkbox" /></td>
+                                                            <td><input id={`asset-checkbox${index}`} type="checkbox" onClick={(e) => { this.handleCheckbox(e, index, asset) }} /></td>
                                                             <td>
                                                                 <div className="image-thumb">
                                                                     <img className="img-fluid" src={asset.path} />
                                                                 </div>
                                                             </td>
+                                                            
                                                             <td className="productlist_name">{asset.asset_name}</td>
                                                             <td>{asset.asset_type}</td>
-                                                            <td>2832 x 4256  |  2.74 MB</td>
-                                                            <td>{asset.created_at}</td>
+                                                            <td>{Number.parseFloat(asset.size).toFixed(2)} MB</td>
+                                                            <td>{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</td>
                                                             <td><div className="row-hover">
-                                                                <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                                </a></div>
+                                                                <div className="row-link-options"> <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> 
+                                                                        <ImageContainer src="icons/delete.png" />
+                                                                    </a>
+                                                                </div>
                                                             </div></td>
                                                         </tr>
                                                     }) : ''}
@@ -595,25 +639,25 @@ class DigitalImages extends Component {
                                 { list.length > 0 && list !== undefined ?
                                     list.map((asset, index) => {
                                         return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
-                                            <div className="card document_list">
+                                            <div className="card card custome_img document_list document_list">
                                                 <div className="card-body text-center">
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={asset.path} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
-                                                        <p className="card-text">{asset.created_at}</p>
-                                                        <p className="card-text">2832 x 4256  |  2.74 MB</p>
+                                                        <p className="card-text">{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</p>
+                                                        <p className="card-text">{Number.parseFloat(asset.size).toFixed(2)} MB</p>
                                                     </div>
                                                 </div>
                                                 <div className="card-hover" id={`card-hover${index}`}>
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.asset_id })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <a className="icon delete-icon" href="javscript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
 
@@ -634,7 +678,7 @@ class DigitalImages extends Component {
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javscript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={asset.image} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.fileName !== undefined ? asset.fileName : ''}</h4>
@@ -646,8 +690,8 @@ class DigitalImages extends Component {
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
-                                                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <a className="icon delete-icon" href="javscript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -678,20 +722,12 @@ class DigitalImages extends Component {
                             <div className="modal-content">
                                 {/* Modal Header */}
                                 <div className="modal-header">
-                                    <h4 className="modal-title title_modalheader">Upload Assets</h4>
+                                    <h4 className="modal-title title_modalheader" >Upload Assets</h4>
                                     <button type="button" className="close" data-dismiss="modal" onClick={this.clearState.bind(this)}>×</button>
                                 </div>
                                 {/* Modal body */}
                                 <div className="modal-body filtercustome">
                                     <form>
-                                        {/* <div className="form-group">
-                                            <label>Asset Id</label>
-                                            <input className="form-control" type="text" name="asset_id" placeholder={12345} value={this.state.asset_id} onChange={e => this.change(e)} />
-                                        </div> */}
-                                        {/* <div className="form-group">
-                                            <label>Asset Name</label>
-                                            <input className="form-control" type="text" name="asset_name" value={this.state.asset_name} onChange={e => this.change(e)} />
-                                        </div> */}
                                         {existAsset !== '' ?
                                             <span>Asset already Exist </span>
                                             : ''}
@@ -718,13 +754,9 @@ class DigitalImages extends Component {
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                 <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
-                                                {/* <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" />
-                                                <label htmlFor="imageUpload">Select images</label> */}
+                                                
                                             </div>
                                         </div>
-                                        <p><span className="label label-danger label-rounded">NOTE!</span> Attached images thumbnail is supported in latest firefox chrome,
-                                            Opera,Safari and Internet Explore 10 only
-                                        </p>
                                     </form>
                                 </div>
                                 {/* Modal footer */}

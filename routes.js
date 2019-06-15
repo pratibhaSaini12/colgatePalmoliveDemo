@@ -5,6 +5,7 @@ const productController=require('./productController');
 const assetController=require('./assetController');
 const uploadImageController=require("./uploadImageController");
 const uploadPDFController=require("./uploadPDFController");
+const GoogleDriveController=require("./CRON/cronController");
 
 // const cronController = require('./CRON/cronController');
 require('./CRON/cronController')
@@ -70,6 +71,7 @@ module.exports = (app) => {
  app.post('/api/upload/additional_image',uploadImageController.additionalImage);
  app.get('/api/get-additional-image',uploadImageController.getImages);
  app.post('/api/compareassets',assetController.compareAssets);
+ app.get('/api/uploadfilesfromgoogledrive',GoogleDriveController.getData);
  
 
 };

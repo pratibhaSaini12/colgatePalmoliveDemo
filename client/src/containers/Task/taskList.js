@@ -249,9 +249,9 @@ class TaskList extends Component {
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
                                 </div>
                                 <div className="col-md-6">
-                                    <button className="primary-button float-right">
-                                        <Link to="/newTask"><span className="icon plus" />NEW Task</Link>
-                                    </button>
+                                   
+                                        <Link className="new-product primary-button float-right" to="/newTask"><span className="icon plus" />NEW Task</Link>
+                                   
                                     <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm">
                                         <option value="5">5 per page</option>
                                         <option value="10">10 per page</option>

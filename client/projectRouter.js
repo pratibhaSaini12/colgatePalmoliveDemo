@@ -35,11 +35,34 @@ import ChannelData from "./src/containers/StaticPages/channelData"
 const history = createHistory()
 
 export default class ProjectRouter extends React.Component {
+	constructor(props) {
+		super(props)
+	
+		this.state = {
+			 userData :''
+		}
+		
+	}
+	componentWillMount() {
+		if(sessionStorage.getItem('userData')!== null ) {
+
+			let tempData = JSON.parse(sessionStorage.getItem('userData'))
+		 	this.setState({userData:tempData.userData})
+		}
+	
+	}
+	
 	render() {
+		
 		return (
 			<Router history={history}>
 				<Switch>
+					
 					<Route exact path='/' component={Login} />
+
+					{
+
+					}
 					<Route exact path='/dashboard' component={Dashboard} />
 					<Route exact path='/productList' component={ProductList} />
 					<Route exact path='/newProduct' component={NewProduct} />

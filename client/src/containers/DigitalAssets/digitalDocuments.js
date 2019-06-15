@@ -119,9 +119,9 @@ class DigitalDocument extends Component {
                                     <input class="content-search" type="text" name="search" placeholder="Filter Records"/>
                                     </div>
               <div className="filter float-right col-md-6">
-                      <button className="primary-button float-right">
-                          <a href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <span className="icon plus" />Upload Assets </a>
-                        </button>
+                
+                          <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"><i className="ti-plus"></i> Upload Assets </a>
+
                         <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a> <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                         <div className="selected-actions">
                           <div className="option-box drop-option-link">

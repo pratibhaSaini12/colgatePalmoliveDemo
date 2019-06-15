@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import axios from "axios"
 import cookie from "react-cookies"
+import ReactLoading from 'react-loading'
 
 import { getAPIData } from "./actions"
 import { selectApiData } from "./selectors"
@@ -22,7 +23,9 @@ class Login extends Component {
 
 		this.state = {
 			email: '',
-			password: ''
+			password: '',
+			Loading:false,
+
 		}
 	}
 
@@ -113,13 +116,17 @@ class Login extends Component {
 			email: this.state.email,
 			password: this.state.password
 		}
+		let self = this
+		this.setState({Loading:true})
 		axios.post("/api/loginData", data).then(function (response) {
 			console.log("response from login ", response.data);
+			sessionStorage.setItem('userData',JSON.stringify(response.data))
 			if (response.data.message == 'Success') {
 				window.location.href = "/dashboard"
 			}
 
 		}).catch(function (error) {
+			self.setState({Loading:false})
 			console.log("error  login is ", error);
 		})
 
@@ -138,6 +145,13 @@ class Login extends Component {
 		return (
 			<div>
 				{/* <LoginPage onSubmit={this.getLoginData.bind(this)} userPwd={this.state.userPwd} active={this.state.active} loginProps={this.props} update={update} forgot={forgot}/> */}
+			
+				{
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
+			
 				<div className="wrapper fadeInDown">
 					<div id="formContent">
 						{/* Tabs Titles */}
@@ -152,7 +166,7 @@ class Login extends Component {
 						{/* Login Form */}
 						<form className="login_page">
 							<input type="text" id="login" className="fadeIn second" name="email" placeholder="Email" value={this.state.email} onChange={e => this.change(e)} />
-							<input type="text" id="password" className="fadeIn third" name="password" placeholder="Password" value={this.state.password} onChange={e => this.change(e)} />
+							<input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" value={this.state.password} onChange={e => this.change(e)} />
 							<input type="button" className="fadeIn fourth" defaultValue="Log In" onClick={this.getLoginData.bind(this)} />
 						</form>
 					</div>

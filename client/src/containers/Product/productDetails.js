@@ -37,17 +37,13 @@ class ProductDetail extends Component {
             this.setState({
                 product: this.props.location.state._data
             })
-        } catch (e) { console.log("errr", errr) }
+        } catch (e) { console.log("errr", e) }
     }
 
 
 
     render() {
-        console.log("props in product detail page", this.props)
-        console.log("state in product detail page", this.state)
         let { product } = this.state
-        console.log("product==========", product)
-        console.log("productmain_image==========", product.main_image)
         return (
             <div>
                 {/* <div className="preloader">
@@ -74,7 +70,7 @@ class ProductDetail extends Component {
                                                 <ImageContainer src="icons/option-all.png" />
                                             </a>
                                                 <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
+                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                             </div>
                                         </div>
                                         <div className="option-box delete float-right"><a href>Delete</a></div>
@@ -111,230 +107,216 @@ class ProductDetail extends Component {
                                             <div className="col-md-2">
                                                 <div className="thumb">
                                                     {
-                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} />  : ''
+                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} /> : ''
                                                     }
                                                 </div>
                                             </div>
                                             <div className="col-md-9">
-                                                <h2 className="page-title productid approved"><i className="fas fa-check-circle" />
-                                                    {product.product_id}</h2>
+                                                <h2 className="page-title productid approved">
+                                                    {product.upc}</h2>
                                                 <h4 className="productname">{product.product_name}</h4>
-                                                <p className="date-time">{product.updated_at? moment(product.updated_at).format('MM/DD/YYYY'):'' } </p>
+                                                <p className="date-time">{product.updated_at ? moment(product.updated_at).format('MM/DD/YYYY') : ''} </p>
                                             </div>
                                             <div className="col-md-1">
-                                                <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    <ImageContainer src="icons/option-all.png" />
-                                                    {/* <img src="img/icons/option-all.png" /> */}
-                                                </a>
-                                                    <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                    <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="detail-page">
-                                <div className="row">
-                                    <div className="col-sm-12 ">
-                                        <div className="accordion" id="accordionExample">
-                                            <div className="card adnewcard">
-                                                <div className="card-header" id="headingOne">
-                                                    <h5 className="mb-0">
-                                                        <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                            <div className="heading">
-                                                                <i className="fas fa-chevron-right" />
-                                                                General
-                                                            </div>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                    <div className="card-body">
-                                                        <table>
-                                                            <tbody><tr>
-                                                                <td width="20%">Product Name</td>
-                                                                <td width="80%">{product.product_name}</td>
-                                                            </tr>
-                                                                <tr>
-                                                                    <td>Product ID</td>
-                                                                    <td>{product.product_id}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SKU</td>
-                                                                    <td>{product.upc}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Category</td>
-                                                                    <td>{product.category}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Product Status </td>
-                                                                    <td>{product.product_status}</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Brand </td>
-                                                                    <td>{product.brand}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Style </td>
-                                                                    <td>{product.style}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Product Completeness </td>
-                                                                    <td>{product.product_completion}</td>
-                                                                </tr>
-                                                            </tbody></table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card adnewcard">
-                                                <div className="card-header" id="headingTwo">
-                                                    <h5 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                            <i className="fas fa-chevron-right" />
-                                                            <div className="heading">Pricing</div>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                    <div className="card-body">
-                                                        <table>
-                                                            <tbody><tr>
-                                                                <td width="20%">Price ($)</td>
-                                                                <td width="80%">{product.cost}</td>
-                                                            </tr>
-                                                                <tr>
-                                                                    <td>Formatted Base Wholesale Price ($) </td>
-                                                                    <td>{product.wholesale_price}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Formatted MSRP ($)</td>
-                                                                    <td>{product.msrp}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Formatted Retail Price ($)</td>
-                                                                    <td>{product.retail_price}</td>
-                                                                </tr>
-                                                            </tbody></table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card adnewcard">
-                                                <div className="card-header" id="headingFour">
-                                                    <h5 className="mb-0">
-                                                        <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
-                                                            <i className="fas fa-chevron-right" />
-                                                            <div className="heading">Digital Assets </div>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseFour" className="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
-                                                    <div className="card-body">
-                                                        <table className="compair_section">
-                                                            <tbody><tr>
-                                                                <td width="20%">Main Image</td>
-                                                                <td width="30%">                                                                    
-                                                                {product.main_image !==undefined && product.main_image !== null &&product.main_image !==''
-                                                                        
-                                                                        ?
-                                                                        <img src={product.main_image} />
-                                                                    : '' }
-                                                                </td>
-                                                            </tr>
-                                                                <tr>
-                                                                    <td>Additional Image</td>
-                                                                    <td><span>
-                                                                        {product.additional_image !==undefined && product.additional_image !== null &&product.additional_image !==''
-                                                                        
-                                                                        ?
-                                                                        <img src={product.additional_image} />
-                                                                    : '' }
-                                                                    </span> 
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody></table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Detail page Close */}
-                            <div className=" search-filter" style={{ display: 'none' }}>
-                                <div className="row">
-                                    <div className="col-md-6 search"> </div>
-                                    <div className="col-md-6 filter">
-                                        <div className="float-right "> <a href="javscript:void(0)" className="filter-btn list-view">filter</a> <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> <a href="javscript:void(0)" className="filter-btn filter" id="filter">filter</a> </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* Detail page started */}
                             <div className="row">
-                                <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ display: 'none' }}>
-                                        <div className="panel panel-default">
-                                            <div className="panel-body">
-                                                <form>
-                                                    <div className="row custom_row">
-                                                        <div className="col-md-8">
-                                                            <div className="row">
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value={0}>Property</option>
-                                                                            <option value={1}>3</option>
-                                                                            <option value={2}>4</option>
-                                                                            <option value={3}>5</option>
-                                                                            <option value={4}>6</option>
-                                                                            <option value={7}>7</option>
-                                                                            <option value={8}>8</option>
-                                                                            <option value={9}>9</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value={0}>System Property</option>
-                                                                            <option value={1}>3</option>
-                                                                            <option value={2}>4</option>
-                                                                            <option value={3}>5</option>
-                                                                            <option value={4}>6</option>
-                                                                            <option value={7}>7</option>
-                                                                            <option value={8}>8</option>
-                                                                            <option value={9}>9</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md-4">
-                                                                    <div className="form-group">
-                                                                        <select id="pref-perpage" className="form-control">
-                                                                            <option value={0}>File Property</option>
-                                                                            <option value={1}>3</option>
-                                                                            <option value={2}>4</option>
-                                                                            <option value={3}>5</option>
-                                                                            <option value={4}>6</option>
-                                                                            <option value={7}>7</option>
-                                                                            <option value={8}>8</option>
-                                                                            <option value={9}>9</option>
-                                                                        </select>
-                                                                    </div>
+
+                                <div className="col-md-3">
+                                    <ul className="nav nav-tabs custometab" id="myTab" role="tablist">
+                                        <li className="nav-item">
+                                            <a className="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">General</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Pricing</a>
+                                        </li>
+                                        {/* <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Pack Flats</a>
+                                        </li> */}
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#productQuality" role="tab" aria-controls="productQuality">Product Quality</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                                {/* Detail page Close */}
+
+
+                                <div className="col-md-9">
+                                    <div className="tab-content">
+                                        <div className="tab-pane active  filtercustome tabsectionform" id="home" role="tabpanel">
+                                            <form>
+                                                <ul>
+                                                    <li className="row">
+
+                                                        <div className="col-md-1">
+
+                                                        </div>
+                                                    </li>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Product Name</label>
+                                                                <input className="form-control" type="text" name="product_name" value={product.product_name} readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+
+                                                        </div>
+                                                    </li>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>SKU</label>
+                                                                <input className="form-control" type="text" name="upc" value={product.upc} readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+
+                                                        </div>
+                                                    </li>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Category</label>
+                                                                <div className="form-group">
+                                                                    <input className="form-control" type="text" name="style" value={product.category} readonly />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-4">
-                                                            <div className="form-group">
-                                                                <input className="form-control search_filter" type="text" name="search" placeholder="Search for digital assets" />
-                                                                <i className="ti-search filtersearch" /> </div>
+                                                        <div className="col-md-1">
+
                                                         </div>
+                                                    </li>
+
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Product Status</label>
+                                                                <div className="form-group">
+                                                                    <input className="form-control" type="text" name="style" value={product.product_status} readonly />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <div className="form-group">
+                                                                    <label>Brand</label>
+                                                                    <div className="form-group">
+                                                                        <input className="form-control" type="text" name="style" value={product.brand} readonly />
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-1">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Style</label>
+                                                                <input className="form-control" type="text" name="style" value={product.style} readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                  
+                                <div className="tab-pane filtercustome tabsectionform" id="profile" role="tabpanel">
+                                    <form>
+                                        <ul>
+                                            <li className="row">
+                                                <div className="col-md-11">
+                                                    <div className="form-group">
+                                                        <label>Price ($)</label>
+                                                        <input className="form-control" type="number" name="cost" value={product.cost} />
+                                                        {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                     </div>
-                                                </form>
+                                                </div>
+                                                <div className="col-md-1">
+                                                </div>
+                                            </li>
+                                            <li className="row">
+                                                <div className="col-md-11">
+                                                    <div className="form-group">
+                                                        <label>Formatted Base Wholesale Price ($)</label>
+                                                        <input className="form-control pricedate_form" type="number" name="wholesale_price" value={product.wholesale_price} />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-1">
+                                                </div>
+                                            </li>
+                                            <li className="row">
+                                                <div className="col-md-11">
+                                                    <div className="form-group">
+                                                        <label>Formatted MSRP ($)</label>
+                                                        <input className="form-control pricedate_form" type="number" name="msrp" value={product.msrp} />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-1">
+                                                </div>
+                                            </li>
+                                            <li className="row">
+                                                <div className="col-md-11">
+                                                    <div className="form-group">
+                                                        <label>Formatted Retail Price ($)</label>
+                                                        <input className="form-control pricedate_form" type="number" name="retail_price" value={product.retail_price} readonly />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-1">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+
+                                <div className="tab-pane" id="settings2" role="tabpanel">
+                                    <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+                                        <div className="form-group">
+                                            <label>Workflow state</label>
+                                            <div className="form-group">
+                                                <input className="form-control pricedate_form" type="text" name="retail_price" value={product.workflow_state} readonly />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div className="tab-pane" id="productQuality" role="tabpanel">
+                                    <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
+                                        <div className="form-group">
+                                            <label>Product Completeness (%) - Product Name, Sku, Cateogry, Brand,Price</label>
+                                            <div className="form-group">
+                                                <input className="form-control" value={product.product_completion} readonly />
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -8,9 +8,21 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: ''
+      searchValue: '',
+      userData:''
     };
   }
+
+
+    componentWillMount() {
+      if(sessionStorage.getItem('userData') !== null ) {
+       
+        let tempData = JSON.parse(sessionStorage.getItem('userData'))
+        //  let tempObj =  Object.assign(this.state.userData,tempData.userData)
+         this.setState({userData:tempData.userData})
+      }
+  
+    }
 
   openPage(e) {
     console.log(e.target.name)
@@ -25,8 +37,15 @@ class Header extends React.Component {
     catch(e) {  }
   }
 
-  render() {
+  logOutuser() {
+    sessionStorage.clear();
+    console.log("user list")
+    window.location.href = '/'
 
+  }
+
+  render() {
+    console.log("user data",this.state.userData)
     return (
       <div>
         {/* <ul>
@@ -61,13 +80,14 @@ class Header extends React.Component {
                 <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark curser_auto" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
                   <div className="notify" />
                 </a> </li>
-                <li className="nav-item dropdown"> <Link className="nav-link dropdown-toggle waves-effect waves-dark" to="/comingSoon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span className="adminsection">Rakesh Kumar <br />
+                <li className="nav-item dropdown"> 
+                    <Link className="nav-link dropdown-toggle waves-effect waves-dark" to="/comingSoon"  aria-haspopup="true" aria-expanded="false"><span className="adminsection">
+                    {`${this.state.userData !== '' ? this.state.userData.first_name :''} ${this.state.userData!==''?this.state.userData.last_name:''}`}<br />
                   </span>
-                  <ImageContainer src="profile.png" alt="user" className="profile-pic" />
-                  <i className="fas fa-caret-down all_iconsize caretdrop" /></Link>
+                <ImageContainer src="profile.png" alt="user" className="profile-pic" />
+                  <i className="fas fa-caret-down all_iconsize caretdrop" /></Link> 
                 </li>
                 <li className="nav-item dropdown"> <Link className="nav-link dropdown-toggle waves-effect waves-dark" to="/comingSoon"> <i className="ti-help-alt all_iconsize" /> </Link> </li>
-
               </ul>
             </div>
           </nav>

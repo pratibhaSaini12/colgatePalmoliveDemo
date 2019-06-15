@@ -51,6 +51,7 @@ class ProductList extends Component {
             dataPerPage: 10,
             additionalPictures: [],
             batchHidden: true,
+            listView:false
 
 
         }
@@ -269,7 +270,24 @@ class ProductList extends Component {
             let cardView = document.getElementById('row-view')
             tableView.style.display = 'block';
             cardView.style.display = 'none'
-            console.log('xx', tableView, cardView);
+            this.setState({listView:true})
+            /**Try Code  */
+            let selectedItems = this.state.selectedProducytId
+            this.setState({selectedProducytId:[]})
+
+            let tempSelectedList = []
+            let allProduct  = selectedItems
+            allProduct.length > 0   ? allProduct.map(list=>{
+                let domSelectElement  = document.getElementById(`listChecked${list.product_id}`)
+                tempSelectedList.push(list)
+                domSelectElement.checked  = true
+            })
+            :void 0
+    
+            this.setState({selectedProducytId:tempSelectedList})
+
+
+
         } catch (e) { console.log('hello', e) }
     }
 
@@ -284,12 +302,12 @@ class ProductList extends Component {
                 counter = 0
             }
             let selectedProdeuctIds = this.state.selectedProducytId
-            let domIcon = document.getElementById(`activebtn${index}`)
+            let domIcon = document.getElementById(`activebtn${key.product_id}`)
             if (domIcon.style.display === '' || domIcon.style.display === 'none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
-                document.getElementById(`activebtn${index}`).style.display = 'block'
-                document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'block'
+                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden'
             } else {
                 counter = counter - 1
                 // document.getElementById(`activebtn${index}`).style.display = 'none'
@@ -317,8 +335,8 @@ class ProductList extends Component {
             if (counter < 0) {
                 counter = 0
             }
-            let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
-            document.getElementById(`activebtn${index}`).style.display = 'none'
+            let domIcon = document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
+            document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
             this.setState({ countItems: counter })
 
@@ -331,7 +349,7 @@ class ProductList extends Component {
     showhideSpan() {
         let spanSho = document.getElementsByClassName('counting-action-section')[0]
         try {
-            if (this.state.countItems > 0) {
+            if (this.state.selectedProducytId.length > 0) {
                 spanSho.style.display = 'block'
             } else {
                 spanSho.style.display = 'none'
@@ -435,13 +453,21 @@ class ProductList extends Component {
      * @param{}
      ***/
     selectAllProduct(e) {
-        let allproduct = this.state.filteredList
-        if (allproduct.length > 0) {
-            allproduct.map((key, index) => {
-                this.handleIcon(e, index, key)
-                this.setState({ countItems: allproduct.length })
-            })
+        if(this.state.listView === false) {
+            this.setState({selectedProducytId:[]})
+            let allproduct = this.state.filteredList
+            // this.setState({selectedProducytId:[]})
+            if (allproduct.length > 0) {
+                allproduct.map((key, index) => {
+                    this.handleIcon(e, index, key)
+                    this.setState({ countItems: allproduct.length })
+                })
+            }
+        } else {
+            console.log("select all product###")
+            this.checkedAllList(e)
         }
+      
 
     }
 
@@ -458,8 +484,14 @@ class ProductList extends Component {
                 allproduct.map((key, index) => {
                     this.handledeSelect(e, index, key)
                     this.setState({ countItems: 0 })
+                    let domSelectElement  = document.getElementById(`listChecked${key.product_id}`)
+
+                    domSelectElement.checked=false
                 })
             }
+            
+
+
         } catch (e) { console.log("error", e) }
 
     }
@@ -598,13 +630,38 @@ class ProductList extends Component {
      * Method for handle card view 
      */
     cardView(e) {
-        console.log('console.log')
+        console.log('console.log',this.state.selectedProducytId)
         try {
             let tableView = document.getElementsByClassName('tabtable')[0];
             let cardView = document.getElementById('row-view')
             console.log("ZZZZZZZ", tableView, cardView)
+            let notShowlist = []
             tableView.style.display = 'none';
             cardView.style.display = 'block'
+            let list = this.state.selectedProducytId
+            let filtredlist  = this.state.filteredList.map(list=>{
+                this.state.selectedProducytId.map(key=>{
+                    if(key.product_id !== list.product_id) {
+                        notShowlist.push(list)
+                    }
+                })
+            }) 
+            /**try code */
+        
+            this.state.selectedProducytId.length>0 ? this.state.selectedProducytId.map(key=>{
+                
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'block'
+                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden'
+            }) 
+            : this.state.filteredList.map(key=>{
+
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
+
+            })
+    
+            this.setState({listView:false,selectedProducytId:list})
+
+
         } catch (e) { console.log("erro", e) }
 
     }
@@ -622,12 +679,43 @@ class ProductList extends Component {
 
 
     // }
+    checkedAllList (e) {
+       
+            console.log("selected @@@@@@@@@@@")
+            this.setState({selectedProducytId:[]})
+            let tempSelectedList = []
+            let allProduct  = this.state.filteredList
+            allProduct.length > 0   ? allProduct.map(list=>{
+                let domSelectElement  = document.getElementById(`listChecked${list.product_id}`)
+                tempSelectedList.push(list)
+                domSelectElement.checked  = true
+            })
+            :void 0
+    
+            this.setState({selectedProducytId:tempSelectedList})
+      
+       
+    }
 
+    handleCheckbox (e,key) {
+        let selectedProduct  = this.state.selectedProducytId
+        let newProduct = []
+        if(e.target.checked) {
+            selectedProduct.push(key)
+            this.setState({selectedProducytId:selectedProduct})
+        } else {
+            selectedProduct.splice(selectedProduct.indexOf(key),1)
+            console.log("##","undecked" )
+            this.setState({selectedProducytId:selectedProduct})
+
+        }
+
+    }
 
 
     render() {
         console.log("porps in productlist", this.props)
-        console.log("states in productlist", this.state)
+        console.log("states in productlist", this.state.selectedProducytId)
         let { filteredList, attrebuteArray, selectedArray, product, pictures } = this.state;
         let data
         if (this.props.location.state !== undefined) {
@@ -738,9 +826,9 @@ class ProductList extends Component {
 
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
-                                        <button className="primary-button float-right">
-                                            <Link to="/newProduct"><span className="icon plus" />NEW PRODUCT</Link>
-                                        </button>
+                                        
+                                            <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
+                                  
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
@@ -749,7 +837,7 @@ class ProductList extends Component {
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
                                                     <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
+                                                        <div className="option-box select-count selected"><span id="Counting">{this.state.selectedProducytId.length}</span> <span className="selected-text">Selected</span></div>
                                                         <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
                                                     </a>
                                                     <div className="dropdown-menu drop_20">
@@ -763,7 +851,7 @@ class ProductList extends Component {
                                                                     <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}><i className="ti-trash"></i>Delete</a></div>
 
                                                                     <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
-                                                                    <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
+                                                                   {/* <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
                                                                     <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div> */}
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
@@ -773,6 +861,7 @@ class ProductList extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <a  href="javscript:void(0)" className="dropdown-item" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a>
                                                         <a className="dropdown-item" ><i className="ti-check" />Approve</a>
                                                         <a className="dropdown-item" ><i className="ti-close" />Reject</a>
                                                         <a className="dropdown-item" ><i className="fas fa-upload" />Publish</a>
@@ -809,7 +898,7 @@ class ProductList extends Component {
                                         <table id="example" className="table ">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
+                                                    <th scope="col">&nbsp;</th>
                                                     <th scope="col" />
                                                     <th scope="col">SKU</th>
                                                     {selectedArray.map((keyinner, indexinner) => {
@@ -824,7 +913,7 @@ class ProductList extends Component {
                                                 {
                                                     list.length > 0 ? list.map((key, index) => {
                                                         return <tr key={index}>
-                                                            <td><input type="checkbox" name="" /></td>
+                                                            <td><input type="checkbox" name=""  id={`listChecked${key.product_id}`}  onClick={(e)=>{this.handleCheckbox(e,key)}}   /></td>
                                                             <td><div className="image-thumb"><a href="detailpage.html">
                                                                 <ImageContainer src="1.png" /> </a></div></td>
                                                             <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }} >{key.product_id}</Link></td>
@@ -869,9 +958,9 @@ class ProductList extends Component {
                                             return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                                 <div className="card custome_img">
                                                     <div className="card-body text-center">
-                                                        <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
+                                                        <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${key.product_id}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                             <ImageContainer src="icons/check.png" />
-                                                        </a>
+                                                        </a>    
 
                                                         <p className="img">
                                                             {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
@@ -885,7 +974,7 @@ class ProductList extends Component {
                                                         <h4 className="card-title">{key.upc}</h4>
                                                         <p className="card-text">{key.product_name}<br /></p>
                                                     </div>
-                                                    <div className="card-hover" id={`card-hover${index}`}>
+                                                    <div className="card-hover" id={`card-hover${key.product_id}`}>
                                                         <div className="card-link-options">
                                                             <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
                                                             <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
@@ -1041,7 +1130,7 @@ class ProductList extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group">
-                                            <label>Property Edit</label>
+                                            <label>New Value</label>
                                             <input className="form-control" type="text" name="batchValue" onChange={e => this.change(e)} />
                                         </div>
 

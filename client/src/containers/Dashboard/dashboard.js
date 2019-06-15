@@ -24,7 +24,7 @@ class Dashboard extends Component {
         this.state = {
             taskList: [],
             openTask: [],
-            completeIncomplete: [],
+            completeIncomplete: 0,
             updateProduct: [],
             Loading: false,
             workflow_task: [],
@@ -104,27 +104,26 @@ class Dashboard extends Component {
                     },
 
                     tooltip: {
-                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                       // headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}"></span>: <b>{point.y}</b> <br/>'
                     },
 
                     series: [
                         {
-                            name: "Browsers",
                             colorByPoint: true,
                             data: [
                                 {
-                                    name: task[0].assignedTo,
+                                    name:task[0].assignedTo,
                                     y: task[0].count,
                                     drilldown: null
                                 },
                                 {
-                                    name: task[1].assignedTo,
+                                    name:task[1].assignedTo,
                                     y: task[1].count,
                                     drilldown: null
                                 },
                                 {
-                                    name: task[2].assignedTo,
+                                    name:task[2].assignedTo,
                                     y: task[2].count,
                                     drilldown: null
                                 }
@@ -263,6 +262,9 @@ class Dashboard extends Component {
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
                             },
                             events: {
                                 click: function (event) {
@@ -501,12 +503,12 @@ class Dashboard extends Component {
                                             <div className="leg-div">
                                                 <div className="leg-detail-1"><span />
                                                     {/* <Link to={{ pathname: '/productlist', state: { _data: "complete" } }}> */}
-                                                        Complete:{this.state.completeIncomplete ? this.state.completeIncomplete : 0}%
+                                                        Complete:{this.state.completeIncomplete ? Number(this.state.completeIncomplete).toFixed(2) : 0}%
                                                     {/* </Link> */}
                                                 </div>
                                                 <div className="leg-detail-2"><span />
                                                     {/* <Link to={{ pathname: '/productlist', state: { _data: "incomplete" } }}> */}
-                                                        Incomplete: {this.state.othercompleteIncomplete ? this.state.othercompleteIncomplete : 0}%
+                                                        Incomplete: {this.state.othercompleteIncomplete ? Number(this.state.othercompleteIncomplete).toFixed(2) : 0}%
                                                     {/* </Link> */}
                                                 </div>
                                                 {/* {this.state.othercompleteIncomplete > 0 ?
@@ -595,7 +597,7 @@ class Dashboard extends Component {
                                                     <table className="table dashboard_table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Product ID</th>
+                                                                <th>Sku</th>
                                                                 <th>Product Name</th>
                                                                 <th>Brand</th>
                                                                 <th>Category</th>
@@ -613,7 +615,7 @@ class Dashboard extends Component {
                                                                         </td> */}
                                                                         {/* <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id}</Link></td> */}
                                                                       
-                                                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.product_id !== undefined ? key.product_id :''}</Link></td>
+                                                                        <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }}>{key.upc !== undefined ? key.upc :''}</Link></td>
                                                                         
                                                                        
                                                                         <td>{key.product_name !==undefined ? key.product_name :'' }</td>
@@ -640,6 +642,7 @@ class Dashboard extends Component {
                                             <div className="card-body">
                                                 <div className="piechart_section dashboard_table_heading">
                                                     <h5>My Notifications</h5>
+                                                    <p>&nbsp;</p>
                                                 </div>
                                                 <div className="table-responsive">
                                                     <table className="table dashboard_table notification">
