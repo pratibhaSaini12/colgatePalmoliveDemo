@@ -16,18 +16,18 @@ class ProductCompare extends Component {
     }
 
     componentWillReceiveProps() {
-       
+
     }
-    
+
     async componentWillMount() {
         let self = this
         let recieveProducts = this.props.location.state.compareProductsList
-        let compareProductsIdLits  = []
+        let compareProductsIdLits = []
 
-        recieveProducts.map(product=>{
+        recieveProducts.map(product => {
             compareProductsIdLits.push(product.product_id)
         })
-        
+
         await axios.get("/api/compareProducts?id=" + compareProductsIdLits).then(function (response) {
             console.log("response from compare ", response.data);
             if (response.data) {
@@ -84,8 +84,12 @@ class ProductCompare extends Component {
                                         <table className="comparison-table-image">
                                             <tbody><tr>
                                                 <td />
-                                                <td width="38%"><ImageContainer src="1.jpg" /></td>
-                                                <td width="38%"><ImageContainer src="4.png" /></td>
+                                                <td width="38%"> {
+                                                    this.state.product1.main_image !== null && this.state.product1.main_image !== undefined ? <img src={this.state.product1.main_image} /> : ''
+                                                }</td>
+                                                <td width="38%"> {
+                                                    this.state.product2.main_image !== null && this.state.product2.main_image !== undefined ? <img src={this.state.product2.main_image} /> : ''
+                                                }</td>
                                             </tr>
                                             </tbody></table>
                                         <div className="accordion" id="accordionExample">
@@ -105,17 +109,12 @@ class ProductCompare extends Component {
                                                     <table className="comparison-table">
                                                         <thead>
                                                             <tr>
-                                                                <th />
+                                                                <td>Product Name</td>
                                                                 <th className="product-one product-td">{this.state.product1 ? this.state.product1.product_name : ''}</th>
                                                                 <th className="product-two product-td">{this.state.product2 ? this.state.product2.product_name : ''}</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>Product ID</td>
-                                                                <td className="product-one product-td">{this.state.product1 ? this.state.product1.product_id : ''}</td>
-                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.product_id : ''}</td>
-                                                            </tr>
                                                             <tr>
                                                                 <td>SKU</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.upc : ''}</td>
@@ -127,19 +126,19 @@ class ProductCompare extends Component {
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.category : ''}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Link</td>
-                                                                <td className="product-one product-td" b>{this.state.product1 ? this.state.product1.link : ''}</td>
-                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.link : ''}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Product Line</td>
-                                                                <td className="product-one product-td">{this.state.product1 ? this.state.product1.product_line : ''}</td>
-                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.product_line : ''}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Status</td>
+                                                                <td>Product Status</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.product_status : ''}</td>
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.product_status : ''}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Brand</td>
+                                                                <td className="product-one product-td">{this.state.product1 ? this.state.product1.brand : ''}</td>
+                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.brand : ''}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Style</td>
+                                                                <td className="product-one product-td">{this.state.product1 ? this.state.product1.style : ''}</td>
+                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.style : ''}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -153,7 +152,7 @@ class ProductCompare extends Component {
                                                         <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                                             <div className="heading">
                                                                 <i className="fas fa-chevron-right" />Pricing
-                          </div>
+                                                            </div>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -163,22 +162,22 @@ class ProductCompare extends Component {
                                                     <table className="comparison-table">
                                                         <tbody>
                                                             <tr>
-                                                                <td>COST</td>
+                                                                <td>Price ($)</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.cost : ''}</td>
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.cost : ''}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>FORMATTED BASE WHOLESALE PRICE</td>
+                                                                <td>FORMATTED BASE WHOLESALE PRICE ($)</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.wholesale_price : ''}</td>
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.wholesale_price : ''}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>FORMATTED MSRP</td>
+                                                                <td>FORMATTED MSRP ($)</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.msrp : ''}</td>
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.msrp : ''}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>FORMATTED RETAIL PRICE</td>
+                                                                <td>FORMATTED RETAIL PRICE ($)</td>
                                                                 <td className="product-one product-td">{this.state.product1 ? this.state.product1.retail_price : ''}</td>
                                                                 <td className="product-two product-td">{this.state.product2 ? this.state.product2.retail_price : ''}</td>
                                                             </tr>
@@ -187,6 +186,65 @@ class ProductCompare extends Component {
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        <div className="accordion" id="accordionExample">
+                                            <div className="card adnewcard">
+                                                <div className="card-header" id="headingTwo">
+                                                    <h5 className="mb-0">
+                                                        <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                            <div className="heading">
+                                                                <i className="fas fa-chevron-right" />WORKFLOW STATE
+                                                            </div>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div id="collapseThree" className="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                <div className>
+                                                    <table className="comparison-table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Workflow state</td>
+                                                                <td className="product-one product-td">{this.state.product1 ? this.state.product1.workflow_state : ''}</td>
+                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.workflow_state : ''}</td>
+                                                            </tr>
+                                                           
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div className="accordion" id="accordionExample">
+                                            <div className="card adnewcard">
+                                                <div className="card-header" id="headingTwo">
+                                                    <h5 className="mb-0">
+                                                        <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                            <div className="heading">
+                                                                <i className="fas fa-chevron-right" />Product Quality
+                                                            </div>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div id="collapseFour" className="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                <div className>
+                                                    <table className="comparison-table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Product Completeness (%) - Product Name, Sku, Cateogry, Brand,Price</td>
+                                                                <td className="product-one product-td">{this.state.product1 ? this.state.product1.product_completion : ''}</td>
+                                                                <td className="product-two product-td">{this.state.product2 ? this.state.product2.product_completion : ''}</td>
+                                                            </tr>
+                                                           
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         {/*        <div className="accordion" id="accordionExample">
                                             <div className="card adnewcard">
                                                 <div className="card-header" id="headingThree">

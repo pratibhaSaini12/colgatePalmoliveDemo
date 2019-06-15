@@ -1954,6 +1954,10 @@ Preloader
 	border-bottom: 1px solid #ebeef1;
 	margin-bottom: 0;
 }
+.nav.nav-tabs.custometab .nav-item {
+	border-bottom:none;
+	margin-bottom: 0;
+}
 .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
 	border-color: transparent;
 }
@@ -1971,6 +1975,9 @@ Preloader
 .nav-tabs .nav-link.active {
 	color: #3485d6;
 	background-color: #f9fafc;
+
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
 	border-color: transparent !important;
 }
 .nav-tabs .nav-link {
