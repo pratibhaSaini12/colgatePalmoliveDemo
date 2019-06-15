@@ -116,20 +116,20 @@ module.exports = {
         con.query("Select * from assets",function(err, result){
                 if(err)
                     throw err;
-                var flag = true;
-                try{
+                    var flag = true;
                     result.map((key)=>{
                         if(key.path){
-                           
-                            var bitmap = fs.readFileSync('client'+key.path);
-                            var base64dataLocal = Buffer(bitmap).toString('base64');
-                            if(base64dataLocal==base64data){
-                                flag = false;
-                                dataDuplicate = key;
+                            try{
+                                var bitmap = fs.readFileSync('client'+key.path);
+                                var base64dataLocal = Buffer(bitmap).toString('base64');
+                                if(base64dataLocal==base64data){
+                                    flag = false;
+                                    dataDuplicate = key;
+                                }
+                            }catch(e){
                             }
                         }
                     })
-                console.log('-------',flag);
                 if(flag){
                     return res.send({
                         'success': ''
@@ -140,11 +140,7 @@ module.exports = {
                         'key':dataDuplicate
                     })
                 }
-                }catch(e){
-                    return res.send({
-                        'success': ''
-                    })
-                }
+                
                 
                 
             }

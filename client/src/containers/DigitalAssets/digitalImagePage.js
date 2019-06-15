@@ -165,7 +165,7 @@ class DigitalImagePage extends Component {
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Size</td>
-                                                                    <td>{asset.size} MB</td>
+                                                                    <td>{Number.parseFloat(asset.size).toFixed(2)} MB</td>
                                                                 </tr>
                                                             </tbody></table>
                                                     </div>
