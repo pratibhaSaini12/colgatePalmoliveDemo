@@ -92,7 +92,11 @@ module.exports = {
             if (err) {
                 return res.status(500).send(err);
             }
-            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "')", function (err, result) {
+            const stats = fs.statSync(`client/public/asset/digital-Image/${imageFile.name}`);
+            const fileSizeInBytes = stats.size;
+            //Convert the file size to megabytes (optional)
+            const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
+            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "')", function (err, result) {
                 console.log('response from create Product====', result)
                 if(err)
                     return err;
@@ -113,8 +117,10 @@ module.exports = {
                 if(err)
                     throw err;
                 var flag = true;
-                result.map((key)=>{
+                try{
+                    result.map((key)=>{
                         if(key.path){
+                           
                             var bitmap = fs.readFileSync('client'+key.path);
                             var base64dataLocal = Buffer(bitmap).toString('base64');
                             if(base64dataLocal==base64data){
@@ -122,8 +128,8 @@ module.exports = {
                                 dataDuplicate = key;
                             }
                         }
-                    }
-                )
+                    })
+                console.log('-------',flag);
                 if(flag){
                     return res.send({
                         'success': ''
@@ -134,13 +140,19 @@ module.exports = {
                         'key':dataDuplicate
                     })
                 }
+                }catch(e){
+                    return res.send({
+                        'success': ''
+                    })
+                }
+                
                 
             }
         )
     },
 
     getAssetList(req, res) {
-        con.query("SELECT * FROM `assets` ", function (err, result) {
+        con.query("SELECT * FROM `assets` order by asset_id DESC", function (err, result) {
             if (err)
                 throw err;
             else {
@@ -171,7 +183,7 @@ module.exports = {
     //Delete product by ID
     deleteAssetByID(req, res) {
         console.log('###############', req.body)
-        con.query("DELETE from `assets` where asset_id=" + req.body.id, function (err, result) {
+        con.query("DELETE from `assets` where asset_id in (" + req.body.id+")", function (err, result) {
             console.log('response from delete by id====', result)
             if (err)
                 throw err;
