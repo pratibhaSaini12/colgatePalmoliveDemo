@@ -86,28 +86,35 @@ class NewTask extends Component {
             else if (user.LastName.toLowerCase().indexOf(this.state.UserName.toLowerCase()) !== -1) {
                 sortedList.push(user)
             }
-
+            
+            else {
+                this.setState({
+                    sortedUserList: sortedList,
+                    showTable: false,
+                })
+            }
         })
         this.setState({
             sortedUserList: sortedList,
             showTable: true,
         })
+
     }
 
-    //     userFilter(e){
-    //         console.log("evenet ",event.target.value)
-    //         let UserList  = this.state.UserList
-    //         let filterUser = []
-    //         console.log("user list",UserList)
+        // userFilter(e){
+        //     console.log("evenet ",event.target.value)
+        //     let UserList  = this.state.UserList
+        //     let filterUser = []
+        //     console.log("user list",UserList)
 
 
-    //         filterUser = UserList.filter(user=>{
-    //             console.log("user",user,"assignTo",user.assignedTo)
-    //            return  user.Name.toLowerCase().includes(e.target.value.toLowerCase())
-    //         })
-    //         console.log("valuessssss",filterUser)
-    //         this.setState({userNameFilter:filterUser})
-    //     }
+        //     filterUser = UserList.filter(user=>{
+        //         console.log("user",user,"assignTo",user.assignedTo)
+        //        return  user.Name.toLowerCase().includes(e.target.value.toLowerCase())
+        //     })
+        //     console.log("valuessssss",filterUser)
+        //     this.setState({userNameFilter:filterUser})
+        // }
 
     //     clickUser(e,name){
     //         var x = document.getElementsByName("Name")[0].tagName;
@@ -183,6 +190,7 @@ class NewTask extends Component {
             showTable: false,
             UserName: '',
         })
+        this.handleDoubleClickItem()
     }
 
     createNewTask(event) {
@@ -215,7 +223,7 @@ class NewTask extends Component {
             workflow_state: relatedTo ? relatedTo.workflow_state : ''
         }
         console.log('createTask===', self)
-        if (self.state.assignedTo == '' || self.state.related_to == '') {           
+        if (self.state.assignedTo == '' || self.state.related_to == '' ) {           
             
             this.setState({
                 message: "Please fill all the required fields"
@@ -242,6 +250,7 @@ class NewTask extends Component {
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
+            showTable: false,
             message:''
         })
     }
