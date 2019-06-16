@@ -17,6 +17,8 @@ function loadAssets() {
         return []
     }
 }
+
+
 function upploadAsset(req, res, err) {
     console.log("req in upload Assets===========", req.body)
     try {
@@ -83,11 +85,10 @@ module.exports = {
     //Create new Asset 
     createNewAsset(req, res) {
 
-        if (!fs.existsSync('client/public/asset/digital-Image/')){
+        if (!fs.existsSync('client/public/asset/digital-Image/')) {
             fs.mkdirSync('client/public/asset/digital-Image/');
         }
         var imageFile = req.files.file;
-        console.log('imageFile---------',imageFile);
         imageFile.mv(`client/public/asset/digital-Image/${imageFile.name}`, function(err) {
             if (err) {
                 return res.status(500).send(err);
@@ -96,9 +97,9 @@ module.exports = {
             const fileSizeInBytes = stats.size;
             //Convert the file size to megabytes (optional)
             const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
-            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "')", function (err, result) {
+            con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size`,`created_by` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "','" +req.body.username + "')", function (err, result) {
                 console.log('response from create Product====', result)
-                if(err)
+                if (err)
                     return err;
                 else {
                     return res.status(200).json({
@@ -108,28 +109,42 @@ module.exports = {
             })
         });
     },
-    
-    compareAssets(req,res){
+
+    uploadAssetUsingGoogleDrive(data) {
+        console.log('data---------', data);
+        con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type` ) VALUES ('" + data.name + "', '" + "/public/asset/digital-Image/" + data.name + "', '" + data.mimetype + "')", function (err, result) {
+            console.log('response from create Product====', result)
+            if (err)
+                return err;
+            else {
+                return res.status(200).json({
+                    asset: result
+                })
+            }
+        })
+    },
+
+    compareAssets(req, res) {
         var imageFile = req.files.file;
         var base64data = imageFile.data.toString('base64');
         var dataDuplicate;    
         con.query("Select * from assets",function(err, result){
                 if(err)
                     throw err;
-                var flag = true;
-                try{
+                    var flag = true;
                     result.map((key)=>{
                         if(key.path){
-                           
-                            var bitmap = fs.readFileSync('client'+key.path);
-                            var base64dataLocal = Buffer(bitmap).toString('base64');
-                            if(base64dataLocal==base64data){
-                                flag = false;
-                                dataDuplicate = key;
+                            try{
+                                var bitmap = fs.readFileSync('client'+key.path);
+                                var base64dataLocal = Buffer(bitmap).toString('base64');
+                                if(base64dataLocal==base64data){
+                                    flag = false;
+                                    dataDuplicate = key;
+                                }
+                            }catch(e){
                             }
                         }
                     })
-                console.log('-------',flag);
                 if(flag){
                     return res.send({
                         'success': ''
@@ -140,17 +155,8 @@ module.exports = {
                         'key':dataDuplicate
                     })
                 }
-                }catch(e){
-                    return res.send({
-                        'success': ''
-                    })
-                }
-                
-                
-            }
-        )
+            })
     },
-
     getAssetList(req, res) {
         con.query("SELECT * FROM `assets` order by asset_id DESC", function (err, result) {
             if (err)
@@ -215,64 +221,62 @@ module.exports = {
             //           console.log(resu);
             //       }
             //     });
-            
+
             fs.readdirSync(googleFolder).forEach((file) => {
-              let filePath = googleFolder + "/" + file;
-              console.log(filePath);
-              image2base64(filePath) // you can also to use url
-                .then(
-                  (response) => {
-                    let imageFileData = loadAssets()
-                    let assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: response, fileName: file, mimetype: file.split(".")[1] !== undefined ? file.split(".")[1] : '' })
-                    let dataToStore = JSON.stringify(assetBodyData)
-        
-                    imageFileData.push({
-                      imageData: dataToStore
-                    })
+                let filePath = googleFolder + "/" + file;
+                console.log(filePath);
+                image2base64(filePath) // you can also to use url
+                    .then(
+                        (response) => {
+                            let imageFileData = loadAssets()
+                            let assetBodyData = AssetJsonModel._getJsonDataFromAsset({ base64: response, fileName: file, mimetype: file.split(".")[1] !== undefined ? file.split(".")[1] : '' })
+                            let dataToStore = JSON.stringify(assetBodyData)
 
-                    imageFileData = JSON.stringify(imageFileData)
+                            imageFileData.push({
+                                imageData: dataToStore
+                            })
 
-                    let type = file.split(".")[0] !== undefined ? file.split(".")[1] : 'jpg'
-                    let asset_type = "image/" + type 
-                  
-                         // process.exit();
-                          
-                    //SELECT `asset_id` from assets where `is_drive` = '1' ;
-                  //  " + response + "
-                    let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type`,`is_drive` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "','1')"
-                       let Query =  con.query(que, function (err, resu) {
-                           console.log('INSERT');
-                           console.log(resu);
-                      if (err)
-                      {
-                          console.log(err)
+                            imageFileData = JSON.stringify(imageFileData)
+
+                            let type = file.split(".")[0] !== undefined ? file.split(".")[1] : 'jpg'
+                            let asset_type = "image/" + type
+
+                            // process.exit();
+
+                            //SELECT `asset_id` from assets where `is_drive` = '1' ;
+                            //  " + response + "
+                            let que = "INSERT INTO assets (`asset_name`,`asset_data`,`asset_type`,`is_drive` ) VALUES ('" + file.split(".")[0] + "', '" + response + "', '" + asset_type + "','1')"
+                            let Query = con.query(que, function (err, resu) {
+                                console.log('INSERT');
+                                console.log(resu);
+                                if (err) {
+                                    console.log(err)
+                                }
+                                else {
+                                    fs.writeFile('assetFilesJson.json', imageFileData, (err) => {
+                                        if (err) { console.log(err) }
+                                        result.push(resu)
+                                    })
+                                }
+                            })
                         }
-                      else {
-                          fs.writeFile('assetFilesJson.json', imageFileData,(err) => {
-                            if (err) 
-                            {console.log(err) }
-                            result.push(resu)
-                          })
-                      }
-                  })
-                }
-                )
-                .catch(
-                  (error) => {
-                    console.log("error in readFiles 156", error); //Exepection error....
-                  }
-                )
+                    )
+                    .catch(
+                        (error) => {
+                            console.log("error in readFiles 156", error); //Exepection error....
+                        }
+                    )
             })
 
-            console.log("result=========",result)
+            console.log("result=========", result)
             return res.status(200).json({
-              //  asset: assets,
+                //  asset: assets,
                 error: null
             })
         } catch (e) {
             console.log("error in readFiles try", e);
             res.status(200).json({
-             //   asset: assets,
+                //   asset: assets,
                 error: e
             })
         }

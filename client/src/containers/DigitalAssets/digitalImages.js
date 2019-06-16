@@ -36,17 +36,22 @@ class DigitalImages extends Component {
             imagesForList: "All",
             productImageList: [],
             successMessage:'',
-            selectAssetIds:[]
+            selectAssetIds:[],
+            listview:false
         }
     }
-    getAssetList() {
+    getAssetList(isDrive) { 
         let self = this
             self.setState({
                 Loading:true
-            })
+            });
+            if(isDrive){
+                self.setState({ successMessage: 'image fetched successfully !!' })
+            }
         try {
             axios.get("/api/getAssetList").then(function (response) {
                 console.log("Assety list ", response.data);
+
                 if (response.data) {
                     self.setState({
                         assetList: response.data.assets,
@@ -54,6 +59,7 @@ class DigitalImages extends Component {
                         listToFilter: response.data.assets,
                         Loading: false
                     })
+                    
                     return
                     // document.getElementById("colgate").setAttribute("data-dismiss","modal")
                 }
@@ -92,7 +98,8 @@ class DigitalImages extends Component {
         var idCardBase64
         var assetBodyData
         self.setState({
-            Loading:true
+            Loading:true,
+            existAsset:''
         })
         ev.preventDefault()
         var FileSize = self.uploadInput;
@@ -148,34 +155,39 @@ class DigitalImages extends Component {
     clearState() {
         let self = this
         self.setState({
-            Loading: false,
             image:'',
             existAsset:'',
             asset_id: '',
             asset_name: '',
             uploadInput:''
-
         })
     }
 
     async submitAssets() {
         let self = this
         self.setState({ Loading: true })
+        this.clearState();
         console.log("state on save====", this.state);
         let state = self.state;
         const data = new FormData();
+    
         data.append('file',state.asset_data);
+        if(sessionStorage.getItem('userData') !== null ) {
+           let tempData = JSON.parse(sessionStorage.getItem('userData'))
+            console.log('------',tempData.userData.first_name);
+            data.append('username',tempData.userData.first_name);
+        }
         data.append('time',(new Date()).getTime());
-        data.append('user','Text');
         await axios.post("/api/createNewAsset",data).then(function (response) {
             console.log('resposne from api==', response)
             if (response.data.asset) {
-                self.getAssetList()
-                window.location.href = "/digitalImages"
+                self.getAssetList();
             } else {
                 self.setState({ Loading: false })
                 console.log("resposne eror submitAssets==", response)
             }
+            $('#colgate').modal('hide')
+            
 
         }).catch(function (error) {
             self.setState({ Loading: false })
@@ -184,25 +196,30 @@ class DigitalImages extends Component {
     }
 
     async getImageFromDrive() {
-        try {
-            let self = this;
-            self.setState({ Loading: true });
-            await axios.get("/api/getAssetFromDrive").then(function (response) {
-                console.log('resposne from /api/getAssetFromDrive==', response)
-                if (response.status === 200) {
-                    //$("#successGoogle").show();
-                   self.setState({ Loading: false ,successMessage:'image fetched successfully !!'})
-                    setTimeout(()=>{self.setState({successMessage:''})},1500)
-                }
-            }).catch(function (error) {
-                self.setState({ Loading: false })
-                console.log("error============/api/getAssetFromDrive", error)
-            })
-            // window.location.href = "/digitalImages"
-        } catch (e) {
-            console.log("not wokreddd===========")
+        if(sessionStorage.getItem('userData')!== null ) {
+            let tempData = JSON.parse(sessionStorage.getItem('userData'));
+            var fullName = tempData.userData.first_name+" "+tempData.userData.last_name
+            console.log("tempData is ",tempData.userData.first_name)
+            try {
+                let self = this;
+                self.setState({ Loading: true });
+                await axios.get("/api/uploadfilesfromgoogledrive?name="+fullName).then(function (response) {
+                    console.log('resposne from /api/getAssetFromDrive==', response)
+                    if (response.status === 200 && response.data.success) {
+                        //$("#successGoogle").show();
+                        setTimeout(() => {
+                            self.getAssetList(true);
+                        }, 1500);
+                    }
+                }).catch(function (error) {
+                    self.setState({ Loading: false })
+                    console.log("error============/api/getAssetFromDrive", error)
+                })
+                // window.location.href = "/digitalImages"
+            } catch (e) {
+                console.log("not wokreddd===========")
+            }
         }
-
     }
 
     async deleteProductById() {
@@ -240,25 +257,35 @@ class DigitalImages extends Component {
                 counter = 0
             }
             let selectedProdeuctIds = this.state.selectedProducytId
-            
+            let selectAssetIds = this.state.selectAssetIds
             let domIcon = document.getElementById(`activebtn${index}`)
             if (domIcon.style.display === '' || domIcon.style.display === 'none') {
                 counter = counter + 1
                 selectedProdeuctIds.push(key)
+                selectAssetIds.push(key.asset_id)
                 document.getElementById(`activebtn${index}`).style.display = 'block'
+                document.getElementById(`asset-checkbox${index}`).checked = true;
                 document.getElementById(`card-hover${index}`).style.visibility = 'hidden'
             } else {
                 counter = counter - 1
                 // document.getElementById(`activebtn${index}`).style.display = 'none'
             }
 
-            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds })
+            this.setState({ countItems: counter, selectedProducytId: selectedProdeuctIds,selectAssetIds:selectAssetIds })
 
 
         }
         catch (e) { console.log("err", e) }
 
 
+    }
+
+    handleCheckbox(e,index,key){
+        if(document.getElementById(`asset-checkbox${index}`).checked){
+            this.handleIcon(e, index, key)
+        }else{
+            this.handledeSelect(e, index, key)
+        }
     }
 
     handleChange(e) {
@@ -296,14 +323,17 @@ class DigitalImages extends Component {
         try {
             let counter = this.state.countItems
             let selectedProdeuctIds = this.state.selectedProducytId
+            let selectAssetIds = this.state.selectAssetIds
             counter = counter - 1
             if (counter < 0) {
                 counter = 0
             }
             let domIcon = document.getElementById(`card-hover${index}`).style.visibility = 'visible'
             document.getElementById(`activebtn${index}`).style.display = 'none'
+            document.getElementById(`asset-checkbox${index}`).checked = false;
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
-            this.setState({ countItems: counter })
+            selectAssetIds.splice(selectAssetIds.indexOf(key.asset_id),1)
+            this.setState({ countItems: counter,selectAssetIds:selectAssetIds })
 
         } catch (e) { console.log("error ", e) }
 
@@ -353,6 +383,7 @@ class DigitalImages extends Component {
                     this.handledeSelect(e, index, key)
                     this.setState({ countItems: 0 })
                 })
+                this.setState({ countItems: 0,selectAssetIds:[] })
             }
         } catch (e) { console.log("error", e) }
 
@@ -362,38 +393,6 @@ class DigitalImages extends Component {
             [e.target.name]: e.target.value
         })
     }
-
-
-      /**
-     * Method for handle card view 
-     */
-    cardView(e) {
-        console.log('console.log')
-        try {
-            let tableView = document.getElementsByClassName('tabtable')[0];
-            let cardView = document.getElementById('row-view')
-            console.log("ZZZZZZZ", tableView, cardView)
-            tableView.style.display = 'none';
-            cardView.style.display = 'block'
-        } catch (e) { console.log("erro", e) }
-
-
-
-    }
-
-
-    openListView() {
-        try {
-            let tableView = document.getElementsByClassName('tabtable')[0];
-            let cardView = document.getElementById('row-view')
-            tableView.style.display = 'block';
-            cardView.style.display = 'none'
-            console.log('xx', tableView, cardView);
-        } catch (e) { console.log('hello', e) }
-    }
-
-
-
     render() {
 
 
@@ -512,8 +511,8 @@ class DigitalImages extends Component {
                                 <div className="filter float-right col-md-8">
                                     <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
                                     <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
-                                    <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }} >filter</a>
+                                    <a href="javscript:void(0);" onClick={(e)=>{this.setState({listview:true})}} className="filter-btn list-view paginationshow">filter</a>
+                                    <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e)=>{this.setState({listview:false})}} >filter</a>
                                     <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                     <div className="selected-actions">
                                         <div className="option-box drop-option-link">
@@ -550,7 +549,7 @@ class DigitalImages extends Component {
 
                                 </div>
                             </div>
-                            <div className="table-view digitalImage tabtable">
+                            <div className="table-view digitalImage tabtable" style={this.state.listview ? {display:'block'}:{display:'none'}}>
                                 <div className="row">
 
 
@@ -559,12 +558,12 @@ class DigitalImages extends Component {
                                         <table id="example" className="table">
                                             <thead>
                                                 <tr className="starting">
-                                                    <th scope="col"><input type="checkbox" onClick="checkAll(this)" /></th>
-                                                    <th scope="col" />
+                                                    <th scope="col"><input type="checkbox" onClick={(e) => { e.target.checked ? this.selectAllProduct(e) : this.clearAllProduct(e)}} /></th>
+                                                    <th scope="col">Image</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Size</th>
-                                                    <th scope="col">Created At</th>
+                                                    <th scope="col">Created Date</th>
                                                     <th />
                                                 </tr>
                                             </thead>
@@ -572,19 +571,23 @@ class DigitalImages extends Component {
                                                 {list.length > 0 && list !== undefined ?
                                                     list.map((asset, index) => {
                                                        return <tr key={index}>
-                                                            <td><input type="checkbox" /></td>
+                                                            <td><input id={`asset-checkbox${index}`} type="checkbox" onClick={(e) => { this.handleCheckbox(e, index, asset) }} /></td>
                                                             <td>
                                                                 <div className="image-thumb">
                                                                     <img className="img-fluid" src={asset.path} />
                                                                 </div>
                                                             </td>
+                                                            
                                                             <td className="productlist_name">{asset.asset_name}</td>
                                                             <td>{asset.asset_type}</td>
-                                                            <td>{asset.size} MB</td>
+                                                            <td>{Number.parseFloat(asset.size).toFixed(2)} MB</td>
                                                             <td>{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</td>
                                                             <td><div className="row-hover">
-                                                                <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
-                                                                </a></div>
+                                                                <div className="row-link-options"> <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
+                                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> 
+                                                                        <ImageContainer src="icons/delete.png" />
+                                                                    </a>
+                                                                </div>
                                                             </div></td>
                                                         </tr>
                                                     }) : ''}
@@ -606,7 +609,7 @@ class DigitalImages extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div id="row-view">
+                            <div id="row-view" style={this.state.listview ? {display:'none'}:{display:'block'}}>
                             <div className="row digitalImage">
                                 { list.length > 0 && list !== undefined ?
                                     list.map((asset, index) => {
@@ -621,7 +624,7 @@ class DigitalImages extends Component {
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
                                                         <p className="card-text">{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</p>
-                                                        <p className="card-text">{asset.size} MB</p>
+                                                        <p className="card-text">{Number.parseFloat(asset.size).toFixed(2)} MB</p>
                                                     </div>
                                                 </div>
                                                 <div className="card-hover" id={`card-hover${index}`}>
@@ -731,7 +734,6 @@ class DigitalImages extends Component {
                                         </div>
                                     </form>
                                 </div>
-                                {/* Modal footer */}
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-primary" onClick={this.submitAssets.bind(this)}>CREATE</button>
                                     <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={this.clearState.bind(this)}>CANCEL</button>

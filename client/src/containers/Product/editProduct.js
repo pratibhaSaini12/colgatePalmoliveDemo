@@ -35,18 +35,24 @@ class EditProduct extends Component {
             product_completion: '',
             flashMessageSuccess: '',
             pack_flats: '',
-            pdfData: ''
+            pdfData: '',
+            image: '',
+            additional_image: ''
         }
     }
 
 
     componentDidMount() {
         let product = this.props.location.state._data
+        var pack_flats = this.props.location.state ? this.props.location.state._data : ''
+        console.log('pack flat value on edit---', product.pack_flats)
         try {
             var self = this;
-            if (product.pack_flats!='') {
+            if (pack_flats != '') {
                 axios.post("/api/readpdf", { pdfName: product.pack_flats }).then((res) => {
-                   if (res.data) {
+                    console.log('response from pack flat api===================', res)
+
+                    if (res.data) {
                         self.setState({
                             pdfData: res.data,
                             Loading: false
@@ -61,7 +67,7 @@ class EditProduct extends Component {
                     return
                 })
             }
-            
+
             self.setState({
                 product_id: product.product_id,
                 product_name: product.product_name,
@@ -85,7 +91,9 @@ class EditProduct extends Component {
                 Loading: false,
                 product_completion: product.product_completion,
                 brand: product.brand,
-                pack_flats: product.pack_flats
+                pack_flats: product.pack_flats,
+                image: product.main_image,
+                additional_image: product.additional_image
 
 
             })
@@ -95,7 +103,7 @@ class EditProduct extends Component {
 
         } catch (e) { console.log("errr", e) }
         // try {
-            
+
         // }
         // catch (e) {
 
@@ -112,6 +120,9 @@ class EditProduct extends Component {
         let state = this.state;
         let self = this
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
+        self.setState({
+            Loading: true
+        })
         var percent = this.calculateComlpleteness(completeArray);
         let updateProductByID = {
             product_id: state.product_id,
@@ -135,7 +146,8 @@ class EditProduct extends Component {
             workflow_state: state.workflow_state,
             product_completion: state.product_completion,
             brand: state.brand,
-            product_completion: percent
+            product_completion: percent,
+            additional_image: state.additional_image
 
         }
 
@@ -144,10 +156,16 @@ class EditProduct extends Component {
             if (response.data.product) {
                 self.setState({ flashMessageSuccess: "Product has been updated successfully!" })
                 setTimeout(function () {
+                    self.setState({
+                        Loading: false
+                    })
                     window.location.href = "/productList"
                 }, 3000);
             }
         }).catch(function (error) {
+            self.setState({
+                Loading: false
+            })
 
         })
     }
@@ -171,9 +189,84 @@ class EditProduct extends Component {
         window.location.href = "/productList"
     }
 
+    //handeling image upload
+    handleUploadAttachment(ev) {
+        let self = this
+        ev.preventDefault()
+        self.setState({
+            Loading: true
+        })
+        if (self.state.upc !== '') {
+            var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+            if (FileSize <= 5) {
+                var file = this.uploadInput.files[0];
+                const data = new FormData();
+                data.append('file', file);
+                data.append('filename', file.name);
+                axios.post("/api/upload/image", data).then((res) => {
+                    if (res.data) {
+                        self.setState({
+                            image: res.data.file,
+                            main_image: res.data.file,
+                            Loading: false
+                        })
+                        return
+                    } else {
+                        return
+                    }
+                }).catch((err) => {
+                    self.setState({
+                        Loading: false
+                    })
+                    return
+                })
+
+            }
+            else {
+                console.log("fileSizeExceedMessage=======")
+            }
+        }
+    }
+    handleUploadAttachmentAdditional(ev) {
+        let self = this
+        ev.preventDefault()
+        self.setState({
+            Loading: true
+        })
+        if (self.state.upc !== '') {
+            var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
+            if (FileSize <= 5) {
+                var file = this.uploadInputAdditional.files[0];
+                const data = new FormData();
+                data.append('file', file);
+                data.append('filename', file.name);
+                axios.post("/api/upload/additional_image", data).then((res) => {
+                    if (res.data) {
+                        self.setState({
+                            additionalImage: res.data.file,
+                            additional_image: res.data.file,
+                            Loading: false
+                        })
+                        return
+                    } else {
+                        return
+                    }
+                }).catch((err) => {
+                    self.setState({
+                        Loading: false
+                    })
+                    return
+                })
+            }
+            else {
+                console.log("fileSizeExceedMessage=======additional_image")
+            }
+        }
+
+    }
 
     render() {
-        let { pdfData} = this.state
+        let { pdfData } = this.state
         let flashSuceessMessageSpan = '';
         let { product } = this.state
         // let image = "data:"+img.mimetype+";base64,"+img.data
@@ -182,6 +275,10 @@ class EditProduct extends Component {
         if (this.state.flashMessageSuccess) {
             flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
         }
+        let img = this.state.image
+        let image = img;
+        let additionalImage = this.state.additional_image
+        console.log('state on render----', this.state)
         return (
             <div>
                 {/* <div className="preloader">
@@ -190,6 +287,13 @@ class EditProduct extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true &&
+                    <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
+
                 <div id="main-wrapper">
                     <Header />
                     <Aside active={"product"} />
@@ -447,22 +551,35 @@ class EditProduct extends Component {
 
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
                                                     <label>Upload Image</label>
-                                                    <div className="form-group">
-                                                        {/* <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
-                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload Files</a>
+                                                    <div className="form-group img_uploadmain">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
                                                         {image !== '' && image !== undefined ?
                                                             <img src={image} height="50px" width="50px" className="digital_img" />
-                                                            : ''} */}
+                                                            : ''}
+                                                    </div>
+                                                </div>
+                                                <hr></hr>
+                                                {/* additional image */}
+                                                <div className="form-group">
+                                                    <label>Additional Image Upload</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" type="file" ref={(ref) => { this.uploadInputAdditional = ref }} onChange={this.handleUploadAttachmentAdditional.bind(this)} style={{ display: 'none' }} />
+                                                        <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload</a>
+                                                        {additionalImage !== '' && additionalImage !== undefined ?
+                                                            <img src={additionalImage} height="50px" width="50px" className="digital_img" />
+                                                            : ''}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                       {/* Panel for pdf upload in specification panel*/}
-                                       <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                        {/* Panel for pdf upload in specification panel*/}
+                                        <div className="tab-pane" id="uploadPDF" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
                                                 <div className="form-group">
                                                     <label>Pack Flats</label>
@@ -478,80 +595,80 @@ class EditProduct extends Component {
                                                             }
                                                         </select>
                                                         <a onClick={(e) => this.UploadPDF()} className="create-new-link uploadfile delete">Fetch Data</a> */}
-                                                        {pdfData?
-                                                        <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
-                                                            <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
-                                                                {
-                                                                    pdfData.length > 0 ? pdfData.map(function (key, index) {
-                                                                        return <li class="nav-item">
-                                                                            <a className={index == 0 ? 'nav-link active' : 'nav-link'} id="contact-tab" data-toggle="tab" href={`#contact${index}`} role="tab" aria-controls="contact" aria-selected="true">{key.lang}</a>
-                                                                        </li>
-                                                                    }) : ''
-                                                                }
-                                                            </ul>
-                                                            <div class="tab-content custome_content under_tabs" id="myTabContent">
-                                                                {
-                                                                    pdfData.length > 0 ? pdfData.map(function (key, index) {
-                                                                        return <div className={index == 0 ? 'tab-pane fade show active' : 'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
-                                                                            <div class="row">
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group all_list_details">
-                                                                                        {key.ques1}
+                                                        {pdfData ?
+                                                            <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
+                                                                <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
+                                                                    {
+                                                                        pdfData.length > 0 ? pdfData.map(function (key, index) {
+                                                                            return <li class="nav-item">
+                                                                                <a className={index == 0 ? 'nav-link active' : 'nav-link'} id="contact-tab" data-toggle="tab" href={`#contact${index}`} role="tab" aria-controls="contact" aria-selected="true">{key.lang}</a>
+                                                                            </li>
+                                                                        }) : ''
+                                                                    }
+                                                                </ul>
+                                                                <div class="tab-content custome_content under_tabs" id="myTabContent">
+                                                                    {
+                                                                        pdfData.length > 0 ? pdfData.map(function (key, index) {
+                                                                            return <div className={index == 0 ? 'tab-pane fade show active' : 'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques1}
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans1}</textarea>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans1}</textarea>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group all_list_details">
-                                                                                        {key.ques2}
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques2}
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans2}</textarea>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans2}</textarea>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group all_list_details">
-                                                                                        {key.ques3}
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques3}
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans3}</textarea>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans3}</textarea>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group all_list_details">
-                                                                                        {key.ques4}
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques4}
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans4}</textarea>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans4}</textarea>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group all_list_details">
-                                                                                        {key.ques5}
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques5}
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans5}</textarea>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans5}</textarea>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    }) : ''
-                                                                }
+                                                                        }) : ''
+                                                                    }
 
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        :''
+                                                            : ''
                                                         }
 
                                                     </div>

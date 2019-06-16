@@ -147,9 +147,7 @@ class EditTask extends Component {
             console.log('userrrrrrrrrrrrrr-------', user)
             this.setState({
                 assignedTo: user.Name,
-                sortedUserList: [],
-                showTable: false,
-                UserName: '',
+
             })
 
         } catch (e) { }
@@ -182,15 +180,6 @@ class EditTask extends Component {
         })
     }
 
-    clearList(){
-        let sortedList = []
-         this.setState({
-            sortedUserList: sortedList ,
-            showTable: false,
-            UserName: '',
-         })   
-    }
-
     change(e) {
         console.log("e.target.value", e.target.value)
         console.log("e.target.name", e.target.name)
@@ -203,6 +192,7 @@ class EditTask extends Component {
     render() {
         console.log('state on render----', this.state)
         const style = this.state.showTable ? {} : { display: "none" }
+        console.log("valueeee", this.state)
         return (
             <div>
                 {/* <div className="preloader">
@@ -219,7 +209,7 @@ class EditTask extends Component {
                             <div className="page-header">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <h2 className="page-title">Task Information</h2>
+                                        <h2 className="page-title">Task Information </h2>
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +220,7 @@ class EditTask extends Component {
                                             <label>Due Date</label>
                                             <DatePicker className="form-control"
                                                 selected={this.state.DueDate}
-                                                onChange={this.handleChangeDate.bind(this)}
+                                                // onChange={this.handleChangeDate.bind(this)}
                                             />
                                         </div>
                                         {/* <div className="form-group col-md-12">
@@ -244,31 +234,29 @@ class EditTask extends Component {
                                             <label>Assigned To</label>
                                             <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo} />
                                         </div>
-                                        <div className="search_icon col-md-1" data-toggle="modal" data-target="#search_list"><i className="ti-search" /></div>
+                                        {/* <div className="search_icon col-md-1" data-toggle="modal" data-target="#search_list"><i className="ti-search" /></div> */}
                                         <div className="form-group col-md-12">
                                             <label>Subject</label>
-                                            <input className="form-control" type="text" name="subject" placeholder="Subject" onChange={e => this.change(e)} value={this.state.subject} />
+                                            <input className="form-control" type="text" name="subject" placeholder="Subject" value={this.state.subject} />
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Priority</label>
-                                            <select id="pref-perpage" className="form-control" name="priority" value={this.state.priority} onChange={e => this.change(e)}>
-                                                <option value={"Low"}>Low</option>
+                                            <input id="pref-perpage" className="form-control" value={this.state.priority} name="priority" />
+                                                {/* <option value={"Low"}>Low</option>
                                                 <option value={"High"}>High</option>
-                                                <option value={"Medium"}>Medium</option>
-                                            </select>
+                                                <option value={"Medium"}>Medium</option> */}
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Status</label>
-                                            <select id="pref-perpage" className="form-control" name="status" value={this.state.status} onChange={e => this.change(e)}>
-                                                <option value={"Open"}>Open</option>
+                                            <input id="pref-perpage" className="form-control" value={this.state.status} name="status" />
+                                                {/* <option value={"Open"}>Open</option>
                                                 <option value={"Closed"}>Closed</option>
-                                                <option value={"Pending"}>Pending</option>
-                                            </select>
+                                                <option value={"Pending"}>Pending</option> */}
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Related To</label>
-                                            <select id="pref-perpage" className="form-control" name="related_to" value={this.state.related_to} onChange={e => this.change(e)}>
-                                                {
+                                            <input id="pref-perpage" className="form-control" name="related_to" value={this.state.related_to} />
+                                                {/* {
                                                     this.state.ProductList.length ? this.state.ProductList.map((product, index) => {
                                                         return <option value={product.product_name}>{product.product_name}</option>
 
@@ -277,14 +265,15 @@ class EditTask extends Component {
                                                 }
 
 
-                                            </select>
+                                            </select> */}
                                         </div>
-                                        <div className="allmodalcolgate col-md-12">
-                                            <button type="button" className="btn btn-primary" onClick={this.createNewTask.bind(this)}>Save</button>
-                                            <button type="button" className="btn btn-outline-primary"><Link to="/taskList">Cancel</Link></button>
-                                        </div>
+                                       
                                     </form>
+                                
                                 </div>
+                                    <div className="allmodalcolgate col-md-12">
+                                            <button type="button" className="btn btn-outline-primary pull-center"><Link to="/taskList">Cancel</Link></button>
+                                        </div>
                             </div>
                         </div>
                     </div>
@@ -296,15 +285,15 @@ class EditTask extends Component {
                             <div className="modal-content">
                                 <div className="modal-header search_header">
                                     <h4 className="modal-title title_modalheader">Search User</h4>
-                                    <button type="button" className="close" data-dismiss="modal" onClick={this.clearList.bind(this)} >×</button>
+                                    <button type="button" className="close" data-dismiss="modal">×</button>
                                 </div>
                                 <div className="modal-body filtercustome">
                                     <div className="search_user_section">
                                         <form>
                                             <div className="form-group filtercustome">
                                                 <div className="row">
-                                                    <div className="col-sm-8">
                                                     <label htmlFor="inputPassword" className="col-form-label col-sm-4">User Name</label>
+                                                    <div className="col-sm-8">
                                                         <input className="form-control" type="text" name="search" />
                                                     </div>
                                                 </div>
@@ -313,10 +302,12 @@ class EditTask extends Component {
                                     </div>
                                     <center>
                                         <button type="button" className="btn btn-primary" onClick={this.getList.bind(this)}>Go</button>
-                                        <button type="button" className="btn btn-outline-primary" data-dismiss="modal" onClick={this.clearList.bind(this)} >Cancel</button>
+                                        <button type="button" className="btn btn-outline-primary" data-dismiss="modal" >Cancel</button>
                                     </center>
                                     <table className="table record-table" style={style}>
-
+                                        <thead>
+                                            <th>User Name</th>
+                                        </thead>
                                         <tbody>
                                             {
                                                 this.state.sortedUserList.length ? this.state.sortedUserList.map((user, index) => {
