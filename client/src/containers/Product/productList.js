@@ -952,7 +952,7 @@ class ProductList extends Component {
                                                                        : 
                                                                        <div className="option-box compare">
                                                                         
-                                                                       <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                       <a href="javscript:void(0)" onClick={() => {alert('You can only compare 2 products')}}><i className="ti-layout-column2"></i>Compare Products</a></div>
                                                                     }
                                                                 </div>
                                                             </div>

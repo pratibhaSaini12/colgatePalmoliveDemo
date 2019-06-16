@@ -118,7 +118,7 @@ class NewProduct extends Component {
             brand: state.brand,
             product_completion: percent,
             additional_image: state.additional_image,
-            pdfFileArray: state.pdfFileArray
+            pdfFileArray: state.selectPdf
         }
 
 
