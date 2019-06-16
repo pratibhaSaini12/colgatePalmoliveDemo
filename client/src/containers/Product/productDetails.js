@@ -319,7 +319,7 @@ class ProductDetail extends Component {
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
                                                 <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
-                                                    <label><b>Main Image</b></label>
+                                                    <label>Main Image</label>
                                                     <div className="form-group img_uploadmain">
                                                     {
                                                         product.main_image_asset !== null && product.main_image_asset !== undefined ? <img src={product.main_image_asset} /> : ''
@@ -329,7 +329,7 @@ class ProductDetail extends Component {
                                                 <hr></hr>
                                                 {/* additional image */}
                                                 <div className="form-group">
-                                                    <label><b>Additional Image</b></label>
+                                                    <label>Additional Image</label>
                                                     <div className="form-group img_uploadmain">
                                                     {
                                                         product.main_image_additional !== null && product.main_image_additional !== undefined ? <img src={product.main_image_additional} /> : ''

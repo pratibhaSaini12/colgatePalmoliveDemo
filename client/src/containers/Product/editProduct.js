@@ -38,7 +38,8 @@ class EditProduct extends Component {
             pdfData: '',
             image: '',
             additional_image: '',
-            additionalImage:''
+            additionalImage:'',
+            requiredFieldError:''
         }
     }
 
@@ -115,12 +116,19 @@ class EditProduct extends Component {
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
+            requiredFieldError:''
         })
     }
 
     updateProduct() {
         let state = this.state;
         let self = this
+        if(state.product_name=='' || state.upc==''){
+           self.setState({
+                requiredFieldError:'Please fill all the required  product data'
+            })
+            return
+        }
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         self.setState({
             Loading: true
@@ -285,7 +293,10 @@ class EditProduct extends Component {
         if (this.state.flashMessageSuccess) {
             flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
         }
-        
+        let requiredFieldErrorSpan = '';
+        if (this.state.requiredFieldError) {
+            requiredFieldErrorSpan = <Alert className='alertFont' color='danger'>{this.state.requiredFieldError}</Alert>;
+        }
         console.log('state on render----', this.state)
         return (
             <div>
@@ -316,6 +327,7 @@ class EditProduct extends Component {
                                         <div className="col-md-6">
                                             <center>
                                                 {flashSuceessMessageSpan}
+                                                {requiredFieldErrorSpan}
                                             </center>
                                         </div>
                                         <div className="col-md-3">
@@ -383,7 +395,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name</label>
+                                                                <label>Product Name<span style={{color:'red'}}>*</span></label>
                                                                 <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -562,7 +574,7 @@ class EditProduct extends Component {
                                                 <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
                                                     <label>Upload Image</label>
-                                                    <div className="form-group img_uploadmain">
+                                                    <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
                                                         {image !== '' && image !== undefined ?
