@@ -140,13 +140,17 @@ class NewProduct extends Component {
                 var file = this.uploadInput.files[0];
                 const data = new FormData();
                 data.append('file', file);
+                if(sessionStorage.getItem('userData') !== null ) {
+                    let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                     data.append('username',tempData.userData.first_name);
+                 }
                 data.append('filename', file.name);
                 axios.post("/api/upload/image", data).then((res) => {
+                    console.log('res----upload product Image',res);
                     if (res.data) {
                         self.setState({
-                            image: res.data.file,
-                            main_image: res.data.file,
-                            Loading: false
+                            image: res.data.path,
+                            main_image: res.data.id
                         })
                         return
                     } else {
@@ -202,11 +206,6 @@ class NewProduct extends Component {
         }
 
     }
-
-    /*Upload PDF files 
-    Author: Shashnak Saxena
-    Date: June 12th 2019
-    */
     UploadPDF() {
         var self = this;
         var assetBodyData = '{ pdfName :' + this.state.selectPdf + '}';
@@ -229,17 +228,6 @@ class NewProduct extends Component {
             return
         })
 
-    }
-
-    //Method to get Bas64 of file
-    getBase64(file, cb) {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-        };
     }
     resize() {
         var textArray = document.getElementsByClassName('textarea custome_text');
@@ -373,14 +361,6 @@ class NewProduct extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>*/}
                                                         </div>
                                                     </li>
                                                     <li className="row">
@@ -391,14 +371,6 @@ class NewProduct extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>*/}
                                                         </div>
                                                     </li>
                                                     <li className="row">
@@ -415,39 +387,12 @@ class NewProduct extends Component {
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>*/}
                                                         </div>
                                                     </li>
-                                                    {/* <li className="row">
-                                                    <div className="col-md-11">
-                                                        <div className="form-group">
-                                                            <label>Link</label>
-                                                            <input className="form-control" type="text" name="link" value={this.state.link} onChange={e => this.change(e)} />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-1">
-                                                        {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>
-                                                    </div>
-                                                </li> */}
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -484,8 +429,6 @@ class NewProduct extends Component {
                                                             </div>
                                                         </div>
                                                     </li>
-
-
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -507,7 +450,6 @@ class NewProduct extends Component {
                                                             <div className="form-group">
                                                                 <label>Price ($)</label>
                                                                 <input className="form-control" type="number" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -565,7 +507,6 @@ class NewProduct extends Component {
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -638,7 +579,6 @@ class NewProduct extends Component {
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -814,9 +754,6 @@ class NewProduct extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                         <div className="tab-pane" id="settings2" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
                                                 <div className="form-group">
@@ -977,6 +914,4 @@ class NewProduct extends Component {
         )
     }
 }
-
-
 export default NewProduct;
