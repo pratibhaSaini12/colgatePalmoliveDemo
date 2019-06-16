@@ -431,7 +431,7 @@ class DigitalImages extends Component {
                                             <div className="row">
                                             </div>
                                         </div>
-                                        <h2 className="page-title">Digital Assets Management</h2>
+                                        <h2 className="page-title">Digital Assets Management-Image</h2>
                                     </div>
                                 </div>
                             </div>

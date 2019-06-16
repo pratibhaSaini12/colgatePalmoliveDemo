@@ -27,7 +27,7 @@ class DigitalVideos extends React.Component {
           <div className="page-header">
             <div className="row">
               <div className="col-md-12">
-                <h2 className="page-title">Digital Assets Management</h2>
+                <h2 className="page-title">Digital Assets Management-Videos (coming soon....)</h2>
               </div>
             </div>
           </div>
