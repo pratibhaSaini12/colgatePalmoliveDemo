@@ -46,7 +46,8 @@ module.exports = {
           });
         }
         else if (password != result[0].user_password) {
-          return res.status(201).json({
+          console.log('-----error------');
+          return res.status(200).json({
             "error": true,
             "message": "Password mismatch"
           });
