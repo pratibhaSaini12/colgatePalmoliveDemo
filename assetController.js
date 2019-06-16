@@ -89,7 +89,6 @@ module.exports = {
             fs.mkdirSync('client/public/asset/digital-Image/');
         }
         var imageFile = req.files.file;
-        console.log('imageFile---------',req.body);
         imageFile.mv(`client/public/asset/digital-Image/${imageFile.name}`, function(err) {
             if (err) {
                 return res.status(500).send(err);

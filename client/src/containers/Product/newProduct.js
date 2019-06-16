@@ -43,7 +43,8 @@ class NewProduct extends Component {
             selectPdf: '',
             errorSpan: 'SKU number is required to upload Image',
             Loading: false,
-            flashMessageSuccess: ''
+            flashMessageSuccess: '',
+            requiredFieldError:''
         }
 
     }
@@ -67,6 +68,7 @@ class NewProduct extends Component {
     change(e) {
         this.setState({
             [e.target.name]: e.target.value,
+            requiredFieldError:''
         })
     }
     handleChange(e) {
@@ -79,6 +81,16 @@ class NewProduct extends Component {
     createNewProduct() {
         let state = this.state;
         let self = this
+        if(state.product_name=='' || state.upc==''){
+            console.log('please fill all the mandatory fileds---')
+            self.setState({
+                requiredFieldError:'Please fill all the required  product data'
+            })
+            return
+        }
+        self.setState({
+            Loading:true
+        })
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         var percent = this.calculateComlpleteness(completeArray);
 
@@ -101,6 +113,7 @@ class NewProduct extends Component {
             material: state.material,
             style: state.style,
             main_image: state.main_image,
+            additionalImage:'',
             workflow_state: state.workflow_state,
             brand: state.brand,
             product_completion: percent,
@@ -112,9 +125,12 @@ class NewProduct extends Component {
         axios.post("api/createProduct", createProduct).then(function (response) {
             self.setState({ flashMessageSuccess: "Product has been created successfully!" })
             setTimeout(function () {
+                self.setState({
+                    Loading:false,
+                    
+                })
                 window.location.href = "/productList"
             }, 3000);
-            // this.setState({ Loading: false })
         }).catch(function (error) {
             this.setState({ Loading: false })
         })
@@ -125,68 +141,83 @@ class NewProduct extends Component {
     handleUploadAttachment(ev) {
         let self = this
         ev.preventDefault()
-        if (self.state.upc !== '') {
-            var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-            if (FileSize <= 5) {
-                var file = this.uploadInput.files[0];
-                const data = new FormData();
-                data.append('file', file);
-                data.append('filename', file.name);
-                axios.post("/api/upload/image", data).then((res) => {
-                    if (res.data) {
-                        self.setState({
-                            image: res.data.file,
-                            main_image: res.data.file
-                        })
-                        return
-                    } else {
-                        return
-                    }
-                }).catch((err) => {
+        self.setState({
+            Loading: true
+        })
+        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            var file = this.uploadInput.files[0];
+            const data = new FormData();
+            data.append('file', file);
+            if(sessionStorage.getItem('userData') !== null ) {
+                let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                    data.append('username',tempData.userData.first_name);
+                }
+            data.append('filename', file.name);
+            axios.post("/api/upload/image", data).then((res) => {
+                console.log('res----upload product Image',res);
+                if (res.data) {
+                    self.setState({
+                        image: res.data.path,
+                        main_image: res.data.id,
+                        Loading:false
+                    })
                     return
+                } else {
+                    return
+                }
+            }).catch((err) => {
+                self.setState({
+                    Loading: false
                 })
+                return
+            })
 
-            }
-            else {
-                console.log("fileSizeExceedMessage=======")
-            }
         }
+        else {
+            console.log("fileSizeExceedMessage=======")
+        }
+        
     }
     handleUploadAttachmentAdditional(ev) {
         let self = this
         ev.preventDefault()
-        if (self.state.upc !== '') {
-            var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
-            if (FileSize <= 5) {
-                var file = this.uploadInputAdditional.files[0];
-                const data = new FormData();
-                data.append('file', file);
-                data.append('filename', file.name);
-                axios.post("/api/upload/additional_image", data).then((res) => {
-                    if (res.data) {
-                        self.setState({
-                            additionalImage: res.data.file,
-                            additional_image: res.data.file
-                        })
-                        return
-                    } else {
-                        return
-                    }
-                }).catch((err) => {
+        self.setState({
+            Loading: true
+        })
+        var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            var file = this.uploadInputAdditional.files[0];
+            const data = new FormData();
+            data.append('file', file);
+            data.append('filename', file.name);
+            if(sessionStorage.getItem('userData') !== null ) {
+                let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                    data.append('username',tempData.userData.first_name);
+                }
+            axios.post("/api/upload/additional_image", data).then((res) => {
+                if (res.data) {
+                    self.setState({
+                        additionalImage: res.data.path,
+                        additional_image: res.data.id,
+                        Loading: false
+                    })
                     return
+                } else {
+                    return
+                }
+            }).catch((err) => {
+                self.setState({
+                    Loading: false
                 })
-            }
-            else {
-                console.log("fileSizeExceedMessage=======additional_image")
-            }
+                return
+            })
+        }
+        else {
+            console.log("fileSizeExceedMessage=======additional_image")
         }
 
     }
-
-    /*Upload PDF files 
-    Author: Shashnak Saxena
-    Date: June 12th 2019
-    */
     UploadPDF() {
         var self = this;
         var assetBodyData = '{ pdfName :' + this.state.selectPdf + '}';
@@ -209,17 +240,6 @@ class NewProduct extends Component {
             return
         })
 
-    }
-
-    //Method to get Bas64 of file
-    getBase64(file, cb) {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-        };
     }
     resize() {
         var textArray = document.getElementsByClassName('textarea custome_text');
@@ -250,10 +270,14 @@ class NewProduct extends Component {
         let addImge = this.state.additional_image
         let { pdfData, pdfFileArray, selectPdf } = this.state
         let image = img;
-        let additionalImage = this.state.additional_image
+        let additionalImage = this.state.additionalImage
         let flashSuceessMessageSpan = '';
         if (this.state.flashMessageSuccess) {
             flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
+        }
+        let requiredFieldErrorSpan = '';
+        if (this.state.requiredFieldError) {
+            requiredFieldErrorSpan = <Alert className='alertFont' color='danger'>{this.state.requiredFieldError}</Alert>;
         }
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         var percent = this.calculateComlpleteness(completeArray);
@@ -286,6 +310,7 @@ class NewProduct extends Component {
                                         <div className="col-md-6">
                                             <center>
                                                 {flashSuceessMessageSpan}
+                                                {requiredFieldErrorSpan}
                                             </center>
                                         </div>
                                         <div className="col-md-3">
@@ -348,37 +373,21 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name</label>
+                                                                <label>Product Name<span style={{color:'red'}}>*</span></label>
                                                                 <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>*/}
                                                         </div>
                                                     </li>
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>SKU</label>
+                                                                <label>SKU<span style={{color:'red'}}>*</span></label>
                                                                 <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>*/}
                                                         </div>
                                                     </li>
                                                     <li className="row">
@@ -395,39 +404,12 @@ class NewProduct extends Component {
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
                                                                     </select>
-                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
-                                                            {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>*/}
                                                         </div>
                                                     </li>
-                                                    {/* <li className="row">
-                                                    <div className="col-md-11">
-                                                        <div className="form-group">
-                                                            <label>Link</label>
-                                                            <input className="form-control" type="text" name="link" value={this.state.link} onChange={e => this.change(e)} />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-1">
-                                                        {/*<div className="rightpartedit_delete">
-        <center>
-        <a href="javascript:void(0)"><i className="ti-plus align-middle"></i></a>
-        <a href="javascript:void(0)"><i className="ti-trash align-middle"></i></a>
-        
-        
-        </center>
-        </div>
-                                                    </div>
-                                                </li> */}
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -464,8 +446,6 @@ class NewProduct extends Component {
                                                             </div>
                                                         </div>
                                                     </li>
-
-
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
@@ -487,7 +467,6 @@ class NewProduct extends Component {
                                                             <div className="form-group">
                                                                 <label>Price ($)</label>
                                                                 <input className="form-control" type="number" name="cost" value={this.state.cost} onChange={e => this.change(e)} />
-                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -545,7 +524,6 @@ class NewProduct extends Component {
                                                                         <p id="page-content" />
                                                                     </div>
                                                                 </div>
-                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-1">
@@ -618,7 +596,6 @@ class NewProduct extends Component {
                                                                         <option value={8}>8</option>
                                                                         <option value={9}>9</option>
                                                                     </select>
-                                                                    {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -673,10 +650,9 @@ class NewProduct extends Component {
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                                <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
-                                                    <label>Upload Image</label>
-                                                    <div className="form-group img_uploadmain">
+                                                    <label>Main Image</label>
+                                                    <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
                                                         {image !== '' && image !== undefined ?
@@ -687,7 +663,7 @@ class NewProduct extends Component {
                                                 <hr></hr>
                                                 {/* additional image */}
                                                 <div className="form-group">
-                                                    <label>Additional Image Upload</label>
+                                                    <label>Additional Image</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInputAdditional = ref }} onChange={this.handleUploadAttachmentAdditional.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload</a>
@@ -794,9 +770,6 @@ class NewProduct extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                         <div className="tab-pane" id="settings2" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
                                                 <div className="form-group">
@@ -957,6 +930,4 @@ class NewProduct extends Component {
         )
     }
 }
-
-
 export default NewProduct;

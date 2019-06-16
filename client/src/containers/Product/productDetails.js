@@ -5,13 +5,16 @@ import Aside from '../SideBar/index';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 import moment from "moment"
+import axios from "axios";
+
 
 class ProductDetail extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            product: []
+            product: [],
+            pdfData: ''
         }
     }
 
@@ -33,8 +36,33 @@ class ProductDetail extends Component {
     //     } catch (e) { }
     // }
     componentDidMount() {
+        console.log('product data on details==============',this.props.location.state._data)
+        var pack_flats=this.props.location.state._data?this.props.location.state._data.pack_flats:''
+        console.log('pack flat value on details---',pack_flats)
         try {
-            this.setState({
+            let self = this
+            if (pack_flats != '') {
+                axios.post("/api/readpdf", { pdfName: pack_flats }).then((res) => {
+                    console.log('response from pack flat api===================',res)
+                    if (res.data) {
+                        self.setState({
+                            pdfData: res.data,
+                            Loading: false
+                        })
+                        return
+                    } else {
+                        $(".pdfData").html('Can not read the file !!');
+                        return
+                    }
+                }).catch((err) => {
+                    console.log("errorrrrrrrrrrrrrr in uploading", err)
+                    return
+                })
+            }
+
+
+            
+            self.setState({
                 product: this.props.location.state._data
             })
         } catch (e) { console.log("errr", e) }
@@ -44,6 +72,8 @@ class ProductDetail extends Component {
 
     render() {
         let { product } = this.state
+        let { pdfData } = this.state
+       
         return (
             <div>
                 {/* <div className="preloader">
@@ -89,16 +119,7 @@ class ProductDetail extends Component {
                                                 <li>  {product.product_id} {product.category}</li>
                                             </ul>
                                             <ul className="prevnext-btn">
-                                                <li className="btn-icon prev">
-                                                    <a href="#">
-                                                        <ImageContainer src="icons/prev.png" />
-                                                    </a>
-                                                </li>
-                                                <li className="btn-icon next">
-                                                    <a href="#">
-                                                        <ImageContainer src="icons/next.png" />
-                                                    </a>
-                                                </li>
+                                            <Link className="new-product primary-button" to="/productlist">BACK</Link>
                                             </ul>
                                         </div>
                                     </div>
@@ -107,7 +128,7 @@ class ProductDetail extends Component {
                                             <div className="col-md-2">
                                                 <div className="thumb">
                                                     {
-                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} /> : ''
+                                                        product.main_image_asset !== null && product.main_image_asset !== undefined ? <img src={product.main_image_asset} /> : ''
                                                     }
                                                 </div>
                                             </div>
@@ -134,9 +155,12 @@ class ProductDetail extends Component {
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Pricing</a>
                                         </li>
-                                        {/* <li className="nav-item">
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Digital Images</a>
+                                        </li>
+                                        <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Pack Flats</a>
-                                        </li> */}
+                                        </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#settings2" role="tab" aria-controls="settings2">Workflow State</a>
                                         </li>
@@ -241,80 +265,193 @@ class ProductDetail extends Component {
                                                 </ul>
                                             </form>
                                         </div>
-                                  
-                                <div className="tab-pane filtercustome tabsectionform" id="profile" role="tabpanel">
-                                    <form>
-                                        <ul>
-                                            <li className="row">
-                                                <div className="col-md-11">
-                                                    <div className="form-group">
-                                                        <label>Price ($)</label>
-                                                        <input className="form-control" type="number" name="cost" value={product.cost} />
-                                                        {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-1">
-                                                </div>
-                                            </li>
-                                            <li className="row">
-                                                <div className="col-md-11">
-                                                    <div className="form-group">
-                                                        <label>Formatted Base Wholesale Price ($)</label>
-                                                        <input className="form-control pricedate_form" type="number" name="wholesale_price" value={product.wholesale_price} />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-1">
-                                                </div>
-                                            </li>
-                                            <li className="row">
-                                                <div className="col-md-11">
-                                                    <div className="form-group">
-                                                        <label>Formatted MSRP ($)</label>
-                                                        <input className="form-control pricedate_form" type="number" name="msrp" value={product.msrp} />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-1">
-                                                </div>
-                                            </li>
-                                            <li className="row">
-                                                <div className="col-md-11">
-                                                    <div className="form-group">
-                                                        <label>Formatted Retail Price ($)</label>
-                                                        <input className="form-control pricedate_form" type="number" name="retail_price" value={product.retail_price} readonly />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-1">
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </form>
-                                </div>
 
-                                <div className="tab-pane" id="settings2" role="tabpanel">
-                                    <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
-                                        <div className="form-group">
-                                            <label>Workflow state</label>
-                                            <div className="form-group">
-                                                <input className="form-control pricedate_form" type="text" name="retail_price" value={product.workflow_state} readonly />
+                                        <div className="tab-pane filtercustome tabsectionform" id="profile" role="tabpanel">
+                                            <form>
+                                                <ul>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Price ($)</label>
+                                                                <input className="form-control" type="number" name="cost" value={product.cost} />
+                                                                {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Formatted Base Wholesale Price ($)</label>
+                                                                <input className="form-control pricedate_form" type="number" name="wholesale_price" value={product.wholesale_price} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Formatted MSRP ($)</label>
+                                                                <input className="form-control pricedate_form" type="number" name="msrp" value={product.msrp} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+                                                    <li className="row">
+                                                        <div className="col-md-11">
+                                                            <div className="form-group">
+                                                                <label>Formatted Retail Price ($)</label>
+                                                                <input className="form-control pricedate_form" type="number" name="retail_price" value={product.retail_price} readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-1">
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+
+
+                                        <div className="tab-pane" id="settings" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <span className="error_img">{this.state.errorSpan}</span>
+                                                <div className="form-group">
+                                                    <label>Main Image</label>
+                                                    <div className="form-group img_uploadmain">
+                                                    {
+                                                        product.main_image_asset !== null && product.main_image_asset !== undefined ? <img src={product.main_image_asset} /> : ''
+                                                    }  
+                                                    </div>
+                                                </div>
+                                                <hr></hr>
+                                                {/* additional image */}
+                                                <div className="form-group">
+                                                    <label>Additional Image</label>
+                                                    <div className="form-group img_uploadmain">
+                                                    {
+                                                        product.main_image_additional !== null && product.main_image_additional !== undefined ? <img src={product.main_image_additional} /> : ''
+                                                    }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Panel for pdf upload in specification panel*/}
+                                        <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Pack Flats</label>
+                                                    <div className="form-group">
+
+                                                        {pdfData ?
+                                                            <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
+                                                                <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
+                                                                    {
+                                                                        pdfData.length > 0 ? pdfData.map(function (key, index) {
+                                                                            return <li class="nav-item">
+                                                                                <a className={index == 0 ? 'nav-link active' : 'nav-link'} id="contact-tab" data-toggle="tab" href={`#contact${index}`} role="tab" aria-controls="contact" aria-selected="true">{key.lang}</a>
+                                                                            </li>
+                                                                        }) : ''
+                                                                    }
+                                                                </ul>
+                                                                <div class="tab-content custome_content under_tabs" id="myTabContent">
+                                                                    {
+                                                                        pdfData.length > 0 ? pdfData.map(function (key, index) {
+                                                                            return <div className={index == 0 ? 'tab-pane fade show active' : 'tab-pane fade '} id={`contact${index}`} role="tabpanel" aria-labelledby="contact-tab">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques1}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans1}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques2}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans2}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques3}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans3}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques4}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans4}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group all_list_details">
+                                                                                            {key.ques5}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="textarea custome_text" style={{ height: '100%', width: '100%' }} disabled>{key.ans5}</textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }) : ''
+                                                                    }
+
+                                                                </div>
+                                                            </div>
+                                                            : ''
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="tab-pane" id="settings2" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings2" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Workflow state</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control pricedate_form" type="text" name="retail_price" value={product.workflow_state} readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div className="tab-pane" id="productQuality" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
+                                                <div className="form-group">
+                                                    <label>Product Completeness (%) - Product Name, Sku, Cateogry, Brand,Price</label>
+                                                    <div className="form-group">
+                                                        <input className="form-control" value={product.product_completion} readonly />
+
+
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-
-                                <div className="tab-pane" id="productQuality" role="tabpanel">
-                                    <div className="tab-pane filtercustome " id="productQuality" role="tabpanel">
-                                        <div className="form-group">
-                                            <label>Product Completeness (%) - Product Name, Sku, Cateogry, Brand,Price</label>
-                                            <div className="form-group">
-                                                <input className="form-control" value={product.product_completion} readonly />
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
                                 </div>
 
                             </div>

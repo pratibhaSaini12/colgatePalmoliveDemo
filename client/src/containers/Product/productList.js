@@ -8,7 +8,9 @@ import ReactLoading from 'react-loading'
 import Pagination from "react-js-pagination";
 import _ from 'lodash';
 import XLSX from 'xlsx';
-import moment from 'moment'
+import moment from 'moment';
+import { Alert } from 'reactstrap';
+
 
 class ProductList extends Component {
 
@@ -30,7 +32,7 @@ class ProductList extends Component {
             selectedArray: [
                 { key: 'product_name', value: 'Product Name' },
                 { key: 'category', value: 'Category' },
-                { key: 'cost', value: 'Price' }],
+                { key: 'cost', value: 'Price ($)' }],
             attrebuteArray: [
                 { key: 'created_at', value: 'Created Date' },
                 { key: 'msrp', value: 'Formatted MSRP ($)' },
@@ -51,7 +53,11 @@ class ProductList extends Component {
             dataPerPage: 10,
             additionalPictures: [],
             batchHidden: true,
-            listView:false
+            listView: false,
+            deleteSuccessMsg: '',
+            flashMessageSuccess: '',
+            isSearchHide : true,
+
 
 
         }
@@ -167,14 +173,22 @@ class ProductList extends Component {
     async deleteProductById() {
         console.log('delete product by id', this.state)
         let self = this
-        // self.setState({ Loading: true })
+        self.setState({ Loading: true })
         console.log("this.stateeeeee", this.state)
         if (self.state.deleteProductId) {
             await axios.post("/api/deleteProductByID", { id: this.state.deleteProductId }).then(function (response) {
                 console.log('resposne from Delete api==', response)
                 if (response.data.product) {
-                    self.setState({ deleteProductId: '', Loading: false })
-                    window.location.href = "/productList"
+                    self.setState({
+                        deleteSuccessMsg: 'Product has been deleted successfully',
+                    })
+                    setTimeout(function () {
+                        self.setState({
+                            deleteProductId: '',
+                            Loading: false,
+                        })
+                        window.location.href = "/productList"
+                    }, 3000);
                 }
 
             }).catch(function (error) {
@@ -189,9 +203,19 @@ class ProductList extends Component {
             axios.post("api/bulkProductDelete", { id: id }).then(function (response) {
                 console.log('resposne from api==', response)
                 // window.location.href = "/productList"
+                self.setState({
+                    deleteSuccessMsg: 'Product has been deleted successfully',
+                })
                 if (response.data.product) {
                     // self.setState({ bulkDelete: '', Loading: false })
-                    window.location.href = "/productList"
+                    //window.location.href = "/productList"
+                    setTimeout(function () {
+                        self.setState({
+                            bulkDelete: '',
+                            Loading: false,
+                        })
+                        window.location.href = "/productList"
+                    }, 3000);
                 }
 
             }).catch(function (error) {
@@ -216,7 +240,7 @@ class ProductList extends Component {
                 ((typeof searchResult.category != "undefined" && searchResult.category != null && searchResult.category !== "") && searchResult.category.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.product_name != "undefined" && searchResult.product_name != null && searchResult.product_name !== "") && searchResult.product_name.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.link != "undefined" && searchResult.link != null && searchResult.link !== "") && searchResult.link.toLowerCase().includes(searchString.toLowerCase())) ||
-                ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toString().includes(searchString))||
+                ((typeof searchResult.product_id != "undefined" && searchResult.product_id != null && searchResult.product_id !== "") && searchResult.product_id.toString().includes(searchString)) ||
                 ((typeof searchResult.category != "undefined" && searchResult.category != null && searchResult.category !== "") && searchResult.category.toLowerCase().includes(searchString.toLowerCase())) ||
                 ((typeof searchResult.cost != "undefined" && searchResult.cost != null && searchResult.cost !== "") && searchResult.cost.toString().includes(searchString))
 
@@ -233,6 +257,7 @@ class ProductList extends Component {
     }
 
     componentDidUpdate() {
+       
 
     }
 
@@ -270,21 +295,21 @@ class ProductList extends Component {
             let cardView = document.getElementById('row-view')
             tableView.style.display = 'block';
             cardView.style.display = 'none'
-            this.setState({listView:true})
+            this.setState({ listView: true })
             /**Try Code  */
             let selectedItems = this.state.selectedProducytId
-            this.setState({selectedProducytId:[]})
+            this.setState({ selectedProducytId: [] })
 
             let tempSelectedList = []
-            let allProduct  = selectedItems
-            allProduct.length > 0   ? allProduct.map(list=>{
-                let domSelectElement  = document.getElementById(`listChecked${list.product_id}`)
+            let allProduct = selectedItems
+            allProduct.length > 0 ? allProduct.map(list => {
+                let domSelectElement = document.getElementById(`listChecked${list.product_id}`)
                 tempSelectedList.push(list)
-                domSelectElement.checked  = true
+                domSelectElement.checked = true
             })
-            :void 0
-    
-            this.setState({selectedProducytId:tempSelectedList})
+                : void 0
+
+            this.setState({ selectedProducytId: tempSelectedList })
 
 
 
@@ -335,7 +360,7 @@ class ProductList extends Component {
             if (counter < 0) {
                 counter = 0
             }
-            let domIcon = document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
+            document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
             document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
             this.setState({ countItems: counter })
@@ -432,17 +457,18 @@ class ProductList extends Component {
 
             XLSX.utils.book_append_sheet(wb, ws, "WorksheetName");
 
-            / make the worksheet /
+            // make the worksheet 
             var ws = XLSX.utils.json_to_sheet(e);
             ws['!cols'] = wscols;
             ws['!rows'] = wsrows;
 
-            / add to workbook /
+            // add to workbook 
             var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "People");
+            XLSX.utils.book_append_sheet(wb, ws, "Products");
+
 
             / generate an XLSX file /
-            XLSX.writeFile(wb, `Product_report${new Date()}.xlsx`);
+            XLSX.writeFile(wb, `Products.xlsx`);
 
         }
         catch (e) { console.log("catch", e) }
@@ -453,8 +479,8 @@ class ProductList extends Component {
      * @param{}
      ***/
     selectAllProduct(e) {
-        if(this.state.listView === false) {
-            this.setState({selectedProducytId:[]})
+        if (this.state.listView === false) {
+            this.setState({ selectedProducytId: [] })
             let allproduct = this.state.filteredList
             // this.setState({selectedProducytId:[]})
             if (allproduct.length > 0) {
@@ -467,7 +493,7 @@ class ProductList extends Component {
             console.log("select all product###")
             this.checkedAllList(e)
         }
-      
+
 
     }
 
@@ -484,12 +510,12 @@ class ProductList extends Component {
                 allproduct.map((key, index) => {
                     this.handledeSelect(e, index, key)
                     this.setState({ countItems: 0 })
-                    let domSelectElement  = document.getElementById(`listChecked${key.product_id}`)
+                    let domSelectElement = document.getElementById(`listChecked${key.product_id}`)
 
-                    domSelectElement.checked=false
+                    domSelectElement.checked = false
                 })
             }
-            
+
 
 
         } catch (e) { console.log("error", e) }
@@ -514,10 +540,14 @@ class ProductList extends Component {
         console.log('state on batch update----', this.state)
         var state = this.state
         var id = []
-
+        let self = this
         state.selectedProducytId.length ? state.selectedProducytId.map((key) => {
             return id.push(key.product_id)
         }) : ''
+
+        self.setState({
+            Loading: true
+        })
 
 
         var batchUpdate = {
@@ -528,10 +558,21 @@ class ProductList extends Component {
 
         console.log('batchUpdate----', batchUpdate)
         axios.post("api/batchUpdate", batchUpdate).then(function (response) {
-            window.location.href = "/productList"
+            // window.location.href = "/productList"
             // console.log('resposne from api==', product)
             if (response.data.product) {
-                window.location.href = "/productList"
+                // self.setState({
+                //  Loading:false   
+                // })
+                // window.location.href = "/productList"
+                self.setState({ flashMessageSuccess: "Batch update has been done " })
+                setTimeout(function () {
+                    self.setState({
+                        Loading: false,
+
+                    })
+                    window.location.href = "/productList"
+                }, 3000);
             }
 
         }).catch(function (error) {
@@ -543,16 +584,18 @@ class ProductList extends Component {
      * @param {event} 
      */
     compareProducts(e) {
-
-        if (this.props.history !== undefined && this.state.routeToPage === false) {
-            this.setState({ routeToPage: true })
-            this.props.history.push(
-                {
-                    pathname: '/compareProducts',
-                    state: { compareProductsList: this.state.selectedProducytId }
-                }
-            )
-        }
+        try {
+            if (this.props.history !== undefined && this.state.routeToPage === false) {
+                this.setState({ routeToPage: true })
+                this.props.history.push(
+                    {
+                        pathname: '/compareProducts',
+                        state: { compareProductsList: this.state.selectedProducytId }
+                    }
+                )
+            }
+        } catch(er) {console.log("erro",e)}
+       
 
     }
 
@@ -587,50 +630,42 @@ class ProductList extends Component {
             searchValue2: e.target.value,
             searchValue3: this.state.searchValue3
         }
-
         let self = this
-
         console.log('dataaaaaa', data)
         axios.post("/api/searchFilterByValues", data).then(function (response) {
             console.log("product list ", response.data);
             if (response.data) {
                 console.log('inside response========', response.data.products)
                 self.setState({
-                    // product: response.data.products,
                     filteredList: response.data.products,
-                    //listToFilter: response.data.products,
-                    // stateUpdate: true,
-                    // Loading: false
-                    // batchHidden:true 
                 })
             }
-
         }).catch(function (error) {
             // self.setState({ Loading: false })
             console.log("error  login is ", error);
         })
-
-
-
     }
 
     selectAttrebute(index) {
-        var flag = true;
-        this.state.selectedArray.map((key) => {
-            console.log('key----',key)
-            if (key.key == index.key) {
-                flag = false;
-            }
-        })
-        if (flag)
-            this.state.selectedArray.push(index);
+        try {
+            var flag = true;
+            this.state.selectedArray.map((key) => {
+                console.log('key----',key)
+                if (key.key == index.key) {
+                    flag = false;
+                }
+            })
+            if (flag)
+                this.state.selectedArray.push(index);
+        } catch(e) {}
+       
     }
 
     /**
      * Method for handle card view 
      */
     cardView(e) {
-        console.log('console.log',this.state.selectedProducytId)
+        console.log('console.log', this.state.selectedProducytId)
         try {
             let tableView = document.getElementsByClassName('tabtable')[0];
             let cardView = document.getElementById('row-view')
@@ -639,49 +674,37 @@ class ProductList extends Component {
             tableView.style.display = 'none';
             cardView.style.display = 'block'
             let list = this.state.selectedProducytId
-            let filtredlist  = this.state.filteredList.map(list=>{
-                this.state.selectedProducytId.map(key=>{
-                    if(key.product_id !== list.product_id) {
+            let filtredlist = this.state.filteredList.map(list => {
+                this.state.selectedProducytId.map(key => {
+                    if (key.product_id !== list.product_id) {
                         notShowlist.push(list)
                     }
                 })
-            }) 
+            })
             /**try code */
         
             this.state.selectedProducytId.length>0 ? this.state.selectedProducytId.map(key=>{
                 
-                document.getElementById(`activebtn${key.product_id}`).style.display = 'block'
-                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden'
+                document.getElementById(`activebtn${key.product_id}`)!==null ? document.getElementById(`activebtn${key.product_id}`).style.display = 'block':void 0
+                document.getElementById(`card-hover${key.product_id}`)!== null ? document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden' : void 0
             }) 
             : this.state.filteredList.map(key=>{
 
-                document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
+                    document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
 
-            })
-    
-            this.setState({listView:false,selectedProducytId:list})
+                })
+
+            this.setState({ listView: false, selectedProducytId: list })
 
 
         } catch (e) { console.log("erro", e) }
 
     }
 
-    // batchUpdateIcon () {
-    //     let domBatch  = document.getElementsByClassName('filtercustome')[0]
-    //     console.log("batch####",domBatch)
-    //     if(domBatch.style.visibility === 'visible') {
-
-    //            this.setState({batchHidden:true})
-
-    //     } else {
-    //         this.setState({batchHidden:false})
-    //     }
-
-
-    // }
     checkedAllList (e) {
        
-            console.log("selected @@@@@@@@@@@")
+        try {
+
             this.setState({selectedProducytId:[]})
             let tempSelectedList = []
             let allProduct  = this.state.filteredList
@@ -691,35 +714,74 @@ class ProductList extends Component {
                 domSelectElement.checked  = true
             })
             :void 0
-    
             this.setState({selectedProducytId:tempSelectedList})
+        } catch(e) {
+
+        } 
+            
       
        
     }
 
-    handleCheckbox (e,key) {
-        let selectedProduct  = this.state.selectedProducytId
-        let newProduct = []
-        if(e.target.checked) {
-            selectedProduct.push(key)
-            this.setState({selectedProducytId:selectedProduct})
-        } else {
-            selectedProduct.splice(selectedProduct.indexOf(key),1)
-            console.log("##","undecked" )
-            this.setState({selectedProducytId:selectedProduct})
+    handleCheckbox (e,key) {   
+        try {
+
+            let selectedProduct  = this.state.selectedProducytId
+            let newProduct = []
+            if(e.target.checked) {
+
+                selectedProduct.push(key)
+                this.setState({selectedProducytId:selectedProduct})
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'block'
+                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden'
+
+                
+              
+            } else {
+
+                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
+                selectedProduct.splice(selectedProduct.indexOf(key),1)
+            
+                this.setState({selectedProducytId:selectedProduct})
+    
+            }
+        } catch(e) {
 
         }
+       
 
     }
 
+    hideShowSearch() {
+        try {
+            if(this.state.isSearchHide) {
+                document.getElementById('filtercustomeX').style.visibility = 'visible'
+                this.setState({isSearchHide:false})
+            } else {
+                document.getElementById('filtercustomeX').style.visibility = 'hidden'
+                this.setState({isSearchHide:true})
+    
+            }
 
+        } catch(error) {console.log("error is happening",error)}
+       
+    }
+
+
+    
+
+
+
+    
     render() {
+
+
         console.log("porps in productlist", this.props)
-        console.log("states in productlist", this.state.selectedProducytId)
+        console.log("states in productlist", this.state)
         let { filteredList, attrebuteArray, selectedArray, product, pictures } = this.state;
         let data
         if (this.props.location.state !== undefined) {
-            console.log("found============")
             let status = this.props.location.state._complete
             if (status === "complete") {
                 data = filteredList.filter((dat) => dat.product_completion === "100")
@@ -727,7 +789,6 @@ class ProductList extends Component {
                 data = filteredList.filter((dat) => dat.product_completion !== "100")
             }
 
-            console.log("data============", data)
             product = data
             filteredList = data
         }
@@ -736,7 +797,14 @@ class ProductList extends Component {
         this.showhideSpan()
         let { dataPerPage } = this.state
         var list = filteredList ? filteredList.slice((this.state.pageactive - 1) * dataPerPage, (this.state.pageactive) * dataPerPage) : ''
-        return (
+        let batchUpdateSpan = '';
+        if (this.state.flashMessageSuccess) {
+            batchUpdateSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
+        }
+        let flashSuceessMessageSpan = '';
+        if (this.state.deleteSuccessMsg) {
+            flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.deleteSuccessMsg}</Alert>;
+        } return (
             <div>
                 {/* <div className="preloader">
                     <div className="loader">
@@ -757,14 +825,21 @@ class ProductList extends Component {
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
                                 <div className="row">
-                                    <div className="col-md-12">
+                                    <div className="col-md-6">
                                         <h2 className="page-title">Products</h2>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <center>
+                                            {flashSuceessMessageSpan}
+                                            {batchUpdateSpan}
+                                        </center>
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ 'display': 'none' }}>
+                                    <div  className="filter-panel filtercustome" style={{ 'visibility': 'hidden' }} id="filtercustomeX">
                                         <div className="panel panel-default">
                                             <div className="panel-body">
                                                 <form>
@@ -819,20 +894,27 @@ class ProductList extends Component {
                             </div>
 
                             <div className="row mar_bt_30">
-                                <div className="col-md-6">
+                                <div className="col-md-3">
                                     <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
                                 </div>
 
 
-                                <div className="filter float-right col-md-6">
+                                <div className="filter float-right col-md-9">
                                     <div className="float-right">
                                         
                                             <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
                                   
-                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
-                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter"  >filter</a>
+                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className={`filter-btn list-view paginationshow ${this.state.listView===true?'list-viewactive':''}`}>filter</a>
+                                        <a href="javscript:void(0);" className={`filter-btn ${this.state.listView === false ? 'card-view':'card-viewactive'} noactive`} onClick={(e) => { this.cardView(e) }}       >filter</a>
+                                        
+                                        {
+                                            this.state.listView === true ?
+                                                <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                                : void 0
+                                        }
+
+
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter" >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -851,17 +933,27 @@ class ProductList extends Component {
                                                                     <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}><i className="ti-trash"></i>Delete</a></div>
 
                                                                     <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
-                                                                   {/* <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
+                                                                    {/* <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
                                                                     <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div> */}
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
+                                                                    
+                                                                    {
+                                                                        this.state.selectedProducytId.length  > 0 &&  this.state.selectedProducytId.length===2 ?
+                                                                    
                                                                     <div className="option-box compare">
+
                                                                         <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                       : 
+                                                                       <div className="option-box compare">
+                                                                        
+                                                                       <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a  href="javscript:void(0)" className="dropdown-item" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a>
+                                                        <a href="javscript:void(0)" className="dropdown-item" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a>
                                                         <a className="dropdown-item" ><i className="ti-check" />Approve</a>
                                                         <a className="dropdown-item" ><i className="ti-close" />Reject</a>
                                                         <a className="dropdown-item" ><i className="fas fa-upload" />Publish</a>
@@ -869,10 +961,6 @@ class ProductList extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
                                     </div>
                                     <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
                                         <option value="5">5 per page</option>
@@ -881,14 +969,7 @@ class ProductList extends Component {
                                         <option value="100">All</option>
                                     </select>
                                 </div>
-
                             </div>
-
-
-
-
-
-
                             {/* card row start ---------------------------------------------------------------------*/}
 
                             <div className="table-view fullpageview tabtable">
@@ -899,7 +980,7 @@ class ProductList extends Component {
                                             <thead>
                                                 <tr className="starting">
                                                     <th scope="col">&nbsp;</th>
-                                                    <th scope="col" />
+                                                    <th scope="col" >Main Image </th>
                                                     <th scope="col">SKU</th>
                                                     {selectedArray.map((keyinner, indexinner) => {
                                                         return (<th scope="col">{keyinner.value}</th>);
@@ -912,10 +993,21 @@ class ProductList extends Component {
                                             <tbody>
                                                 {
                                                     list.length > 0 ? list.map((key, index) => {
+                                                        console.log("new pages ", key)
                                                         return <tr key={index}>
-                                                            <td><input type="checkbox" name=""  id={`listChecked${key.product_id}`}  onClick={(e)=>{this.handleCheckbox(e,key)}}   /></td>
-                                                            <td><div className="image-thumb"><a href="detailpage.html">
-                                                                <ImageContainer src="1.png" /> </a></div></td>
+                                                            <td><input type="checkbox" name="" id={`listChecked${key.product_id}`} onClick={(e) => { this.handleCheckbox(e, key) }} /></td>
+                                                            <td>
+                                                                <div className="image-thumb">
+                                                                    <a href="detailpage.html">
+                                                                        {
+                                                                            key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
+                                                                                <img src={key.main_image_asset} alt="" />
+                                                                                :
+                                                                                <ImageContainer src="1.png" />
+                                                                        }
+                                                                    </a>
+                                                                </div>
+                                                            </td>
                                                             <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }} >{key.product_id}</Link></td>
                                                             {selectedArray.map((keyinner, indexinner) => {
                                                                 return (<td>{key[keyinner.key]}</td>);
@@ -923,9 +1015,9 @@ class ProductList extends Component {
                                                             })
                                                             }
                                                             <td><div className="row-hover">
-                                                                <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link> 
-                                                                 <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}> <ImageContainer src="icons/delete.png" />
-                                                                </a></div>
+                                                                <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link>
+                                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}> <ImageContainer src="icons/delete.png" />
+                                                                    </a></div>
                                                             </div></td>
                                                         </tr>
                                                     }) : ''}
@@ -960,13 +1052,14 @@ class ProductList extends Component {
                                                     <div className="card-body text-center">
                                                         <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${key.product_id}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                             <ImageContainer src="icons/check.png" />
-                                                        </a>    
+                                                        </a>
 
                                                         <p className="img">
-                                                            {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
-                                                                <img src={key.main_image} alt="" />
-                                                                :
-                                                                <ImageContainer src="1.png" />
+                                                            {
+                                                                key.main_image_asset !== null && key.main_image_asset !== undefined ?
+                                                                    <img src={key.main_image_asset} alt="" />
+                                                                    :
+                                                                    <ImageContainer src="1.png" />
                                                             }
 
                                                             {/* <img src={base64data ? 'data:' + "image/png" + ';base64,' + base64data : ""} alt="" /> */}

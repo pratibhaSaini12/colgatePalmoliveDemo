@@ -67,7 +67,7 @@ class ProductCompare extends Component {
                                         <div className="breadcrumb">
                                             <ul>
                                                 <li className="back-button">
-                                                    <a href="productlist.html">Back</a>
+                                                <Link className="new-product primary-button" to='/productList'>Back</Link>
                                                 </li>
                                                 <li>
                                                     <Link to='/productList'>Products &gt;&gt;</Link>
@@ -85,10 +85,10 @@ class ProductCompare extends Component {
                                             <tbody><tr>
                                                 <td />
                                                 <td width="38%"> {
-                                                    this.state.product1.main_image !== null && this.state.product1.main_image !== undefined ? <img src={this.state.product1.main_image} /> : ''
+                                                    this.state.product1.main_image_asset !== null && this.state.product1.main_image_asset !== undefined ? <img src={this.state.product1.main_image_asset} /> : ''
                                                 }</td>
                                                 <td width="38%"> {
-                                                    this.state.product2.main_image !== null && this.state.product2.main_image !== undefined ? <img src={this.state.product2.main_image} /> : ''
+                                                    this.state.product2.main_image_asset !== null && this.state.product2.main_image_asset !== undefined ? <img src={this.state.product2.main_image_asset} /> : ''
                                                 }</td>
                                             </tr>
                                             </tbody></table>

@@ -7,9 +7,8 @@ module.exports = {
 
     //get all the available products
     getAllProducts(req, res) {
-        console.log('inside controller')
-
-        con.query("SELECT * FROM `product` ORDER BY created_at desc", function (err, result) {
+        
+        con.query("SELECT *,(select path from assets where asset_id=product.main_image) as main_image_asset,(select path from assets where asset_id=product.additional_image) as main_image_additional FROM `product` ORDER BY created_at desc", function (err, result) {
             //     console.log('response from DB====', result)
             if (err)
                 throw err;
@@ -61,7 +60,8 @@ module.exports = {
             main_image='${req.body.main_image}',
             workflow_state='${req.body.workflow_state}',
             brand='${req.body.brand}',
-            product_completion='${req.body.product_completion}'           
+            product_completion='${req.body.product_completion}',
+            additional_image='${req.body.additional_image}'           
             where product_id=${req.body.product_id}`;
             console.log('query code ', queryForSql)
             // process.exit(0)
@@ -99,7 +99,7 @@ module.exports = {
 
     //compare products
     compareProducts(req, res) {
-        con.query("select * from `product` where product_id IN (" + req.query.id + ")", function (err, result) {
+        con.query("select *,(select path from assets where asset_id=product.main_image) as main_image_asset from `product` where product_id IN (" + req.query.id + ")", function (err, result) {
             console.log('response from compare by id====', result)
             if (err)
                 throw err;
