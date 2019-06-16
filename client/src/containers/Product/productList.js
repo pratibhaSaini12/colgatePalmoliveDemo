@@ -715,7 +715,7 @@ class ProductList extends Component {
 
     render() {
         console.log("porps in productlist", this.props)
-        console.log("states in productlist", this.state.selectedProducytId)
+        console.log("states in productlist", this.state)
         let { filteredList, attrebuteArray, selectedArray, product, pictures } = this.state;
         let data
         if (this.props.location.state !== undefined) {
@@ -831,7 +831,14 @@ class ProductList extends Component {
                                   
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                        
+                                        {
+                                            this.state.listView === true ?
+                                                <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                            : void 0
+                                        }
+                                        
+                                        
                                         <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter"  >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
@@ -912,6 +919,7 @@ class ProductList extends Component {
                                             <tbody>
                                                 {
                                                     list.length > 0 ? list.map((key, index) => {
+                                                        console.log("new pages ",key)
                                                         return <tr key={index}>
                                                             <td><input type="checkbox" name=""  id={`listChecked${key.product_id}`}  onClick={(e)=>{this.handleCheckbox(e,key)}}   /></td>
                                                             <td><div className="image-thumb"><a href="detailpage.html">
