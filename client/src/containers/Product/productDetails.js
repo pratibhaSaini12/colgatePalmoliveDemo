@@ -36,10 +36,14 @@ class ProductDetail extends Component {
     //     } catch (e) { }
     // }
     componentDidMount() {
+        console.log('product data on details==============',this.props.location.state._data)
+        var pack_flats=this.props.location.state._data?this.props.location.state._data.pack_flats:''
+        console.log('pack flat value on details---',pack_flats)
         try {
-            let self=this
-            if (this.props.location.state._data.pack_flats != '') {
-                axios.post("/api/readpdf", { pdfName: this.props.location.state._data.pack_flats }).then((res) => {
+            let self = this
+            if (pack_flats != '') {
+                axios.post("/api/readpdf", { pdfName: pack_flats }).then((res) => {
+                    console.log('response from pack flat api===================',res)
                     if (res.data) {
                         self.setState({
                             pdfData: res.data,
@@ -55,6 +59,9 @@ class ProductDetail extends Component {
                     return
                 })
             }
+
+
+            
             self.setState({
                 product: this.props.location.state._data
             })
@@ -66,6 +73,7 @@ class ProductDetail extends Component {
     render() {
         let { product } = this.state
         let { pdfData } = this.state
+       
         return (
             <div>
                 {/* <div className="preloader">
@@ -111,16 +119,7 @@ class ProductDetail extends Component {
                                                 <li>  {product.product_id} {product.category}</li>
                                             </ul>
                                             <ul className="prevnext-btn">
-                                                <li className="btn-icon prev">
-                                                    <a href="#">
-                                                        <ImageContainer src="icons/prev.png" />
-                                                    </a>
-                                                </li>
-                                                <li className="btn-icon next">
-                                                    <a href="#">
-                                                        <ImageContainer src="icons/next.png" />
-                                                    </a>
-                                                </li>
+                                            <Link className="new-product primary-button" to="/productlist">BACK</Link>
                                             </ul>
                                         </div>
                                     </div>
@@ -155,6 +154,9 @@ class ProductDetail extends Component {
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Pricing</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Digital Images</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#uploadPDF" role="tab" aria-controls="uploadPDF">Pack Flats</a>
@@ -312,14 +314,39 @@ class ProductDetail extends Component {
                                             </form>
                                         </div>
 
+
+                                        <div className="tab-pane" id="settings" role="tabpanel">
+                                            <div className="tab-pane filtercustome " id="settings" role="tabpanel">
+                                                <span className="error_img">{this.state.errorSpan}</span>
+                                                <div className="form-group">
+                                                    <label><b>Main Image</b></label>
+                                                    <div className="form-group img_uploadmain">
+                                                    {
+                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} /> : ''
+                                                    }  
+                                                    </div>
+                                                </div>
+                                                <hr></hr>
+                                                {/* additional image */}
+                                                <div className="form-group">
+                                                    <label><b>Additional Image</b></label>
+                                                    <div className="form-group">
+                                                    {
+                                                        product.additional_image !== null && product.additional_image !== undefined ? <img src={product.additional_image} /> : ''
+                                                    }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         {/* Panel for pdf upload in specification panel*/}
-                                         <div className="tab-pane" id="uploadPDF" role="tabpanel">
+                                        <div className="tab-pane" id="uploadPDF" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="uploadPDF" role="tabpanel">
                                                 <div className="form-group">
                                                     <label>Pack Flats</label>
                                                     <div className="form-group">
 
-                                                         {pdfData ?
+                                                        {pdfData ?
                                                             <div class="tab-pane filtercustome tabsectionform custome_listfile active" id="settings3" role="tabpanel">
                                                                 <ul class="nav nav-tabs datetab" id="myTab" role="tablist">
                                                                     {

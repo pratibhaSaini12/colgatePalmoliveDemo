@@ -44,10 +44,14 @@ class EditProduct extends Component {
 
     componentDidMount() {
         let product = this.props.location.state._data
+        var pack_flats = this.props.location.state ? this.props.location.state._data : ''
+        console.log('pack flat value on edit---', product.pack_flats)
         try {
             var self = this;
-            if (product.pack_flats != '') {
+            if (pack_flats != '') {
                 axios.post("/api/readpdf", { pdfName: product.pack_flats }).then((res) => {
+                    console.log('response from pack flat api===================', res)
+
                     if (res.data) {
                         self.setState({
                             pdfData: res.data,
@@ -89,7 +93,7 @@ class EditProduct extends Component {
                 brand: product.brand,
                 pack_flats: product.pack_flats,
                 image: product.main_image,
-                additional_image:product.additional_image
+                additional_image: product.additional_image
 
 
             })
@@ -116,6 +120,9 @@ class EditProduct extends Component {
         let state = this.state;
         let self = this
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
+        self.setState({
+            Loading: true
+        })
         var percent = this.calculateComlpleteness(completeArray);
         let updateProductByID = {
             product_id: state.product_id,
@@ -140,7 +147,7 @@ class EditProduct extends Component {
             product_completion: state.product_completion,
             brand: state.brand,
             product_completion: percent,
-            additional_image:state.additional_image
+            additional_image: state.additional_image
 
         }
 
@@ -149,10 +156,16 @@ class EditProduct extends Component {
             if (response.data.product) {
                 self.setState({ flashMessageSuccess: "Product has been updated successfully!" })
                 setTimeout(function () {
+                    self.setState({
+                        Loading: false
+                    })
                     window.location.href = "/productList"
                 }, 3000);
             }
         }).catch(function (error) {
+            self.setState({
+                Loading: false
+            })
 
         })
     }
@@ -181,7 +194,7 @@ class EditProduct extends Component {
         let self = this
         ev.preventDefault()
         self.setState({
-            Loading:true
+            Loading: true
         })
         if (self.state.upc !== '') {
             var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
@@ -195,7 +208,7 @@ class EditProduct extends Component {
                         self.setState({
                             image: res.data.file,
                             main_image: res.data.file,
-                            Loading:false
+                            Loading: false
                         })
                         return
                     } else {
@@ -203,7 +216,7 @@ class EditProduct extends Component {
                     }
                 }).catch((err) => {
                     self.setState({
-                        Loading:false
+                        Loading: false
                     })
                     return
                 })
@@ -218,7 +231,7 @@ class EditProduct extends Component {
         let self = this
         ev.preventDefault()
         self.setState({
-            Loading:true
+            Loading: true
         })
         if (self.state.upc !== '') {
             var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
@@ -232,7 +245,7 @@ class EditProduct extends Component {
                         self.setState({
                             additionalImage: res.data.file,
                             additional_image: res.data.file,
-                            Loading:false
+                            Loading: false
                         })
                         return
                     } else {
@@ -240,7 +253,7 @@ class EditProduct extends Component {
                     }
                 }).catch((err) => {
                     self.setState({
-                        Loading:false
+                        Loading: false
                     })
                     return
                 })
@@ -265,7 +278,7 @@ class EditProduct extends Component {
         let img = this.state.image
         let image = img;
         let additionalImage = this.state.additional_image
-        console.log('state on render----',this.state)
+        console.log('state on render----', this.state)
         return (
             <div>
                 {/* <div className="preloader">
@@ -274,6 +287,13 @@ class EditProduct extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true &&
+                    <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
+
                 <div id="main-wrapper">
                     <Header />
                     <Aside active={"product"} />
