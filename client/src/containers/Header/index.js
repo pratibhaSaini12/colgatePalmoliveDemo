@@ -81,13 +81,14 @@ class Header extends React.Component {
                   <div className="notify" />
                 </a> </li>
                 <li className="nav-item dropdown"> 
-                    <Link className="nav-link dropdown-toggle waves-effect waves-dark"  to="#" onClick={this.logOutuser}   aria-haspopup="true" aria-expanded="false"><span className="adminsection">
+                    <Link className="nav-link dropdown-toggle waves-effect waves-dark"  to="/comingSoon" onClick={this.logOutuser}   aria-haspopup="true" aria-expanded="false"><span className="adminsection">
                     {`${this.state.userData !== '' ? this.state.userData.first_name :''} ${this.state.userData!==''?this.state.userData.last_name:''}`}<br />
                   </span>
                 <ImageContainer src="profile.png" alt="user" className="profile-pic" />
                   <i className="fas fa-caret-down all_iconsize caretdrop" /></Link> 
                 </li>
-                <li className="nav-item dropdown"> <Link className="nav-link dropdown-toggle waves-effect waves-dark" to="/comingSoon"> <i className="ti-help-alt all_iconsize" /> </Link> </li>
+
+                <li className="nav-item dropdown"> <Link className="nav-link dropdown-toggle waves-effect waves-dark"  onClick={this.logOutuser}  to="#"><i class="fa fa-sign-out-alt"></i> </Link> </li>
               </ul>
             </div>
           </nav>

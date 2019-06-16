@@ -819,12 +819,12 @@ class ProductList extends Component {
                             </div>
 
                             <div className="row mar_bt_30">
-                                <div className="col-md-6">
+                                <div className="col-md-3">
                                     <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
                                 </div>
 
 
-                                <div className="filter float-right col-md-6">
+                                <div className="filter float-right col-md-9">
                                     <div className="float-right">
                                         
                                             <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
@@ -863,8 +863,18 @@ class ProductList extends Component {
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
+                                                                    
+                                                                    {
+                                                                        this.state.selectedProducytId.length  > 0 &&  this.state.selectedProducytId.length===2 ?
+                                                                    
                                                                     <div className="option-box compare">
+
                                                                         <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                       : 
+                                                                       <div className="option-box compare">
+                                                                        
+                                                                       <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>
