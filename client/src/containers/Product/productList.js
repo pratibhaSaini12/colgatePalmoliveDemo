@@ -51,7 +51,8 @@ class ProductList extends Component {
             dataPerPage: 10,
             additionalPictures: [],
             batchHidden: true,
-            listView:false
+            listView:false,
+            isSearchHide : true,
 
 
         }
@@ -432,16 +433,16 @@ class ProductList extends Component {
 
             XLSX.utils.book_append_sheet(wb, ws, "WorksheetName");
 
-            / make the worksheet /
+            // make the worksheet 
             var ws = XLSX.utils.json_to_sheet(e);
             ws['!cols'] = wscols;
             ws['!rows'] = wsrows;
 
-            / add to workbook /
+            // add to workbook 
             var wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "People");
 
-            / generate an XLSX file /
+            // generate an XLSX file /=
             XLSX.writeFile(wb, `Product_report${new Date()}.xlsx`);
 
         }
@@ -684,6 +685,18 @@ class ProductList extends Component {
         }
 
     }
+
+    hideShowSearch() {
+        if(this.state.isSearchHide) {
+            document.getElementById('filtercustomeX').style.visibility = 'visible'
+            this.setState({isSearchHide:false})
+        } else {
+            document.getElementById('filtercustomeX').style.visibility = 'hidden'
+            this.setState({isSearchHide:true})
+
+        }
+    }
+
     render() {
         console.log("porps in productlist", this.props)
         console.log("states in productlist", this.state)
@@ -735,7 +748,7 @@ class ProductList extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ 'display': 'none' }}>
+                                    <div  className="filter-panel filtercustome" style={{ 'visibility': 'hidden' }} id="filtercustomeX">
                                         <div className="panel panel-default">
                                             <div className="panel-body">
                                                 <form>
@@ -798,10 +811,9 @@ class ProductList extends Component {
                                 <div className="filter float-right col-md-9">
                                     <div className="float-right">
                                         
-                                        <Link className="new-product primary-button float-right" to="/newProduct">
-                                            <i className="ti-plus"></i> NEW PRODUCT
-                                        </Link>
-                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
+                                            <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
+                                  
+                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className='filter-btn list-view paginationshow'>filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         
                                         {
@@ -809,9 +821,7 @@ class ProductList extends Component {
                                                 <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
                                             : void 0
                                         }
-                                        
-                                        
-                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter"  >filter</a>
+                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" onClick={(e)=>{this.hideShowSearch(e)}} >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
