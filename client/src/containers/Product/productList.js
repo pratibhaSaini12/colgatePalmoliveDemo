@@ -575,7 +575,6 @@ class ProductList extends Component {
     }
 
     searchValues(e) {
-
         var searchValue1 = this.state.searchValue1
         var searchValue2 = e.target.value
         var searchValue3 = this.state.searchValue3
@@ -587,31 +586,20 @@ class ProductList extends Component {
             searchValue2: e.target.value,
             searchValue3: this.state.searchValue3
         }
-
         let self = this
-
         console.log('dataaaaaa', data)
         axios.post("/api/searchFilterByValues", data).then(function (response) {
             console.log("product list ", response.data);
             if (response.data) {
                 console.log('inside response========', response.data.products)
                 self.setState({
-                    // product: response.data.products,
                     filteredList: response.data.products,
-                    //listToFilter: response.data.products,
-                    // stateUpdate: true,
-                    // Loading: false
-                    // batchHidden:true 
                 })
             }
-
         }).catch(function (error) {
             // self.setState({ Loading: false })
             console.log("error  login is ", error);
         })
-
-
-
     }
 
     selectAttrebute(index) {
@@ -665,20 +653,6 @@ class ProductList extends Component {
         } catch (e) { console.log("erro", e) }
 
     }
-
-    // batchUpdateIcon () {
-    //     let domBatch  = document.getElementsByClassName('filtercustome')[0]
-    //     console.log("batch####",domBatch)
-    //     if(domBatch.style.visibility === 'visible') {
-
-    //            this.setState({batchHidden:true})
-
-    //     } else {
-    //         this.setState({batchHidden:false})
-    //     }
-
-
-    // }
     checkedAllList (e) {
        
             console.log("selected @@@@@@@@@@@")
@@ -696,7 +670,6 @@ class ProductList extends Component {
       
        
     }
-
     handleCheckbox (e,key) {
         let selectedProduct  = this.state.selectedProducytId
         let newProduct = []
@@ -711,8 +684,6 @@ class ProductList extends Component {
         }
 
     }
-
-
     render() {
         console.log("porps in productlist", this.props)
         console.log("states in productlist", this.state)
@@ -827,8 +798,9 @@ class ProductList extends Component {
                                 <div className="filter float-right col-md-6">
                                     <div className="float-right">
                                         
-                                            <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
-                                  
+                                        <Link className="new-product primary-button float-right" to="/newProduct">
+                                            <i className="ti-plus"></i> NEW PRODUCT
+                                        </Link>
                                         <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className="filter-btn list-view paginationshow">filter</a>
                                         <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         
@@ -876,10 +848,6 @@ class ProductList extends Component {
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
                                     </div>
                                     <select name="example_length" aria-controls="example" value={this.state.dataPerPage} onChange={(e) => this.handleChange(e)} class="form-control form-control-sm" >
                                         <option value="5">5 per page</option>
@@ -888,14 +856,7 @@ class ProductList extends Component {
                                         <option value="100">All</option>
                                     </select>
                                 </div>
-
                             </div>
-
-
-
-
-
-
                             {/* card row start ---------------------------------------------------------------------*/}
 
                             <div className="table-view fullpageview tabtable">
@@ -922,8 +883,18 @@ class ProductList extends Component {
                                                         console.log("new pages ",key)
                                                         return <tr key={index}>
                                                             <td><input type="checkbox" name=""  id={`listChecked${key.product_id}`}  onClick={(e)=>{this.handleCheckbox(e,key)}}   /></td>
-                                                            <td><div className="image-thumb"><a href="detailpage.html">
-                                                                <ImageContainer src="1.png" /> </a></div></td>
+                                                            <td>
+                                                                <div className="image-thumb">
+                                                                    <a href="detailpage.html">
+                                                                        {
+                                                                            key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
+                                                                            <img src={key.main_image_asset} alt="" />
+                                                                            :
+                                                                            <ImageContainer src="1.png" />
+                                                                        } 
+                                                                    </a>
+                                                                </div>
+                                                            </td>
                                                             <td><Link to={{ pathname: '/productDetailPage', state: { _data: key } }} >{key.product_id}</Link></td>
                                                             {selectedArray.map((keyinner, indexinner) => {
                                                                 return (<td>{key[keyinner.key]}</td>);
@@ -971,8 +942,9 @@ class ProductList extends Component {
                                                         </a>    
 
                                                         <p className="img">
-                                                            {key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
-                                                                <img src={key.main_image} alt="" />
+                                                            {
+                                                                key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
+                                                                <img src={key.main_image_asset} alt="" />
                                                                 :
                                                                 <ImageContainer src="1.png" />
                                                             }
