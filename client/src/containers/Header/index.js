@@ -11,6 +11,7 @@ class Header extends React.Component {
       searchValue: '',
       userData:''
     };
+    //this.logOutuser = this.logOutuser.bind(this);
   }
 
 
@@ -37,7 +38,7 @@ class Header extends React.Component {
     catch(e) {  }
   }
 
-  logOutuser() {
+  logOutuser(event) {
     sessionStorage.clear();
     console.log("user list")
     window.location.href = '/'
@@ -81,7 +82,7 @@ class Header extends React.Component {
                   <div className="notify" />
                 </a> </li>
                 <li className="nav-item dropdown"> 
-                    <Link className="nav-link dropdown-toggle waves-effect waves-dark" to="/comingSoon"  aria-haspopup="true" aria-expanded="false"><span className="adminsection">
+                    <Link className="nav-link dropdown-toggle waves-effect waves-dark"  to="#" onClick={this.logOutuser}   aria-haspopup="true" aria-expanded="false"><span className="adminsection">
                     {`${this.state.userData !== '' ? this.state.userData.first_name :''} ${this.state.userData!==''?this.state.userData.last_name:''}`}<br />
                   </span>
                 <ImageContainer src="profile.png" alt="user" className="profile-pic" />
