@@ -500,11 +500,11 @@ class DigitalImages extends Component {
                                     <input className="content-search" type="text" name="search" onChange={(e) => this.filterSearch(e)} placeholder="Filter Records" />
                                     </div>
                                     <div className="col-md-3">
-                                    <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
+                                    {/* <select name="imagesForList" aria-controls="example" value={this.state.imagesForList} onChange={(e)=> this.chnageImages(e)} class="form-control form-control-sm autowidth" >
                                         <option value="All">All Assets</option>
                                         <option value="Product">Product Assets</option>
                                         <option value="Assets">Other Assets</option>
-                                    </select>
+                                    </select> */}
                                     </div>
                                     </div>
                                     </div>

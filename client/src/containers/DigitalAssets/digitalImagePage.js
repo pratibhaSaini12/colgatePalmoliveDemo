@@ -97,16 +97,7 @@ class DigitalImagePage extends Component {
                                     <div className="col-md-12">
                                         <div className="breadcrumb">
                                             <ul className="prevnext-btn">
-                                                <li className="btn-icon prev">
-                                                    <a href="#">
-                                                        <ImageContainer src="icons/prev.png" />
-                                                    </a>
-                                                </li>
-                                                <li className="btn-icon next">
-                                                    <a href="#">
-                                                        <ImageContainer src="icons/next.png" />
-                                                    </a>
-                                                </li>
+                                                <Link className="new-product primary-button" to="/digitalImages">BACK</Link>
                                             </ul>
                                         </div>
                                     </div>
@@ -123,15 +114,14 @@ class DigitalImagePage extends Component {
                                                 <h4 className="assetname">{asset.asset_name}</h4>
                                                 <p className="date-time">{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</p>
                                             </div>
-                                            <div className="col-md-1">
+                                            {/* <div className="col-md-1">
                                                 <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <ImageContainer src="icons/option-all.png" />
-                                                    {/* <img src="img/icons/option-all.png" /> */}
                                                 </a>
                                                     <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
                                                     <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
