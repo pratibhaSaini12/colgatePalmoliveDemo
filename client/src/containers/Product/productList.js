@@ -56,6 +56,8 @@ class ProductList extends Component {
             listView: false,
             deleteSuccessMsg: '',
             flashMessageSuccess: '',
+            isSearchHide : true,
+
 
 
         }
@@ -454,14 +456,15 @@ class ProductList extends Component {
 
             XLSX.utils.book_append_sheet(wb, ws, "WorksheetName");
 
-            / make the worksheet /
+            // make the worksheet 
             var ws = XLSX.utils.json_to_sheet(e);
             ws['!cols'] = wscols;
             ws['!rows'] = wsrows;
 
-            / add to workbook /
+            // add to workbook 
             var wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "People");
+
 
             / generate an XLSX file /
             XLSX.writeFile(wb, `Products.xlsx`);
@@ -721,6 +724,18 @@ class ProductList extends Component {
         }
 
     }
+
+    hideShowSearch() {
+        if(this.state.isSearchHide) {
+            document.getElementById('filtercustomeX').style.visibility = 'visible'
+            this.setState({isSearchHide:false})
+        } else {
+            document.getElementById('filtercustomeX').style.visibility = 'hidden'
+            this.setState({isSearchHide:true})
+
+        }
+    }
+
     render() {
         console.log("porps in productlist", this.props)
         console.log("states in productlist", this.state)
@@ -786,7 +801,7 @@ class ProductList extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div id="filter-panel" className="filter-panel filtercustome" style={{ 'display': 'none' }}>
+                                    <div  className="filter-panel filtercustome" style={{ 'visibility': 'hidden' }} id="filtercustomeX">
                                         <div className="panel panel-default">
                                             <div className="panel-body">
                                                 <form>
@@ -841,12 +856,12 @@ class ProductList extends Component {
                             </div>
 
                             <div className="row mar_bt_30">
-                                <div className="col-md-6">
+                                <div className="col-md-3">
                                     <input className="content-search" type="text" name="search" placeholder="Filter Records" onChange={(e) => this.filterSearch(e)} />
                                 </div>
 
 
-                                <div className="filter float-right col-md-6">
+                                <div className="filter float-right col-md-9">
                                     <div className="float-right">
 
                                         <Link className="new-product primary-button float-right" to="/newProduct">
@@ -886,8 +901,18 @@ class ProductList extends Component {
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
                                                                         <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
+                                                                    
+                                                                    {
+                                                                        this.state.selectedProducytId.length  > 0 &&  this.state.selectedProducytId.length===2 ?
+                                                                    
                                                                     <div className="option-box compare">
+
                                                                         <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                       : 
+                                                                       <div className="option-box compare">
+                                                                        
+                                                                       <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>

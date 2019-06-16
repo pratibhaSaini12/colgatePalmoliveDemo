@@ -337,7 +337,7 @@ li {
 }
 .page-wrapper {
 	background: #eff1f5;
-	position: relative
+	position: relative; height: 100vh;
 }
 .container-fluid {
 	padding: 25px 25px
@@ -1857,12 +1857,12 @@ Preloader
 	font-size: 14px;
 }
 .avatar-upload .avatar-preview {
-	width: 157px;
-	height: 157px;
-	position: relative;
-	border: 2px solid #eaeaea;
-	width: 34%;
-	float: left;
+    width: 157px;
+    height: 157px;
+    position: relative;
+    border: 2px solid #eaeaea;
+    float: left;
+    margin-right: 48px;
 }
 .avatar-upload .avatar-preview > div {
 	width: 100%;
@@ -1874,7 +1874,8 @@ Preloader
 .avatar-upload span {
 	margin-bottom: 8px;
 	display: block;
-	font-size: 13px;
+	font-size: 14px;
+    font-weight: 400;
 }
 .label-danger {
 	background-color: #ed4e2a;
@@ -3836,10 +3837,28 @@ to {
 			overflow: hidden;
 			min-height: 170px;
 			max-height: 170px;}
-.avatar-edit .create-new-link { cursor: pointer}
+
 .avatar-edit .create-new-link:hover{ color: #eb4260 !important;}
 .avatar-edit {width: 100%;
-	display: inline-block;}	
-	.newtask_edit {margin: 0 6px 0px;}
-	.newtask_edit a {color: #3f51b5;}
-	.newtask_edit a:hover{ color:#3f51b5 }
+display: inline-block;}	
+.newtask_edit {margin: 0 6px 0px;}
+.newtask_edit a {color: #3f51b5;}
+.newtask_edit a:hover{ color:#3f51b5 }
+.avatar-edit .create-new-link {cursor: pointer;
+				padding: 7px 15px;
+				background: #eb4260;
+				display: block;
+				width: 139px;
+				font-size: 13px;
+				text-align: center;
+				color: #fff !important;
+				margin: 10px 0;    margin: 20px 0 0;
+				font-weight: 600;
+}
+
+.avatar-edit .create-new-link:hover{ 
+	background: #554b6c; 	color: #fff !important;
+	border-color: #554b6c;
+}
+.avatar-edit {width: 100%;display: inline-block;}	
+.filtercustome .form-control.workflow { width: 200px;}

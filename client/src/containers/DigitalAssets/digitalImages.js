@@ -703,29 +703,38 @@ class DigitalImages extends Component {
                                 {/* Modal body */}
                                 <div className="modal-body filtercustome">
                                     <form>
-                                        {existAsset !== '' ?
-                                            <span>Asset already Exist </span>
-                                            : ''}
+                                       
                                         <div className="avatar-upload">
-
+                                            <div className="row">
+                                        <div className="col-md-6">
+                                        {existAsset !== '' ?
+                                              <span style={{'color':'red','margin-right':'66px;'}}>Asset already Exist </span>
+                                           
+                                            : ''}
                                             <div className="avatar-preview">
                                                 <div id="imagePreview">
+                                                    
                                                     {image !== '' && image !== undefined ?
                                                         <img src={image} className="digital_img Assets" />
                                                         : ''} 
                                                 </div>
-                                                
+                                               </div>
                                             </div>
+                                            
                                             {
                                                 existAsset !== '' && existAsset !== undefined ?
+                                                <div className="col-md-6">
+                                                      <span>Duplicate Asset</span>
                                                 <div className="avatar-preview">
+                                                   
                                                     <div id="imagePreview">
                                                             <img src={existAsset.path} className="digital_img Assets" />
                                                     </div>
                                                 </div>
+                                                </div>
                                                 : ''
                                             }  
-                                            
+                                            </div>
                                             <div className="avatar-edit">
                                                 <input type="file" ref={(ref) => { this.uploadInput = ref }} onChange={this.handleUploadAttachment.bind(this)} style={{ display: 'none' }} />
                                                 <a onClick={(e) => this.uploadInput.click()} className="create-new-link">Upload Files</a>
