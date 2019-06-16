@@ -923,10 +923,14 @@ class ProductList extends Component {
                                                         <div className="dot-icon"><ImageContainer src="icons/option-all.png" /> </div>
                                                     </a>
                                                     <div className="dropdown-menu drop_20">
+                                                    <div className="dropdown-item">
+                                                                    <div className="option-box clear-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a></div>
+                                                                </div>
+                                                    
+
                                                         <div className="counting-action-section">
                                                             <div className="selections">
                                                                 <div className="group-selection">
-                                                                    <div className="option-box select-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a></div>
                                                                     <div className="option-box clear-all"><a href="#" onClick={(e) => { this.clearAllProduct(e) }}><i className="fa fa-times-circle"></i>Clear All</a></div>
                                                                 </div>
                                                                 <div className="group-action">
