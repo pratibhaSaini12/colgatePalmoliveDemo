@@ -43,7 +43,8 @@ class NewProduct extends Component {
             selectPdf: '',
             errorSpan: 'SKU number is required to upload Image',
             Loading: false,
-            flashMessageSuccess: ''
+            flashMessageSuccess: '',
+            requiredFieldError:''
         }
 
     }
@@ -67,6 +68,7 @@ class NewProduct extends Component {
     change(e) {
         this.setState({
             [e.target.name]: e.target.value,
+            requiredFieldError:''
         })
     }
     handleChange(e) {
@@ -79,6 +81,13 @@ class NewProduct extends Component {
     createNewProduct() {
         let state = this.state;
         let self = this
+        if(state.product_name=='' || state.upc==''){
+            console.log('please fill all the mandatory fileds---')
+            self.setState({
+                requiredFieldError:'Please fill all the required  product data'
+            })
+            return
+        }
         self.setState({
             Loading:true
         })
@@ -116,11 +125,11 @@ class NewProduct extends Component {
             self.setState({ flashMessageSuccess: "Product has been created successfully!" })
             setTimeout(function () {
                 self.setState({
-                    Loading:false
+                    Loading:false,
+                    
                 })
                 window.location.href = "/productList"
             }, 3000);
-            // this.setState({ Loading: false })
         }).catch(function (error) {
             this.setState({ Loading: false })
         })
@@ -263,6 +272,10 @@ class NewProduct extends Component {
         if (this.state.flashMessageSuccess) {
             flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
         }
+        let requiredFieldErrorSpan = '';
+        if (this.state.requiredFieldError) {
+            requiredFieldErrorSpan = <Alert className='alertFont' color='danger'>{this.state.requiredFieldError}</Alert>;
+        }
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         var percent = this.calculateComlpleteness(completeArray);
         return (
@@ -294,6 +307,7 @@ class NewProduct extends Component {
                                         <div className="col-md-6">
                                             <center>
                                                 {flashSuceessMessageSpan}
+                                                {requiredFieldErrorSpan}
                                             </center>
                                         </div>
                                         <div className="col-md-3">
@@ -356,7 +370,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name</label>
+                                                                <label>Product Name<span style={{color:'red'}}>*</span></label>
                                                                 <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -366,7 +380,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>SKU</label>
+                                                                <label>SKU<span style={{color:'red'}}>*</span></label>
                                                                 <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>

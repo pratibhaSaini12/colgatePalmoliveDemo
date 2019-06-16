@@ -37,7 +37,8 @@ class EditProduct extends Component {
             pack_flats: '',
             pdfData: '',
             image: '',
-            additional_image: ''
+            additional_image: '',
+            requiredFieldError:''
         }
     }
 
@@ -113,12 +114,19 @@ class EditProduct extends Component {
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
+            requiredFieldError:''
         })
     }
 
     updateProduct() {
         let state = this.state;
         let self = this
+        if(state.product_name=='' || state.upc==''){
+           self.setState({
+                requiredFieldError:'Please fill all the required  product data'
+            })
+            return
+        }
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         self.setState({
             Loading: true
@@ -275,6 +283,10 @@ class EditProduct extends Component {
         if (this.state.flashMessageSuccess) {
             flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
         }
+        let requiredFieldErrorSpan = '';
+        if (this.state.requiredFieldError) {
+            requiredFieldErrorSpan = <Alert className='alertFont' color='danger'>{this.state.requiredFieldError}</Alert>;
+        }
         let img = this.state.image
         let image = img;
         let additionalImage = this.state.additional_image
@@ -308,6 +320,7 @@ class EditProduct extends Component {
                                         <div className="col-md-6">
                                             <center>
                                                 {flashSuceessMessageSpan}
+                                                {requiredFieldErrorSpan}
                                             </center>
                                         </div>
                                         <div className="col-md-3">
@@ -375,7 +388,7 @@ class EditProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name</label>
+                                                                <label>Product Name<span style={{color:'red'}}>*</span></label>
                                                                 <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>

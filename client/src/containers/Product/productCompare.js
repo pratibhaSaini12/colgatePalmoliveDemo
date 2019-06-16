@@ -67,7 +67,7 @@ class ProductCompare extends Component {
                                         <div className="breadcrumb">
                                             <ul>
                                                 <li className="back-button">
-                                                    <a href="productlist.html">Back</a>
+                                                <Link className="new-product primary-button" to='/productList'>Back</Link>
                                                 </li>
                                                 <li>
                                                     <Link to='/productList'>Products &gt;&gt;</Link>
