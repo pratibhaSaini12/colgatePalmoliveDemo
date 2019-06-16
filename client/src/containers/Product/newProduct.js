@@ -160,6 +160,7 @@ class NewProduct extends Component {
                         self.setState({
                             image: res.data.path,
                             main_image: res.data.id
+                            Loading: false
                         })
                         return
                     } else {
