@@ -38,6 +38,7 @@ class EditProduct extends Component {
             pdfData: '',
             image: '',
             additional_image: '',
+            additionalImage:'',
             requiredFieldError:''
         }
     }
@@ -68,7 +69,7 @@ class EditProduct extends Component {
                     return
                 })
             }
-
+            console.log('---------product----',product);
             self.setState({
                 product_id: product.product_id,
                 product_name: product.product_name,
@@ -87,14 +88,15 @@ class EditProduct extends Component {
                 warnings: product.warnings,
                 material: product.material,
                 style: product.style,
-                main_image: product.main_image,
+                main_image:product.main_image,
                 workflow_state: product.workflow_state,
                 Loading: false,
                 product_completion: product.product_completion,
                 brand: product.brand,
                 pack_flats: product.pack_flats,
-                image: product.main_image,
-                additional_image: product.additional_image
+                image: product.main_image_asset,
+                additional_image: product.additional_image,
+                additionalImage:product.main_image_additional
 
 
             })
@@ -132,6 +134,7 @@ class EditProduct extends Component {
             Loading: true
         })
         var percent = this.calculateComlpleteness(completeArray);
+        console.log('---------product- update---',state);
         let updateProductByID = {
             product_id: state.product_id,
             product_name: state.product_name,
@@ -155,7 +158,8 @@ class EditProduct extends Component {
             product_completion: state.product_completion,
             brand: state.brand,
             product_completion: percent,
-            additional_image: state.additional_image
+            additional_image: state.additional_image,
+            
 
         }
 
@@ -197,7 +201,6 @@ class EditProduct extends Component {
         window.location.href = "/productList"
     }
 
-    //handeling image upload
     handleUploadAttachment(ev) {
         let self = this
         ev.preventDefault()
@@ -210,13 +213,18 @@ class EditProduct extends Component {
                 var file = this.uploadInput.files[0];
                 const data = new FormData();
                 data.append('file', file);
+                if(sessionStorage.getItem('userData') !== null ) {
+                    let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                     data.append('username',tempData.userData.first_name);
+                 }
                 data.append('filename', file.name);
                 axios.post("/api/upload/image", data).then((res) => {
+                    console.log('res----upload product Image',res);
                     if (res.data) {
                         self.setState({
-                            image: res.data.file,
-                            main_image: res.data.file,
-                            Loading: false
+                            image: res.data.path,
+                            main_image: res.data.id,
+                            Loading:false
                         })
                         return
                     } else {
@@ -248,11 +256,15 @@ class EditProduct extends Component {
                 const data = new FormData();
                 data.append('file', file);
                 data.append('filename', file.name);
+                if(sessionStorage.getItem('userData') !== null ) {
+                    let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                     data.append('username',tempData.userData.first_name);
+                 }
                 axios.post("/api/upload/additional_image", data).then((res) => {
                     if (res.data) {
                         self.setState({
-                            additionalImage: res.data.file,
-                            additional_image: res.data.file,
+                            additionalImage: res.data.path,
+                            additional_image: res.data.id,
                             Loading: false
                         })
                         return
@@ -272,12 +284,10 @@ class EditProduct extends Component {
         }
 
     }
-
     render() {
-        let { pdfData } = this.state
+        let { pdfData,image,additionalImage } = this.state
         let flashSuceessMessageSpan = '';
         let { product } = this.state
-        // let image = "data:"+img.mimetype+";base64,"+img.data
         var completeArray = [this.state.brand, this.state.product_name, this.state.cost, this.state.category, this.state.upc]
         var percent = this.calculateComlpleteness(completeArray);
         if (this.state.flashMessageSuccess) {
@@ -287,9 +297,6 @@ class EditProduct extends Component {
         if (this.state.requiredFieldError) {
             requiredFieldErrorSpan = <Alert className='alertFont' color='danger'>{this.state.requiredFieldError}</Alert>;
         }
-        let img = this.state.image
-        let image = img;
-        let additionalImage = this.state.additional_image
         console.log('state on render----', this.state)
         return (
             <div>
@@ -567,7 +574,7 @@ class EditProduct extends Component {
                                                 <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
                                                     <label>Upload Image</label>
-                                                    <div className="form-group img_uploadmain">
+                                                    <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
                                                         {image !== '' && image !== undefined ?
