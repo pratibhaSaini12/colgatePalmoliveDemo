@@ -50,10 +50,10 @@ class Aside extends Component {
                    </ul>
                 </li>
                 <li className={this.props.active ==="Task" ? "active" : ''}>
-                  <Link to={"/taskList"} className="has-arrow waves-effect waves-dark" aria-expanded="false">
+                  <a className="has-arrow waves-effect waves-dark" aria-expanded="false">
                     <i className="sprite_icon more_icon" />
                     <span className="hide-menu">More </span>
-                  </Link>
+                  </a>
                 <ul aria-expanded="false" class="collapse">
                 <li><Link to="/channels">Channels</Link></li>
                 <li><Link to="/comingSoon">Catalogs</Link></li>
