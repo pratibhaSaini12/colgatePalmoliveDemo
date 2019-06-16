@@ -8,7 +8,7 @@ module.exports = {
   getAllTasks(req, res) {
     console.log('inside controller')
 
-    con.query("SELECT * FROM `task` ", function (err, result) {
+    con.query("SELECT * FROM `task` ORDER BY created_at desc ", function (err, result) {
       //     console.log('response from DB====', result)
       if (err)
         throw err;

@@ -99,7 +99,7 @@ module.exports = {
 
     //compare products
     compareProducts(req, res) {
-        con.query("select * from `product` where product_id IN (" + req.query.id + ")", function (err, result) {
+        con.query("select *,(select path from assets where asset_id=product.main_image) as main_image_asset from `product` where product_id IN (" + req.query.id + ")", function (err, result) {
             console.log('response from compare by id====', result)
             if (err)
                 throw err;
