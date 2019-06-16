@@ -7,6 +7,7 @@ import ImageContainer from "../../components/imageContainer"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import UserModal from "./userModal"
+import { Alert } from 'reactstrap';
 import axios from "axios";
 import ReactLoading from 'react-loading'
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,16 +27,15 @@ class NewTask extends Component {
             sortedUserList: [],
             showTable: false,
             UserName: '',
-            assignedTo: {},
+            assignedTo: '',
             subject: '',
             priority: 'Low',
             status: 'Open',
             assignedBy: '',
-            related_to: {
-                
-            },
+            related_to: '',
             Loading: false,
-            userNameFilter:[],
+            userNameFilter: [],
+            message: '',
         }
     }
 
@@ -47,6 +47,9 @@ class NewTask extends Component {
         this.setState({
             DueDate: date
         })
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log("next", nextProps)
     }
 
     getData(e) {
@@ -91,30 +94,30 @@ class NewTask extends Component {
         })
     }
 
-//     userFilter(e){
-//         console.log("evenet ",event.target.value)
-//         let UserList  = this.state.UserList
-//         let filterUser = []
-//         console.log("user list",UserList)
+    //     userFilter(e){
+    //         console.log("evenet ",event.target.value)
+    //         let UserList  = this.state.UserList
+    //         let filterUser = []
+    //         console.log("user list",UserList)
 
 
-//         filterUser = UserList.filter(user=>{
-//             console.log("user",user,"assignTo",user.assignedTo)
-//            return  user.Name.toLowerCase().includes(e.target.value.toLowerCase())
-//         })
-//         console.log("valuessssss",filterUser)
-//         this.setState({userNameFilter:filterUser})
-//     }
+    //         filterUser = UserList.filter(user=>{
+    //             console.log("user",user,"assignTo",user.assignedTo)
+    //            return  user.Name.toLowerCase().includes(e.target.value.toLowerCase())
+    //         })
+    //         console.log("valuessssss",filterUser)
+    //         this.setState({userNameFilter:filterUser})
+    //     }
 
-//     clickUser(e,name){
-//         var x = document.getElementsByName("Name")[0].tagName;
-//         document.getElementById("demo").innerHTML = x;
-// //this.state.assignedTo.Name
-//     }
+    //     clickUser(e,name){
+    //         var x = document.getElementsByName("Name")[0].tagName;
+    //         document.getElementById("demo").innerHTML = x;
+    // //this.state.assignedTo.Name
+    //     }
 
     componentWillMount() {
         let self = this
-        self.setState({Loading: true})
+        self.setState({ Loading: true })
         axios.get("/api/getAllUsers").then(function (response) {
             console.log("response issss ", response.data);
             if (response.data) {
@@ -164,6 +167,7 @@ class NewTask extends Component {
                 sortedUserList: [],
                 showTable: false,
                 UserName: '',
+                message:''
 
             })
 
@@ -171,50 +175,65 @@ class NewTask extends Component {
 
     }
 
-    clearList(){
+    clearList() {
+
         let sortedList = []
-         this.setState({
-            sortedUserList: sortedList ,
+        this.setState({
+            sortedUserList: sortedList,
             showTable: false,
             UserName: '',
-         })   
+        })
     }
 
-    createNewTask() {
+    createNewTask(event) {
         console.log("state on save====", this.state);
+        let message = this.state.message
         let state = this.state;
-        var relatedTo={}
-        state.ProductList.length?state.ProductList.map((product)=>{
-            if(product.product_id==state.related_to){
-                console.log('save data',product)
-                relatedTo=product
+        let self = this
+        var val = event.target.value
+        var relatedTo = {}
+        state.ProductList.length ? state.ProductList.map((product) => {
+            if (product.product_id == state.related_to) {
+                console.log('save data', product)
+                relatedTo = product
             }
-        }):{}
 
+        }) : {}
 
         let createTask = {
             due_date: moment(state.DueDate).format('YYYY/MM/DD'),
-            assignedTo: state.assignedTo.Name,
+            assignedTo: state.assignedTo,
             subject: state.subject,
             priority: state.priority,
             status: state.status,
             assignedBy: 'Pratibha',
-            related_to:state.related_to,
-            images:'',
-            product_id:relatedTo?relatedTo.product_id:'',
-            product_name:relatedTo?relatedTo.product_name:'',
-            workflow_state:relatedTo?relatedTo.workflow_state:''
+            related_to: state.related_to,
+            task_id: state.task_id,
+            images: '',
+            // product_id:relatedTo?relatedTo.product_id:'',
+            // product_name:relatedTo?relatedTo.product_name:'',
+            workflow_state: relatedTo ? relatedTo.workflow_state : ''
         }
-        console.log('createTask===', createTask)
-        axios.post("api/createNewTask", createTask).then(function (response) {
-            console.log('resposne from api==', response)
-            if (response.data.task) {
-                window.location.href = "/taskList"
-            }
+        console.log('createTask===', self)
+        if (self.state.assignedTo == '' || self.state.related_to == '') {           
+            
+            this.setState({
+                message: "Please fill all the required fields"
+            })
+        }
+        else {
+            axios.post("api/createNewTask", createTask).then(function (response) {
+                console.log('resposne from api==', response)
 
-        }).catch(function (error) {
+                if (response.data.task) {
+                    window.location.href = "/taskList"
+                }
 
-        })
+
+            }).catch(function (error) {
+
+            })
+        }
     }
 
     change(e) {
@@ -223,21 +242,27 @@ class NewTask extends Component {
         this.setState({ errMessage: false })
         this.setState({
             [e.target.name]: e.target.value,
+            message:''
         })
     }
 
-    selectRelatedTo(e){
-        var product=e.target.value
-        console.log('inside select related to---',e.target.value)
+    selectRelatedTo(e) {
+        var product = e.target.value
+        console.log('inside select related to---', e.target.value)
         this.setState({
-            related_to:e.target.value
+            related_to: e.target.value,
+            message:''
         })
     }
 
     render() {
+        let message = '';
+        if (this.state.message) {
+            message = <Alert className='alertFont' color='danger'>{this.state.message}</Alert>;
+        }
         console.log('state on render----', this.state)
         const style = this.state.showTable ? {} : { display: "none" }
-        let filterUserList =  this.state.userNameFilter
+        let filterUserList = this.state.userNameFilter
         return (
             <div>
                 {/* <div className="preloader">
@@ -253,7 +278,7 @@ class NewTask extends Component {
                 }
                 <div id="main-wrapper">
                     <Header />
-                    <Aside active={"Task"}/>
+                    <Aside active={"Task"} />
                     <div className="page-wrapper channel">
                         <div className="container-fluid r-aside custome_container">
                             <div className="page-header">
@@ -266,6 +291,7 @@ class NewTask extends Component {
                             <div className="card mytask filtercustome">
                                 <div className="col-md-5 align-self-center">
                                     <form className="row">
+                                        {message}
                                         <div className="form-group col-md-12">
                                             <label>Due Date</label>
                                             <DatePicker className="form-control"
@@ -282,7 +308,7 @@ class NewTask extends Component {
                                         </div> */}
                                         <div className="form-group col-md-11">
                                             <label>Assigned To</label>
-                                            <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo ? this.state.assignedTo.Name : ''} />
+                                            <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo ? this.state.assignedTo : ''} />
                                         </div>
                                         <div className="search_icon col-md-1" data-toggle="modal" data-target="#search_list"><i className="ti-search" /></div>
                                         <div className="form-group col-md-12">
@@ -308,9 +334,10 @@ class NewTask extends Component {
                                         <div className="form-group col-md-12">
                                             <label>Related To</label>
                                             <select id="pref-perpage" className="form-control" name="related_to" onChange={e => this.selectRelatedTo(e)}>
+                                                <option value={"Select"}>Select</option>
                                                 {
                                                     this.state.ProductList.length ? this.state.ProductList.map((product, index) => {
-                                                        return <option value={product.product_id}>{product.product_name}</option>
+                                                        return <option value={product.product_name}>{product.product_name}</option>
 
 
                                                     }) : ''
@@ -345,8 +372,8 @@ class NewTask extends Component {
                                                 <div className="row">
                                                     <label htmlFor="inputPassword" className="col-form-label col-sm-4">User Name</label>
                                                     <div className="col-sm-8">
-                                                        <input id= "user" className="form-control" type="text" name="search" />
-{/*                                                         
+                                                        <input id="user" className="form-control" type="text" name="search" />
+                                                        {/*                                                         
                                                         { console.log("user name ",this.state.userNameFilter)}
                                                         {
                                                            

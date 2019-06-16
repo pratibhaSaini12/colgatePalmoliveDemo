@@ -221,7 +221,7 @@ class EditTask extends Component {
                                             <DatePicker className="form-control"
                                                 selected={this.state.DueDate}
                                                 // onChange={this.handleChangeDate.bind(this)}
-                                            />
+                                                disabled />
                                         </div>
                                         {/* <div className="form-group col-md-12">
                                             <label>Assign To<span className="aestrick">*</span></label>
@@ -232,30 +232,30 @@ class EditTask extends Component {
                                         </div> */}
                                         <div className="form-group col-md-11">
                                             <label>Assigned To</label>
-                                            <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo} />
+                                            <input className="form-control" type="text" name placeholder="Assigned To" value={this.state.assignedTo} disabled />
                                         </div>
                                         {/* <div className="search_icon col-md-1" data-toggle="modal" data-target="#search_list"><i className="ti-search" /></div> */}
                                         <div className="form-group col-md-12">
                                             <label>Subject</label>
-                                            <input className="form-control" type="text" name="subject" placeholder="Subject" value={this.state.subject} />
+                                            <input className="form-control" type="text" name="subject" placeholder="Subject" value={this.state.subject} disabled />
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Priority</label>
-                                            <input id="pref-perpage" className="form-control" value={this.state.priority} name="priority" />
+                                            <input id="pref-perpage " className="form-control " value={this.state.priority} name="priority" disabled/>
                                                 {/* <option value={"Low"}>Low</option>
                                                 <option value={"High"}>High</option>
                                                 <option value={"Medium"}>Medium</option> */}
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Status</label>
-                                            <input id="pref-perpage" className="form-control" value={this.state.status} name="status" />
+                                            <input id="pref-perpage" className="form-control" value={this.state.status} name="status"  disabled/>
                                                 {/* <option value={"Open"}>Open</option>
                                                 <option value={"Closed"}>Closed</option>
                                                 <option value={"Pending"}>Pending</option> */}
                                         </div>
                                         <div className="form-group col-md-12">
                                             <label>Related To</label>
-                                            <input id="pref-perpage" className="form-control" name="related_to" value={this.state.related_to} />
+                                            <input id="pref-perpage" className="form-control" name="related_to" value={this.state.related_to} disabled />
                                                 {/* {
                                                     this.state.ProductList.length ? this.state.ProductList.map((product, index) => {
                                                         return <option value={product.product_name}>{product.product_name}</option>
@@ -271,8 +271,11 @@ class EditTask extends Component {
                                     </form>
                                 
                                 </div>
-                                    <div className="allmodalcolgate col-md-12">
-                                            <button type="button" className="btn btn-outline-primary pull-center"><Link to="/taskList">Cancel</Link></button>
+                                    <div className="col-md-12">
+                                        <center>
+                                            <Link className="new-product primary-button" to="/taskList">Cancel</Link>
+                                            </center>
+                                            
                                         </div>
                             </div>
                         </div>
