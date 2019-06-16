@@ -943,7 +943,7 @@ class ProductList extends Component {
                                             <thead>
                                                 <tr className="starting">
                                                     <th scope="col">&nbsp;</th>
-                                                    <th scope="col" />
+                                                    <th scope="col" >Main Image </th>
                                                     <th scope="col">SKU</th>
                                                     {selectedArray.map((keyinner, indexinner) => {
                                                         return (<th scope="col">{keyinner.value}</th>);
@@ -1019,7 +1019,7 @@ class ProductList extends Component {
 
                                                         <p className="img">
                                                             {
-                                                                key.main_image !== null && key.main_image !== undefined && key.main_image.length > 0 ?
+                                                                key.main_image_asset !== null && key.main_image_asset !== undefined ?
                                                                     <img src={key.main_image_asset} alt="" />
                                                                     :
                                                                     <ImageContainer src="1.png" />
