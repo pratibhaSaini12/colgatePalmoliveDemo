@@ -11,6 +11,7 @@ class Header extends React.Component {
       searchValue: '',
       userData:''
     };
+    //this.logOutuser = this.logOutuser.bind(this);
   }
 
 
@@ -37,7 +38,7 @@ class Header extends React.Component {
     catch(e) {  }
   }
 
-  logOutuser() {
+  logOutuser(event) {
     sessionStorage.clear();
     console.log("user list")
     window.location.href = '/'
