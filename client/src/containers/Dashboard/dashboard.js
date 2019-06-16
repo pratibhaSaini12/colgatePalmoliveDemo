@@ -524,7 +524,7 @@ class Dashboard extends Component {
                                                 <p>As of {moment(current_Date).format('MM/DD/YYYY')}</p>
                                             </div>
                                             <div id="donutchart" style={{ width: '300px', height: '400px', margin: '0 auto' }} >
-                                                <PieChart donut={true} data={[["Last 30 Days", updateProduct ? updateProduct.first : 0], ["30 - 90 Days", updateProduct ? updateProduct.second : 0], ["90+ Days", updateProduct ? updateProduct.third : 0]]} colors={["#3366cc", "#dc3912", "#ff9900"]} />
+                                                <PieChart donut={true} data={[["Last 30 Days", updateProduct ? updateProduct.first : 0], ["30 - 90 Days", updateProduct ? updateProduct.second : 0], ["90+ Days", updateProduct ? updateProduct.third : 0]]} colors={["#3366cc", "#dc3912", "#ff9900"]} suffix="%" />
                                             </div>
                                         </div>
                                     </div>
