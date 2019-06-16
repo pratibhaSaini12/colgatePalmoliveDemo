@@ -104,6 +104,7 @@ class NewProduct extends Component {
             material: state.material,
             style: state.style,
             main_image: state.main_image,
+            additionalImage:'',
             workflow_state: state.workflow_state,
             brand: state.brand,
             product_completion: percent,
@@ -134,40 +135,40 @@ class NewProduct extends Component {
         self.setState({
             Loading: true
         })
-        if (self.state.upc !== '') {
-            var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
-            if (FileSize <= 5) {
-                var file = this.uploadInput.files[0];
-                const data = new FormData();
-                data.append('file', file);
-                if(sessionStorage.getItem('userData') !== null ) {
-                    let tempData = JSON.parse(sessionStorage.getItem('userData'))
-                     data.append('username',tempData.userData.first_name);
-                 }
-                data.append('filename', file.name);
-                axios.post("/api/upload/image", data).then((res) => {
-                    console.log('res----upload product Image',res);
-                    if (res.data) {
-                        self.setState({
-                            image: res.data.path,
-                            main_image: res.data.id
-                        })
-                        return
-                    } else {
-                        return
-                    }
-                }).catch((err) => {
+        var FileSize = self.uploadInput.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            var file = this.uploadInput.files[0];
+            const data = new FormData();
+            data.append('file', file);
+            if(sessionStorage.getItem('userData') !== null ) {
+                let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                    data.append('username',tempData.userData.first_name);
+                }
+            data.append('filename', file.name);
+            axios.post("/api/upload/image", data).then((res) => {
+                console.log('res----upload product Image',res);
+                if (res.data) {
                     self.setState({
-                        Loading: false
+                        image: res.data.path,
+                        main_image: res.data.id,
+                        Loading:false
                     })
                     return
+                } else {
+                    return
+                }
+            }).catch((err) => {
+                self.setState({
+                    Loading: false
                 })
+                return
+            })
 
-            }
-            else {
-                console.log("fileSizeExceedMessage=======")
-            }
         }
+        else {
+            console.log("fileSizeExceedMessage=======")
+        }
+        
     }
     handleUploadAttachmentAdditional(ev) {
         let self = this
@@ -175,34 +176,36 @@ class NewProduct extends Component {
         self.setState({
             Loading: true
         })
-        if (self.state.upc !== '') {
-            var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
-            if (FileSize <= 5) {
-                var file = this.uploadInputAdditional.files[0];
-                const data = new FormData();
-                data.append('file', file);
-                data.append('filename', file.name);
-                axios.post("/api/upload/additional_image", data).then((res) => {
-                    if (res.data) {
-                        self.setState({
-                            additionalImage: res.data.file,
-                            additional_image: res.data.file,
-                            Loading: false
-                        })
-                        return
-                    } else {
-                        return
-                    }
-                }).catch((err) => {
+        var FileSize = self.uploadInputAdditional.files[0].size / 1024 / 1024;
+        if (FileSize <= 5) {
+            var file = this.uploadInputAdditional.files[0];
+            const data = new FormData();
+            data.append('file', file);
+            data.append('filename', file.name);
+            if(sessionStorage.getItem('userData') !== null ) {
+                let tempData = JSON.parse(sessionStorage.getItem('userData'))
+                    data.append('username',tempData.userData.first_name);
+                }
+            axios.post("/api/upload/additional_image", data).then((res) => {
+                if (res.data) {
                     self.setState({
+                        additionalImage: res.data.path,
+                        additional_image: res.data.id,
                         Loading: false
                     })
                     return
+                } else {
+                    return
+                }
+            }).catch((err) => {
+                self.setState({
+                    Loading: false
                 })
-            }
-            else {
-                console.log("fileSizeExceedMessage=======additional_image")
-            }
+                return
+            })
+        }
+        else {
+            console.log("fileSizeExceedMessage=======additional_image")
         }
 
     }
@@ -258,7 +261,7 @@ class NewProduct extends Component {
         let addImge = this.state.additional_image
         let { pdfData, pdfFileArray, selectPdf } = this.state
         let image = img;
-        let additionalImage = this.state.additional_image
+        let additionalImage = this.state.additionalImage
         let flashSuceessMessageSpan = '';
         if (this.state.flashMessageSuccess) {
             flashSuceessMessageSpan = <Alert className='alertFont'>{this.state.flashMessageSuccess}</Alert>;
@@ -633,10 +636,9 @@ class NewProduct extends Component {
                                         </div>
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
-                                                <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
                                                     <label>Upload Image</label>
-                                                    <div className="form-group img_uploadmain">
+                                                    <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
                                                         {image !== '' && image !== undefined ?
