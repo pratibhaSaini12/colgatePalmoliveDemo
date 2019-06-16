@@ -103,7 +103,7 @@ class DigitalImages extends Component {
         })
         ev.preventDefault()
         var FileSize = self.uploadInput;
-        if (FileSize !='') {
+        if (FileSize.files.length > 0) {
             const data = new FormData();
             data.append('file',self.uploadInput.files[0]);
             axios.post("/api/compareassets",data).then(function (response) {
