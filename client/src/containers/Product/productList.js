@@ -442,7 +442,7 @@ class ProductList extends Component {
             XLSX.utils.book_append_sheet(wb, ws, "People");
 
             / generate an XLSX file /
-            XLSX.writeFile(wb, `Product_report${new Date()}.xlsx`);
+            XLSX.writeFile(wb, `Products.xlsx`);
 
         }
         catch (e) { console.log("catch", e) }
