@@ -651,7 +651,7 @@ class NewProduct extends Component {
                                         <div className="tab-pane" id="settings" role="tabpanel">
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
                                                 <div className="form-group">
-                                                    <label>Upload Image</label>
+                                                    <label>Main Image</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInput = ref }} onChange={(e) => this.handleUploadAttachment(e)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInput.click()} className="create-new-link uploadfile">Upload</a>
@@ -663,7 +663,7 @@ class NewProduct extends Component {
                                                 <hr></hr>
                                                 {/* additional image */}
                                                 <div className="form-group">
-                                                    <label>Additional Image Upload</label>
+                                                    <label>Additional Image</label>
                                                     <div className="form-group">
                                                         <input className="form-control" type="file" ref={(ref) => { this.uploadInputAdditional = ref }} onChange={this.handleUploadAttachmentAdditional.bind(this)} style={{ display: 'none' }} />
                                                         <a onClick={(e) => this.uploadInputAdditional.click()} className="create-new-link uploadfile">Upload</a>
