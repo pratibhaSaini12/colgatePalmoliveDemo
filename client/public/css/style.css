@@ -317,7 +317,8 @@ li {
 }
 #main-wrapper {
 	width: 100%;
-	overflow: hidden
+	overflow: hidden;
+	
 }
 .boxed #main-wrapper {
 	width: 100%;

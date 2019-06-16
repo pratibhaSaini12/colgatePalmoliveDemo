@@ -953,7 +953,6 @@ class ProductList extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a href="javscript:void(0)" className="dropdown-item" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a>
                                                         <a className="dropdown-item" ><i className="ti-check" />Approve</a>
                                                         <a className="dropdown-item" ><i className="ti-close" />Reject</a>
                                                         <a className="dropdown-item" ><i className="fas fa-upload" />Publish</a>
