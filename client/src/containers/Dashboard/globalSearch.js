@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import moment from "moment"
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
+import ReactLoading from 'react-loading'
 
 
 class Search extends React.Component {
@@ -15,7 +16,8 @@ class Search extends React.Component {
             taskList: [],
             searchValue: 'Namak',
             filteredProductList: [],
-            filteredTaskList: []
+            filteredTaskList: [],
+            Loading: false,
         };
     }
 
@@ -121,6 +123,12 @@ class Search extends React.Component {
 
         return (
             <div>
+
+                {
+                    this.state.Loading === true && <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
                 <div id="main-wrapper">
                     <Header />
                     <Aside />
@@ -129,7 +137,7 @@ class Search extends React.Component {
                             <div className="table-responsive martop_25">
                                 <h2 className="page-title">
                                     <b>Search Page</b>
-                                    <hr/>
+                                    <hr />
                                 </h2>
                             </div>
                             <div className="table-responsive martop_25">

@@ -32,7 +32,7 @@ class ProductList extends Component {
             selectedArray: [
                 { key: 'product_name', value: 'Product Name' },
                 { key: 'category', value: 'Category' },
-                { key: 'cost', value: 'Price' }],
+                { key: 'cost', value: 'Price ($)' }],
             attrebuteArray: [
                 { key: 'created_at', value: 'Created Date' },
                 { key: 'msrp', value: 'Formatted MSRP ($)' },
@@ -463,7 +463,7 @@ class ProductList extends Component {
 
             // add to workbook 
             var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "People");
+            XLSX.utils.book_append_sheet(wb, ws, "Products");
 
 
             / generate an XLSX file /
