@@ -44,13 +44,13 @@ class EditProduct extends Component {
 
     componentDidMount() {
         let product = this.props.location.state._data
-        var pack_flats=this.props.location.state?this.props.location.state._data:''
-        console.log('pack flat value on edit---',product.pack_flats)
+        var pack_flats = this.props.location.state ? this.props.location.state._data : ''
+        console.log('pack flat value on edit---', product.pack_flats)
         try {
             var self = this;
             if (pack_flats != '') {
                 axios.post("/api/readpdf", { pdfName: product.pack_flats }).then((res) => {
-                    console.log('response from pack flat api===================',res)
+                    console.log('response from pack flat api===================', res)
 
                     if (res.data) {
                         self.setState({
@@ -287,6 +287,13 @@ class EditProduct extends Component {
                         <p className="loader__label">Please Wait..</p>
                     </div>
                 </div> */}
+                {
+                    this.state.Loading === true &&
+                    <div className="loader-react">
+                        <ReactLoading type={'spinningBubbles'} color={'#554b6c'} className="reactLoader" />
+                    </div>
+                }
+
                 <div id="main-wrapper">
                     <Header />
                     <Aside active={"product"} />
