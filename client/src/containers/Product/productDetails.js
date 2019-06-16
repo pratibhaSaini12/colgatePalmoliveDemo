@@ -128,7 +128,7 @@ class ProductDetail extends Component {
                                             <div className="col-md-2">
                                                 <div className="thumb">
                                                     {
-                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} /> : ''
+                                                        product.main_image_asset !== null && product.main_image_asset !== undefined ? <img src={product.main_image_asset} /> : ''
                                                     }
                                                 </div>
                                             </div>
@@ -319,20 +319,20 @@ class ProductDetail extends Component {
                                             <div className="tab-pane filtercustome " id="settings" role="tabpanel">
                                                 <span className="error_img">{this.state.errorSpan}</span>
                                                 <div className="form-group">
-                                                    <label><b>Main Image</b></label>
+                                                    <label>Main Image</label>
                                                     <div className="form-group img_uploadmain">
                                                     {
-                                                        product.main_image !== null && product.main_image !== undefined ? <img src={product.main_image} /> : ''
+                                                        product.main_image_asset !== null && product.main_image_asset !== undefined ? <img src={product.main_image_asset} /> : ''
                                                     }  
                                                     </div>
                                                 </div>
                                                 <hr></hr>
                                                 {/* additional image */}
                                                 <div className="form-group">
-                                                    <label><b>Additional Image</b></label>
-                                                    <div className="form-group">
+                                                    <label>Additional Image</label>
+                                                    <div className="form-group img_uploadmain">
                                                     {
-                                                        product.additional_image !== null && product.additional_image !== undefined ? <img src={product.additional_image} /> : ''
+                                                        product.main_image_additional !== null && product.main_image_additional !== undefined ? <img src={product.main_image_additional} /> : ''
                                                     }
                                                     </div>
                                                 </div>

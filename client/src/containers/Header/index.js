@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom"
 import ImageContainer from "../../components/imageContainer"
 
+import { Redirect } from 'react-router';
 
 
 class Header extends React.Component {
@@ -9,21 +10,23 @@ class Header extends React.Component {
     super(props);
     this.state = {
       searchValue: '',
-      userData:''
+      userData: '',
+      redirect:false
     };
+    var v = props.reactProp;
     //this.logOutuser = this.logOutuser.bind(this);
   }
 
 
-    componentWillMount() {
-      if(sessionStorage.getItem('userData') !== null ) {
-       
-        let tempData = JSON.parse(sessionStorage.getItem('userData'))
-        //  let tempObj =  Object.assign(this.state.userData,tempData.userData)
-         this.setState({userData:tempData.userData})
-      }
-  
+  componentWillMount() {
+    if (sessionStorage.getItem('userData') !== null) {
+
+      let tempData = JSON.parse(sessionStorage.getItem('userData'))
+      //  let tempObj =  Object.assign(this.state.userData,tempData.userData)
+      this.setState({ userData: tempData.userData })
     }
+
+  }
 
   openPage(e) {
     console.log(e.target.name)
@@ -34,8 +37,8 @@ class Header extends React.Component {
       this.setState({
         [e.target.name]: e.target.value,
       })
-    } 
-    catch(e) {  }
+    }
+    catch (e) { }
   }
 
   logOutuser(event) {
@@ -44,9 +47,37 @@ class Header extends React.Component {
     window.location.href = '/'
 
   }
+  submitOnEnter(event) {
+    console.log('inside submit')
+    if (event.which == 13 || event.keyCode == 13) {
+      this.setState({
+        redirect:true
+      })
+      //this.redirect();
+      //<Link to={{ pathname: '/search', state: { _data: this.state.searchValue } }} ></Link>
+    }
+  }
+
+  redirect() {
+    console.log('redirect to search',this.props)
+    alert('redirect to search',this.props)
+   
+
+    let self=this
+    self.props.history.push({
+      pathname: "/search",
+      state: {
+        _data: this.state.searchValue
+      }
+    })
+
+  }
 
   render() {
-    console.log("user data",this.state.userData)
+    console.log("user data", this.props)
+    if (this.state.redirect) {
+      return <Redirect push to={{ pathname: '/search', state: { _data: this.state.searchValue } }} />;
+    }
     return (
       <div>
         {/* <ul>
@@ -70,9 +101,9 @@ class Header extends React.Component {
                   </Link> </span>
                 </li>
                 <li className="nav-item -xs-down search-box">
-                  <form className="app-search" style={{ display: 'block !important' }}>
-                    <input type="text" className="form-control" placeholder="Search Product, Task" name="searchValue" onChange={e => this.change(e)}/>
-                 {this.state.searchValue? <Link to={{ pathname: '/search', state: { _data: this.state.searchValue } }} className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>:<Link to="#" className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>}
+                  <form className="app-search" style={{ display: 'block !important' }} submit={this.submitOnEnter.bind(this)}>
+                    <input type="text" className="form-control" placeholder="Search Product, Task" name="searchValue" onChange={e => this.change(e)} onKeyPress={(e) => this.submitOnEnter(e)} />
+                    {this.state.searchValue ? <Link to={{ pathname: '/search', state: { _data: this.state.searchValue } }} className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link> : <Link to="#" className="nav-link hidden-sm-down waves-effect waves-dark search_top" ><i className="ti-search" /></Link>}
                   </form>
                 </li>
               </ul>
@@ -81,15 +112,15 @@ class Header extends React.Component {
                 <li className="nav-item dropdown"> <a className="nav-link dropdown-toggle waves-effect waves-dark curser_auto" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="ti-bell all_iconsize" />
                   <div className="notify" />
                 </a> </li>
-                <li className="nav-item dropdown"> 
-                    <Link className="nav-link dropdown-toggle waves-effect waves-dark"  to="/comingSoon" onClick={this.logOutuser}   aria-haspopup="true" aria-expanded="false"><span className="adminsection">
-                    {`${this.state.userData !== '' ? this.state.userData.first_name :''} ${this.state.userData!==''?this.state.userData.last_name:''}`}<br />
+                <li className="nav-item dropdown">
+                  <Link className="nav-link dropdown-toggle waves-effect waves-dark" to="/comingSoon" onClick={this.logOutuser} aria-haspopup="true" aria-expanded="false"><span className="adminsection">
+                    {`${this.state.userData !== '' ? this.state.userData.first_name : ''} ${this.state.userData !== '' ? this.state.userData.last_name : ''}`}<br />
                   </span>
-                <ImageContainer src="profile.png" alt="user" className="profile-pic" />
-                  <i className="fas fa-caret-down all_iconsize caretdrop" /></Link> 
+                    <ImageContainer src="profile.png" alt="user" className="profile-pic" />
+                    <i className="fas fa-caret-down all_iconsize caretdrop" /></Link>
                 </li>
 
-                <li className="nav-item dropdown"> <Link className="nav-link dropdown-toggle waves-effect waves-dark"  onClick={this.logOutuser}  to="#"><i class="fa fa-sign-out-alt"></i> </Link> </li>
+                <li className="nav-item dropdown"> <Link className="nav-link dropdown-toggle waves-effect waves-dark" onClick={this.logOutuser} to="#"><i class="fa fa-sign-out-alt"></i> </Link> </li>
               </ul>
             </div>
           </nav>

@@ -35,7 +35,7 @@ function upploadImage(req, res, err){
         const stats = fs.statSync(`client/public/asset/product/main-image/${req.body.filename}`);
         const fileSizeInBytes = stats.size;
         const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
-        con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size`,`created_by` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/digital-Image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "','" +req.body.username + "')", function (err, result) {
+        con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size`,`created_by` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/product/main-image/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "','" +req.body.username + "')", function (err, result) {
             console.log('response from create Product====', result)
             if (err)
                 return err;
@@ -61,7 +61,20 @@ function additionalImage (req, res, err){
         if (err) {
             return res.status(500).send(err);
         }
-        res.json({file: `/public/asset/product/additional/${req.body.filename}`});
+        const stats = fs.statSync(`client/public/asset/product/additional/${req.body.filename}`);
+        const fileSizeInBytes = stats.size;
+        const fileSizeInMegabytes = fileSizeInBytes / 1000000.0;
+        con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size`,`created_by` ) VALUES ('" + imageFile.name + "', '" + "/public/asset/product/additional/"+imageFile.name+ "', '" +imageFile.mimetype + "', '" +fileSizeInMegabytes + "','" +req.body.username + "')", function (err, result) {
+            console.log('response from create Product====', result)
+            if (err)
+                return err;
+            else {
+                return res.status(200).json({
+                    id:result.insertId,
+                    path:`client/public/asset/product/additional/${req.body.filename}`
+                })
+            }
+        })
     });
 }
 function getImages(req, res, err){
