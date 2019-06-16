@@ -59,8 +59,6 @@ class Header extends React.Component {
   }
 
   redirect() {
-    console.log('redirect to search',this.props)
-    alert('redirect to search',this.props)
    
 
     let self=this
