@@ -25,7 +25,7 @@ class Login extends Component {
 			email: '',
 			password: '',
 			Loading:false,
-
+			errorMsg:''
 		}
 	}
 
@@ -117,16 +117,28 @@ class Login extends Component {
 			password: this.state.password
 		}
 		let self = this
-		this.setState({Loading:true})
+		this.setState({
+			Loading:true,
+			errorMsg:''
+		})
 		axios.post("/api/loginData", data).then(function (response) {
-			console.log("response from login ", response.data);
-			sessionStorage.setItem('userData',JSON.stringify(response.data))
+			console.log("response from login ", response);
+			
 			if (response.data.message == 'Success') {
+				sessionStorage.setItem('userData',JSON.stringify(response.data))
 				window.location.href = "/dashboard"
+			}else{
+				console.log('error in login')
+				self.setState({
+					errorMsg:'Wrong Password or Username. Please try again.',
+					Loading:false
+				})
 			}
 
 		}).catch(function (error) {
-			self.setState({Loading:false})
+			self.setState({Loading:false,
+				errorMsg:'Wrong Password or Username. Please try again.',
+			})
 			console.log("error  login is ", error);
 		})
 
@@ -140,6 +152,7 @@ class Login extends Component {
 	}
 
 	render() {
+		let errorMsg = this.state.errorMsg;
 		var update = this.props.location.update == undefined ? false : true
 		var forgot = this.props.location.forgot == undefined ? false : true
 		return (
@@ -161,7 +174,7 @@ class Login extends Component {
 						</div>
 						<div className="welcom_section">
 							<h1> Welcome!</h1>
-							<p>Please login to your account</p>
+							<p>Please login to your account q</p>
 						</div>
 						{/* Login Form */}
 						<form className="login_page">
@@ -169,6 +182,9 @@ class Login extends Component {
 							<input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" value={this.state.password} onChange={e => this.change(e)} />
 							<input type="button" className="fadeIn fourth" defaultValue="Log In" onClick={this.getLoginData.bind(this)} />
 						</form>
+						{
+							errorMsg
+						}
 					</div>
 				</div>
 			</div>
