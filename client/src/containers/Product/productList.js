@@ -234,6 +234,7 @@ class ProductList extends Component {
     }
 
     componentDidUpdate() {
+       
 
     }
 
@@ -336,7 +337,7 @@ class ProductList extends Component {
             if (counter < 0) {
                 counter = 0
             }
-            let domIcon = document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
+            document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
             document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
             selectedProdeuctIds.splice(selectedProdeuctIds.indexOf(key), 1)
             this.setState({ countItems: counter })
@@ -545,16 +546,18 @@ class ProductList extends Component {
      * @param {event} 
      */
     compareProducts(e) {
-
-        if (this.props.history !== undefined && this.state.routeToPage === false) {
-            this.setState({ routeToPage: true })
-            this.props.history.push(
-                {
-                    pathname: '/compareProducts',
-                    state: { compareProductsList: this.state.selectedProducytId }
-                }
-            )
-        }
+        try {
+            if (this.props.history !== undefined && this.state.routeToPage === false) {
+                this.setState({ routeToPage: true })
+                this.props.history.push(
+                    {
+                        pathname: '/compareProducts',
+                        state: { compareProductsList: this.state.selectedProducytId }
+                    }
+                )
+            }
+        } catch(er) {console.log("erro",e)}
+       
 
     }
 
@@ -577,6 +580,7 @@ class ProductList extends Component {
     }
 
     searchValues(e) {
+
         var searchValue1 = this.state.searchValue1
         var searchValue2 = e.target.value
         var searchValue3 = this.state.searchValue3
@@ -605,15 +609,18 @@ class ProductList extends Component {
     }
 
     selectAttrebute(index) {
-        var flag = true;
-        this.state.selectedArray.map((key) => {
-            console.log('key----',key)
-            if (key.key == index.key) {
-                flag = false;
-            }
-        })
-        if (flag)
-            this.state.selectedArray.push(index);
+        try {
+            var flag = true;
+            this.state.selectedArray.map((key) => {
+                console.log('key----',key)
+                if (key.key == index.key) {
+                    flag = false;
+                }
+            })
+            if (flag)
+                this.state.selectedArray.push(index);
+        } catch(e) {}
+       
     }
 
     /**
@@ -640,8 +647,8 @@ class ProductList extends Component {
         
             this.state.selectedProducytId.length>0 ? this.state.selectedProducytId.map(key=>{
                 
-                document.getElementById(`activebtn${key.product_id}`).style.display = 'block'
-                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden'
+                document.getElementById(`activebtn${key.product_id}`)!==null ? document.getElementById(`activebtn${key.product_id}`).style.display = 'block':void 0
+                document.getElementById(`card-hover${key.product_id}`)!== null ? document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden' : void 0
             }) 
             : this.state.filteredList.map(key=>{
 
@@ -655,9 +662,11 @@ class ProductList extends Component {
         } catch (e) { console.log("erro", e) }
 
     }
+
     checkedAllList (e) {
        
-            console.log("selected @@@@@@@@@@@")
+        try {
+
             this.setState({selectedProducytId:[]})
             let tempSelectedList = []
             let allProduct  = this.state.filteredList
@@ -667,44 +676,74 @@ class ProductList extends Component {
                 domSelectElement.checked  = true
             })
             :void 0
-    
             this.setState({selectedProducytId:tempSelectedList})
+        } catch(e) {
+
+        } 
+            
       
        
     }
-    handleCheckbox (e,key) {
-        let selectedProduct  = this.state.selectedProducytId
-        let newProduct = []
-        if(e.target.checked) {
-            selectedProduct.push(key)
-            this.setState({selectedProducytId:selectedProduct})
-        } else {
-            selectedProduct.splice(selectedProduct.indexOf(key),1)
-            console.log("##","undecked" )
-            this.setState({selectedProducytId:selectedProduct})
+
+    handleCheckbox (e,key) {   
+        try {
+
+            let selectedProduct  = this.state.selectedProducytId
+            let newProduct = []
+            if(e.target.checked) {
+
+                selectedProduct.push(key)
+                this.setState({selectedProducytId:selectedProduct})
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'block'
+                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'hidden'
+
+                
+              
+            } else {
+
+                document.getElementById(`card-hover${key.product_id}`).style.visibility = 'visible'
+                document.getElementById(`activebtn${key.product_id}`).style.display = 'none'
+                selectedProduct.splice(selectedProduct.indexOf(key),1)
+            
+                this.setState({selectedProducytId:selectedProduct})
+    
+            }
+        } catch(e) {
 
         }
+       
 
     }
 
     hideShowSearch() {
-        if(this.state.isSearchHide) {
-            document.getElementById('filtercustomeX').style.visibility = 'visible'
-            this.setState({isSearchHide:false})
-        } else {
-            document.getElementById('filtercustomeX').style.visibility = 'hidden'
-            this.setState({isSearchHide:true})
+        try {
+            if(this.state.isSearchHide) {
+                document.getElementById('filtercustomeX').style.visibility = 'visible'
+                this.setState({isSearchHide:false})
+            } else {
+                document.getElementById('filtercustomeX').style.visibility = 'hidden'
+                this.setState({isSearchHide:true})
+    
+            }
 
-        }
+        } catch(error) {console.log("error is happening",error)}
+       
     }
 
+
+    
+
+
+
+    
     render() {
+
+
         console.log("porps in productlist", this.props)
         console.log("states in productlist", this.state)
         let { filteredList, attrebuteArray, selectedArray, product, pictures } = this.state;
         let data
         if (this.props.location.state !== undefined) {
-            console.log("found============")
             let status = this.props.location.state._complete
             if (status === "complete") {
                 data = filteredList.filter((dat) => dat.product_completion === "100")
@@ -712,7 +751,6 @@ class ProductList extends Component {
                 data = filteredList.filter((dat) => dat.product_completion !== "100")
             }
 
-            console.log("data============", data)
             product = data
             filteredList = data
         }
@@ -814,8 +852,8 @@ class ProductList extends Component {
                                         
                                             <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
                                   
-                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className='filter-btn list-view paginationshow'>filter</a>
-                                        <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e) => { this.cardView(e) }}       >filter</a>
+                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className={`filter-btn list-view paginationshow ${this.state.listView===true?'list-viewactive':''}`}>filter</a>
+                                        <a href="javscript:void(0);" className={`filter-btn ${this.state.listView === false ? 'card-view':'card-viewactive'} noactive`} onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         
                                         {
                                             this.state.listView === true ?
