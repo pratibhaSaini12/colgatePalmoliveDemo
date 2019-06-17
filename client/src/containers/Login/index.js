@@ -174,7 +174,7 @@ class Login extends Component {
 						</div>
 						<div className="welcom_section">
 							<h1> Welcome!</h1>
-							<p>Please login to your account q</p>
+							<p>Please login to your account</p>
 						</div>
 						{/* Login Form */}
 						<form className="login_page">
