@@ -44,7 +44,7 @@ class NewProduct extends Component {
             errorSpan: 'SKU number is required to upload Image',
             Loading: false,
             flashMessageSuccess: '',
-            requiredFieldError:''
+            requiredFieldError: ''
         }
 
     }
@@ -68,7 +68,7 @@ class NewProduct extends Component {
     change(e) {
         this.setState({
             [e.target.name]: e.target.value,
-            requiredFieldError:''
+            requiredFieldError: ''
         })
     }
     handleChange(e) {
@@ -81,15 +81,15 @@ class NewProduct extends Component {
     createNewProduct() {
         let state = this.state;
         let self = this
-        if(state.product_name=='' || state.upc==''){
+        if (state.product_name == '' || state.upc == '') {
             console.log('please fill all the mandatory fileds---')
             self.setState({
-                requiredFieldError:'Please fill all the required  product data'
+                requiredFieldError: 'Please fill all the required  product data'
             })
             return
         }
         self.setState({
-            Loading:true
+            Loading: true
         })
         var completeArray = [state.brand, state.product_name, state.cost, state.category, state.upc]
         var percent = this.calculateComlpleteness(completeArray);
@@ -113,7 +113,7 @@ class NewProduct extends Component {
             material: state.material,
             style: state.style,
             main_image: state.main_image,
-            additionalImage:'',
+            additionalImage: '',
             workflow_state: state.workflow_state,
             brand: state.brand,
             product_completion: percent,
@@ -126,8 +126,8 @@ class NewProduct extends Component {
             self.setState({ flashMessageSuccess: "Product has been created successfully!" })
             setTimeout(function () {
                 self.setState({
-                    Loading:false,
-                    
+                    Loading: false,
+
                 })
                 window.location.href = "/productList"
             }, 3000);
@@ -149,18 +149,18 @@ class NewProduct extends Component {
             var file = this.uploadInput.files[0];
             const data = new FormData();
             data.append('file', file);
-            if(sessionStorage.getItem('userData') !== null ) {
+            if (sessionStorage.getItem('userData') !== null) {
                 let tempData = JSON.parse(sessionStorage.getItem('userData'))
-                    data.append('username',tempData.userData.first_name);
-                }
+                data.append('username', tempData.userData.first_name);
+            }
             data.append('filename', file.name);
             axios.post("/api/upload/image", data).then((res) => {
-                console.log('res----upload product Image',res);
+                console.log('res----upload product Image', res);
                 if (res.data) {
                     self.setState({
                         image: res.data.path,
                         main_image: res.data.id,
-                        Loading:false
+                        Loading: false
                     })
                     return
                 } else {
@@ -177,7 +177,7 @@ class NewProduct extends Component {
         else {
             console.log("fileSizeExceedMessage=======")
         }
-        
+
     }
     handleUploadAttachmentAdditional(ev) {
         let self = this
@@ -191,10 +191,10 @@ class NewProduct extends Component {
             const data = new FormData();
             data.append('file', file);
             data.append('filename', file.name);
-            if(sessionStorage.getItem('userData') !== null ) {
+            if (sessionStorage.getItem('userData') !== null) {
                 let tempData = JSON.parse(sessionStorage.getItem('userData'))
-                    data.append('username',tempData.userData.first_name);
-                }
+                data.append('username', tempData.userData.first_name);
+            }
             axios.post("/api/upload/additional_image", data).then((res) => {
                 if (res.data) {
                     self.setState({
@@ -373,7 +373,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>Product Name<span style={{color:'red'}}>*</span></label>
+                                                                <label>Product Name<span style={{ color: 'red' }}>*</span></label>
                                                                 <input className="form-control" type="text" name="product_name" value={this.state.product_name} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -383,7 +383,7 @@ class NewProduct extends Component {
                                                     <li className="row">
                                                         <div className="col-md-11">
                                                             <div className="form-group">
-                                                                <label>SKU<span style={{color:'red'}}>*</span></label>
+                                                                <label>SKU<span style={{ color: 'red' }}>*</span></label>
                                                                 <input className="form-control" type="text" name="upc" value={this.state.upc} onChange={e => this.change(e)} />
                                                             </div>
                                                         </div>
@@ -403,6 +403,9 @@ class NewProduct extends Component {
                                                                         <option value={"Kids Products"}>Kids Products</option>
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
+                                                                        <option value={"Science Diet"}>Science Diet</option>
+                                                                        <option value={"Prescription Diet"}>Prescription Diet</option>
+                                                                        <option value={"Cat Food"}>Cat Food</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
