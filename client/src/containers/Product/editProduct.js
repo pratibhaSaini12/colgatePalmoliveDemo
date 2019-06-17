@@ -441,6 +441,9 @@ class EditProduct extends Component {
                                                                         <option value={"Kids Products"}>Kids Products</option>
                                                                         <option value={"Toothpowder"}>Toothpowder</option>
                                                                         <option value={"Liquid handwash"}>Liquid handwash</option>
+                                                                        <option value={"Science Diet"}>Science Diet</option>
+                                                                        <option value={"Prescription Diet"}>Prescription Diet</option>
+                                                                        <option value={"Cat Food"}>Cat Food</option>
                                                                     </select>
                                                                     {/* <p className="value_ofcategory">Value inherited from parent product</p> */}
                                                                 </div>
