@@ -350,7 +350,7 @@ class ProductCompare extends Component {
                                 <div className="row">
                                     <div className="col-md-6 search"> </div>
                                     <div className="col-md-6 filter">
-                                        <div className="float-right "> <a href="javscript:void(0)" className="filter-btn list-view">filter</a> <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> <a href="javscript:void(0)" className="filter-btn filter" id="filter">filter</a> </div>
+                                        <div className="float-right "> <a href="javascript:void(0);" className="filter-btn list-view">filter</a> <a href="javascript:void(0);" className="filter-btn card-view noactive">filter</a> <a href="javascript:void(0);" className="filter-btn filter" id="filter">filter</a> </div>
                                     </div>
                                 </div>
                             </div>

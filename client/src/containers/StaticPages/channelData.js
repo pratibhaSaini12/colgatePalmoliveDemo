@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../Header/index';
 import Aside from '../SideBar/index';
 import ImageContainer from "../../components/imageContainer";
+
 class ChannelData extends React.Component {
   constructor(props) {
     super(props);

@@ -510,14 +510,14 @@ class DigitalImages extends Component {
                                     </div>
                                 <div className="filter float-right col-md-8">
                                     <button className="google_btn float-right" onClick={(e) => this.getImageFromDrive(this)}><i className="ti-download"></i>get images from google</button>
-                                    <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
-                                    <a href="javscript:void(0);" onClick={(e)=>{this.setState({listview:true})}} className="filter-btn list-view paginationshow">filter</a>
-                                    <a href="javscript:void(0);" className="filter-btn card-view noactive" onClick={(e)=>{this.setState({listview:false})}} >filter</a>
-                                    <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                                    <a className="new-product primary-button float-right" href="javascript:void(0);" data-toggle="modal" data-target="#colgate"> <i className="ti-plus"></i> Upload Assets </a>
+                                    <a href="javascript:void(0);" onClick={(e)=>{this.setState({listview:true})}} className="filter-btn list-view paginationshow">filter</a>
+                                    <a href="javascript:void(0);" className="filter-btn card-view noactive" onClick={(e)=>{this.setState({listview:false})}} >filter</a>
+                                    <a href="javascript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                                     <div className="selected-actions">
                                         <div className="option-box drop-option-link">
                                             <div className="nav-item dropdown dropcolgate">
-                                                <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <div className="option-box select-count selected"><span id="Counting">{this.state.countItems}</span> <span className="selected-text">Selected</span></div>
                                                     <div className="dot-icon"><ImageContainer src="icons/option-all.png" /></div>
                                                 </a>
@@ -525,12 +525,12 @@ class DigitalImages extends Component {
                                                     <div className="counting-action-section show">
                                                         <div className="selections">
                                                             <div className="group-selection">
-                                                                <div className="option-box select-all"><a href="javscript:void(0);" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
-                                                                <div className="option-box clear-all"><a onClick={(e) => { this.clearAllProduct(e) }} href="javscript:void(0)">Clear All</a></div>
+                                                                <div className="option-box select-all"><a href="javascript:void(0);" onClick={(e) => { this.selectAllProduct(e) }}>Select All</a></div>
+                                                                <div className="option-box clear-all"><a onClick={(e) => { this.clearAllProduct(e) }} href="javascript:void(0);">Clear All</a></div>
                                                             </div>
                                                             <div className="group-action">
                                                                 <div className="option-box delete" ><a data-toggle="modal" data-target="#delete" onClick={(e)=>this.setState({deleteAssetId:this.state.selectAssetIds})}>Delete</a></div>
-                                                                <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
+                                                                <div className="option-box download"><a href="javascript:void(0);">Download</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -584,7 +584,7 @@ class DigitalImages extends Component {
                                                             <td>{Moment(asset.created_at).format('MM/DD/YYYY HH:mm A')}</td>
                                                             <td><div className="row-hover">
                                                                 <div className="row-link-options"> <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
-                                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> 
+                                                                    <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> 
                                                                         <ImageContainer src="icons/delete.png" />
                                                                     </a>
                                                                 </div>
@@ -619,7 +619,7 @@ class DigitalImages extends Component {
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javascript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={asset.path} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.asset_name}</h4>
@@ -631,8 +631,8 @@ class DigitalImages extends Component {
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
-                                                        <a className="icon delete-icon" href="javscript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: [asset.asset_id] })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javascript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
 
@@ -653,7 +653,7 @@ class DigitalImages extends Component {
                                                     <span className="digitalImageIco">
                                                         <ImageContainer src="icons/img.png" />
                                                     </span>
-                                                    <a className="icon check-icon activebtn" href="javscript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
+                                                    <a className="icon check-icon activebtn" href="javascript:void(0);" id={`activebtn${index}`} onClick={(e) => { this.handledeSelect(e, index, asset) }} > <ImageContainer src="icons/check.png" /> </a>
                                                     <p className="img"><img className="img-fluid" src={asset.image} /></p>
                                                     <div className="card-info">
                                                         <h4 className="card-title">{asset.fileName !== undefined ? asset.fileName : ''}</h4>
@@ -665,8 +665,8 @@ class DigitalImages extends Component {
                                                     <div className="card-link-options">
                                                         <Link className="icon view-icon" to={{ pathname: '/digitalImagePage', state: { _data: asset } }}><ImageContainer src="icons/view.png" /></Link>
                                                         {/* <Link className="icon edit-icon" to={{ pathname: '/editDigitalImage', state: { _data: asset } }}><ImageContainer src="icons/edit.png" /></Link> */}
-                                                        <a className="icon delete-icon" href="javscript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
-                                                        </a>  <a className="icon check-icon select_box" href="javscript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
+                                                        <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteAssetId: asset.id !== undefined ? asset.id : '' })}> <ImageContainer src="icons/delete.png" />
+                                                        </a>  <a className="icon check-icon select_box" href="javascript:void(0);" onClick={(e) => { this.handleIcon(e, index, asset) }}> <ImageContainer src="icons/check.png" /> </a> </div>
                                                 </div>
                                             </div>
                                         </div>

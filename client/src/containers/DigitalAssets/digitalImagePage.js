@@ -75,20 +75,20 @@ class DigitalImagePage extends Component {
                                 <div className="row">
                                     <div className="col-md-6 selections">
                                         <div className="option-box select-count selected"><span id="Counting">0</span> Selected</div>
-                                        <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">select All</a></div>
-                                        <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                        <div className="option-box select-all"><a onclick="selectAll()" href="javascript:void(0);">select All</a></div>
+                                        <div className="option-box clear-all"><a onclick="clearAll()" href="javascript:void(0);">Clear All</a></div>
                                     </div>
                                     <div className="col-md-6 selected-actions">
                                         <div className="option-box drop-option-link float-right">
-                                            <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <ImageContainer src="icons/option-all.png" />
                                             </a>
-                                                <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
-                                                <a className="dropdown-item" href="javascript:void(0)"><i className="fas fa-upload" />Publish</a> </div>
+                                                <div className="dropdown-menu drop_20"> <a className="dropdown-item" href="javascript:void(0);"><i className="ti-check" />Approve</a> <a className="dropdown-item" href="javascript:void(0);"><i className="ti-close" />Reject</a>
+                                                <a className="dropdown-item" href="javascript:void(0);"><i className="fas fa-upload" />Publish</a> </div>
                                             </div>
                                         </div>
                                         <div className="option-box delete float-right"><a href>Delete</a></div>
-                                        <div className="option-box download float-right"><a href="javscript:void(0)">Download</a></div>
+                                        <div className="option-box download float-right"><a href="javascript:void(0);">Download</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@ class DigitalImagePage extends Component {
                                 <div className="row">
                                     <div className="col-md-6 search"> </div>
                                     <div className="col-md-6 filter">
-                                        <div className="float-right "> <a href="javscript:void(0)" className="filter-btn list-view">filter</a> <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> <a href="javscript:void(0)" className="filter-btn filter" id="filter">filter</a> </div>
+                                        <div className="float-right "> <a href="javascript:void(0);" className="filter-btn list-view">filter</a> <a href="javascript:void(0);" className="filter-btn card-view noactive">filter</a> <a href="javascript:void(0);" className="filter-btn filter" id="filter">filter</a> </div>
                                     </div>
                                 </div>
                             </div>
