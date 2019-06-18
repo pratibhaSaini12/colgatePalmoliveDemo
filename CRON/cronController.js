@@ -139,8 +139,9 @@ function compareFile(fileName, base64, callback) {
     list.data.files.map(file => {
       i++;
       if (file.mimeType.startsWith('image')) {
-        var isExist = fs.existsSync(path.resolve(__dirname, '../client/public/asset/digital-Image/' + file.name));
-        var dest = fs.createWriteStream(path.resolve(__dirname, '../client/public/asset/digital-Image/' + file.name));
+        var fileName = file.name.replace(/[^a-zA-Z .]/g, "");
+        var isExist = fs.existsSync(path.resolve(__dirname, '../client/public/asset/digital-Image/' + fileName));
+        var dest = fs.createWriteStream(path.resolve(__dirname, '../client/public/asset/digital-Image/' + fileName));
         drive.files.get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' },
            function (err, res) {
             if (res !== undefined) {
@@ -152,7 +153,7 @@ function compareFile(fileName, base64, callback) {
                     const fileSizeInBytes = stats.size / (1024 * 1024);
                     console.log(" file >>>> ", res.data._readableState.pipes.path, " is ", isExist);
                     if (!isExist) {
-                      con.query(`INSERT INTO assets (asset_name,path,asset_type,size ,created_by) VALUES ("${data.name}","/public/asset/digital-Image/${data.name}","${data.mimetype}","${fileSizeInBytes}","${name}")`, function (err, result) {
+                      con.query(`INSERT INTO assets (asset_name,path,asset_type,size ,created_by) VALUES ("${data.name}","/public/asset/digital-Image/${fileName}","${data.mimetype}","${fileSizeInBytes}","${name}")`, function (err, result) {
                          console.log('-----insert result-----',result); 
                       })
                     }
