@@ -18,7 +18,6 @@ const TOKEN_PATH = './token.json';
   // Load client secrets from a local file.
   fs.exists('credentials.json', (isFind) => { console.log(isFind) })
   fs.readFile(path.resolve(__dirname, "credentials.json"), (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
     console.log("content >>>>", content)
     authorize( JSON.parse(content), function (data) {
@@ -42,7 +41,7 @@ const TOKEN_PATH = './token.json';
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  console.log("credentials.web is ", credentials.web)
+  console.log("credentials.web is ", credentials)
   const { client_secret, client_id, redirect_uris } = credentials.web;
   const oAuth2Client = new google.auth.OAuth2(
     client_id, client_secret, redirect_uris[0]);
@@ -148,18 +147,12 @@ function compareFile(fileName, base64, callback) {
                 .on('end', () => {
                   var data = { name: file.name, mimetype: file.mimeType };
                   try {
-                    /*
-                    const file = fs.readFileSync(res.data._readableState.pipes.path);
-                    var base64 = Buffer.from(file).toString('base64')
-                    var isExist = compareFile(data.name, base64, function (data) {
-                      console.log("exist  is ", data);
-                    });*/
-                    //  console.log("fileSizeInBytes is ", base64)
                     const stats = fs.statSync(res.data._readableState.pipes.path);
                     const fileSizeInBytes = stats.size / (1024 * 1024);
                     console.log(" file >>>> ", res.data._readableState.pipes.path, " is ", isExist);
                     if (!isExist) {
-                      con.query("INSERT INTO assets (`asset_name`,`path`,`asset_type`,`size` ,`created_by`) VALUES ('" + data.name + "', '" + "/public/asset/digital-Image/" + data.name + "', '" + data.mimetype + "','" + fileSizeInBytes + "','" + name + "')", function (err, result) {
+                      con.query(`INSERT INTO assets (asset_name,path,asset_type,size ,created_by) VALUES ("${data.name}","/public/asset/digital-Image/${data.name}","${data.mimetype}","${fileSizeInBytes}","${name}")`, function (err, result) {
+                         console.log('-----insert result-----',result); 
                       })
                     }
                     console.log('Done');
