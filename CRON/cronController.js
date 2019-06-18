@@ -133,13 +133,12 @@ function compareFile(fileName, base64, callback) {
   const drive = google.drive({ version: 'v3', auth });
   var fileId = '1h8alBKaKW7muNNG9T-9b79ButOVRMEHo';
   var imagesMIME = 'image';
-  // q="'{{FOLDER_ID}}' in parents"
   drive.files.list({q:"'1maU0RG0pBVpjEC2MpFaWR8qJYJe1qiwM' in parents and trashed != true"}).then(list => {
     var i = 0;
     list.data.files.map(file => {
       i++;
       if (file.mimeType.startsWith('image')) {
-        var fileName = file.name.replace(/[^a-zA-Z .]/g, "");
+        var fileName = file.name.replace(/[^a-zA-Z .0-9_]/g, "");
         var isExist = fs.existsSync(path.resolve(__dirname, '../client/public/asset/digital-Image/' + fileName));
         var dest = fs.createWriteStream(path.resolve(__dirname, '../client/public/asset/digital-Image/' + fileName));
         drive.files.get({ fileId: file.id, alt: 'media' }, { responseType: 'stream' },
