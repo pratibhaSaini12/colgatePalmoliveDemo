@@ -134,7 +134,7 @@ function compareFile(fileName, base64, callback) {
   var fileId = '1h8alBKaKW7muNNG9T-9b79ButOVRMEHo';
   var imagesMIME = 'image';
   // q="'{{FOLDER_ID}}' in parents"
-  drive.files.list(q = "'{{FOLDER_ID}}' in parents").then(list => {
+  drive.files.list({q:"'1maU0RG0pBVpjEC2MpFaWR8qJYJe1qiwM' in parents and trashed != true"}).then(list => {
     var i = 0;
     list.data.files.map(file => {
       i++;
