@@ -904,17 +904,17 @@ class ProductList extends Component {
                                         
                                             <Link className="new-product primary-button float-right" to="/newProduct"><i className="ti-plus"></i> NEW PRODUCT</Link>
                                   
-                                        <a href="javscript:void(0);" onClick={this.openListView.bind(this)} className={`filter-btn list-view paginationshow ${this.state.listView===true?'list-viewactive':''}`}>filter</a>
-                                        <a href="javscript:void(0);" className={`filter-btn ${this.state.listView === false ? 'card-view':'card-viewactive'} noactive`} onClick={(e) => { this.cardView(e) }}       >filter</a>
+                                        <a href="javascript:void(0);" onClick={this.openListView.bind(this)} className={`filter-btn list-view paginationshow ${this.state.listView===true?'list-viewactive':''}`}>filter</a>
+                                        <a href="javascript:void(0);" className={`filter-btn ${this.state.listView === false ? 'card-view':'card-viewactive'} noactive`} onClick={(e) => { this.cardView(e) }}       >filter</a>
                                         
                                         {
                                             this.state.listView === true ?
-                                                <a href="javscript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
+                                                <a href="javascript:void(0);" className="filter-btn Setting_btn" data-toggle="modal" data-target="#setting"><i className="ti-settings" /></a>
                                                 : void 0
                                         }
 
 
-                                        <a href="javscript:void(0);" className="filter-btn filter droptoggle_custome" id="filter" >filter</a>
+                                        <a href="javascript:void(0);" className="filter-btn filter droptoggle_custome" id="filter" >filter</a>
                                         <div className="selected-actions">
                                             <div className="option-box drop-option-link">
                                                 <div className="nav-item dropdown dropcolgate">
@@ -924,7 +924,7 @@ class ProductList extends Component {
                                                     </a>
                                                     <div className="dropdown-menu drop_20">
                                                     <div className="dropdown-item">
-                                                                    <div className="option-box clear-all"><a href="javscript:void(0)" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a></div>
+                                                                    <div className="option-box clear-all"><a href="javascript:void(0);" onClick={(e) => { this.selectAllProduct(e) }}><i className="ti-layout-grid2"></i>Select All</a></div>
                                                                 </div>
                                                     
 
@@ -936,11 +936,11 @@ class ProductList extends Component {
                                                                 <div className="group-action">
                                                                     <div className="option-box delete"><a data-toggle="modal" data-target="#delete" onClick={this.bulkDelete.bind(this)}><i className="ti-trash"></i>Delete</a></div>
 
-                                                                    <div className="option-box download"><a href="javscript:void(0)" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
-                                                                    {/* <div className="option-box import"><a href="javscript:void(0)"><i className="ti-import"></i>Product Import</a></div>
-                                                                    <div className="option-box export"><a href="javscript:void(0)"><i className="ti-export"></i>Export Template</a></div> */}
+                                                                    <div className="option-box download"><a href="javascript:void(0);" onClick={(e) => { this.createExcel(e) }}><i className="fa fa-file-download"></i>Download</a></div>
+                                                                    {/* <div className="option-box import"><a href="javascript:void(0)"><i className="ti-import"></i>Product Import</a></div>
+                                                                    <div className="option-box export"><a href="javascript:void(0)"><i className="ti-export"></i>Export Template</a></div> */}
                                                                     <div className="option-box compare batchUpdate" data-toggle="modal" data-target="#colgate">
-                                                                        <a href="javscript:void(0)"><i className="ti-layout-column2"></i>Batch Update</a>
+                                                                        <a href="javascript:void(0);"><i className="ti-layout-column2"></i>Batch Update</a>
                                                                     </div>
                                                                     
                                                                     {
@@ -948,11 +948,11 @@ class ProductList extends Component {
                                                                     
                                                                     <div className="option-box compare">
 
-                                                                        <a href="javscript:void(0)" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                        <a href="javascript:void(0);" onClick={(e) => { this.compareProducts(e) }}><i className="ti-layout-column2"></i>Compare Products</a></div>
                                                                        : 
                                                                        <div className="option-box compare">
                                                                         
-                                                                       <a href="javscript:void(0)" onClick={() => {alert('You can only compare 2 products')}}><i className="ti-layout-column2"></i>Compare Products</a></div>
+                                                                       <a href="javascript:void(0);" onClick={() => {alert('You can only compare 2 products')}}><i className="ti-layout-column2"></i>Compare Products</a></div>
                                                                     }
                                                                 </div>
                                                             </div>
@@ -1019,7 +1019,7 @@ class ProductList extends Component {
                                                             }
                                                             <td><div className="row-hover">
                                                                 <div className="row-link-options"> <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}> <ImageContainer src="icons/edit.png" /></Link>
-                                                                    <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}> <ImageContainer src="icons/delete.png" />
+                                                                    <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}> <ImageContainer src="icons/delete.png" />
                                                                     </a></div>
                                                             </div></td>
                                                         </tr>
@@ -1053,7 +1053,7 @@ class ProductList extends Component {
                                             return <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                                                 <div className="card custome_img">
                                                     <div className="card-body text-center">
-                                                        <a className="icon check-icon activebtn" href="javscript:void(0)" id={`activebtn${key.product_id}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
+                                                        <a className="icon check-icon activebtn" href="javascript:void(0);" id={`activebtn${key.product_id}`} onClick={(e) => { this.handledeSelect(e, index, key) }}>
                                                             <ImageContainer src="icons/check.png" />
                                                         </a>
 
@@ -1074,8 +1074,8 @@ class ProductList extends Component {
                                                         <div className="card-link-options">
                                                             <Link className="icon view-icon" to={{ pathname: '/productDetailPage', state: { _data: key } }} ><ImageContainer src="icons/view.png" /></Link>
                                                             <Link className="icon edit-icon" to={{ pathname: '/editProduct', state: { _data: key } }}><ImageContainer src="icons/edit.png" /></Link>
-                                                            <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
-                                                            <a className="icon check-icon select_box" href="javscript:void(0)" onClick={(e) => { this.handleIcon(e, index, key) }}><ImageContainer src="icons/check.png" /></a>
+                                                            <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete" onClick={(e) => this.setState({ deleteProductId: key.product_id })}><ImageContainer src="icons/delete.png" /></a>
+                                                            <a className="icon check-icon select_box" href="javascript:void(0);" onClick={(e) => { this.handleIcon(e, index, key) }}><ImageContainer src="icons/check.png" /></a>
                                                         </div>
                                                     </div>
                                                 </div>

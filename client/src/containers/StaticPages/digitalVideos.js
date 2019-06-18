@@ -102,14 +102,14 @@ class DigitalVideos extends React.Component {
               <div className="col-md-12">
                 <div className="filter float-right">
                   <div className="float-right col-md-12">
-                   <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"><i className="ti-plus"></i> Upload Assets </a>
-                    <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a>
-                    <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> 
-                    <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a> 
+                   <a className="new-product primary-button float-right" href="javascript:void(0);" data-toggle="modal" data-target="#colgate"><i className="ti-plus"></i> Upload Assets </a>
+                    <a href="javascript:void(0);" className="filter-btn list-view paginationshow">filter</a>
+                    <a href="javascript:void(0);" className="filter-btn card-view noactive">filter</a> 
+                    <a href="javascript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a> 
                     <div className="selected-actions">
                       <div className="option-box drop-option-link">
                         <div className="nav-item dropdown dropcolgate">
-                          <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
                             <div className="dot-icon"><ImageContainer src="icons/option-all.png" /></div>
                           </a>
@@ -117,19 +117,19 @@ class DigitalVideos extends React.Component {
                             <div className="counting-action-section">
                               <div className="selections">
                                 <div className="group-selection">
-                                  <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                  <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                  <div className="option-box select-all"><a onclick="selectAll()" href="javascript:void(0);">Select All</a></div>
+                                  <div className="option-box clear-all"><a onclick="clearAll()" href="javascript:void(0);">Clear All</a></div>
                                 </div>
                                 <div className="group-action">
                                   <div className="option-box delete"><a href>Delete</a></div>
-                                  <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
-                                  <div className="option-box move-folder"><a href="javscript:void(0)">Move to Folder</a></div>
+                                  <div className="option-box download"><a href="javascript:void(0);">Download</a></div>
+                                  <div className="option-box move-folder"><a href="javascript:void(0);">Move to Folder</a></div>
                                 </div>
                               </div>
                             </div>
-                            <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a> 
-                            <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a> 
-                            <a className="dropdown-item" href="javascript:void(0)"><i className="ti-reload" />Update Request</a> 
+                            <a className="dropdown-item" href="javascript:void(0);"><i className="ti-check" />Approve</a> 
+                            <a className="dropdown-item" href="javascript:void(0);"><i className="ti-close" />Reject</a> 
+                            <a className="dropdown-item" href="javascript:void(0);"><i className="ti-reload" />Update Request</a> 
                           </div>
                         </div>
                       </div>
@@ -157,7 +157,7 @@ class DigitalVideos extends React.Component {
                       <td>2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -169,7 +169,7 @@ class DigitalVideos extends React.Component {
                       <td>2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -181,7 +181,7 @@ class DigitalVideos extends React.Component {
                       <td>2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -193,7 +193,7 @@ class DigitalVideos extends React.Component {
                       <td>2832 x 4256 2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -205,7 +205,7 @@ class DigitalVideos extends React.Component {
                       <td>2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -217,7 +217,7 @@ class DigitalVideos extends React.Component {
                       <td>2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -229,7 +229,7 @@ class DigitalVideos extends React.Component {
                       <td>2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -241,7 +241,7 @@ class DigitalVideos extends React.Component {
                       <td>2832 x 4256 2.74 MB</td>
                       <td>4/25/19 6:49 pm</td>
                       <td><div className="row-hover">
-                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
+                          <div className="row-link-options"> <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
                     </tr>
@@ -255,7 +255,7 @@ class DigitalVideos extends React.Component {
                       <td><div className="row-hover">
                           <div className="row-link-options">
                              <a className="icon edit-icon" href="#"> <img src="img/icons/edit.png" /> </a>
-                               <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> 
+                               <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> 
                                <img src="img/icons/delete.png" />
                             </a></div>
                         </div></td>
@@ -280,7 +280,7 @@ class DigitalVideos extends React.Component {
           <div className="row video">
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b1.png" />
                   </p>
                   <div className="card-info">
@@ -291,17 +291,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options"> 
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                    </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b2.png" alt="card image" /></p>
                   <div className="card-info">  
                     <h4 className="card-title">Colgate Kids Ad</h4>
@@ -311,17 +311,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                      </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b3.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Colgate Max Fresh Ad</h4>
@@ -331,16 +331,16 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a>  </div>
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a>  </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b4.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Palmolive Circle of 10 Ad</h4>
@@ -350,17 +350,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                      </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b5.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Palmolive Ad</h4>
@@ -371,10 +371,10 @@ class DigitalVideos extends React.Component {
                 <div className="card-hover">
                   <div className="card-link-options">
 
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                   </div>
                 </div>
               </div>
@@ -382,7 +382,7 @@ class DigitalVideos extends React.Component {
             {/* row second ---------------------------------------------------------------------*/}
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b1.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Palmolive Groove Ad</h4>
@@ -392,17 +392,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options"> 
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                    </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b2.png" alt="card image" /></p>
                   <div className="card-info">  
                     <h4 className="card-title">Colage Kids Ad</h4>
@@ -412,17 +412,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                      </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b3.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Colgate Max Fresh</h4>
@@ -432,17 +432,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                      </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b4.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Palmolive Circle of 10</h4>
@@ -452,10 +452,10 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                      </div>
                 </div>
               </div>
@@ -463,7 +463,7 @@ class DigitalVideos extends React.Component {
             {/* row second ---------------------------------------------------------------------*/}
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b1.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Palmolive Groove Ad</h4>
@@ -473,17 +473,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b2.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Colgate Kids Ad</h4>
@@ -493,17 +493,17 @@ class DigitalVideos extends React.Component {
                 </div>
                 <div className="card-hover">
                   <div className="card-link-options">
-                  <a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> 
+                  <a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> 
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b3.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Colgate Max Fresh Ad</h4>
@@ -512,16 +512,16 @@ class DigitalVideos extends React.Component {
                   </div>
                 </div>
                 <div className="card-hover">
-                  <div className="card-link-options"><a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a> </div>
+                  <div className="card-link-options"><a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a> </div>
                 </div>
               </div>
             </div>
             <div className="col-xs-12 col-sm-4 col-md-3 card-block">
               <div className="card">
-                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <img src="img/icons/check.png" /> </a>
+                <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <img src="img/icons/check.png" /> </a>
                   <p className="img"><ImageContainer className="img-fluid" src="b4.png" alt="card image" /></p>
                   <div className="card-info">
                     <h4 className="card-title">Palmolive Circle of 10</h4>
@@ -530,10 +530,10 @@ class DigitalVideos extends React.Component {
                   </div>
                 </div>
                 <div className="card-hover">
-                  <div className="card-link-options"><a className="icon view-icon" href="javscript:void(0)"><ImageContainer src="icons/view.png" />
-                  </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" /> </a>  
-                  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
-                   <a className="icon check-icon select_box" href="javscript:void(0)"><ImageContainer src="icons/check.png" /></a>  </div>
+                  <div className="card-link-options"><a className="icon view-icon" href="javascript:void(0);"><ImageContainer src="icons/view.png" />
+                  </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" /> </a>  
+                  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"><ImageContainer src="icons/delete.png" /></a> 
+                   <a className="icon check-icon select_box" href="javascript:void(0);"><ImageContainer src="icons/check.png" /></a>  </div>
                 </div>
               </div>
             </div>

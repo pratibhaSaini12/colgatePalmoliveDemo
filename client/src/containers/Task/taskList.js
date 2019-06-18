@@ -293,7 +293,7 @@ class TaskList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
@@ -312,7 +312,7 @@ class TaskList extends Component {
                                                     <td><div className="row-hover">
                                                         <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
                                                             <ImageContainer src="icons/edit.png" /> </a>
-                                                            <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
+                                                            <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete">
                                                                 <ImageContainer src="icons/delete.png" />
                                                             </a></div>
                                                     </div></td>
@@ -332,7 +332,7 @@ class TaskList extends Component {
                                                         <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html">
                                                         </a>
                                                             <ImageContainer src="icons/edit.png" />
-                                                            <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete">
+                                                            <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete">
                                                                 <ImageContainer src="icons/delete.png" />
                                                             </a></div>
                                                     </div></td>
@@ -348,7 +348,7 @@ class TaskList extends Component {
                                                     <td>Palmolive</td>
                                                     <td>Palmolive</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                         </a></div>
                                                     </div></td>
                                                 </tr>
@@ -363,7 +363,7 @@ class TaskList extends Component {
                                                     <td>Colgate</td>
                                                     <td>Colgate</td>
                                                     <td><div className="row-hover">
-                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
+                                                        <div className="row-link-options"> <a className="icon edit-icon" href="editProduct.html"> <ImageContainer src="icons/edit.png" /></a>  <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" />
                                                         </a></div>
                                                     </div></td>
                                                 </tr>

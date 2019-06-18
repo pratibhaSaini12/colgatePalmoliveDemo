@@ -35,14 +35,14 @@ class Aside extends Component {
                   </Link>
                 </li>
                 <li  className={this.props.active ==="product" ? "active" : ''}>
-                  <a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"> <i className="sprite_icon product" /><span className="hide-menu">Products </span></a>
+                  <a className="has-arrow waves-effect waves-dark" href="javascript:void(0);" aria-expanded="false"> <i className="sprite_icon product" /><span className="hide-menu">Products </span></a>
                   <ul aria-expanded="false" className="collapse">
                     <li><Link to={"/productlist"}>View All</Link></li>
-                    <li><a href="avascript:void(0)">Manage Collections</a></li>
+                    <li><a href="javascript:void(0);">Manage Collections</a></li>
                   </ul>
                 </li>
                 <li  className={this.props.active ==="digital" ? "active" : ''}>
-                   <a className="has-arrow waves-effect waves-dark" href="javscript:void(0)" aria-expanded="false"><i className="sprite_icon digital" /><span className="hide-menu">Digital Assets</span></a>
+                   <a className="has-arrow waves-effect waves-dark" href="javascript:void(0);" aria-expanded="false"><i className="sprite_icon digital" /><span className="hide-menu">Digital Assets</span></a>
                   <ul aria-expanded="false" className="collapse">
                     <li className={this.props.active ===true ? "active" : ''}><Link to={"/digitalImages"}>Images</Link></li>
                     <li className={this.props.active ===true ? "active" : ''}><Link to={"/digitalVideo"}>Videos</Link></li>

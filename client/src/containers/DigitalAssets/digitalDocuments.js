@@ -120,12 +120,12 @@ class DigitalDocument extends Component {
                                     </div>
               <div className="filter float-right col-md-6">
                 
-                          <a className="new-product primary-button float-right" href="javscript:void(0);" data-toggle="modal" data-target="#colgate"><i className="ti-plus"></i> Upload Assets </a>
+                          <a className="new-product primary-button float-right" href="javascript:void(0);" data-toggle="modal" data-target="#colgate"><i className="ti-plus"></i> Upload Assets </a>
 
-                        <a href="javscript:void(0)" className="filter-btn list-view paginationshow">filter</a> <a href="javscript:void(0)" className="filter-btn card-view noactive">filter</a> <a href="javscript:void(0)" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
+                        <a href="javascript:void(0);" className="filter-btn list-view paginationshow">filter</a> <a href="javascript:void(0);" className="filter-btn card-view noactive">filter</a> <a href="javascript:void(0);" className="filter-btn filter droptoggle_custome" id="filter">filter</a>
                         <div className="selected-actions">
                           <div className="option-box drop-option-link">
-                            <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <div className="nav-item dropdown dropcolgate"> <a className="nav-link custome_navlink" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                               <div className="option-box select-count selected"><span id="Counting">0</span> <span className="selected-text">Selected</span></div>
                               <div className="dot-icon"><ImageContainer src="icons/option-all.png" alt="card image" /></div>
                             </a>
@@ -133,17 +133,17 @@ class DigitalDocument extends Component {
                                 <div className="counting-action-section">
                                   <div className="selections">
                                     <div className="group-selection">
-                                      <div className="option-box select-all"><a onclick="selectAll()" href="javscript:void(0)">Select All</a></div>
-                                      <div className="option-box clear-all"><a onclick="clearAll()" href="javscript:void(0)">Clear All</a></div>
+                                      <div className="option-box select-all"><a onclick="selectAll()" href="javascript:void(0);">Select All</a></div>
+                                      <div className="option-box clear-all"><a onclick="clearAll()" href="javascript:void(0);">Clear All</a></div>
                                     </div>
                                     <div className="group-action">
                                       <div className="option-box delete"><a href>Delete</a></div>
-                                      <div className="option-box download"><a href="javscript:void(0)">Download</a></div>
+                                      <div className="option-box download"><a href="javascript:void(0);">Download</a></div>
                                     </div>
                                   </div>
                                 </div>
-                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-check" />Approve</a>
-                                <a className="dropdown-item" href="javascript:void(0)"><i className="ti-close" />Reject</a>
+                                <a className="dropdown-item" href="javascript:void(0);"><i className="ti-check" />Approve</a>
+                                <a className="dropdown-item" href="javascript:void(0);"><i className="ti-close" />Reject</a>
                                 </div>
                             </div>
                           </div>
@@ -182,7 +182,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -193,7 +193,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -206,7 +206,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -217,7 +217,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -228,7 +228,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -239,7 +239,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -250,7 +250,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                         <tr>
@@ -261,7 +261,7 @@ class DigitalDocument extends Component {
                           <td>2.74 MB</td>
                           <td>4/25/19 6:49 pm</td>
                           <td><div className="row-hover">
-                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
+                            <div className="row-link-options"> <a className="icon edit-icon" href="#"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a></div>
                           </div></td>
                         </tr>
                       </tbody>
@@ -284,7 +284,7 @@ class DigitalDocument extends Component {
               <div className="row">
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img">
                         <ImageContainer src="icons/pdf.png" alt="card image" />
 
@@ -299,13 +299,13 @@ class DigitalDocument extends Component {
                       <div className="card-link-options">
                         <Link className="icon view-icon" to="/productDetailPage"><ImageContainer src="icons/view.png" /></Link>
                         <Link className="icon edit-icon" to="/editProduct"><ImageContainer src="icons/edit.png" /></Link>
-                        <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                        <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img">
                         <ImageContainer src="icons/ppt.png" alt="card image" />
                       </p>
@@ -316,13 +316,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/word.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">HISTORY OF COLGATE TOOTHPASTE</h4>
@@ -331,13 +331,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/xls.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">Colgate Palmolive milestone</h4>
@@ -346,13 +346,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/xls.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">SWOT ANALYSIS OF COLGATE</h4>
@@ -361,14 +361,14 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 {/* row second ---------------------------------------------------------------------*/}
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/word.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">Price List Palmolive prodcuts</h4>
@@ -377,13 +377,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/pdf.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">Price List Colgate Product</h4>
@@ -392,13 +392,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/pdf.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">BRAND PORTFOLIO Colgate</h4>
@@ -407,13 +407,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/word.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">BRAND LONG-TERM MANAGEMENT</h4>
@@ -422,14 +422,14 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 {/* row second ---------------------------------------------------------------------*/}
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/word.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">Colgate Branding Strategy objective</h4>
@@ -438,13 +438,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/word.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">STP &amp; Marketing Mix of colgate</h4>
@@ -453,13 +453,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/ppt.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">INDIAN ORAL CARE MARKET</h4>
@@ -468,13 +468,13 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-xs-12 col-sm-4 col-md-3 card-block">
                   <div className="card document_list">
-                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
+                    <div className="card-body text-center"> <a className="icon check-icon activebtn" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a>
                       <p className="img"><ImageContainer src="icons/xls.png" alt="card image" /></p>
                       <div className="card-info">
                         <h4 className="card-title">HISTORY OF COLGATE TOOTHPASTE</h4>
@@ -483,7 +483,7 @@ class DigitalDocument extends Component {
                       </div>
                     </div>
                     <div className="card-hover">
-                      <div className="card-link-options"> <a className="icon view-icon" href="javscript:void(0)"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javscript:void(0)"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javscript:void(0)" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javscript:void(0)"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
+                      <div className="card-link-options"> <a className="icon view-icon" href="javascript:void(0);"> <ImageContainer src="icons/view.png" alt="card image" /> </a> <a className="icon edit-icon" href="javascript:void(0);"> <ImageContainer src="icons/edit.png" alt="card image" /> </a> <a className="icon delete-icon" href="javascript:void(0);" data-toggle="modal" data-target="#delete"> <ImageContainer src="icons/delete.png" alt="card image" /> </a>  <a className="icon check-icon select_box" href="javascript:void(0);"> <ImageContainer src="icons/check.png" alt="card image" /> </a> </div>
                     </div>
                   </div>
                 </div>

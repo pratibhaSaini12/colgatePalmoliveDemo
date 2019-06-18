@@ -225,8 +225,8 @@ class Search extends React.Component {
                             <div className="navbar-collapse container-fluid">
                                 <ul class="navbar-nav col-md-9">
                                     {/* This is  */}
-                                    <li className="nav-item"> <a className="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i className="ti-menu" /></a> </li>
-                                    <li className="nav-item"> <a className="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i className="ti-menu" /></a> </li>
+                                    <li className="nav-item"> <a className="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0);"><i className="ti-menu" /></a> </li>
+                                    <li className="nav-item"> <a className="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark" href="javascript:void(0);"><i className="ti-menu" /></a> </li>
                                     <li className="nav-item hidden-sm-down">
                                         <span>  <Link to="/dashboard">
                                             <ImageContainer src="logo.png" alt="PIMCORE" />
