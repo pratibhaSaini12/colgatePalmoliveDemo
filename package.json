@@ -48,7 +48,7 @@
     "filereader": "^0.10.3",
     "fusioncharts": "^3.13.1",
     "google-auth-library": "^1.6.1",
-    "googleapis": "^29.0.0",
+    "googleapis": "^59.0.0",
     "highcharts": "^6.1.0",
     "history": "^4.7.2",
     "html2canvas": "^1.0.0-rc.3",
